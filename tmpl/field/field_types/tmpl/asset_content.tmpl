@@ -1,0 +1,59 @@
+    <mt:var name="asset_exists" value="">
+    <mt:if name="field.asset_id">
+      <mt:var name="field.asset_id" escape setvar="field_asset_id">
+      <mt:var name="field.asset_id" escape setvar="field_asset_id">
+      <mt:objectloop cols="id,label,workspace_id" model="asset" id="$field_asset_id" limit="1" include_draft="1" include_workspaces="all">
+        <mt:var name="asset_exists" value="1">
+      </mt:objectloop>
+    </mt:if>
+    <ul class="relation-list">
+    <li class="asset_<mt:var name="field_uniqueid">-child badge badge-default badge-relation">
+    <mt:if name="asset_exists">
+    <mt:var name="field.asset_id" escape setvar="field_asset_id">
+    <mt:objectloop cols="id,label,workspace_id" model="asset" id="$field_asset_id" limit="1" include_draft="1" include_workspaces="all">
+      <div id="asset_<mt:var name="field_uniqueid">-img" class="assets-child-thumb" data-model="asset" data-id="<mt:var name="field_asset_id">" style="background-image:url('<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=asset&id=<mt:var name="field_asset_id">')"></div>
+      <span id="asset_<mt:var name="field_uniqueid">-label">
+        <mt:var name="label" escape>
+      </span>
+      <a target="_blank" id="asset_<mt:var name="field_uniqueid">-view-asset-link" href="<mt:objectvar model="asset" id="$id" name="permalink">" class="btn btn-secondary btn-sm asset-download-btn attachment-download-btn-asset_files-<mt:var name="field_uniqueid">" aria-label="<mt:trans phrase="View">">
+          <i class="fa fa-external-link-square"></i>
+      </a>
+      <button type="button" id="_asset_<mt:var name="field_uniqueid">-edit-defeult" class="<mt:ifusercan action="edit" model="asset" id="$field_asset_id" workspace_id="$can_asset_workspace_id"><mt:else>hidden</mt:ifusercan> _asset_id-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+          data-toggle="modal" data-target="#modal"
+          data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=asset&amp;id=<mt:var name="field_asset_id">&amp;dialog_view=1&amp;target=field.<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;_field_name=<mt:var name="field_uniqueid">_asset_id&amp;ref_model=<mt:var name="model">">
+        <i class="fa fa-pencil"></i>
+      </button>
+      <button style="display:inline" id="asset_<mt:var name="field_uniqueid">-close" type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="asset_id">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <input id="asset_<mt:var name="field_uniqueid">" type="hidden" name="asset_id" value="<mt:var name="field_asset_id">">
+    </mt:objectloop>
+    <mt:else>
+    <div id="asset_<mt:var name="field_uniqueid">-img" class="hidden assets-child-thumb" data-model="asset" data-id="" style="background-image:url('<mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=asset&amp;id=')"></div>
+    <span id="asset_<mt:var name="field_uniqueid">-label"><mt:trans phrase="(None selected)">&nbsp;</span>
+      <a target="_blank" id="asset_<mt:var name="field_uniqueid">-view-asset-link" href="" class="hidden btn btn-secondary btn-sm asset-download-btn attachment-download-btn-asset_files-<mt:var name="field_uniqueid">" aria-label="<mt:trans phrase="View">">
+          <i class="fa fa-external-link-square"></i>
+      </a>
+    <button type="button" id="_asset_<mt:var name="field_uniqueid">-edit-defeult" class="_asset_<mt:var name="field_uniqueid">-edit hidden btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+      data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=asset&amp;id=0&amp;dialog_view=1&amp;target=asset_<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;_field_name=<mt:var name="field_uniqueid">_asset_id<mt:if name="has_asset_workspace_id">&amp;workspace_id=<mt:var name="asset_workspace_id"><mt:elseif name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">">
+      <i class="fa fa-pencil"></i>
+    </button>
+    <button style="display:inline" id="asset_<mt:var name="field_uniqueid">-close" type="button" class="btn btn-secondary btn-sm close-sm detach-relation  hidden" aria-label="<mt:trans phrase="Detach">" data-name="asset_<mt:var name="field_uniqueid">">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <input id="asset_<mt:var name="field_uniqueid">" type="hidden" name="<mt:var name="field_uniqueid">_asset_id" value="">
+    </mt:if>
+    </li>
+    </ul>
+    <button type="button" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=asset&amp;dialog_view=1&amp;single_select=1&amp;target=asset_<mt:var name="field_uniqueid">&amp;get_col=label&amp;_system_filters_option=image<mt:if name="has_asset_workspace_id">&amp;workspace_id=<mt:var name="asset_workspace_id"><mt:elseif name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select...">
+    </button>
+    <mt:ifusercan model="asset" action="create" workspace_id="$can_asset_workspace_id">
+    <button type="button" id="_asset_<mt:var name="field_uniqueid">-edit-defeult" class="_asset_<mt:var name="field_uniqueid">-edit btn btn-info btn-sm ml-0" aria-label="<mt:trans phrase="New...">"
+      data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=asset&amp;dialog_view=1&amp;target=asset_<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;_field_name=<mt:var name="field_uniqueid">_asset_id<mt:if name="has_asset_workspace_id">&amp;workspace_id=<mt:var name="asset_workspace_id"><mt:elseif name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">">
+      <i class="fa fa-plus-circle"></i>
+    </button>
+    </mt:ifusercan>
+    <mt:var name="asset_exists" value="">

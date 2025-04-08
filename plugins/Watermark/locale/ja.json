@@ -1,0 +1,20 @@
+{
+    "Combine the watermark to the image and video.": "画像とビデオに透かしを追加します。",
+    "The FileUploader plugin must be enabled to enable Watermark plugin.": "Watermarkプラグインを有効にするには、FileUploaderプラグインを有効にする必要があります。",
+    "Combine the Watermark": "透かしを合成する",
+    "No position has been selected.": "位置が選択されていません。",
+    "This process may take a few minutes. Are you sure you want to continue?": "この処理には数分かかることがあります。続行してもよろしいですか?",
+    "Remove the watermark. Are you sure you want to continue?": "透かしを削除します。続行してもよろしいですか?",
+    "An error occurred while combine the watermark.": "透かしの合成中にエラーが発生しました。",
+    "An error occurred while removing the watermark.": "透かしの削除中にエラーが発生しました。",
+    "Save the file to combine the watermark.": "ビデオに透かしを合成するには一度この画面を保存してください。",
+    "Use System Setting": "システム設定を利用",
+    "Default Position": "位置(既定値)",
+    "'%s' function is not supported.": "'%s'関数はサポートされていません。",
+    "Images Directory": "画像ディレクトリ",
+    "Watermark": "透かし",
+    "Top-Left": "左上",
+    "Top-Right": "右上",
+    "Bottom-Left": "左下",
+    "Bottom-Right": "右下"
+}

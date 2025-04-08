@@ -1,0 +1,486 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja"><head>
+ <meta http-equiv="content-type" content="application/xhtml+xml; charset=EUC-JP" />
+ <meta http-equiv="content-style-type" content="text/css" />
+<title>表記統合辞書　利用マニュアル</title>
+
+
+ 
+ <link rel="stylesheet" href="default.css" type="text/css" media="screen" charset="Shift_JIS" />
+</head>
+
+
+<body>
+ <div id="body">
+
+
+<p><strong><span style="font-size: 20px; line-height: 130%; text-indent: 0px;">表記統合辞書　利用マニュアル</span></strong></p>
+
+<p><strong>ver.1.0　（2005-07-11）</strong></p>
+
+
+<p><br /></p>
+
+
+<p>　山口昌也，桐生りか，田中牧郎　（独立行政法人 国立国語研究所）</p>
+
+
+<p><br /><br /></p>
+
+<hr class="short_line" />
+
+<p><strong>目次</strong></p>
+
+
+<div class="contents">
+<a id="contents_1"></a>
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li><a href="#content_1_0"> はじめに</a></li>
+
+
+<li><a href="#content_1_1"> １．『表記統合辞書』の内容</a></li>
+
+
+<li><a href="#content_1_2"> ２．『表記統合辞書』の形式</a>
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li><a href="#content_1_3"> 2.1 物理形式</a></li>
+
+
+<li><a href="#content_1_4"> 2.2 例</a></li>
+</ul>
+</li>
+
+
+<li><a href="#content_1_5"> ３．統合のための規則</a></li>
+
+
+<li><a href="#content_1_6"> ４．未解決の問題</a></li>
+
+
+<li><a href="#content_1_7"> ５．連絡先等</a></li>
+
+
+<li><a href="#content_1_8"> 謝辞</a></li>
+</ul>
+</div>
+
+
+
+<p><br /></p>
+
+<hr class="short_line" />
+
+<p><br /><br /></p>
+
+
+<h2 id="content_1_0">はじめに</h2>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>『表記統合辞書』は，言語研究・自然言語処理用に開発された，同語判別のための基礎データです。
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li><a href="http://cl.aist-nara.ac.jp/">奈良先端科学技術大学院大学 情報科学研究科 自然言語処理学講座（松本研究室）</a>で開発された形態素解析システム<a href="http://chasen.naist.jp/hiki/ChaSen/">『茶筌』</a>付属の電子化辞書『<a href="http://chasen.naist.jp/stable/ipadic/">IPADIC </a>』ver.2.4.4 に対応しています。</li>
+
+
+<li>『表記統合辞書』は無償でご利用いただけます。</li>
+</ul>
+</li>
+
+
+<li>『表記統合辞書』の利用例としては，『茶筌』で形態素解析した結果に対して，同語判別を行う，ということが挙げられます。例えば，『茶筌』の解析
+結果(IPADIC ver.2.4.4
+を利用した場合)では，「組み立てる」と「組立てる」は表記上の違いにより，別語となりますが，『表記統合辞書』を使うことにより，同じ語であると判断す
+ることができます。</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h2 id="content_1_1">１．『表記統合辞書』の内容</h2>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>『表記統合辞書』は，IPADIC の各辞書項目に対して，同語と判断される他の辞書項目の「見出し」の情報を追加したものである。
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>本辞書では，IPADIC ver.2.4.4 を使用した。以後，特に断りのないかぎり，このバージョンを『IPADIC』と表記する。</li>
+
+
+<li>IPADIC の内容の詳細については，IPADIC に添付されている「ユーザーズマニュアル」を参照されたい。</li>
+</ul>
+</li>
+
+
+<li>本辞書には，IPADIC に登録されている辞書項目 233624 語（形態素）のうち，同語と認定される辞書項目が存在する 28810 語を収録している。
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>同語の認定は，３節の<a href="#rules">「統合のための規則」</a>にしたがって行った。</li>
+
+
+<li>なお，規則を作成するにあたっては，「通す/透す」といったような意味による書き分けについては，規則化していない。</li>
+</ul>
+</li>
+
+
+<li>本辞書の内容には，未解決の問題も含まれている。使用にあたっては，４節「<a href="#problems">未解決の問題</a>」を参照のこと。</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h2 id="content_1_2">２．『表記統合辞書』の形式</h2>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h3 id="content_1_3">2.1 物理形式</h3>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>文字コード Shift_JIS</li>
+
+
+<li>改行文字 CR/LF</li>
+
+
+<li>タブ区切りのテキスト形式。フィールドの内容は，次のとおり。
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li><strong>第1フィールド:</strong> IPADIC の「見出し語」</li>
+
+
+<li><strong>第2フィールド:</strong> IPADIC の「読み」</li>
+
+
+<li><strong>第3フィールド:</strong> IPADIC の「品詞名」</li>
+
+
+<li><strong>第4フィールド:</strong> IPADIC の「活用型」</li>
+
+
+<li><strong>第5フィールド:</strong> 当該の「見出し語」に対して，同語と判断された「見出し語」のリスト
+
+<ul class="list3" style="padding-left: 16px; margin-left: 16px;">
+<li>当該の辞書項目の見出しも含める。</li>
+
+
+<li>見出しと見出しの間は，「くみたてる/組み立てる/組立てる」のように，「/」で区切って列挙する。</li>
+
+
+<li>あくまでも，「<span style="color:red">当該の「見出し語」に対して同語</span>」ということであり，ここに列挙された語の間すべてに同語の関係があるわけではない。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h3 id="content_1_4">2.2 例</h3>
+
+<div class="ie5">
+ <table class="style_table" border="0" cellspacing="1">
+  
+<thead>
+<tr>
+<td class="style_td"></td>
+
+<td class="style_td">第1フィールド</td>
+
+<td class="style_td">第2フィールド</td>
+
+<td class="style_td">第3フィールド</td>
+
+<td class="style_td">第4フィールド</td>
+
+<td class="style_td">第5フィールド</td>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td class="style_td"><strong>例1</strong></td>
+
+<td class="style_td">編みもの</td>
+
+<td class="style_td">アミモノ</td>
+
+<td class="style_td">名詞-一般</td>
+
+<td class="style_td"></td>
+
+<td class="style_td">編みもの/編み物/編物</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例2</strong></td>
+
+<td class="style_td">編み物</td>
+
+<td class="style_td">アミモノ</td>
+
+<td class="style_td">名詞-一般</td>
+
+<td class="style_td"></td>
+
+<td class="style_td">編みもの/編み物/編物</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例3</strong></td>
+
+<td class="style_td">編物</td>
+
+<td class="style_td">アミモノ</td>
+
+<td class="style_td">名詞-一般</td>
+
+<td class="style_td"></td>
+
+<td class="style_td">編みもの/編み物/編物</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例4</strong></td>
+
+<td class="style_td">すばやい</td>
+
+<td class="style_td">スバヤイ</td>
+
+<td class="style_td">形容詞-自立</td>
+
+<td class="style_td">形容詞・アウオ段</td>
+
+<td class="style_td">すばやい/素早い</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例5</strong></td>
+
+<td class="style_td">素早い</td>
+
+<td class="style_td">スバヤイ</td>
+
+<td class="style_td">形容詞-自立</td>
+
+<td class="style_td">形容詞・アウオ段</td>
+
+<td class="style_td">すばやい/素早い</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例6</strong></td>
+
+<td class="style_td">厩舎</td>
+
+<td class="style_td">キュウシャ</td>
+
+<td class="style_td">名詞-一般</td>
+
+<td class="style_td"></td>
+
+<td class="style_td">きゅう舎/厩舎</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例7</strong></td>
+
+<td class="style_td">鳩舎</td>
+
+<td class="style_td">キュウシャ</td>
+
+<td class="style_td">名詞-一般</td>
+
+<td class="style_td"></td>
+
+<td class="style_td">きゅう舎/鳩舎</td>
+</tr>
+
+<tr>
+<td class="style_td"><strong>例8</strong></td>
+
+<td class="style_td">きゅう舎</td>
+
+<td class="style_td">キュウシャ</td>
+
+<td class="style_td">名詞-一般</td>
+
+<td class="style_td"></td>
+
+<td class="style_td">きゅう舎/厩舎/鳩舎</td>
+</tr>
+</tbody>
+
+ </table>
+</div>
+<br class="spacer" />
+
+<p><strong>例の見方</strong></p>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li><strong>例1</strong>: 「編みもの」は，「編み物」「編物」と同語である。</li>
+
+
+<li><strong>例8</strong>: 「きゅう舎」は，「厩舎」「鳩舎」と同語である。<span style="color:red">ただし，第5フィールドに列挙されている見出し語の間に同語の関係があるわけではないことに注意されたい。</span>したがって，例えば，「厩舎」と「鳩舎」が同語であることを意味してはいない。</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h2 id="content_1_5">３．統合のための規則<a class="anchor" id="rules" href="#rules" title="rules"></a></h2>
+
+
+<p>　IPADIC の辞書項目のうち，</p>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>品詞，活用型が同一</li>
+
+
+<li>読みが同一</li>
+</ul>
+
+
+<p>であり，次の規則に合致する辞書項目同士は，同語とする。ただし，品詞が「名詞-固有名詞」の辞書項目については，対象外とする。なお，以下の規則中に示した実例は，左から IPADIC の「読み」，「品詞」，同語と判断される「見出し(語)」の列である。</p>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>送り仮名による違い
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>送り仮名の有無
+
+<pre> ワリツケ          名詞-一般              割り付け/割付/割付け</pre>
+</li>
+
+
+<li>促音，撥音の有無
+
+<pre> スットンキョウ    名詞-形容動詞語幹　　　素っ頓狂/素頓狂
+ マンマル          名詞-形容動詞語幹      真ん丸/真丸</pre>
+</li>
+</ul>
+</li>
+
+
+<li>字種による違い
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>ひらがな，カタカナ，漢字
+
+<pre> イス              名詞-一般              いす/イス/椅子
+ イキイキ          副詞-助詞類接続        いきいき/生き生き
+ ヨビオコス        動詞-自立              よびおこす/呼び起こす</pre>
+</li>
+
+
+<li>一般名詞，および，数詞における漢数字，アラビア数字，ローマ数字
+
+<pre> ハチミリ          名詞-一般              ８ミリ/八ミリ
+ レイ              名詞-数                〇/○/零</pre>
+</li>
+
+
+<li>アルファベット表記とカタカナ表記
+
+<pre> エヌジー          名詞-一般              ＮＧ/エヌジー
+ ヘルツ            名詞-接尾-助数詞       ｈｚ/ヘルツ</pre>
+</li>
+
+
+<li>「ヵ」，「か」，「カ」，「ヶ」，「ケ」，「箇」，「個」
+
+<pre> カソン            名詞-接尾-助数詞       か村/カ村/ケ村/ヵ村/ヶ村</pre>
+</li>
+
+
+<li>アルファベットの大文字・小文字(２文字以上の形態素の場合)
+
+<pre> ペーハー          名詞-一般              ＰＨ/ｐＨ</pre>
+</li>
+
+
+<li>名詞-接尾-助数詞で同一の単位における字種
+
+<pre> トン              名詞-接尾-助数詞       ｔ/トン/噸</pre>
+</li>
+</ul>
+</li>
+
+
+<li>記号類による違い
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>読点・中黒の違い，読点・中黒の有無
+
+<pre> ショウチュウガクセイ    名詞-一般        小、中学生/小・中学生/小中学生	</pre>
+</li>
+
+
+<li>「々」，「ゝ」などの踊り字の種類，有無
+
+<pre> アラアラシイ      形容詞-自立            荒々しい/荒荒しい
+ イヨイヨ          副詞-一般              愈/愈々
+ シバシバ          副詞-一般              屡/屡々	</pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h2 id="content_1_6">４．未解決の問題<a class="anchor" id="problems" href="#problems" title="problems"></a></h2>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>カタカナ語の異表記(主な例)
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>長音の有無(例：「コンピュータ」，「コンピューター」)</li>
+
+
+<li>発音表記(例：「バイオリン」，「ヴァイオリン」)</li>
+</ul>
+</li>
+
+
+<li>漢字の旧字，異体字(例：暁/曉，虱/蝨)</li>
+
+
+<li>別語とするべきものの扱い
+
+<ul class="list2" style="padding-left: 16px; margin-left: 16px;">
+<li>特に，漢字表記に対するひらがな，カタカナ表記</li>
+
+
+<li>現状では，例えば，外来語の「メイド」(maid)と「明度」は，同語と認定されている。しかし，「明度」をカタカナ表記で「メイド」とすることは，通常ないと思われる。</li>
+</ul>
+</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h2 id="content_1_7">５．連絡先等</h2>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>『表記統合辞書』を利用した研究成果を公開された場合は，公開の事実（書誌情報等）を<a href="mailto:morphdic@kokken.go.jp">morphdic@kokken.go.jp</a>までお知らせいただければ幸いです。ご協力をお願い申し上げます。</li>
+
+
+<li>誤りのご指摘，ご意見などについても，上記アドレスまでお願いいたします。お返事はお約束いたしかねますが，今後の開発に役立てさせていただきます。</li>
+
+
+<li>最新情報は，独立行政法人 国立国語研究所の<a href="http://www.kokken.go.jp/lrc">「言語データベースとソフトウェア」Web ページ</a>で公開しています。</li>
+</ul>
+
+<div class="jumpmenu"><a href="#navigator">↑</a></div>
+<h2 id="content_1_8">謝辞</h2>
+
+
+<ul class="list1" style="padding-left: 16px; margin-left: 16px;">
+<li>IPADIC を開発された，奈良先端科学技術大学院大学 情報科学研究科 自然言語処理学講座（松本研究室）の関係者の方々に感謝いたします。</li>
+
+<li>本辞書の作成にあたり有益なコメントを下さった鳴門教育大学の茂木俊伸氏に感謝いたします。</li>
+<li>本辞書の作成に関わったアルバイタの方々に感謝いたします。</li>
+</ul>
+
+<br />
+<hr />
+<div class="footer">
+Copyright 2005　独立行政法人 国立国語研究所<br />
+このファイルは，<a href="http://pukiwiki.org">PukiWiki</a>を使って生成したものを修正して利用しています。
+</div>
+</div>
+</body></html>

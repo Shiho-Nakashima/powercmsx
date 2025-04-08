@@ -1,0 +1,53 @@
+{
+    "label"       : "ExternalPreview",
+    "id"          : "externalpreview",
+    "component"   : "ExternalPreview",
+    "version"     : "1.4",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "doc_link"    : "https://powercmsx.jp/about/external_preview.html",
+    "description" : "Provide preview function with UUID specified.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "cfg_space"   : 1,
+    "config_settings" : {
+        "externalpreview_cookie_domain" : "",
+        "externalpreview_attachment_exts" : ["pdf"]
+    },
+    "settings"    : {
+        "externalpreview_models" : "",
+        "externalpreview_url" : "permalink",
+        "externalpreview_default_expires" : 7,
+        "externalpreview_password" : "",
+        "externalpreview_pw_kind" : 1
+    },
+    "hooks": {
+        "externalpreview_post_init": {
+            "post_init" : {
+                "component" : "ExternalPreview",
+                "priority"  : 1,
+                "method" : "post_init"
+            }
+        }
+    },
+    "callbacks": {
+        "externalpreview_post_load_urlinfo": {
+            "urlinfo" : {
+                "post_load_object" : {
+                    "component" : "ExternalPreview",
+                    "priority"  : 10,
+                    "method" : "post_load_urlinfo"
+                }
+            }
+        },
+        "externalpreview_template_source_edit": {
+            "edit" : {
+                "template_source" : {
+                    "component" : "ExternalPreview",
+                    "priority"  : 10,
+                    "method" : "insert_externalpreview_link"
+                }
+            }
+        }
+    }
+}

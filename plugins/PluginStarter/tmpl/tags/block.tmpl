@@ -1,0 +1,29 @@
+        $local_vars = [];
+        $app = $ctx->app;
+        if (!$counter ) {
+            $params = [];
+            // Set loop variable to $params;
+            if ( empty( $params ) ) {
+                $repeat = $ctx->false();
+                return;
+            }
+            if (!empty( $local_vars ) ) {
+                $ctx->localize( $local_vars );
+            }
+            $ctx->local_params = $params;
+        }
+        if (!isset( $params ) ) $params = $ctx->local_params;
+        $ctx->set_loop_vars( $counter, $params );
+        if ( isset( $params[ $counter ] ) ) {
+            $repeat = true;
+            $var = isset( $args['var'] ) ? $args['var'] : '__value__';
+            $ctx->local_vars[ $var ] = $params[ $counter ];
+        } else {
+            unset( $params );
+            if (!empty( $local_vars ) ) {
+                $ctx->restore( $local_vars );
+            }
+            $repeat = $ctx->false();
+        }
+        return ( $counter > 1 && isset( $args['glue'] ) )
+            ? $args['glue'] . $content : $content;

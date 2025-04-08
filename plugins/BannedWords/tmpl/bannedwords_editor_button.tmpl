@@ -1,0 +1,48 @@
+<mt:var name="workspace_id" setvar="bannedwords_workspace_id">
+<mt:pluginsetting component="BannedWords" name="bannedwords_inheritance" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_use_system">
+<mt:if name="bannedwords_use_system">
+  <mt:setvar name="bannedwords_workspace_id" value="0">
+</mt:if>
+<mt:pluginsetting component="BannedWords" name="bannedwords_diff_selected" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_diff_selected">
+        ed.ui.registry.addButton('pt-proofread', {
+            icon: 'checkmark',
+            tooltip: '<mt:trans phrase="Proofread" component="BannedWords">',
+            onAction: function () {
+                let url = '<mt:var name="script_uri">?__mode=bannedwords_editor_proofread&_model=<mt:var name="model"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                let editor = tinymce.activeEditor;
+                <mt:if name="bannedwords_diff_selected">
+                let html = editor.selection.getContent();
+                <mt:else>
+                let html = editor.getContent();
+                </mt:if>
+                if (! html ) {
+                    <mt:if name="bannedwords_diff_selected">
+                    alert( '<mt:trans phrase="No text selected." component="BannedWords">' );
+                    <mt:else>
+                    alert( '<mt:trans phrase="No text input." component="BannedWords">' );
+                    </mt:if>
+                    return;
+                }
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });
+        ed.ui.registry.addButton('pt-kanjilevel', {
+            text: '漢',
+            tooltip: '<mt:trans phrase="Kanji level by grade" component="BannedWords">',
+            onAction: function () {
+                let url = '<mt:var name="script_uri">?__mode=bannedwords_editor_proofread&_model=<mt:var name="model"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                url += '&cmd=1';
+                if ( pressCmdKey ) {
+                    url += '&shift=1';
+                }
+                pressCmdKey = false;
+                let editor = tinymce.activeEditor;
+                window._active_ed = editor;
+                let html = editor.selection.getContent();
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="BannedWords">' );
+                    return;
+                }
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });

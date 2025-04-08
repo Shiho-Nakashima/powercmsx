@@ -1,0 +1,78 @@
+{
+    "embedvideo" : {
+        "description" : "Outputs a video tag to play the uploaded file.",
+        "attributes" : {
+            "id" : "When the number is specified, the file ID and the color that specifies the character string are the id code character strings of the video tag.",
+            "object_id" : "Specify the ID of the file. When no ID is specified, the file is determined from the current context.",
+            "url" : "Outputs the URL (or the URL if there is a caption-synthesized file, or the original URL if it doesn't) instead of the video tag.",
+            "original_url" : "Outputs the URL (original URL) instead of the video tag.",
+            "caption_url" : "Outputs the URL (URL of the caption-synthesized file) instead of the video tag.",
+            "vtt_url" : "Outputs the URL of the WebVTT file instead of the video tag.",
+            "chapter_url" : "Outputs the URL of the WebVTT file for chapters instead of the video tag.",
+            "vtt_compat_url" : "Outputs the URL of the WebVTT file with ruby expanded in parentheses instead of the video tag.",
+            "attributes" : "Specify the tag attribute of the video tag. If not specified, the Video tag in the plug-in settings will be used.",
+            "scale" : "Outputs the URL of the resized HLS file when it exists(ex.720xauto).",
+            "language" : "Specifies the srclang attribute value for the track tag.",
+            "script" : "Outputs the JavaScript code for the video player after the video tag.",
+            "controls" : "Shows the control. Specify 'always' to display the control all times.",
+            "unique_id" : "Specify the id attribute of the video element with a unique value (video-upload_file-ID of the uploaded file).",
+            "indent" : "Specifies the number of indented spaces for the output HTML code.",
+            "vtt" : "Even when there is a subtitle composite video, the original video + VTT is output as a tag.",
+            "original" : "Even when there is a subtitle composite video, the original video is output.",
+            "without_vtt" : "The track tag is not output even when there is a WebVTT file.",
+            "priority" : "If 'vtt' is specified for the attribute value, if there is a subtitle composite video and there is a WebVTT file, the original video + WebVTT tag will be output.",
+            "options": "JavaScript object string in second argument (player options) of videojs function.",
+            "theme": "Specifying 'pcmsx' gives the player the appearance of PowerCMS X original.",
+            "(other)" : "In addition, You can specify the attributes of the video tag."
+        }
+    },
+    "videojsscript" : {
+        "description" : "Outputs JavaScript code for the video player.",
+        "attributes" : {
+            "id" : "The id attribute value of the video tag. If omitted, it will be the value of the environment variable 'video_captions_video_id' (initial value: video-player).",
+            "link" : "Outputs tags that load CSS and JavaScript files for video players.(You can use video.js version 8 by specifying '8')",
+            "googlefont" : "By specifying it together with the link attribute, the link element that reads Google Font(Noto Sans JP) is output. You can also specify other fonts for the attribute values(eg M PLUS Rounded 1c).",
+            "indent" : "Specifies the number of indented spaces for the output HTML code.",
+            "mpeg_dash" : "Outputs tags that load JavaScript files for MPEG-DASH."
+        }
+    },
+    "ifembedvideo" : {
+        "description" : "Outputs the content if the video is in the current context. It is determined by whether the file is set in the relation column for the model 'File' or in the 'Video' or 'Video(Multiple)' type field."
+    },
+    "videothumbnail" : {
+        "description" : "Create a thumbnail of the video and output the URL. If you omit the size specification, an image of the size of the video will be created.",
+        "attributes" : {
+            "id" : "Specify the ID of the file. When no ID is specified, the file is determined from the current context.",
+            "extension" : "File extension(jpg, png or webp).",
+            "starttime" : "Specify the timing (seconds) of the video for which you want to create a thumbnail. You can specify up to the first decimal place.",
+            "withcaption" : "When there is a video after subtitle composition, create a thumbnail of that video.",
+            "width" : "The width of the thumbnail to generate.",
+            "height" : "The height of the thumbnail to generate.",
+            "square" : "If set to 1 (one) then the thumbnail generated will be square.",
+            "scale" : "The percentage by which to reduce or increase the size of the current image."
+        }
+    },
+    "videoplaylisturl" : {
+        "description" : "Outputs the URL of the video's HLS master playlist file.",
+        "attributes" : {
+            "id" : "Specify the ID of the file. When no ID is specified, the file is determined from the current context.",
+            "include_draft" : "Whether to include not published objects."
+        }
+    },
+    "videovtturl" : {
+        "description" : "Outputs the URL of the video's subtitles or chapter VTT file.",
+        "attributes" : {
+            "id" : "Specify the ID of the file. When no ID is specified, the file is determined from the current context.",
+            "type" : "VTT type(subtitles or chapters).",
+            "include_draft" : "Whether to include not published objects."
+        }
+    },
+    "videochapterurl" : {
+        "description" : "Outputs the URL of the video's chapter file.",
+        "attributes" : {
+            "id" : "Specify the ID of the file. When no ID is specified, the file is determined from the current context.",
+            "type" : "File extension(vtt or json).",
+            "include_draft" : "Whether to include not published objects."
+        }
+    }
+}

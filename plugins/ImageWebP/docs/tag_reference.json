@@ -1,0 +1,6 @@
+{
+    "modifier_convert2webp" : {
+        "description" : "Converts the image of the specified URL to WebP format and returns the URL.",
+        "attribute" : "Quality. Ranges from 0 (worst quality, smaller file) to 100 (best quality, biggest file). When '1' is specified, the specification is ignored."
+    }
+}

@@ -1,0 +1,19 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <details<mt:if name="value"> open<mt:setvar name="methods_text_exist" value="1" /></mt:if>>
+      <summary><mt:trans phrase="Write a method declaration (Advanced setting)" comopnent="ComponentBlocks"></summary>
+  <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+<textarea id="<mt:var name="__col_name__">" rows="<mt:if name="options"><mt:var name="options" escape><mt:else>5</mt:if>"
+ class="form-control watch-changed" name="<mt:var name="__col_name__">"
+ <mt:if name="readonly">readonly</mt:if>>
+<mt:var name="value"></textarea>
+    </details>
+    <mt:var name="_hint">
+  </div>
+</div>

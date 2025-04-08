@@ -1,0 +1,32 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:var name="has_alert" value="0">
+    <mt:if name="request.checked">
+      <div class="alert alert-info" id="axe-core-alert-info" tabindex="0"><mt:trans phrase="Re-Verification by axe-core is complete." component="AxeRunner"></div>
+      <mt:var name="has_alert" value="1">
+    <mt:elseif name="request.exclude">
+      <div class="alert alert-warning" id="axe-core-alert-info" tabindex="0"><mt:trans phrase="This URL is not subject to verification." component="AxeRunner"></div>
+      <mt:var name="has_alert" value="1">
+    <mt:elseif name="request.error">
+      <div class="alert alert-danger" id="axe-core-alert-info" tabindex="0"><mt:trans phrase="An error occurred while validating the URL." component="AxeRunner"></div>
+      <mt:var name="has_alert" value="1">
+    </mt:if>
+    <mt:if name="has_alert">
+    <script>
+    $('#axe-core-alert-info').focus();
+    </script>
+    </mt:if>
+    <mt:var name="axe_result_table">
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Success criteria and methods that axe-core does not cover require manual confirmation." component="AxeRunner">
+    </div>
+  </div>
+</div>

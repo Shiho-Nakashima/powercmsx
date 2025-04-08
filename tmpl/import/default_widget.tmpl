@@ -1,0 +1,28 @@
+<mt:setvarblock name="card_text">
+  <mt:isadmin><a href="<mt:var name="script_uri">?__mode=config"><mt:trans phrase="If you want to customize or delete this widget please click this link text."></a></mt:isadmin>
+</mt:setvarblock>
+<div class="card dashboard-widget dashboard-widget-main">
+<mt:unless name="workspace_id">
+  <div class="card-image-wrapper"><img class="card-img-top img-fluid" src="assets/brand/PowerCMSX.svg" alt="PowerCMS X"></div>
+  <div class="card-block">
+    <p class="card-text mb-1"><mt:trans phrase="Welcome to %s!" params="PowerCMS X"><mt:var name="card_text"></p>
+    <mt:isadmin>
+    <div class="text-center mt-1">
+      <a href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=workspace" class="btn btn-primary very-short btn-sm"><mt:trans phrase="New WorkSpace"></a>
+      <a href="<mt:var name="script_uri">?__mode=manage_theme" class="btn btn-primary very-short btn-sm"><mt:trans phrase="Manage Theme"></a>
+    </div>
+    </mt:isadmin>
+  </div>
+<mt:else>
+  <div class="card-image-wrapper"><span><mt:var name="workspace_name" escape></span></div>
+  <div class="card-block">
+    <p class="card-text mb-1"><mt:trans phrase="This Page is WorkSpace %s's Dashboard!" params="$workspace_name"> <mt:var name="card_text"></p>
+    <mt:isadmin workspace_id="$workspace_id">
+    <div class="text-center mt-1">
+      <a href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=workspace&amp;workspace_id=<mt:var name="workspace_id">&amp;id=<mt:var name="workspace_id">" class="btn btn-primary very-short btn-sm"><mt:trans phrase="WorkSpace Settings"></a>
+      <a href="<mt:var name="script_uri">?__mode=manage_theme&amp;workspace_id=<mt:var name="workspace_id">" class="btn btn-primary very-short btn-sm"><mt:trans phrase="Manage Theme"></a>
+    </div>
+    </mt:isadmin>
+  </div>
+</mt:unless>
+</div>

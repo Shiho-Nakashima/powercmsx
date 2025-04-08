@@ -1,0 +1,64 @@
+{
+    "label"       : "ExclusionControl",
+    "id"          : "exclusioncontrol",
+    "component"   : "ExclusionControl",
+    "version"     : "1.0",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "doc_link"    : "https://powercmsx.jp/about/exclusioncontrol.html",
+    "description" : "Provides exclusion control for edit screen.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "cfg_space"   : 1,
+    "settings"    : {
+        "exclusioncontrol_target_models" : "entry,page",
+        "exclusioncontrol_sess_expires"  : 90,
+        "exclusioncontrol_hierarchy" : false,
+        "exclusioncontrol_error" : "dashboard",
+        "exclusioncontrol_show_username" : true
+    },
+    "methods" : {
+        "exclusioncontrol_in_edit": {
+            "component"  : "ExclusionControl",
+            "method"     : "exclusioncontrol_in_edit"
+        }
+    },
+    "hooks": {
+        "exclusioncontrol_pre_view": {
+            "pre_view" : {
+                "component" : "ExclusionControl",
+                "priority"  : 1,
+                "method"    : "exclusioncontrol_pre_view"
+            }
+        }
+    },
+    "callbacks": {
+        "exclusioncontrol_template_source_dashboard": {
+            "dashboard" : {
+                "template_source" : {
+                    "component" : "ExclusionControl",
+                    "priority"  : 10,
+                    "method" : "set_dashboard_message"
+                }
+            }
+        },
+        "exclusioncontrol_template_output_edit": {
+            "edit" : {
+                "template_output" : {
+                    "component" : "ExclusionControl",
+                    "priority"  : 11,
+                    "method" : "insert_exclusioncontrol_script"
+                }
+            }
+        },
+        "exclusioncontrol_template_output_hierarchy": {
+            "hierarchy" : {
+                "template_output" : {
+                    "component" : "ExclusionControl",
+                    "priority"  : 11,
+                    "method" : "insert_exclusioncontrol_script"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,116 @@
+<div class="row form-group mt-4 mb-5" id="table-workspaces-wrapper">
+  <div class="col-lg-2">
+    <label for="<mt:var name="name" escape>">
+    <mt:var name="label" escape="1">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:var name="edit" split=":" setvar="edit_props">
+    <mt:var name="edit_props[1]" setvar="rel_model">
+    <mt:var name="edit_props[2]" setvar="rel_col">
+    <mt:var name="edit_props[3]" setvar="rel_type">
+    <mt:setvarblock name="prop_sort_by"><mt:var name="_model">_<mt:var name="__col_name__">_sort_by</mt:setvarblock>
+    <mt:setvarblock name="prop_sort_order"><mt:var name="_model">_<mt:var name="__col_name__">_sort_order</mt:setvarblock>
+    <mt:if tag="property" name="$prop_sort_by">
+      <mt:property name="$prop_sort_by" setvar="relation_sort_by">
+    <mt:else>
+      <mt:tablehascolumn column="order" model="$rel_model">
+        <mt:setvar name="relation_sort_by" value="order">
+      <mt:else>
+        <mt:setvar name="relation_sort_by" value="id">
+      </mt:tablehascolumn>
+    </mt:if>
+    <mt:if tag="property" name="$prop_sort_order">
+      <mt:property name="$prop_sort_order" setvar="relation_sort_order">
+    <mt:else>
+      <mt:setvar name="relation_sort_order" value="ascend">
+    </mt:if>
+    <mt:setvar name="has_thumbnail" value="">
+    <mt:ifhasthumbnail model="$rel_model">
+    <mt:ifusercan model="$rel_model" action="list" workspace_id="$workspace_id">
+      <mt:setvar name="has_thumbnail" value="1">
+    </mt:ifusercan>
+    </mt:ifhasthumbnail>
+    <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+    <ul id="<mt:var name="__col_name__">" class="relation-list">
+      <li <mt:if name="$__rel_name__">style="display:none" </mt:if>class="badge badge-edit-tmpl badge-default badge-relation" id="<mt:var name="__col_name__">-none">
+      <span><mt:trans phrase="(None selected)">&nbsp;</span>
+      </li>
+      <li style="margin-right: 4px" class="hidden badge badge-edit-tmpl badge-default badge-relation badge-draggable" id="<mt:var name="__col_name__">-tmpl">
+      <mt:if name="has_thumbnail">
+      <div class="assets-child-thumb" data-model="<mt:var name="rel_model" escape>"></div>
+      </mt:if>
+      <span><mt:trans phrase="Default"></span>
+      <mt:unless name="readonly">
+        <button type="button" class="_<mt:var name="__col_name__">-edit hidden btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+            data-toggle="modal" data-target="#modal"
+            data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=__value__<mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;direct_edit=1">
+          <i class="fa fa-pencil"></i>
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </mt:unless>
+      <input type="hidden" name="<mt:var name="__col_name__">[]" value="">
+      </li>
+    <mt:setvarblock name="selected_ids"><mt:loop name="$__rel_name__" glue=","><mt:var name="__value__"></mt:loop></mt:setvarblock>
+    <mt:loop name="$__rel_name__">
+      <li class="<mt:var name="__col_name__">-child badge badge-edit-tmpl badge-default badge-relation badge-draggable">
+      <mt:if name="has_thumbnail">
+      <div class="assets-child-thumb" data-model="<mt:var name="rel_model" escape>" data-id="<mt:var name="__value__" escape>" style="background-image:url('<mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__value__" escape>')"></div>
+      </mt:if>
+      <span>
+        <mt:getobjectname id="$__value__" type="$edit" escape setvar="_related_object">
+        <mt:var name="_related_object" trans="$translate">
+      </span>
+      <mt:unless name="readonly">
+      <mt:ifusercan action="edit" model="$rel_model" id="$__value__" workspace_id="$workspace_id">
+        <button type="button" class="_<mt:var name="__col_name__">-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+            data-toggle="modal" data-target="#modal"
+            data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__value__" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;direct_edit=1">
+          <i class="fa fa-pencil"></i>
+        </button>
+      </mt:ifusercan>
+      <button type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </mt:unless>
+      <input type="hidden" name="<mt:var name="__col_name__">[]" value="<mt:var name="__value__" escape>"></li>
+    </mt:loop>
+    </ul>
+    <mt:unless name="readonly">
+    <button type="button" id="add_<mt:var name="__col_name__">" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select..."></button>
+    <mt:ifusercan model="$rel_model" action="create" workspace_id="$workspace_id">
+      <button title="<mt:trans phrase="New...">" type="button" class="ml-0 btn btn-info btn-sm" aria-label="<mt:trans phrase="New...">"
+          data-toggle="modal" data-target="#modal"
+          data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;direct_edit=1">
+        <i class="fa fa-plus-circle"></i>
+      </button>
+    </mt:ifusercan>
+    <script>
+      var <mt:var name="__col_name__">_add_objects = [];
+      $('#<mt:var name="__col_name__">').sortable ( {
+          stop: function( evt, ui ) {
+              editContentChanged = true;
+          }
+      });
+      $('#<mt:var name="__col_name__">').ksortable();
+    </script>
+    </mt:unless>
+  <div class="mt-3">
+  <p class="text-muted">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Specify when limiting the spaces where this model is used." component="DisplayOptions">
+  </p>
+  </div>
+  </div>
+</div>
+<script>
+<mt:unless name="object_display_space">
+$(function() {
+    $('#table-workspaces-wrapper').hide();
+});
+</mt:unless>
+</script>

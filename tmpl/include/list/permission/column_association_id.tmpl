@@ -1,0 +1,10 @@
+<mt:ifusercan action="edit" model="$this_model" id="$id"><a <mt:if name="request.dialog_view">target="_blank"</mt:if> href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="this_model" escape>&amp;id=<mt:var name="id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:if name="model" eq="workspace">&amp;workspace_id=<mt:objectvar name="id"></mt:if><mt:if name="request.revision_select">&amp;edit_revision=1</mt:if>"></mt:ifusercan>
+  <mt:unless name="$_name">
+  <mt:setvarblock name="$_name">(<mt:trans phrase="null">)</mt:setvarblock>
+  </mt:unless>
+  <mt:if name="request.target" eq="urls">
+    <mt:var name="_model_primary" escape>
+  <mt:else>
+    <mt:var name="$_name" escape>
+  </mt:if>
+<mt:ifusercan action="edit" model="$this_model" id="$id"></a></mt:ifusercan>

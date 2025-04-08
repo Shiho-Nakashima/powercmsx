@@ -1,0 +1,430 @@
+<div class="row form-group mb-1">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_searchestraier_enabled" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="searchestraier_enabled" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_searchestraier_enabled" value="1" <mt:if name="setting_searchestraier_enabled">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Search enabled" component="SearchEstraier"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group mt-1 mb-1">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_searchestraier_cookie_by_scope" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="searchestraier_enabled" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_searchestraier_cookie_by_scope" value="1" <mt:if name="setting_searchestraier_cookie_by_scope">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Bake cookie scope specific" component="SearchEstraier"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group mt-1 mb-1">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_searchestraier_index_dinamic" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="searchestraier_index_dinamic" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_searchestraier_index_dinamic" value="1" <mt:if name="setting_searchestraier_index_dinamic">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Search Dynamic Contents" component="SearchEstraier"></span>
+    </label>
+    <div class="text-muted hint-block mt-1 mb-4 <mt:unless name="setting_searchestraier_index_dinamic">hidden</mt:unless>" id="dynamic-help-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="When dynamic content is to be searched, rebuilding is performed internally when content is updated." component="SearchEstraier"><br>
+&nbsp; &nbsp; <mt:trans phrase="It is recommended to change statically possible URL Maps for which dynamic and on demand are specified." component="SearchEstraier">
+    </div>
+  </div>
+</div>
+<script>
+$('#searchestraier_index_dinamic').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#dynamic-help-block').show();
+    } else {
+        $('#dynamic-help-block').hide();
+    }
+});
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_data_dir">
+      <mt:trans phrase="Path to index" component="SearchEstraier">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="searchestraier_data_dir" name="setting_searchestraier_data_dir" class="form-control" value="<mt:var name="setting_searchestraier_data_dir" escape>">
+  </div>
+</div>
+<mt:if name="index_mtime">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_data_dir">
+      <mt:trans phrase="Last Update">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <a href="<mt:var name="script_uri">?__mode=searchestraier_debug<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>" target="_blank"><mt:var name="index_mtime">
+    <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></a>
+  </div>
+</div>
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_archive_types">
+      <mt:trans phrase="Archive Types" component="SearchEstraier">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+<mt:var name="setting_searchestraier_archive_types" split="," setvar="searchestraier_archive_types">
+<mt:unless name="workspace_id">
+<mt:setvar name="workspace_id" value="0">
+</mt:unless>
+<mt:countgroupby include_draft="1" model="urlinfo" count="archive_type" group="archive_type" sort_by="count" sort_order="descend" workspace_ids="$workspace_id">
+  <mt:setvar name="models_output" value="1">
+  <mt:if name="count_group_by_archive_type">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="searchestraier_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="searchestraier_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+  </mt:if>
+</mt:countgroupby>
+  <mt:unless name="models_output">
+    <mt:setvar name="count_group_by_archive_type" value="entry">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="searchestraier_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="searchestraier_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+    <mt:setvar name="count_group_by_archive_type" value="page">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="searchestraier_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="searchestraier_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+  </mt:unless>
+  </div>
+</div>
+<input type="hidden" id="setting_searchestraier_archive_types" name="setting_searchestraier_archive_types" class="form-control" value="<mt:var name="setting_searchestraier_archive_types" escape>">
+<script>
+$('.group_by_archive_type').change(function(){
+    var archive_types = $('#setting_searchestraier_archive_types').val();
+    var this_type = $(this).val();
+    archive_types = archive_types.split(',');
+    var result = $.inArray( this_type, archive_types );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            archive_types.push( this_type );
+            $('#setting_searchestraier_archive_types').val(archive_types.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            archive_types.splice(result, 1); 
+            $('#setting_searchestraier_archive_types').val(archive_types.join(','));
+        }
+    }
+});
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_doc_title">
+      <mt:trans phrase="Document Title" component="SearchEstraier">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="searchestraier_doc_title"
+         name="setting_searchestraier_doc_title" value="auto" <mt:if name="setting_searchestraier_doc_title" eq="auto">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Automatic extraction" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_doc_title" value="heading" <mt:if name="setting_searchestraier_doc_title" eq="heading">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="First heading" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_doc_title" value="title" <mt:if name="setting_searchestraier_doc_title" eq="title">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Title element" component="SearchEstraier"></span>
+    </label>
+  <mt:ignore>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="searchestraier_doc_title"
+         name="setting_searchestraier_doc_title" value="archive" <mt:if name="setting_searchestraier_doc_title" eq="archive">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Archive title" component="SearchEstraier"></span>
+    </label>
+  </mt:ignore>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="searchestraier_doc_title"
+         name="setting_searchestraier_doc_title" value="xpath" <mt:if name="setting_searchestraier_doc_title" eq="xpath">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="XPath" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="searchestraier_doc_title"
+         name="setting_searchestraier_doc_title" value="css" <mt:if name="setting_searchestraier_doc_title" eq="css">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="CSS Selector" component="SearchEstraier"></span>
+    </label>
+    <p id="title-tags-hint" class="text-muted hint-block mb-0">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="You can use template tags. Branching is possible with the template variable 'archive_type' or 'model'." component="SearchEstraier">
+    </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_title_weight">
+      <mt:trans phrase="Title Weighting" component="SearchEstraier">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" min="0.0" max="1.0" step="0.1" id="searchestraier_title_weight" name="setting_searchestraier_title_weight" class="form-control" value="<mt:var name="setting_searchestraier_title_weight" escape>">
+  </div>
+</div>
+<div class="row form-group" id="searchestraier_title_condition-wrapper">
+   <div class="col-lg-2">
+    <label for="searchestraier_body_option" id="html_title_option-label">
+      <mt:trans phrase="Option">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="searchestraier_title_option" name="setting_searchestraier_title_option" class="form-control" value="<mt:var name="setting_searchestraier_title_option" escape>">
+    <p id="title_condition-hint" class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <span id="html_title_option-hint"><mt:trans phrase="Specify the XPath. ex. /html/body/h1" component="SearchEstraier"></span>
+    </p>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_extract">
+      <mt:trans phrase="Content Body" component="SearchEstraier">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="searchestraier_extract"
+         name="setting_searchestraier_extract" value="auto" <mt:if name="setting_searchestraier_extract" eq="auto">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Automatic extraction" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_extract" value="all" <mt:if name="setting_searchestraier_extract" eq="all">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="All content body" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_extract" value="start_end" <mt:if name="setting_searchestraier_extract" eq="start_end">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Specify start and end" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_extract" value="regex" <mt:if name="setting_searchestraier_extract" eq="regex">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Regular expression" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_extract" value="xpath" <mt:if name="setting_searchestraier_extract" eq="xpath">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="XPath" component="SearchEstraier"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_searchestraier_extract" value="css" <mt:if name="setting_searchestraier_extract" eq="css">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="CSS Selector" component="SearchEstraier"></span>
+    </label>
+    <p id="template-tags-hint" class="text-muted hint-block mb-0">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="You can use template tags. Branching is possible with the template variable 'archive_type' or 'model'." component="SearchEstraier">
+    </p>
+  </div>
+</div>
+<div class="row form-group mt-0" id="html_body_option-wrapper">
+  <div class="col-lg-2">
+    <label for="searchestraier_body_option" id="html_body_option-label">
+      <mt:trans phrase="Option">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="searchestraier_body_option" name="setting_searchestraier_body_option" class="form-control" value="<mt:var name="setting_searchestraier_body_option" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <span id="html_body_option-hint"></span>
+    </p>
+  </div>
+</div>
+<div class="row form-group mb-1">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+  <div class="form-inline">
+    <input type="hidden" name="setting_searchestraier_make_thumbnail" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_searchestraier_make_thumbnail" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_searchestraier_make_thumbnail" value="1" <mt:if name="setting_searchestraier_make_thumbnail">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Make Thumbnail" component="SearchEstraier"></span>
+    </label>
+    <label for="searchestraier_thumbnail_width" class="mr-2"><mt:trans phrase="Width" component="SearchEstraier"> : </label> <input id="searchestraier_thumbnail_width" type="number" class="form-control very-short" step="1" name="setting_searchestraier_thumbnail_width" value="<mt:var name="setting_searchestraier_thumbnail_width" escape>">
+    &nbsp; px
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="searchestraier_meta_index">
+      <mt:trans phrase="meta elements" component="SearchEstraier">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="searchestraier_meta_index" name="setting_searchestraier_meta_index" class="form-control" value="<mt:var name="setting_searchestraier_meta_index" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Enter the meta tag name attributes to be included in the index(Comma separated values)." component="SearchEstraier">
+    </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_searchestraier_notations">
+      <mt:trans phrase="Spelling Wobble" component="SearchEstraier">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea class="form-control" rows="6" id="setting_searchestraier_notations" name="setting_searchestraier_notations"><mt:var name="setting_searchestraier_notations" escape></textarea>
+    <div class="text-muted hint-block" id="bannedwords_hint">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Please enter the notation fluctuation patterns you want to unify by separating them with commas per line." component="SearchEstraier">
+      <mt:trans phrase="ex. ASAP,As Soon as Possible" component="SearchEstraier">
+    </div>
+  </div>
+</div>
+<script>
+$('input[name=setting_searchestraier_extract]').change(function(){
+    if ( $(this).val() == 'regex' ) {
+        $('#template-tags-hint').show();
+        $('#html_body_option-wrapper').show();
+        $('#searchestraier_body_option').focus();
+        $('#html_body_option-label').html( '<span><mt:trans phrase="Pattern" component="SearchEstraier"></span>' );
+        $('#html_body_option-hint').html( '<span><mt:trans phrase="Specify the range to be extracted with ()." component="SearchEstraier"></span>' );
+    } else if ( $(this).val() == 'start_end' ) {
+        $('#template-tags-hint').show();
+        $('#html_body_option-wrapper').show();
+        $('#searchestraier_body_option').focus();
+        $('#html_body_option-label').html( '<span><mt:trans phrase="Start and End" component="SearchEstraier"></span>' );
+        $('#html_body_option-hint').html( '<span><mt:trans phrase="Enter the start and end points separated by comma." component="SearchEstraier"></span>' );
+    } else if ( $(this).val() == 'xpath' ) {
+        $('#template-tags-hint').show();
+        $('#html_body_option-wrapper').show();
+        $('#searchestraier_body_option').focus();
+        $('#html_body_option-label').html( '<span><mt:trans phrase="XPath" component="SearchEstraier"></span>' );
+        $('#html_body_option-hint').html( '<span><mt:trans phrase="Specify the XPath. ex. /html/body/main" component="SearchEstraier"></span>' );
+    } else if ( $(this).val() == 'css' ) {
+        $('#template-tags-hint').show();
+        $('#html_body_option-wrapper').show();
+        $('#searchestraier_body_option').focus();
+        $('#html_body_option-label').html( '<span><mt:trans phrase="CSS Selector" component="SearchEstraier"></span>' );
+        $('#html_body_option-hint').html( '<span><mt:trans phrase="Specify CSS Selector. ex. main" component="SearchEstraier"></span>' );
+    } else {
+        $('#template-tags-hint').hide();
+        $('#html_body_option-wrapper').hide();
+    }
+});
+$('input[name=setting_searchestraier_doc_title]').change(function(){
+    if ( $(this).val() == 'xpath' ) {
+        $('#searchestraier_title_condition-wrapper').show();
+        $('#title_condition-hint').show();
+        $('#title-tags-hint').show();
+        $('#searchestraier_title_option').focus();
+        $('#html_title_option-label').html( '<span><mt:trans phrase="XPath" component="SearchEstraier"></span>' );
+        $('#html_title_option-hint').html( '<span><mt:trans phrase="Specify the XPath. ex. /html/body/h1" component="SearchEstraier"></span>' );
+    } else if ( $(this).val() == 'css' ) {
+        $('#searchestraier_title_condition-wrapper').show();
+        $('#title_condition-hint').show();
+        $('#title-tags-hint').show();
+        $('#searchestraier_title_option').focus();
+        $('#html_title_option-label').html( '<span><mt:trans phrase="CSS Selector" component="SearchEstraier"></span>' );
+        $('#html_title_option-hint').html( '<span><mt:trans phrase="Specify CSS Selector. ex. h1" component="SearchEstraier"></span>' );
+    } else {
+        $('#searchestraier_title_condition-wrapper').hide();
+        $('#title_condition-hint').hide();
+        $('#title-tags-hint').hide();
+    }
+});
+$(window).on('load', function() {
+    <mt:if name="setting_searchestraier_extract" eq="regex">
+    $('#template-tags-hint').show();
+    $('#html_body_option-wrapper').show();
+    $('#html_body_option-label').html( '<span><mt:trans phrase="Pattern" component="SearchEstraier"></span>' );
+    $('#html_body_option-hint').html( '<span><mt:trans phrase="Specify the range to be extracted with ()." component="SearchEstraier"></span>' );
+    <mt:elseif name="setting_searchestraier_extract" eq="start_end">
+    $('#template-tags-hint').show();
+    $('#html_body_option-wrapper').show();
+    $('#html_body_option-label').html( '<span><mt:trans phrase="Start and End" component="SearchEstraier"></span>' );
+    $('#html_body_option-hint').html( '<span><mt:trans phrase="Enter the start and end points separated by comma." component="SearchEstraier"></span>' );
+    <mt:elseif name="setting_searchestraier_extract" eq="xpath">
+    $('#template-tags-hint').show();
+    $('#html_body_option-wrapper').show();
+    $('#html_body_option-label').html( '<span><mt:trans phrase="XPath" component="SearchEstraier"></span>' );
+    $('#html_body_option-hint').html( '<span><mt:trans phrase="Specify the XPath. ex. /html/body/main" component="SearchEstraier"></span>' );
+    <mt:elseif name="setting_searchestraier_extract" eq="css">
+    $('#template-tags-hint').show();
+    $('#html_body_option-wrapper').show();
+    $('#html_body_option-label').html( '<span><mt:trans phrase="CSS Selector" component="SearchEstraier"></span>' );
+    $('#html_body_option-hint').html( '<span><mt:trans phrase="Specify CSS Selector. ex. h1" component="SearchEstraier"></span>' );
+    <mt:else>
+    $('#template-tags-hint').hide();
+    $('#html_body_option-wrapper').hide();
+    </mt:if>
+    <mt:if name="setting_searchestraier_doc_title" eq="xpath">
+    $('#searchestraier_title_condition-wrapper').show();
+    $('#title_condition-hint').show();
+    $('#title-tags-hint').show();
+    $('#html_title_option-label').html( '<span><mt:trans phrase="XPath" component="SearchEstraier"></span>' );
+    $('#html_title_option-hint').html( '<span><mt:trans phrase="Specify the XPath. ex. /html/body/h1" component="SearchEstraier"></span>' );
+    <mt:elseif name="setting_searchestraier_doc_title" eq="css">
+    $('#searchestraier_title_condition-wrapper').show();
+    $('#title_condition-hint').show();
+    $('#title-tags-hint').show();
+    $('#html_title_option-label').html( '<span><mt:trans phrase="CSS Selector" component="SearchEstraier"></span>' );
+    $('#html_title_option-hint').html( '<span><mt:trans phrase="Specify CSS Selector. ex. h1" component="SearchEstraier"></span>' );
+    <mt:else>
+    $('#searchestraier_title_condition-wrapper').hide();
+    $('#title_condition-hint').hide();
+    $('#title-tags-hint').hide();
+    </mt:if>
+});
+</script>

@@ -1,0 +1,15 @@
+<?php $this->get_cache=array (
+  'Provides reCAPTCHA function.' => 'reCAPTCHA 機能を提供します。',
+  'API endpoint' => 'API エンドポイント',
+  'API js url' => 'API JS URL',
+  'API site key' => 'API サイトキー',
+  'API secret key' => 'API シークレットキー',
+  'token hidden element name attribute' => 'トークン (hidden) の name 属性',
+  'Minimum score to validate reCAPTCHA' => 'reCAPTCHA を認証する最低スコア',
+  'reCAPTCHA' => 'reCAPTCHA',
+  'Use reCAPTCHA' => 'reCAPTCHA を利用する',
+  'There was an input error. Please contact us by e-mail.' => '入力エラーになりました。再度入力お願いいたします。',
+  'Member page' => '会員ページ',
+  'Enable reCAPTCHA when registering or editing membership' => '会員登録・編集時に reCAPTCHA を有効にする',
+  'The token issuing tag needs to be added to the member registration and editing pages.' => '会員登録・編集ページにトークン発行タグの追加が必要になります。',
+);

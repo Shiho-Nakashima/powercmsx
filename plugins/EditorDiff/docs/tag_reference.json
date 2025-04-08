@@ -1,0 +1,5 @@
+{
+    "ifobjecthasrevision": {
+        "description": "Outputs the contents of the previous revision when it exists."
+    }
+}

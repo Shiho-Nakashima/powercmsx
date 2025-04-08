@@ -1,0 +1,339 @@
+<mt:include file="include/header.tmpl">
+<div id="__loader-bg">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45">
+</div>
+<script>
+window.addEventListener('load', function(){
+    $('#__loader-bg').hide("fast");
+});
+</script>
+<mt:setvarblock name="field_required">
+  <i class="fa fa-asterisk required" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Required"></span>
+</mt:setvarblock>
+<form action="<mt:var name="script_uri">" method="POST" id="upgrade-form-main">
+<input type="hidden" name="__mode" value="upgrade">
+<input type="hidden" name="_type" value="install">
+
+<h2><mt:trans phrase="System Settings"></h2>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="appname">
+      <mt:trans phrase="App Name">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="appname" name="appname" class="form-control" value="<mt:if name="request._type" eq="install">PowerCMS X<mt:else><mt:var name="appname" escape></mt:if>">
+  </div>
+</div>
+
+<mt:unless name="activation_code">
+  <mt:property name="activation_code" setvar="activation_code">
+</mt:unless>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="activation_code">
+      <mt:trans phrase="Activation Code">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="activation_code" name="activation_code" class="form-control" value="<mt:var name="activation_code" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="copyright">
+      <mt:trans phrase="Copyright">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="copyright" name="copyright" class="form-control" value="<mt:if name="request._type" eq="install">PowerCMS X version &lt;mt:var name=&quot;app_version&quot;&gt; : Copyright &amp;copy; &lt;mt:date format=&quot;Y&quot;&gt; Alfasado Inc. All rights reserved.<mt:else><mt:var name="copyright" escape></mt:if>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="two_factor_auth">
+      <mt:trans phrase="Authentication">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input id="two_factor_auth" class="custom-control-input"
+     type="checkbox" name="two_factor_auth" value="1" <mt:if name="two_factor_auth">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape><mt:trans phrase="Use Two-factor Authentication"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  <mt:trans phrase="User Lock Out">
+  </div>
+  <div class="col-lg-4 form-inline lockout-col">
+    <label for="lockout_limit">
+      <mt:trans phrase="Lock Out Limit"> : 
+      <input type="number" id="lockout_limit" name="lockout_limit" class="form-control" value="<mt:if name="lockout_limit" ne=""><mt:var name="lockout_limit" escape><mt:else>3</mt:if>">
+    </label>
+  </div>
+  <div class="col-lg-6 form-inline lockout-col">
+    <label for="lockout_interval">
+      <mt:trans phrase="Lock Out Interval(Seconds)"> : 
+      <input type="number" id="lockout_interval" name="lockout_interval" class="form-control" value="<mt:if name="lockout_interval"><mt:var name="lockout_interval" escape><mt:else>600</mt:if>">
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  <mt:trans phrase="IP Lock Out">
+  </div>
+  <div class="col-lg-4 form-inline lockout-col">
+    <label for="ip_lockout_limit">
+      <mt:trans phrase="Lock Out Limit"> : 
+      <input type="number" id="ip_lockout_limit" name="ip_lockout_limit" class="form-control" value="<mt:if name="ip_lockout_limit" ne=""><mt:var name="ip_lockout_limit" escape><mt:else>5</mt:if>">
+    </label>
+  </div>
+  <div class="col-lg-6 form-inline lockout-col">
+    <label for="ip_lockout_interval">
+      <mt:trans phrase="Lock Out Interval(Seconds)"> : 
+      <input type="number" id="ip_lockout_interval" name="ip_lockout_interval" class="form-control" value="<mt:if name="ip_lockout_interval"><mt:var name="ip_lockout_interval" escape><mt:else>600</mt:if>">
+    </label>
+  </div>
+</div>
+
+<mt:unless name="system_email">
+  <mt:property name="system_email" setvar="system_email">
+</mt:unless>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="system_email">
+      <mt:trans phrase="System Email">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="system_email" name="system_email" class="form-control" value="<mt:var name="system_email" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="tmpl_markup">
+      <mt:trans phrase="Template Markup">
+    </label>
+  </div>
+  <div class="col-lg-3">
+    <select class="form-control custom-select" id="tmpl_markup" name="tmpl_markup">
+      <option value="mt" <mt:if name="tmpl_markup" eq="mt">selected</mt:if>><mt:trans phrase="PowerCMS Compatible"></option>
+      <mt:ignore><option value="smarty" <mt:if name="tmpl_markup" eq="smarty">selected</mt:if>><mt:trans phrase="Smarty Compatible"></option></mt:ignore>
+    </select>
+  </div>
+</div>
+
+<mt:unless name="site_url">
+  <mt:property name="site_url" setvar="site_url">
+</mt:unless>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="site_url">
+      <mt:trans phrase="Site URL">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="site_url" name="site_url" class="form-control" value="<mt:var name="site_url" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="site_path">
+      <mt:trans phrase="Site Path">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <mt:property name="site_base_path" setvar="site_base_path">
+  <mt:if name="site_base_path">
+    <div class="col-lg-10 form-inline">
+      <mt:var name="site_base_path" preg_quote="/" setvar="search_path">
+      <mt:setvar name="search_path" value="/" append="1">
+      <mt:setvar name="search_path" value="/^" prepend="1">
+      &nbsp; &nbsp; &nbsp; <mt:var name="site_base_path" rtrim="/" rtrim="\\" escape>/<input id="site_path" type="text" style="width: 200px;" class="form-control watch-changed" name="site_path" value="<mt:var name="site_path" regex_replace="'$search_path',''" ltrim="/" ltrim="\\" escape>">
+    </div>
+  <mt:else>
+  <div class="col-lg-10">
+    <input type="text" id="site_path" name="site_path" class="form-control" value="<mt:var name="site_path" escape>">
+  </div>
+  </mt:if>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="extra_path">
+      <mt:trans phrase="Upload Path">
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <input type="text" id="extra_path" name="extra_path" class="form-control" value="<mt:var name="extra_path" escape>">
+  </div>
+  <div class="col-lg-8 mt-2">
+    <label class="custom-control custom-checkbox">
+    <input id="asset_publish" class="custom-control-input"
+     type="checkbox" name="asset_publish" value="1" checked>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape><mt:trans phrase="Output the File"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="sys_language">
+      <mt:trans phrase="Language">
+    </label>
+  </div>
+  <div class="col-lg-10 col-2">
+    <mt:loop name="languages">
+    <mt:if name="__first__">
+    <select class="form-control short custom-select" id="sys_language" name="sys_language">
+    </mt:if>
+      <option value="<mt:var name="__value__">" <mt:if name="sys_language" eq="$__value__">selected</mt:if>><mt:var name="__value__"></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+    </mt:loop>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="barcolor">
+      <mt:trans phrase="Bar Color">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="color" id="barcolor" name="barcolor" class="watch-changed form-control color-picker" value="#000000">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="bartextcolor">
+      <mt:trans phrase="Bar TextColor">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="color" id="bartextcolor" name="bartextcolor" class="watch-changed form-control color-picker" value="#ffffff">
+  </div>
+</div>
+
+<hr />
+
+<h2><mt:trans phrase="User Settings"></h2>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="name">
+      <mt:trans phrase="Username">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="name" name="name" class="form-control" value="<mt:var name="name" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="password">
+      <mt:trans phrase="Password">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" id="password" name="password" class="form-control" value="">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="password-verify">
+      <mt:trans phrase="Password (Confirm)">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" id="password-verify" name="password-verify" class="form-control" value="">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="email">
+      <mt:trans phrase="Email">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="email" name="email" class="form-control" value="<mt:var name="email" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="nickname">
+      <mt:trans phrase="Display Name">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="nickname" name="nickname" class="form-control" value="<mt:var name="nickname" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="language">
+      <mt:trans phrase="Language">
+    </label>
+  </div>
+  <div class="col-lg-10 col-2">
+    <mt:loop name="languages">
+    <mt:if name="__first__">
+    <select class="form-control short custom-select" id="language" name="language">
+    </mt:if>
+      <option value="<mt:var name="__value__">" <mt:if name="language" eq="$__value__">selected</mt:if>><mt:var name="__value__"></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+    </mt:loop>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-12">
+  <button id="__upgrade" type="button" class="btn btn-primary"><mt:trans phrase="Install"></button>
+  </div>
+</div>
+</form>
+
+<script>
+$('#__upgrade').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to continue Install?">' ) ) {
+        return;
+    }
+    $(this).attr('disabled', true);
+    $('#__loader-bg').show();
+    $('#upgrade-form-main').submit();
+    return false;
+});
+</script>
+
+<mt:include file="include/footer.tmpl">

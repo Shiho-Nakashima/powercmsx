@@ -1,0 +1,84 @@
+{
+    "label"       : "HTMLImporter",
+    "id"          : "htmlimporter",
+    "component"   : "HTMLImporter",
+    "version"     : "2.1",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "doc_link"    : "https://powercmsx.jp/about/html_importer_plugin.html",
+    "description" : "Provide data migration function from HTML by specifying URLs or upload ZipArchive.",
+    "config_settings" : {
+        "htmlimporter_timeout" : 15,
+        "htmlimporter_setting_by_scope" : false,
+        "htmlimporter_setting_by_user" : false,
+        "htmlimporter_show_import_from" : false,
+        "htmlimporter_href_to_relative" : true,
+        "htmlimporter_use_curl" : true,
+        "htmlimporter_force_basename" : false,
+        "htmlimporter_print_separator_error" : false,
+        "htmlimporter_settings_paths" : [],
+        "html_importer_report_encoding" : ""
+    },
+    "methods" : {
+        "html_importer_send_urls": {
+            "component"  : "HTMLImporter",
+            "method"     : "html_importer_send_urls"
+        },
+        "html_importer_get_settings": {
+            "component"  : "HTMLImporter",
+            "method"     : "html_importer_get_settings"
+        },
+        "html_importer_apply_settings": {
+            "component"  : "HTMLImporter",
+            "method"     : "html_importer_apply_settings"
+        },
+        "html_importer_save_settings": {
+            "component"  : "HTMLImporter",
+            "method"     : "html_importer_save_settings"
+        },
+        "html_importer_export_settings": {
+            "component"  : "HTMLImporter",
+            "method"     : "html_importer_export_settings"
+        },
+        "html_importer_report": {
+            "component"  : "HTMLImporter",
+            "method"     : "html_importer_report"
+        }
+    },
+    "hooks": {
+        "htmlimporter_post_init": {
+            "post_init" : {
+                "component" : "HTMLImporter",
+                "priority"  : 1,
+                "method" : "htmlimporter_post_init"
+            }
+        }
+    },
+    "callbacks": {
+        "htmlimporter_pre_url_get": {
+            "htmlimporter" : {
+                "pre_url_get" : {
+                    "component" : "HTMLImporter",
+                    "priority"  : 1,
+                    "method" : "pre_url_get"
+                }
+            }
+        }
+    },
+    "import_format": {
+        "html": {
+            "component"  : "HTMLImporter",
+            "label"      : "HTML",
+            "method"     : "import_html",
+            "models"     : ["entry", "page"],
+            "order"      : 50,
+            "options"    : ["import_type", "auth_user", "auth_pwd", "html_digest_auth", "text_format",
+                            "title_perttern", "title_option", "meta_description", "meta_keywords",
+                            "meta_tags", "meta_ogimage", "body_perttern", "body_option", "field_settings",
+                            "overwrite_same", "import_assets", "create_categories", "asset_exts",
+                            "minifying_html", "remove_title", "create_report", "identifier",
+                            "setting_selector", "preprocessing", "preprocessing_replace",
+                            "js_to_asset", "css_to_asset"]
+        }
+    }
+}

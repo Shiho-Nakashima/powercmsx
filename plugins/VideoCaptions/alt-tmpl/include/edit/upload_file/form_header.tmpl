@@ -1,0 +1,20 @@
+<mt:if name="request.baked">
+<div class="alert alert-success hidden mt-3 text-center" id="captionCreatedAlert2" role="alert" tabindex="0">
+  <button onclick="$('#captionCreatedAlert2').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <mt:trans phrase="The captions has successfully created. Select whether to Determine or Discard." component="VideoCaptions">
+  <mt:ifuseragent like="Chrome">
+  <button id="play-saved-video" class="btn btn-sm btn-secondary" type="button">
+     <mt:trans phrase="Play the Video" component="VideoCaptions">
+  </button>
+<script>
+$('#play-saved-video').click(function(){
+    if (window.videoCaptions.player) {
+        window.videoCaptions.player.play();
+    }
+});
+</script>
+  </mt:ifuseragent>
+</div>
+</mt:if>

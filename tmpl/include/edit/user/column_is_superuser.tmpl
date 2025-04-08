@@ -1,0 +1,50 @@
+<mt:isadmin>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:var name="label" escape>
+    <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="<mt:var name="__col_name__">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">" class="custom-control-input watch-changed"
+    <mt:if name="readonly">onclick="return false;"</mt:if>
+     type="checkbox" name="<mt:var name="__col_name__">" value="1" <mt:if name="value">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape></span>
+    </label>
+    <mt:if name="request.id" eq="$user_id">
+    <input type="hidden" name="debug" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="debug" class="custom-control-input watch-changed"
+     type="checkbox" name="debug" value="1" <mt:if name="object_debug">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Debug Mode"></span>
+    </label>
+    <input type="hidden" name="develop" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="debug" class="custom-control-input watch-changed"
+     type="checkbox" name="develop" value="1" <mt:if name="object_develop">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Developer Mode"></span>
+    </label>
+    </mt:if>
+  </div>
+</div>
+<mt:if name="request.id" eq="$user_id">
+<mt:if name="value">
+<script>
+$('#<mt:var name="__col_name__">').change(function(){
+    if (! $(this).prop('checked') ) {
+        if (! confirm( '<mt:trans phrase="If you uncheck the administrator, you will not be able to set yourself as an administrator. Do you want to continue?">' ) ) {
+            $(this).prop('checked', false );
+        }
+    }
+});
+</script>
+</mt:if>
+</mt:if>
+</mt:isadmin>

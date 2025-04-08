@@ -1,0 +1,129 @@
+        ed.ui.registry.addButton('pt-translate', {
+            icon: 'translate',
+            tooltip: '<mt:trans phrase="Translate" component="MachineTranslator">',
+            onAction: function () {
+                url = '<mt:var name="script_uri">?__mode=machinetranslator_translate&_type=insert_editor<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                let innerHTML = editor.selection.getNode().innerHTML;
+                let outerHTML = editor.selection.getNode().outerHTML;
+                let selectEqual = ( html === innerHTML || html === outerHTML );
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="MachineTranslator">' );
+                    return;
+                }
+                let agreement = 0;
+                <mt:if tag="property" name="confirm_web_service" eq="1">
+                if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to Microsoft Translator?" component="MachineTranslator">' ) ) {
+                    return;
+                }
+                <mt:elseif tag="property" name="confirm_web_service" eq="2">
+                <mt:getcookie name="pt-mt-agreement" setvar="pt_mt_agreement">
+                <mt:unless name="pt_mt_agreement">
+                if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to Microsoft Translator?" component="MachineTranslator">' ) ) {
+                    return;
+                }
+                </mt:unless>
+                agreement = 1;
+                </mt:if>
+                let data = {
+                    text: html,
+                    magic_token: '<mt:var name="magic_token">',
+                    agreement: agreement
+                };
+                if ( html.length > 1000 ) {
+                    $('#__loader-bg').show();
+                }
+                let translated = false;
+                <mt:ifcomponent component="SimplifiedJapanese">
+                  <mt:property name="machinetranslator_japanese_check" setvar="japanese_check">
+                  <mt:if name="japanese_check">
+                let cookie_name = 'pt-mt-user-from-<mt:if name="workspace_id"><mt:var name="workspace_id"><mt:else>0</mt:if>';
+                let languageCookie = $.cookie( cookie_name );
+                let end_count = ( html.match( /。/g ) || [] ).length;
+                if ( ( end_count < 2 || selectEqual ) && ( $.cookie( cookie_name ) == 'ja' || ! languageCookie ) ) {
+                    translated = true;
+                    let detect_url = '<mt:var name="script_uri">?__mode=machinetranslator_detect_language&<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                    $.ajax({
+                        url: detect_url,
+                        type: 'POST',
+                        data:JSON.stringify(data),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        timeout: 10000,
+                        success: function( responce ){
+                            if ( responce.message ) {
+                                alert( responce.message );
+                                $('#__loader-bg').hide();
+                                return;
+                            } else {
+                                if ( responce.language == 'ja' ) {
+                                    url = '<mt:var name="script_uri">?__mode=machinetranslator_japanese_check&_type=insert_editor<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                                    $('#modal').modal().find('iframe').attr( 'src', url );
+                                    return;
+                                } else {
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        data:JSON.stringify(data),
+                                        contentType: 'application/json',
+                                        dataType: 'json',
+                                        timeout: 10000,
+                                        success: function( responce ){
+                                            if ( responce.message ) {
+                                                alert( responce.message );
+                                                $('#__loader-bg').hide();
+                                            } else {
+                                                editor.insertContent( responce.result );
+                                                if ( selectEqual ) {
+                                                    editor.selection.select( editor.selection.getNode() );
+                                                }
+                                                $('#__loader-bg').hide();
+                                            }
+                                        },
+                                        error: function(){
+                                            $('#__loader-bg').hide();
+                                            alert( '<mt:trans phrase="An error occurred while translate content." component="MachineTranslator">' );
+                                        }
+                                    });
+                                }
+                                $('#__loader-bg').hide();
+                            }
+                        },
+                        error: function(){
+                            $('#__loader-bg').hide();
+                            alert( '<mt:trans phrase="An error occurred while translate content." component="MachineTranslator">' );
+                            return;
+                        }
+                    });
+                }
+                  </mt:if>
+                </mt:ifcomponent>
+                if (! translated ) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data:JSON.stringify(data),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        timeout: 10000,
+                        success: function( responce ){
+                            if ( responce.message ) {
+                                alert( responce.message );
+                                $('#__loader-bg').hide();
+                            } else {
+                                editor.insertContent( responce.result );
+                                if ( selectEqual ) {
+                                    editor.selection.select( editor.selection.getNode() );
+                                }
+                                $('#__loader-bg').hide();
+                            }
+                        },
+                        error: function(){
+                            $('#__loader-bg').hide();
+                            alert( '<mt:trans phrase="An error occurred while translate content." component="MachineTranslator">' );
+                        }
+                    });
+                }
+            }
+        });

@@ -1,0 +1,14 @@
+<?php $this->get_cache=array (
+  'Get objects with hierarchy as an array.' => 'オブジェクトを階層付きの配列として取得します。',
+  'Get menu items with hierarchy as an array. When id, name, basename are not specified, get all menu items.' => 'メニュー項目を階層付きの配列として取得します。id, name, basenameが指定のない時、すべてのメニューの項目を取得します。',
+  'Column \'basename\' of the Menu.' => 'メニューのベースネーム',
+  'Model name.' => 'モデル名',
+  'Search object by column value.' => 'カラムの値でオブジェクトを検索',
+  'Get related objects in results.' => '結果に関連オブジェクトを含む',
+  'Column name for SELECT(Comma separated values).' => 'SELECT文の対象とするカラム名(カンマ区切り)',
+  'Column \'name\' of the Menu.' => 'メニューの名称',
+  'The Menu\'s \'id\'.' => 'メニューのID',
+  'The Menu\'s \'workspace_id\'.' => 'メニューが属するスペースのID',
+  'When a value is specified, SELECT the system scope Menu.' => '指定した場合システムスコープのメニューから取得する',
+  'If object has column \'status\', Whether to include not published objects.' => 'オブジェクトが\'statu\'カラムを持つ時、公開されていない下書きなどのオブジェクトを含む',
+);

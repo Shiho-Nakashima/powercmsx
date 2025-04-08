@@ -1,0 +1,16 @@
+<mt:if name="iframe">
+<mt:include file="include/header_iframe.tmpl">
+<mt:include file="include/footer_iframe.tmpl">
+<mt:elseif name="popup">
+<mt:include file="include/popup_header.tmpl">
+<mt:include file="include/popup_footer.tmpl">
+<mt:elseif name="dialog">
+<mt:include file="include/dialog_header.tmpl">
+<mt:include file="include/dialog_footer.tmpl">
+<mt:else>
+<mt:if name="popup">
+<mt:else>
+<mt:include file="include/header.tmpl">
+<mt:include file="include/footer.tmpl">
+</mt:if>
+</mt:if>

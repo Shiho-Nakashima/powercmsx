@@ -1,0 +1,10 @@
+<mt:for strip_linefeeds><mt:pluginsetting component="AccessAnalytics" name="accessanalytics_activity_limit" workspace_id="$workspace_id" setvar="activity_limit">
+<mt:if name="request.workspace_id">
+<mt:var name="request.workspace_id" setvar="include_workspaces">
+<mt:else>
+<mt:setvar name="include_workspaces" value="all">
+</mt:if>
+<mt:setvarblock name="activity_period">last<mt:var name="activity_limit">days</mt:if></mt:setvarblock>
+<mt:var name="request.year_and_month" setvar="ts_start">
+<mt:var name="ts_start" format_ts="Ymt235959" setvar="ts_end">
+</mt:for><mt:if name="ts_end"><mt:rankedobjects include_draft="1" csv="Shift_JIS" period="$ts_start" period_end="$ts_end" include_workspaces="$include_workspaces"></mt:rankedobjects><mt:else><mt:rankedobjects include_draft="1" csv="Shift_JIS" period="$activity_period" include_workspaces="$include_workspaces"></mt:rankedobjects></mt:if>

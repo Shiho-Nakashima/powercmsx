@@ -1,0 +1,34 @@
+<mt:var name="workspace_id" setvar="bannedwords_workspace_id">
+<mt:pluginsetting component="BannedWords" name="bannedwords_inheritance" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_use_system">
+<mt:if name="bannedwords_use_system">
+  <mt:setvar name="bannedwords_workspace_id" value="0">
+</mt:if>
+<mt:pluginsetting component="BannedWords" name="bannedwords_diff_selected" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_diff_selected">
+<button type="button" style="padding-top:4px" id="_proofread-textarea" class="btn btn-sm btn-secondary editor-btn" title="<mt:trans phrase="Proofread" component="BannedWords">"><i class="fa fa-check" aria-hidden="true"></i></button>
+<script>
+$('#_proofread-textarea').click(function(){
+  <mt:if name="bannedwords_diff_selected">
+    let target = document.getElementById('<mt:var name="__col_name__">');
+    let pos = getAreaRange(target);
+    let val = target.value;
+    let start = pos.start;
+    let end = pos.end;
+    let html = val.slice(start, end);
+  <mt:else>
+    let html = $('#<mt:var name="__col_name__">').val();
+  </mt:if>
+    if (! html ) {
+        <mt:if name="bannedwords_diff_selected">
+        alert( '<mt:trans phrase="No text selected." component="BannedWords">' );
+        <mt:else>
+        alert( '<mt:trans phrase="No text input." component="BannedWords">' );
+        </mt:if>
+        return;
+    }
+    let url = '<mt:var name="script_uri">?__mode=bannedwords_editor_proofread&_type=textarea&column=<mt:var name="__col_name__">&_model=<mt:var name="model"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+    <mt:if name="bannedwords_diff_selected">
+    url += '&start=' + start + '&end=' + end;
+    </mt:if>
+    $('#modal').modal().find('iframe').attr( 'src', url );
+});
+</script>

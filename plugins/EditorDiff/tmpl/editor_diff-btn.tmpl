@@ -1,0 +1,36 @@
+<mt:ifobjecthasrevision>
+<button type="button" style="padding-top:4px" id="_diff-<mt:var name="__col_name__">" class="btn btn-sm btn-secondary editor-btn" title="<mt:trans phrase="Show Diff" component="EditorDiff">"><img src="<mt:if name="editordiff_assets_base"><mt:var name="editordiff_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/EditorDiff/assets/img</mt:if>/editor_diff.webp" alt="<mt:trans phrase="Show Diff" component="EditorDiff">" style="height:15px;width:15px;"></button>
+<script>
+$('#_diff-<mt:var name="__col_name__">').click(function(e){
+    let html = $('#<mt:var name="__col_name__">').val();
+    if (! html ) {
+        alert( '<mt:trans phrase="No content in editor." component="EditorDiff">' );
+        return;
+    }
+    let add_param = '';
+    <mt:if name="request.edit_revision">
+    if ( e.shiftKey ) {
+        add_param = '&_from_master=1';
+    }
+    </mt:if>
+    let url = '<mt:var name="script_uri">?__mode=editor_diff&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>&<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>&column=<mt:var name="__col_name__">' + add_param;
+    $('#modal').modal().find('iframe').attr( 'src', url );
+});
+</script>
+<mt:else>
+<mt:if name="request.edit_revision">
+<button type="button" style="padding-top:4px" id="_diff-<mt:var name="__col_name__">" class="btn btn-sm btn-secondary editor-btn" title="<mt:trans phrase="Diff from the Master" component="EditorDiff">"><img src="<mt:if name="editordiff_assets_base"><mt:var name="editordiff_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/EditorDiff/assets/img</mt:if>/editor_diff.webp" alt="<mt:trans phrase="Diff from the Master" component="EditorDiff">" style="height:15px;width:15px;"></button>
+<script>
+$('#_diff-<mt:var name="__col_name__">').click(function(){
+    let html = $('#<mt:var name="__col_name__">').val();
+    if (! html ) {
+        alert( '<mt:trans phrase="No content in editor." component="EditorDiff">' );
+        return;
+    }
+    let add_param = '&_from_master=1';
+    let url = '<mt:var name="script_uri">?__mode=editor_diff&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>&<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>&column=<mt:var name="__col_name__">' + add_param;
+    $('#modal').modal().find('iframe').attr( 'src', url );
+});
+</script>
+</mt:if>
+</mt:ifobjecthasrevision>

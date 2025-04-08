@@ -1,0 +1,144 @@
+<mt:if name="request.workspace_id">
+  <mt:var name="workspace_link_url" setvar="has_link_url">
+<mt:else>
+  <mt:var name="link_url" setvar="has_link_url">
+</mt:if>
+<mt:if name="has_link_url">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_externalpreview_url">
+      <mt:trans phrase="Base URL" component="ExternalPreview">
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <label class="custom-control custom-radio">
+    <input class="custom-control-input" type="radio" <mt:if name="setting_externalpreview_url" eq="permalink">checked</mt:if> name="setting_externalpreview_url" value="permalink">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:if name="workspace_id"><mt:var name="workspace_url"><mt:else><mt:var name="site_url"></mt:if></span>
+  </label>
+  <label class="custom-control custom-radio">
+    <input class="custom-control-input" type="radio" <mt:if name="setting_externalpreview_url" eq="view_link">checked</mt:if> name="setting_externalpreview_url" value="view_link">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:var name="has_link_url"></span>
+  </label>
+  </div>
+</div>
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_externalpreview_models">
+      <mt:trans phrase="Target Models" component="ExternalPreview">
+    </label>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_externalpreview_models" escape split="," setvar="externalpreview_target">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+    <mt:tables type="$menu_type">
+      <mt:ifmodelhasurlmapping workspace_id="$workspace_id" model="$name">
+        <mt:if name="has_uuid">
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed externalpreview_target_model"
+            <mt:ifinarray array="externalpreview_target" value="$name">checked</mt:ifinarray>
+            type="checkbox" name="externalpreview_target_model" value="<mt:var name="name">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:var name="label" translate></span>
+          </label>
+        </mt:if>
+      </mt:ifmodelhasurlmapping>
+    </mt:tables>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="ExternalPreview"></span>
+    </div>
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="In order to use this function, UUID is set in the model, and URL Map needs to be present." component="ExternalPreview">
+    </p>
+    </mt:unless>
+    <input type="hidden" id="setting_externalpreview_models" name="setting_externalpreview_models" class="form-control" value="<mt:var name="setting_externalpreview_models" escape>">
+<script>
+$('.externalpreview_target_model').change(function(){
+    var all_models = $('#setting_externalpreview_models').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_externalpreview_models').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_externalpreview_models').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<mt:if name="count_target">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_externalpreview_default_expires">
+      <mt:trans phrase="Default Expires" component="ExternalPreview">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_externalpreview_default_expires" name="setting_externalpreview_default_expires" class="form-control short control-inline" value="<mt:var name="setting_externalpreview_default_expires" escape>">
+    <mt:trans phrase="day(s) after" component="ExternalPreview">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_externalpreview_pw_kind">
+      <mt:trans phrase="Password">
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <label class="custom-control custom-radio">
+    <input class="custom-control-input" id="setting_externalpreview_pw_kind" type="radio" <mt:unless name="setting_externalpreview_pw_kind"">checked</mt:unless> name="setting_externalpreview_pw_kind" value="0">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="None"></span>
+  </label>
+  <label class="custom-control custom-radio">
+    <input class="custom-control-input" type="radio" <mt:if name="setting_externalpreview_pw_kind" eq="1">checked</mt:if> name="setting_externalpreview_pw_kind" value="1">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="Common Password" component="ExternalPreview"></span>
+  </label>
+  <label class="custom-control custom-radio">
+    <input class="custom-control-input" type="radio" <mt:if name="setting_externalpreview_pw_kind" eq="2">checked</mt:if> name="setting_externalpreview_pw_kind" value="2">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="Unique Password" component="ExternalPreview"></span>
+  </label>
+  <div id="externalpreview-password"<mt:if name="setting_externalpreview_pw_kind" ne="1"> class="hidden"</mt:if>>
+    <input type="password" id="setting_externalpreview_password" name="setting_externalpreview_password" class="form-control short control-inline" value="<mt:var name="setting_externalpreview_password" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="When the password is blank, a preview is displayed immediately when click the preview URL." component="ExternalPreview">
+    </p>
+  </div>
+  </div>
+</div>
+<script>
+$('input[name=setting_externalpreview_pw_kind]').change(function(){
+    if ( $('input[name=setting_externalpreview_pw_kind]:checked').val() == 1 ) {
+        $('#externalpreview-password').show(100);
+    } else {
+        $('#externalpreview-password').hide(100);
+    }
+});
+</script>
+</mt:if>

@@ -1,0 +1,40 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_assetscope_workspace_id">
+      <mt:trans phrase="Scope">
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <select class="form-control custom-select" name="setting_assetscope_workspace_id" id="setting_assetscope_workspace_id">
+  <option value=""><mt:trans phrase="(None selected)"></option>
+  <option value="0" <mt:if name="setting_assetscope_workspace_id" eq="0">selected</mt:if>><mt:var name="appname" escape> (<mt:trans phrase="System">)</option>
+  <mt:objectloop model="workspace" sort_by="id" sort_order="ascend" cols="id,name">
+  <option <mt:if name="setting_assetscope_workspace_id" eq="$id">selected</mt:if> value="<mt:var name="id">"><mt:var name="name" escape> (ID:<mt:var name="id">)</option>
+  </mt:objectloop>
+  </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_assetscope_label_column">
+      <mt:trans phrase="Label Column for Editor" component="AssetScope">
+    </label>
+  </div>
+  <div class="col-lg-10">
+<mt:gettableid name="asset" setvar="table_id">
+<mt:setvar name="exclude_columns" value="extra_path,uuid,file_ext,mime_type,class,rev_note,rev_changed,rev_diff">
+<mt:var name="exclude_columns" split="," setvar="exclude_columns">
+<select class="form-control custom-select" name="setting_assetscope_label_column" id="setting_assetscope_label_column">
+  <mt:objectloop model="column" sort_by="order" table_id="$table_id" sort_order="ascend">
+  <mt:ifinarray array="exclude_columns" value="$name">
+  <mt:else>
+    <mt:if name="type" eq="string">
+      <option <mt:if name="setting_assetscope_label_column" eq="$name">selected</mt:if> value="<mt:var name="name">"><mt:var name="label" escape translate></option>
+    <mt:elseif name="type" eq="text">
+      <option <mt:if name="setting_assetscope_label_column" eq="$name">selected</mt:if> value="<mt:var name="name">"><mt:var name="label" escape translate></option>
+    </mt:if>
+  </mt:ifinarray>
+  </mt:objectloop>
+</select>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+{
+    "Returns an error when the URL to publish is duplicated.": "パブリッシュするURLの重複時にエラーを返します。",
+    "The URL is a duplicate of the URL of another object." : "URLが他のオブジェクトのURLと重複しています。",
+    "The file already exists on the same path(%s)." : "ファイル「%s」が既に存在します。"
+}

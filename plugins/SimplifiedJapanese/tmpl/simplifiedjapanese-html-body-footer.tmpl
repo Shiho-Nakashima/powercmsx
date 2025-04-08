@@ -1,0 +1,10 @@
+<script>
+<mt:setvarblock name="simplifiedjapanese_icon"><span data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Simplified Japanese" component="SimplifiedJapanese">"><img src="<mt:if name="simplifiedjapanese_icon_base"><mt:var name="simplifiedjapanese_icon_base"><mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/simplified_japanese.png" width="13" height="13" alt="<mt:trans phrase="Simplified Japanese" component="SimplifiedJapanese">"></span></mt:setvarblock>
+    var button = '<button style="font-size:51%;border:1px solid #ddd" type="button" '
+               + 'class="ml-2 btn btn-sm dialog-chooser" data-toggle="modal" '
+               + 'data-target="#modal" data-href="<mt:var name="script_uri">'
+               + '?__mode=simplifiedjapanese_helper&amp;<mt:if name="workspace_id">&amp;'
+               + 'workspace_id=<mt:var name="workspace_id"></mt:if>&amp;dialog_view=1">'
+               + '<mt:var name="simplifiedjapanese_icon"></button>';
+    $('#page-title').html( $('#page-title').html() + button );
+</script>

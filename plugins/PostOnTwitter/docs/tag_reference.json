@@ -1,0 +1,15 @@
+{
+    "ifpostontwitterenabled" : {
+        "description" : "Conditional tag provided by the 'PostOnTwitter' plugin.<br>Blocks are rated when Posts in the PostOnTwitter plugin settings are enabled.",
+        "attributes" : {
+            "workspace_id" : "workpace's ID (If omitted, the ID of the workspace in the current context)."
+        }
+    },
+    "ifpostontwittertweetmodel" : {
+        "description" : "Conditional tag provided by the 'PostOnTwitter' plugin.<br>Evaluate the block if the model specified in the model attribute is the Post target model of the PostOnTwitter plugin.",
+        "attributes" : {
+            "model" : "Model name to be checked.",
+            "workspace_id" : "workpace's ID (If omitted, the ID of the workspace in the current context)."
+        }
+    }
+}

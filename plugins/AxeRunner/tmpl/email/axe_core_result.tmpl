@@ -1,0 +1,11 @@
+<mt:for merge_linefeeds="1">
+<mt:trans phrase="[%s] AxeRunner Automate Testing Results." params="$appname" component="AxeRunner">
+<mt:trans phrase="Below is a list of verification result URLs that you have set as the person in charge." component="AxeRunner">
+
+<mt:loop name="admin_urls"><mt:if name="__first__">
+--------------------------------------------------------------------
+</mt:if><mt:var name="script_uri"><mt:var name="__value__">
+<mt:if name="__last__">--------------------------------------------------------------------</mt:if></mt:loop>
+
+<mt:include file="mail_footer.tmpl">
+</mt:for>

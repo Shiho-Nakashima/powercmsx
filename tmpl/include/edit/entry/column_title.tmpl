@@ -1,0 +1,27 @@
+<mt:setvar name="_primary" value="$value">
+<mt:setvar name="_languages" value="$languages">
+<div class="row form-group row-title-main">
+  <div class="col-lg-12 input-group-lg">
+    <input id="<mt:var name="__col_name__">" type="text" class="title-original form-control watch-changed" name="<mt:var name="__col_name__">" value="<mt:unless name="__col_value__"><mt:var name="default" escape><mt:else><mt:var name="__col_value__"></mt:unless>"
+      aria-label="<mt:var name="label" escape>" placeholder="<mt:var name="label" escape>" <mt:if name="readonly">readonly</mt:if>>
+<mt:if name="_hint">
+  <div class="ml-1">
+    <mt:var name="_hint">
+  </div>
+</mt:if>
+  </div>
+</div>
+<div class="mb-4<mt:ifinarray array="display_options" value="text"> hidden</mt:ifinarray>" id="entry-primary-permalink">
+  <mt:include file="include/edit/primary_permalink.tmpl">
+</div>
+<script>
+$('.disp_option-cb').change(function(){
+    if ( $(this).prop('name') == '_d_text' ) {
+        if ( $(this).prop('checked') ) {
+            $('#entry-primary-permalink').hide( 50 );
+        } else {
+            $('#entry-primary-permalink').show( 50 );
+        }
+    }
+});
+</script>

@@ -1,0 +1,364 @@
+<mt:setvar name="_component_blocks_value" value="" />
+<mt:setvarblock name="_variable_name_on_error">forward_<mt:var name="__col_name__"></mt:setvarblock><mt:ignore>編集エラー時</mt:ignore>
+<mt:setvarblock name="_variable_name_on_normal">component_blocks_<mt:var name="__col_name__"></mt:setvarblock><mt:ignore>通常時</mt:ignore>
+<mt:var name="$_variable_name_on_error" setvar="_component_blocks_value" />
+<mt:unless name="_component_blocks_value"><mt:var name="$_variable_name_on_normal" setvar="_component_blocks_value" /></mt:unless>
+<mt:setvarblock name="block_get_workspace_ids">0<mt:if name="workspace_id">,<mt:var name="workspace_id" /></mt:if></mt:setvarblock>
+
+<mt:ignore>
+Note: HTML Standardによると、style要素が利用できるコンテキストは「メタデータコンテンツが期待される場所。headの子であるnoscript要素内。」とある。
+そのため、テンプレート処理の必要がないスタイルはCSSに記述すること。
+</mt:ignore>
+<style>
+.component-blocks .card-header,
+.component-blocks .card-body {
+  border-style: solid;
+  border-color: <mt:var name="user_control_border" escape>;
+}
+</style>
+
+<mt:ignore>コンポーネントブロックエディタHTML</mt:ignore>
+<fieldset class="card component-blocks">
+  <legend class="card-header"><mt:var name="label" escape></legend>
+  <div class="card-body pr-3 pb-3 pl-3">
+    <div class="row form-group mb-0 pt-0">
+      <div class="col-lg-12">
+        <div id="component_blocks_<mt:var name="__col_name__">" class="component-blocks-rows">
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<mt:ignore>コンポーネントブロックのスクリプト</mt:ignore>
+<mt:unless name="component_blocks_script_loaded">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="component-blocks-symbols">
+    <g id="grip_vertical" width="16" height="16" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 16 16">
+        <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+    </g>
+    <g id="trash" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+    </g>
+</svg>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/vue/vue.global<mt:var name="component_blocks_vue_suffix" escape />.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/vue-i18n/vue-i18n.global<mt:var name="component_blocks_vue_suffix" escape />.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/tinymce-vue/tinymce-vue.min.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/sortablejs/Sortable.min.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/vue.draggable.next/vuedraggable.umd.min.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/component_blocks_service.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/fieldblockbuilder.js"></script>
+<mt:var name="component_blocks_add_script" />
+<mt:setvar name="component_blocks_script_loaded" value="1" />
+
+<script>
+  const store = window.componentBlocksStore;
+
+  // ブロック情報
+  window.componentBlocksSettings.multiBlock = {};
+  const enableBlocks = window.componentBlocksSettings.multiBlock.enableBlocks = {};
+<mt:block remove_blank>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" use_multi_block="1" sort_by="order" sort_order="ascend">
+  enableBlocks['<mt:var name="component_name" escape_quote />'] = [<mt:enableblocks />];
+</mt:objectloop>
+</mt:block>
+  window.componentBlocksSettings.dictionary = {
+<mt:block remove_blank>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+    '<mt:var name="component_name" escape_quote />': '<mt:trans phrase="$label" escape_quote />',
+</mt:objectloop>
+</mt:block>
+  };
+
+  // 選択したブロックに応じた編集画面を表示
+  const BlockSelection = Vue.defineComponent({
+    props: ['element', 'index'],
+<mt:block remove_blank>
+    template: `
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+      <template v-<mt:unless name="__first__">else-</mt:unless>if="element.type === '<mt:var name="component_name" escape_quote />'">
+        <<mt:var name="component_name" />Edit :element="element" :index="index"<mt:if name="use_field"> :ref="'<mt:var name="component_name" lower_case escape_quote />' + element.id"</mt:if> />
+      </template>
+</mt:objectloop>
+<mt:if name="request.__mode" eq="preview_component_blocks"><PreviewEdit :element="element" :index="index" /></mt:if>
+    `,
+</mt:block>
+  });
+
+  // ブロックのラベルを表示
+  const BlockLabel = Vue.defineComponent({
+    props: ['element'],
+<mt:block remove_blank>
+    template: `
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+<mt:ifblockissinglefield>
+      <label :for="element.id" class="label" v-<mt:unless name="__first__">else-</mt:unless>if="element.type === '<mt:var name="component_name" escape_quote />'"><mt:trans phrase="$label" escape /></label>
+<mt:else>
+      <span class="label" v-<mt:unless name="__first__">else-</mt:unless>if="element.type === '<mt:var name="component_name" escape_quote />'"><mt:trans phrase="$label" escape /></span>
+</mt:ifblockissinglefield>
+</mt:objectloop>
+    `,
+</mt:block>
+  });
+
+<mt:localvars>
+  // ここから各種ブロックの定義（constではなくletにしているのでカスタマイズ用コードを再代入可能）
+<mt:setvartemplate name="tmpl_output_field">
+<mt:if name="edit" eq="editor"><mt:setvar name="use_editor" value="1" /></mt:if>
+<mt:ifblockissinglefield><mt:setvar name="is_single" value="1" /><mt:else><mt:setvar name="is_single" value="0" /></mt:ifblockissinglefield>
+<div class="form-group">
+<mt:if test="($edit === 'radio' || $edit === 'checkbox')">
+<mt:if name="label"><div class="label"><mt:var name="label" escape /></div></mt:if>
+<mt:var name="choiceOptions" component_blocks_options="choice_options" />
+<div class="choices">
+<mt:loop name="choice_options">
+<mt:if name="choice_options_label_only">
+<mt:blockparts type="$edit" key="$key" single="0" label="$__value__" required="$required" />
+<mt:else>
+<mt:blockparts type="$edit" key="$key" single="0" label="$__value__" value="$__key__" required="$required" />
+</mt:if>
+</mt:loop>
+</div>
+<mt:if name="hint"><p class="text-muted hint-block mb-0"><i class="fa fa-question-circle-o" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Hint"></span>&ensp;<mt:trans phrase="$hint" /></p></mt:if>
+<mt:else>
+<mt:blockparts type="$edit" relation_model="$relationModel" asset_class="$assetClass" key="$key" single="$is_single" single_choice="$singleChoice" index="$__index__" label="$label" hint="$hint" required="$required" />
+</mt:if>
+</div>
+</mt:setvartemplate>
+
+<mt:block remove_blank>
+<mt:ignore>NOTE: tmpl/component_blocks_default_template.tmplにも転記する。一部`{{`・`}}`・MTVarに置き換える。</mt:ignore>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+<mt:var name="fields" from_json="fields_definition" />
+<mt:var name="template" setvar="customized_template" />
+<mt:setvar name="use_editor" value="0" />
+<mt:setvarblock name="fields_tmpl">
+<ul class="alert-danger validation-messages" v-if="element.invalidMessages && element.invalidMessages.length"><li v-for="message in element.invalidMessages">{{message}}</li></ul>
+<mt:loop name="fields_definition">
+<mt:var name="tmpl_output_field" />
+</mt:loop>
+</mt:setvarblock>
+
+<mt:var name="repeat_fields" from_json="repeat_fields_definition" />
+<mt:setvarblock name="repeat_fields_tmpl">
+<mt:loop name="repeat_fields_definition">
+<mt:if name="__first__"><mt:setvar name="use_field" value="1" />{{mt:blockpartsfields}}<div class="col repeat-field"></mt:if>
+<mt:var name="tmpl_output_field" />
+<mt:if name="__last__"></div>{{/mt:blockpartsfields}}</mt:if>
+</mt:loop>
+</mt:setvarblock>
+
+  // ======== Start <mt:var name="component_name" /> Component ========
+  let <mt:var name="component_name" /> = Vue.defineComponent({
+    props: ['element', 'index'],
+<mt:if name="use_editor">
+    data() {
+      return {
+        store,
+      }
+    },
+</mt:if>
+<mt:if name="use_multi_block">
+    data() {
+      return {
+        enableBlocks: {},
+      }
+    },
+
+    created() {
+      const stack = {};
+      window.componentBlocksSettings.multiBlock.enableBlocks['<mt:var name="component_name" escape_quote />'].forEach((item) => {
+        stack[item] = window.componentBlocksSettings.dictionary[item];
+      });
+      this.enableBlocks = stack;
+    },
+</mt:if>
+
+    template: `
+<mt:if name="customized_template"><mt:var name="customized_template" _eval /><mt:else>
+<mt:var name="fields_tmpl" _eval />
+<mt:var name="repeat_fields_tmpl" replace_curly_brackets _eval /></mt:if>
+<mt:if name="use_multi_block"><MultiBlockEdit :element="element" :enableblocks="enableBlocks" /></mt:if>
+    `,
+
+<mt:if test="( $use_editor || $use_field )">
+    methods: { ...fieldService<mt:if name="methods">, <mt:var name="methods" _eval /></mt:if> },
+<mt:elseif name="methods">
+    methods: { <mt:var name="methods" _eval /> },
+</mt:if>
+  });
+  // ======== End <mt:var name="component_name" /> Component ========
+<mt:unset name="fields_definition" />
+<mt:unset name="repeat_fields_definition" />
+<mt:unset name="fields_tmpl" />
+<mt:unset name="repeat_fields_tmpl" />
+</mt:objectloop>
+</mt:block>
+</mt:localvars>
+
+  // ブロック毎の保存データを定義
+  window.componentBlocksSettings.setBlockData = (app, blockData, type) => {
+    switch (type) {
+<mt:block remove_blank>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+      case '<mt:var name="component_name" escape_quote />':
+<mt:var name="fields" default="[]" from_json="properties" />
+<mt:var name="repeat_fields" replace="'[]',''" setvar="use_field" />
+<mt:loop name="properties">
+<mt:if name="edit" eq="table">
+<mt:setvar name="default_value_json" value="" />
+<mt:if name="defaultValue"><mt:var name="defaultValue" to_json setvar="default_value_json" /></mt:if>
+        blockData['<mt:var name="key" escape_quote />'] = <mt:if name="default_value_json"><mt:var name="default_value_json" /><mt:else>{
+          num_columns: 2,
+          data_col_start_index: 0,
+          col_width_list: ['normal']
+        }</mt:if>;
+<mt:else>
+<mt:if name="key">        blockData['<mt:var name="key" escape_quote />'] = <mt:fieldinitialvalue />;</mt:if>
+</mt:if>
+</mt:loop>
+<mt:if name="use_field">
+        blockData['fields'] = [];
+        window.componentBlocksSettings.setFieldData(app, blockData, type);
+</mt:if>
+<mt:if name="use_multi_block">
+        blockData['useMultiBlock'] = true;
+        blockData['containers'] = [];
+</mt:if>
+        break;
+  </mt:loop>
+</mt:objectloop>
+</mt:block>
+      default:
+    }
+  };
+
+  // 増減するフィールドを持つブロックの保存データを定義
+  window.componentBlocksSettings.setFieldData = (app, blockData, type) => {
+    let fieldData = {
+      id: app.$root.generateId(),
+    };
+
+    switch (type) {
+<mt:block remove_blank>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+<mt:var name="repeat_fields" default="[]" from_json="properties" />
+<mt:count name="properties" setvar="has_repeat_fields" />
+<mt:if name="has_repeat_fields">
+      case '<mt:var name="component_name" escape_quote />':
+<mt:loop name="properties">
+<mt:if name="key">        fieldData['<mt:var name="key" />'] = <mt:fieldinitialvalue />;</mt:if>
+</mt:loop>
+        blockData.fields.push(fieldData);
+        break;
+  </mt:loop>
+</mt:if>
+</mt:objectloop>
+</mt:block>
+    }
+
+    return fieldData['id'];
+  };
+
+  let validateRules = {
+<mt:block remove_blank>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+<mt:blockvalidaterules />
+</mt:objectloop>
+</mt:block>
+  };
+</script>
+</mt:unless>
+
+<script type="module">
+  import ComponentBlocks from './<mt:var name="component_blocks_asset_dir" escape />/js/component_blocks.js';
+  import { BlockController, ImageSelector, ObjectSelector, MultiBlock, TableEditor } from './<mt:var name="component_blocks_asset_dir" escape />/js/component_blocks_components.js?v=1.23';
+  import { defaultMessages } from '<mt:var name="script_uri">?__mode=component_blocks_i18n';
+
+  // アプリケーション生成とコンポーネントの登録
+  const app = Vue.createApp(ComponentBlocks);
+  app.component('Editor', Editor);
+  app.component('Draggable', vuedraggable);
+  app.component('BlockController', BlockController);
+  app.component('ImageSelector', ImageSelector);
+  app.component('ObjectSelector', ObjectSelector);
+  app.component('MultiBlockEdit', MultiBlock);
+  app.component('TableEditor', TableEditor);
+
+  // カスタムスクリプト
+  const columnName = '<mt:var name="__col_name__">';
+<mt:var name="component_blocks_custom_script" />
+
+  // 各種ブロックの定義
+<mt:block remove_blank>
+<mt:objectloop workspace_ids="$block_get_workspace_ids" model="component_block" enable_model="$model" sort_by="order" sort_order="ascend">
+  app.component('<mt:var name="component_name" escape_quote />Edit', <mt:var name="component_name" />);
+</mt:objectloop>
+</mt:block>
+
+  // 国際化対応
+  const messages = $.extend(true, {}, defaultMessages, <mt:var name="componentblocks_translation" default="{}" />); // jQueryがある間は代用する
+  const i18n = VueI18n.createI18n({
+    locale: '<mt:var name="user_language" />',
+    fallbackLocale: 'en',
+    messages,
+  });
+
+  // アプリケーションのマウントと保存データの反映
+  app.component('BlockSelection', BlockSelection);
+  app.component('BlockLabel', BlockLabel);
+  app.use(i18n);
+  const vm = app.mount('#component_blocks_<mt:var name="__col_name__">');
+  vm.columnName = '<mt:var name="__col_name__">';
+  vm.enableBlocks = Object.assign({}, window.componentBlocksSettings.dictionary);
+  const savedData = "<mt:var name="_component_blocks_value" encode_json />";
+  if (savedData) {
+    vm.blocks = JSON.parse(savedData);
+  } else {
+<mt:if name="request.__mode" eq="preview_component_blocks">
+    const Preview = Vue.defineComponent({
+      props: ['element', 'index'],
+      template: `<mt:var name="request.template" _eval />`,
+      methods: { ...fieldService },
+    })
+    app.component('PreviewEdit', Preview);
+    vm.blocks = [{
+      type: "Preview",
+      fields: [{}],
+    }];
+<mt:else>
+    vm.blocks = [];
+</mt:if>
+  }
+<mt:ifusercan action="edit" model="template" workspace_id="$workspace_id">    vm.showData = true;</mt:ifusercan>
+
+  window.componentBlocks.push([vm, validateRules]);
+</script>
+
+<mt:unless name="request.__mode" eq="preview_component_blocks">
+<script>
+  (() => {
+    // 「このサイトを離れますか」の確認メッセージ（ベストエフォートの対策になる）
+    const beforeUnloadHandler = (e) => {
+      try {
+        const original = document.getElementById('_saved_<mt:var name="__col_name__">').value;
+        const edited = document.getElementById('<mt:var name="__col_name__">').value;
+        if (edited !== '[]' && original !== edited) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      } catch (e) {}
+    };
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.edit-action-bar button');
+      buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+          window.removeEventListener('beforeunload', beforeUnloadHandler);
+        });
+      });
+    });
+  })();
+</script>
+</mt:unless>

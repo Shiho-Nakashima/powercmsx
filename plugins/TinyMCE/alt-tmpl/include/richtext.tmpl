@@ -1,0 +1,440 @@
+<mt:property name="tinymce_version" cast_to="int" setvar="tinymce_version">
+<mt:if name="tinymce_version" eq="4">
+<mt:include file="include/richtext4.tmpl">
+<mt:else>
+<mt:var name="workspace_id" setvar="editor_workspace_id">
+<mt:pluginsetting component="TinyMCE" name="tinymce_use_system_settings" workspace_id="$editor_workspace_id" setvar="editor_use_system">
+<mt:if name="editor_use_system">
+  <mt:setvar name="editor_workspace_id" value="0">
+</mt:if>
+<mt:pluginsetting component="TinyMCE" name="tinymce_use_cdn" workspace_id="$editor_workspace_id" setvar="tinymce_use_cdn">
+<mt:if name="tinymce_use_cdn">
+<script src="<mt:var name="tinymce_use_cdn" escape>?version=<mt:property name="tinymce_version">" referrerpolicy="origin"></script>
+<mt:else>
+<script src="<mt:var name="prototype_path">assets/js/tinymce<mt:var name="tinymce_version">/tinymce.min.js?version=<mt:property name="tinymce_version">"></script>
+</mt:if>
+<script>
+<mt:unless name="request.id">
+  <mt:if name="user_text_format">
+    <mt:var name="user_text_format" lower_case setvar="user_text_format">
+    <mt:setvar name="_object_text_format" value="$user_text_format">
+  <mt:elseif name="__format_default">
+    <mt:var name="__format_default" lower_case setvar="user_text_format">
+    <mt:setvar name="_object_text_format" value="$user_text_format">
+  <mt:else>
+    <mt:setvar name="_object_text_format" value="richtext">
+  </mt:if>
+</mt:unless>
+<mt:tablehascolumn model="$model" column="text_format">
+<mt:if name="forward_params">
+<mt:var name="request.text_format" setvar="_object_text_format">
+</mt:if>
+<mt:if name="_object_text_format" eq="richtext">
+$(function(){
+    editorInit();
+    editorMode = 'richtext';
+});
+</mt:if>
+<mt:else>
+$(function(){
+    editorInit();
+    window.editorMode = 'richtext';
+});
+</mt:tablehascolumn>
+<mt:setvar name="tinymce_use_mobile" value="0">
+<mt:ifeditormobile>
+  <mt:if name="model" ne="widget">
+    <mt:pluginsetting component="TinyMCE" name="tinymce_use_mobile" workspace_id="$editor_workspace_id" setvar="tinymce_use_mobile">
+  </mt:if>
+</mt:ifeditormobile>
+<mt:pluginsetting component="TinyMCE" name="tinymce_convert_urls" workspace_id="$editor_workspace_id" setvar="convert_urls">
+<mt:pluginsetting component="TinyMCE" name="tinymce_relative_urls" workspace_id="$editor_workspace_id" setvar="relative_urls">
+<mt:pluginsetting component="TinyMCE" name="tinymce_paste_as_text" workspace_id="$editor_workspace_id" setvar="paste_as_text">
+<mt:pluginsetting component="TinyMCE" name="tinymce_element_format" workspace_id="$editor_workspace_id" setvar="element_format">
+function editorInit () {
+    var pressCmdKey    = false;
+    var pressShiftKey  = false;
+    var pressOptKey    = false;
+    var pressCtrlKey   = false;
+    tinymce.init({
+      selector : 'textarea.richtext',<mt:pluginsetting component="TinyMCE" name="tinymce_advanced_settings" workspace_id="$editor_workspace_id" _eval="1" setvar="editor_advanced_settings"><mt:if name="editor_advanced_settings"><mt:var name="editor_advanced_settings"></mt:if>
+      language : '<mt:var name="user_language">',
+      <mt:if name="model" like="email">convert_urls: false,<mt:else>
+      <mt:if name="convert_urls">convert_urls: true,<mt:else>convert_urls: false,</mt:if></mt:if>
+      <mt:if name="relative_urls" ne="none">relative_urls : <mt:var name="relative_urls" escape="js">,</mt:if>
+      <mt:if name="element_format">element_format : '<mt:var name="element_format" escape="js">',</mt:if>
+      image_advtab: true,
+      promotion: false,
+      <mt:if name="paste_as_text">paste_as_text: true,</mt:if>
+      <mt:pluginsetting component="TinyMCE" name="tinymce_paste_from_excel" workspace_id="$editor_workspace_id" setvar="paste_from_excel">
+      <mt:pluginsetting component="TinyMCE" name="tinymce_paste_table_class" workspace_id="$editor_workspace_id" setvar="paste_table_class">
+      <mt:pluginsetting component="TinyMCE" name="tinymce_equalize_cell_width" workspace_id="$editor_workspace_id" setvar="equalize_cell_width">
+      <mt:pluginsetting component="TinyMCE" name="tinymce_table_resize_bars" workspace_id="$editor_workspace_id" setvar="table_resize_bars">
+      <mt:pluginsetting component="TinyMCE" name="tinymce_table_border" workspace_id="$editor_workspace_id" setvar="table_border">
+      <mt:pluginsetting component="TinyMCE" name="tinymce_style_all_table" workspace_id="$editor_workspace_id" setvar="style_all_table">
+      <mt:pluginsetting component="TinyMCE" name="tinymce_document_base_url" workspace_id="$editor_workspace_id" setvar="document_base_url">
+      paste_preprocess: function( plugin, args ) {
+          var content = $('<div>' + args.content + '</div>');
+          if ( content.find('table') ) {
+          <mt:if name="paste_from_excel">
+              content.find('table').removeAttr('cellspacing');
+              content.find('table').removeAttr('cellpadding');
+              content.find('table,td,tr').removeAttr('height');
+              content.find('table,td,tr').removeAttr('width');
+              // content.find('td,th').removeAttr('align');
+              <mt:if name="table_border" eq="none">
+              content.find('table').removeAttr('border');
+              <mt:else>
+              content.find('table').attr('border', '<mt:var name="table_border" cast_to="int">');
+              </mt:if>
+              content.find('table,td,tr').removeAttr('style');
+              content.find('colgroup').remove();
+              <mt:if name="paste_table_class">
+              content.find('table').addClass('<mt:var name="paste_table_class" escape>');
+              </mt:if>
+              <mt:if name="equalize_cell_width">
+              content.find('table').css('table-layout', 'fixed');
+              </mt:if>
+          <mt:else>
+              content.find('colgroup').remove();
+              content.find('td').css('white-space', '');
+          </mt:if>
+              args.content = content.html();
+          }
+      },
+      <mt:if name="richtext_editor_height">height: <mt:var name="richtext_editor_height">,</mt:if>
+    <mt:if name="tinymce_use_mobile">
+      theme: 'mobile',
+      plugins: ['autosave', 'lists', 'autolink'],
+      toolbar: ['undo', 'bold', 'italic', 'styleselect', 'bullist', 'numlist', 'link'],
+    <mt:else>
+      toolbar  : '<mt:pluginsetting component="TinyMCE" name="tinymce_toolbar" workspace_id="$editor_workspace_id" _eval="1" nowrap>',
+      plugins  : '<mt:pluginsetting component="TinyMCE" name="tinymce_plugins" workspace_id="$editor_workspace_id" _eval="1" nowrap>',
+    </mt:if>
+      menubar: '<mt:pluginsetting component="TinyMCE" name="tinymce_menubar" workspace_id="$editor_workspace_id" _eval="1" nowrap>',
+      content_css: "<mt:pluginsetting component="TinyMCE" name="tinymce_content_css" workspace_id="$editor_workspace_id" _eval="1" nowrap escape="js"><mt:loop name="__add_content_styles" glue=","><mt:if name="__first__">,</mt:if><mt:var name="__value__" escape="js" nowrap></mt:loop>",
+      onchange_callback : 'editHtmlEditor',
+    <mt:if name="document_base_url">
+      document_base_url : '<mt:var name="document_base_url" _eval="1">',
+    </mt:if>
+    table_use_colgroups : false,
+  <mt:if name="style_all_table">
+    <mt:if name="paste_from_excel">
+      <mt:if name="equalize_cell_width">
+      table_default_styles: {
+          'table-layout': 'fixed',
+      },
+      </mt:if>
+      table_default_attributes: {
+          <mt:if name="table_border" ne="none">
+          'border' : '<mt:var name="table_border" cast_to="int">',
+          </mt:if>
+          <mt:if name="paste_table_class">
+          'class' : '<mt:var name="paste_table_class" escape>',
+          </mt:if>
+      },
+    </mt:if>
+  </mt:if>
+  <mt:unless name="table_resize_bars">
+      table_resize_bars: false,
+  </mt:unless>
+    <mt:gettableid name="boilerplate" setvar="boilerplate_table_id">
+    <mt:if name="boilerplate_table_id">
+    <mt:objectloop model="boilerplate" button="0" prefix="boilerplate" workspace_id="$workspace_id" glue="," sort_by="order" direction="ascend">
+      <mt:if name="__first__"><mt:setvar name="_boilerplate_exists" value="1">templates: [</mt:if>
+        {title: '<mt:var name="boilerplate_label" translate encode_js>', description: '<mt:var name="boilerplate_description" translate encode_js>', url: '<mt:var name="script_uri">?__mode=tinymce_insert_boilerplate&id=<mt:var name="boilerplate_id"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if><mt:if name="request.id">&object_id=<mt:var name="request.id" escape></mt:if>&_model=<mt:var name="request._model" escape>'}
+      <mt:if name="__last__">],</mt:if>
+    </mt:objectloop>
+    </mt:if>
+      <mt:unless name="_boilerplate_exists">
+      templates: [
+        {title: '<mt:trans phrase="Label of Boilerplate Snippet here." component="TinyMCE">', description: '<mt:trans phrase="Description of Boilerplate Snippet here." component="TinyMCE">', content: '<mt:trans phrase="Snippet of Boilerplate Snippet here(No Boilerplate Snippet found)." component="TinyMCE">'}
+      ],
+      </mt:unless>
+      setup: function (ed) {
+        ed.on('keyDown', function(e) {
+            if ( e.keyCode == 16 ) {
+                pressShiftKey = true;
+            } else if ( e.keyCode == 91 ) {
+                pressCmdKey = true;
+            } else if ( e.keyCode == 18 ) {
+                pressOptKey = true;
+            } else if ( e.keyCode == 17 ) {
+                pressCtrlKey = true;
+            }
+        });
+        ed.on('keyUp', function(e) {
+            pressCmdKey    = false;
+            pressShiftKey  = false;
+            pressOptKey    = false;
+            pressCtrlKey   = false;
+        });
+        ed.on('click', function(e) {
+            pressCmdKey    = false;
+            pressShiftKey  = false;
+            pressOptKey    = false;
+            pressCtrlKey   = false;
+        });
+        ed.on('paste', function(e) {
+            $('.tox-tinymce').css('width', '99.9%');
+            window.setTimeout( _reset_editor_width , 1 );
+        });
+        ed.on('change', function(e) {
+            editContentChanged = true;
+            ed.save();
+        });
+        ed.ui.registry.addButton('pt-image', {
+            <mt:if name="tinymce_version" eq="5">
+            text: '<img src="<mt:var name="prototype_path">assets/img/insert_image.png" alt="" style="height:18px;width:18px;margin-top:3px;">',
+            <mt:else>
+            icon: 'gallery',
+            </mt:if>
+            tooltip: '<mt:trans phrase="Insert Image">',
+            onAction: function () {
+                url = '<mt:var name="script_uri">?__mode=view&_type=list&_model=asset<mt:if name="has_asset_workspace_id">&workspace_id=<mt:var name="asset_workspace_id">&_from_scope=<mt:var name="workspace_id" castto="int"><mt:elseif name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&dialog_view=1&select_system_filters=filter_class_image&_system_filters_option=image&_filter=asset&insert_editor=1&ref_model=<mt:var name="_model">&insert=' + ed.id;
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });
+        ed.ui.registry.addButton('pt-file', {
+            <mt:if name="tinymce_version" eq="5">
+            text: '<img src="<mt:var name="prototype_path">assets/img/insert_file.png" alt="" style="height:18px;width:18px;margin-top:3px;">',
+            <mt:else>
+            icon: 'browse',
+            </mt:if>
+            tooltip: '<mt:trans phrase="Insert File">',
+            onAction: function () {
+                url = '<mt:var name="script_uri">?__mode=view&_type=list&_model=asset<mt:if name="has_asset_workspace_id">&workspace_id=<mt:var name="asset_workspace_id">&_from_scope=<mt:var name="workspace_id" castto="int"><mt:elseif name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&dialog_view=1&insert_editor=1&ref_model=<mt:var name="_model">&insert=' + ed.id;
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });
+        ed.ui.registry.addMenuButton('pt-dl', {
+            text: '<mt:if name="tinymce_version" eq="6"><dl><mt:else>&lt;dl&gt;</mt:if>',
+            tooltip: '<mt:trans phrase="Description List" component="TinyMCE">',
+            fetch: (callback) => {
+              const items = [
+                {
+                  type: 'menuitem',
+                  text: '+dl+dt+dd',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      editor.insertContent( '<dl><dt><mt:trans phrase="Term" component="TinyMCE"></dt><dd><mt:trans phrase="Definition" component="TinyMCE"></dd></dl>' );
+                  }
+                },
+                {
+                  type: 'menuitem',
+                  text: '+dt',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      editor.insertContent( '</dd><dt><mt:trans phrase="Term" component="TinyMCE"></dt>' );
+                  }
+                },
+                {
+                  type: 'menuitem',
+                  text: '+dd',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      editor.insertContent( '</dd><dd><mt:trans phrase="Definition" component="TinyMCE"></dd>' );
+                  }
+                }
+              ];
+              callback(items);
+          }
+        });
+        ed.ui.registry.addIcon('pt-float-image', '<img src="<mt:var name="prototype_path">assets/img/image_float.png" alt="" style="height:18px;width:18px;margin-top:3px;">');
+        ed.ui.registry.addMenuButton('pt-float-image', {
+            icon: 'pt-float-image',
+            tooltip: '<mt:trans phrase="Image Float" component="TinyMCE">',
+            fetch: (callback) => {
+              const items = [
+                {
+                  type: 'menuitem',
+                  text: '<mt:trans phrase="None">',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      let element = editor.selection.getNode();
+                      if ( element.tagName !== 'IMG' ) {
+                          alert( '<mt:trans phrase="Please select an Image." component="TinyMCE">' );
+                          return;
+                      }
+                      element.style.margin = '';
+                      element.style.textAlign = '';
+                      element.style.float = '';
+                      element.removeAttribute( 'display' );
+                      element.removeAttribute( 'data-mce-selected' );
+                      element.removeAttribute( 'data-mce-src' );
+                      element.removeAttribute( 'data-mce-style' );
+                      let html = element.outerHTML;
+                      editor.insertContent( html );
+                  }
+                },
+                {
+                  type: 'menuitem',
+                  text: '<mt:trans phrase="Right">',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      let element = editor.selection.getNode();
+                      if ( element.tagName !== 'IMG' ) {
+                          alert( '<mt:trans phrase="Please select an Image." component="TinyMCE">' );
+                          return;
+                      }
+                      element.style.margin = 'margin: 0 0 20px 20px';
+                      element.style.textAlign = 'right';
+                      element.style.float = 'right';
+                      element.setAttribute( 'display', 'block' );
+                      element.removeAttribute( 'data-mce-selected' );
+                      element.removeAttribute( 'data-mce-src' );
+                      element.removeAttribute( 'data-mce-style' );
+                      let html = element.outerHTML;
+                      editor.insertContent( html );
+                  }
+                },
+                {
+                  type: 'menuitem',
+                  text: '<mt:trans phrase="Left">',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      let element = editor.selection.getNode();
+                      if ( element.tagName !== 'IMG' ) {
+                          alert( '<mt:trans phrase="Please select an Image." component="TinyMCE">' );
+                          return;
+                      }
+                      element.style.margin = '0 20px 20px 0';
+                      element.style.textAlign = 'left';
+                      element.style.float = 'left';
+                      element.setAttribute( 'display', 'block' );
+                      element.removeAttribute( 'data-mce-selected' );
+                      element.removeAttribute( 'data-mce-src' );
+                      element.removeAttribute( 'data-mce-style' );
+                      let html = element.outerHTML;
+                      editor.insertContent( html );
+                  }
+                },
+                {
+                  type: 'menuitem',
+                  text: '<mt:trans phrase="Center">',
+                  onAction: function () {
+                      let editor = tinymce.activeEditor;
+                      let element = editor.selection.getNode();
+                      if ( element.tagName !== 'IMG' ) {
+                          alert( '<mt:trans phrase="Please select an Image." component="TinyMCE">' );
+                          return;
+                      }
+                      element.style.margin = 'margin: 0 auto 20px';
+                      element.style.textAlign = 'center';
+                      element.style.float = '';
+                      element.setAttribute( 'display', 'block' );
+                      element.removeAttribute( 'data-mce-selected' );
+                      element.removeAttribute( 'data-mce-src' );
+                      element.removeAttribute( 'data-mce-style' );
+                      let html = element.outerHTML;
+                      editor.insertContent( html );
+                  }
+                }
+              ];
+              callback(items);
+          }
+        });
+        ed.ui.registry.addButton('pt-partial-html', {
+            text: '<mt:if name="tinymce_version" eq="6"></><mt:else>&lt;/&gt;</mt:if>',
+            tooltip: '<mt:trans phrase="Editing partial HTML" component="TinyMCE">',
+            onAction: function () {
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                <mt:property name="tinymce_insert_empty_html" setvar="insert_empty_html">
+                <mt:unless name="insert_empty_html">
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="TinyMCE">' );
+                    return;
+                }
+                </mt:unless>
+                ed.windowManager.open({
+                    title: '<mt:trans phrase="Editing partial HTML" component="TinyMCE">',
+                    size : 'large',
+                    body: {
+                        type: 'panel',
+                        items: [
+                            {
+                              type: 'textarea',
+                              name: 'html_partial'
+                            }
+                        ]
+                    },
+                    initialData: {
+                        html_partial: html,
+                    },
+                    buttons: [
+                        {
+                            type: 'submit',
+                            text: 'OK',
+                            primary: true
+                        }
+                    ],
+                    onSubmit: function (api) {
+                        editor.insertContent( api.getData().html_partial );
+                        api.close();
+                    }
+                });
+            }
+        });
+    <mt:if name="boilerplate_table_id">
+    <mt:objectloop model="boilerplate" button="1" workspace_ids="all" prefix="boilerplate" sort_by="order" direction="ascend">
+        <mt:if name="boilerplate_icon">
+        ed.ui.registry.addIcon('<mt:var name="boilerplate_basename" escape="js">', '<img src="<mt:var name="boilerplate_icon" _eval="1" escape="js">" alt="" style="height:18px;width:18px;margin-top:3px;">');
+        </mt:if>
+        ed.ui.registry.addButton('<mt:var name="boilerplate_basename" escape="js">', {
+            <mt:if name="boilerplate_icon">
+            icon: '<mt:var name="boilerplate_basename" escape="js">',
+            <mt:else>
+            text: '<mt:if name="tinymce_version" eq="6"><mt:var name="boilerplate_label" translate><mt:else><mt:var name="boilerplate_label" translate escape></mt:if>',
+            </mt:if>
+            tooltip: '<mt:var name="boilerplate_description" escape="js" translate>',
+            onAction: function () {
+                <mt:var name="boilerplate_snippet" _eval="1">
+            }
+        });
+    </mt:objectloop>
+    </mt:if>
+        <mt:pluginsetting component="TinyMCE" name="tinymce_advanced_setup" workspace_id="$editor_workspace_id" _eval="1" setvar="editor_advanced_setup"><mt:if name="editor_advanced_setup"><mt:var name="editor_advanced_setup"></mt:if>
+        <mt:var name="editor_buttons">
+        var _reset_editor_width = function()
+        {
+            $('.tox-tinymce').css('width', '100%');
+            $('#__loader-bg').hide();
+        }
+        <mt:if name="model" eq="widget">
+        ed.on('LoadContent',function(){
+            if ( ed.id && ed.id == 'text' ) {
+                let clipboard_image = $('#clipboard-image');
+                let inline_image = $('#inline-image');
+                let bg_image_url = clipboard_image.val();
+                if ( inline_image.length ) {
+                    bg_image_url = inline_image.attr('href');
+                }
+                let html_head = ed.iframeElement.contentWindow.document.getElementsByTagName('head')[0];
+                let style = document.createElement('style');
+                let content_style;
+                if ( clipboard_image.length ) {
+                  <mt:unless name="__object_back_color"><mt:setvar name="__object_back_color" value="#ffffff"></mt:unless>
+                  <mt:unless name="__object_fore_color"><mt:setvar name="__object_fore_color" value="#000000"></mt:unless>
+                    var rgba = getConversionRgba('<mt:var name="__object_back_color">');
+                    content_style = 'body {margin: 40px; font-size: 110%;color:<mt:var name="__object_fore_color">; background-color:<mt:var name="__object_back_color">;'
+                    + 'background-size: cover; background-position: center;'
+                    + 'text-shadow: 2px 2px 2px <mt:var name="__object_back_color">,'
+                    + '-2px 2px 2px <mt:var name="__object_back_color">,'
+                    + '2px -2px 2px <mt:var name="__object_back_color">,'
+                    + '-2px -2px 2px <mt:var name="__object_back_color">;'
+                    + 'background-image:url("' + bg_image_url + '&rnd=' + Math.random() + '")} body *{background-color: rgba(' + rgba + ')}';
+                } else {
+                    content_style = 'body {margin: 40px; font-size: 110%;color:<mt:var name="__object_fore_color">; background:<mt:var name="__object_back_color">;}';
+                }
+                style.innerHTML = content_style;
+                html_head.appendChild(style);
+            }
+        });
+        </mt:if>
+        $('#__loader-bg').hide("fast");
+      }
+    });
+}
+</script>
+</mt:if>

@@ -1,0 +1,75 @@
+<mt:if name="request._type" eq="get">
+<mt:include file="include/dialog_header.tmpl">
+<div class="p-2 <mt:if name="user_stickey_buttons">mb-5</mt:if>">
+  <pre><mt:var name="estcmd_get_result" escape></pre>
+</div>
+<div class="mb-3 <mt:if name="user_stickey_buttons">row pl-3</mt:if> edit-action-bar full" <mt:if name="user_stickey_buttons">style="margin-bottom:0 !important;position:fixed"</mt:if>>
+  <button id="dialog-close-btn" class="btn btn-secondary" type="submit"><mt:trans phrase="Close"></button>
+</div>
+<script>
+$('#dialog-close-btn').click(function(){
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    window.parent.$('#modal').modal('hide');
+    return false;
+});
+</script>
+<mt:include file="include/dialog_footer.tmpl">
+<mt:else>
+<mt:include file="include/popup_header.tmpl">
+  <mt:loop name="estcmd_list_result">
+    <mt:if name="__first__">
+    <table class="table table-sm listing-table table-hover table-striped">
+    <thead>
+      <th style="width:60px;white-space:nowrap" class="text-center"><mt:trans phrase="Doc ID" component="SearchEstraier"></th>
+      <th class="text-center">URL</th>
+      <th class="text-center"><mt:trans phrase="Detail"></th>
+    </thead>
+    <tbody>
+    </mt:if>
+    <tr><td class="text-right">
+    <mt:var name="__value__" split="#" setvar="line">
+    <mt:var name="line[0]">
+    </td>
+    <td>
+    <a href="<mt:var name="line[1]" escape>" target="_blank"><mt:var name="line[1]" escape>
+    <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+    </a>
+    </td>
+    <td class="text-center">
+    <button type="button" class=class="btn btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=searchestraier_debug&amp;_type=get<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;url=<mt:var name="line[1]" escape="url">">
+    <i class="fa fa-info-circle" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+    </button>
+    </td>
+    </tr>
+    <mt:if name="__last__">
+    </tbody>
+    </table>
+    </mt:if>
+  </mt:loop>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" data-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+      <iframe id="modal-iframe" name="dialog-modal" style="width:100%;height:100%;"></iframe>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+    $(document).on('click','[data-target="#modal"]',function(){
+        var $this = $(this);
+        var $modal = $('#modal');
+        var url = '';
+        if( this.href ){
+            url = this.href;
+        } else if( $this.data('href') ) {
+            url = $this.data('href');
+        }
+        if( url ) {
+            $modal.find('iframe').attr('src', url );
+        }
+    });
+});
+</script>
+<mt:include file="include/popup_footer.tmpl">
+</mt:if>

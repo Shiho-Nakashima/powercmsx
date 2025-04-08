@@ -1,0 +1,10 @@
+{
+    "generatetableofcontents": {
+        "description": "Generates a table of contents (anchor links) from headings.",
+        "attributes": {
+            "name": "Variable name that stores the array of nested lists (default is 'generated_table_of_contents').",
+            "prefix": "Prefix of the ID attribute added to the heading tag (default is 'anchor').",
+            "add_html": "If specified, the table of contents list and the content with the ID will be concatenated and output."
+        }
+    }
+}

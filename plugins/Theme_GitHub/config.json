@@ -1,0 +1,44 @@
+{
+    "label": "Theme_GitHub",
+    "id": "theme_github",
+    "component": "Theme_GitHub",
+    "description": "Commit the theme to GitHub.",
+    "version": "0.1",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "config_settings": {
+        "can_open_theme_dir": false
+    },
+    "settings": {
+        "themegithub_use_system_setting": "",
+        "themegithub_account": "",
+        "themegithub_token": "",
+        "themegithub_gitignore": ".DS_Store"
+    },
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system": 1,
+    "cfg_space" : 1,
+    "methods": {
+        "theme_to_github": {
+            "component": "Theme_GitHub",
+            "method": "theme_to_github",
+            "permission": "import_objects"
+        },
+        "open_theme_dir": {
+            "component": "Theme_GitHub",
+            "method": "open_theme_dir",
+            "permission": "import_objects"
+        }
+    },
+    "callbacks": {
+        "theme_github_template_callback": {
+            "manage_theme": {
+                "template_output": {
+                    "component": "Theme_GitHub",
+                    "priority": 5,
+                    "method": "manage_theme"
+                }
+            }
+        }
+    }
+}

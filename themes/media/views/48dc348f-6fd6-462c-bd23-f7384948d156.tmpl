@@ -1,0 +1,53 @@
+<mt:setvartemplate name="date_based_list">
+  <mt:setvar name="date_based_exists" value="0">
+  <mt:setvar name="page_archive_title" value="">
+  <mt:setvarblock name="_cache_key">__widget_datebased_archives_<mt:var name="archive_type">__</mt:setvarblock>
+  <mt:if name="current_archive_type" eq="$archive_type"><mt:if name="current_archive_model" eq="template"><mt:if name="current_container" eq="entry">
+    <mt:archivetitle setvar="page_archive_title">
+    <mt:setvarblock name="_cache_key">__widget_datebased_archives_<mt:var name="archive_type">_<mt:var name="page_archive_title">__</mt:setvarblock>
+  </mt:if></mt:if></mt:if>
+  <mt:cacheblock cache_key="$_cache_key" workspace_id="$website_id">
+    <mt:setvarblock name="date_based_list_result">
+      <mt:archivelist type="$archive_type" container="entry" sort_order="desc">
+        <mt:if name="__first__">
+  <section class="yearly-section">
+    <h2 class="section-heading mb-4"><mt:var name="date_archive_title"></h2>
+    <ul class="list-group">
+        </mt:if>
+      <mt:if tag="entriescount" ignore_archive_context="category" include_workspaces="this">
+          <mt:setvar name="date_based_exists" value="1">
+          <mt:if tag="archivetitle" eq="$page_archive_title">
+            <mt:setvar name="is_current" value="1">
+          <mt:else>
+            <mt:setvar name="is_current" value="0">
+          </mt:if>
+      <li class="list-group-item<mt:if name="is_current"> list-active</mt:if>"><a href="<mt:archivelink>" class="text-primary<mt:if name="is_current"> active</mt:if>"><mt:archivetitle format="$link_date_format" escape="single"></a></li>
+        </mt:if>
+        <mt:if name="__last__">
+    </ul>
+  </section>
+        </mt:if>
+      </mt:archivelist>
+    </mt:setvarblock>
+    <mt:if name="date_based_exists"><mt:var name="date_based_list_result"></mt:if>
+  </mt:cacheblock>
+</mt:setvartemplate>
+
+<mt:ifarchivetype archive_type="fiscal-yearly">
+  <mt:setvar name="archive_type" value="fiscal-yearly">
+  <mt:trans phrase="Fiscal-Yearly" language="$language" setvar="date_archive_title">
+  <mt:trans phrase="\F\i\s\c\a\l Y" language="$language" setvar="link_date_format">
+  <mt:var name="date_based_list">
+</mt:ifarchivetype>
+<mt:ifarchivetype archive_type="yearly">
+  <mt:setvar name="archive_type" value="yearly">
+  <mt:trans phrase="Yearly" language="$language" setvar="date_archive_title">
+  <mt:trans phrase="Y" language="$language" setvar="link_date_format">
+  <mt:var name="date_based_list">
+</mt:ifarchivetype>
+<mt:ifarchivetype archive_type="monthly">
+  <mt:setvar name="archive_type" value="monthly">
+  <mt:trans phrase="Monthly" language="$language" setvar="date_archive_title">
+  <mt:trans phrase="F, Y" language="$language" setvar="link_date_format">
+  <mt:var name="date_based_list">
+</mt:ifarchivetype>

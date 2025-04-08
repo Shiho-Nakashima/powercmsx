@@ -1,0 +1,189 @@
+<mt:if name="return_url">
+<script>
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    // window.parent.$('#modal').modal('hide');
+    window.parent.location.href = '<mt:var name="return_url">';
+</script>
+<mt:var name="return_url">
+<mt:else>
+<mt:include file="include/dialog_header.tmpl">
+<mt:var name="request._model" escape setvar="target_model">
+<form action="<mt:var name="script_uri">" method="POST">
+<input type="hidden" name="__mode" value="list_action">
+<input type="hidden" name="_model" value="<mt:var name="target_model">">
+<input type="hidden" name="action_name" value="add_permission">
+<mt:if name="select_model" eq="workspace">
+<input type="hidden" name="itemset_action_input" value="workspace_select">
+<mt:else>
+<input type="hidden" name="itemset_action_input" value="add_permission">
+</mt:if>
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<div class="mb-4">
+<table class="table table-hover table-striped" style="border-bottom: 1px solid #ddd">
+<mt:unless name="select_model" eq="workspace">
+<tr>
+<th style="width:127px"><mt:trans phrase="Scope"></th>
+<td>
+<mt:if name="class" eq="system">
+<span class="badge badge-default">
+<mt:trans phrase="System">
+</span>
+<input type="hidden" name="workspace_ids[]" value="0">
+<mt:else>
+<mt:objectloop model="workspace" include_draft ids="$workspace_ids" prefix="space">
+<span class="badge badge-default">
+<mt:var name="space_name" escape>
+<input type="hidden" name="workspace_ids[]" value="<mt:var name="space_id" escape>">
+</span>
+</mt:objectloop>
+</mt:if>
+</td>
+</tr>
+</mt:unless>
+<mt:if name="target_model" eq="user">
+<mt:trans phrase="Users" setvar="label_plural">
+<mt:else>
+<mt:trans phrase="Associations" setvar="label_plural">
+</mt:if>
+<tr>
+<th style="width:127px"><mt:trans phrase="Target %s" params="$label_plural"></th>
+<td>
+<mt:objectloop model="$target_model" include_draft="1" ids="$user_ids" prefix="selected">
+<span class="badge badge-default">
+<mt:if name="target_model" eq="user"><mt:var name="selected_nickname" escape><mt:else><mt:var name="selected_name" escape></mt:if> <input type="hidden" name="user_id[]" value="<mt:var name="selected_id" escape>">
+</span>
+</mt:objectloop>
+</td>
+</tr>
+</table>
+</div>
+<mt:if name="select_model" eq="workspace">
+<mt:trans phrase="WorkSpace" setvar="object_label">
+<mt:else>
+<mt:trans phrase="Role" setvar="object_label">
+</mt:if>
+<mt:objectloop model="$select_model" class="$class">
+<mt:if name="__first__">
+<table class="table table-hover table-striped" style="border-bottom: 1px solid #ddd">
+<thead>
+<tr>
+<th class="all-selector cb-col">
+<label class="custom-control custom-checkbox">
+  <input type="checkbox" class="selector custom-control-input cb-all-select"
+    aria-label="<mt:trans phrase="Select all">">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description"></span>
+</label>
+</th><th><mt:trans phrase="Name"></th><th><mt:trans phrase="Description"></th></tr>
+</thead>
+<tbody id="list_body">
+</mt:if>
+<tr id="line_<mt:var name="id">">
+<td>
+<label class="custom-control custom-checkbox">
+  <input id="box_<mt:var name="id">" type="checkbox" name="id[]"
+    value="<mt:var name="id">" class="custom-control-input id-select"
+    aria-label="<mt:trans phrase="Select or deselect %s in this row." params="$object_label" escape>">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description"></span>
+</label>
+</td>
+<td><mt:var name="name" escape></td>
+<td><mt:var name="description" escape></td></tr>
+<mt:if name="__last__">
+</tbody>
+</table>
+<mt:var name="__counter__" setvar="object_count">
+</mt:if>
+</mt:objectloop>
+<mt:unless name="object_count">
+  <div class="alert alert-warning full mb-5" tabindex="0">
+    <mt:trans phrase="%s not found." params="$object_label">
+  </div>
+    <script>
+    $('.alert-warning').focus();
+    </script>
+</mt:unless>
+<div class="mb-5 mt-2">
+<mt:if name="debug_mode"><div class="mb-5"></mt:if>
+  <button id="dialog-cancel-btn" class="btn btn-secondary" type="submit"><mt:trans phrase="Cancel"></button>
+<mt:if name="object_count">
+  <button id="dialog-selector-btn" class="btn btn-primary" type="submit"><mt:trans phrase="Select"></button>
+</mt:if>
+<mt:if name="debug_mode"></div></mt:if>
+</div>
+</form>
+<script>
+<mt:if name="object_count">
+$('.id-select').change(function(){
+    set_all_select();
+});
+function set_all_select () {
+    selected_item_count = 0;
+    var selected = false;
+    $("input[name='id[]']").each(function(){
+        if($(this).prop('checked') === true) {
+            selected = true;
+            selected_item_count++;
+        }
+    });
+    if ( selected_item_count == <mt:var name="object_count"> ) {
+        $('.cb-all-select').prop('checked', true);
+    } else {
+        $('.cb-all-select').prop('checked', false);
+    }
+}
+$('.cb-all-select').change(function(){
+    checked = $(this).prop('checked');
+    $("input[name='id[]']").each(function(){
+        $(this).prop('checked', checked);
+    });
+    $('.cb-all-select').prop('checked', checked);
+});
+$('#list_body tr').click(function() {
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+    set_all_select();
+});
+$('#dialog-selector-btn').click(function(){
+    selected_item_count = 0;
+    var selected = false;
+    $("input[name='id[]']").each(function(){
+        if($(this).prop('checked') === true) {
+            selected = true;
+            selected_item_count++;
+        }
+    });
+    if (! selected_item_count ) {
+        alert('<mt:trans phrase="You did not select any %s." params="$object_label">');
+        return false;
+    }
+    <mt:setvarblock name="labels">$object_label,$label_plural</mt:setvarblock>
+    <mt:var name="labels" split="," setvar="labels">
+    var cfm_msg = '<mt:trans phrase="Are you sure you want to add permission for %s to selected %s?" params="$labels">';
+    if(! confirm( cfm_msg ) ) {
+        return false;
+    }
+});
+</mt:if>
+$('#dialog-cancel-btn').click(function(){
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    window.parent.$('#modal').modal('hide');
+    return false;
+});
+$(document).keydown(evnt_keydown);
+function evnt_keydown(e) {
+    if ( e.keyCode == 27 ) {
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+        window.parent.$('#modal').modal('hide');
+    }
+}
+</script>
+<mt:include file="include/dialog_footer.tmpl">
+</mt:if>

@@ -1,0 +1,17 @@
+{
+    "label": "MixedObjects",
+    "id": "mixedobjects",
+    "component": "MixedObjects",
+    "description": "Merge objects from multiple models and output in a loop.",
+    "version": "0.1",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "tags": {
+        "block": {
+            "mixedobjects": {
+                "component": "MixedObjects",
+                "method": "hdlr_mixedobjects"
+            }
+        }
+    }
+}

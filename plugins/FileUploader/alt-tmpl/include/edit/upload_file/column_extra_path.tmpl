@@ -1,0 +1,304 @@
+<input type="hidden" name="upload-file-magic" value="<mt:var name="request.upload-file-magic" escape>" id="upload-file-magic">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="fileupload">">
+      <mt:trans phrase="File">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <div id="drop-zone" class="mb-3">
+    <i id="icon-file" class="btn fa <mt:if name="object_class" eq="image">fa-file-image-o<mt:elseif name="object_file_ext" eq="svg">fa-file-image-o<mt:elseif name="object_file_ext" eq="zip">fa-file-archive-o<mt:elseif name="object_file_ext" eq="gz">fa-file-archive-o<mt:elseif name="object_file_ext" eq="tar">fa-file-archive-o<mt:elseif name="object_class" eq="pdf">fa-file-pdf-o<mt:elseif name="object_class" eq="video">fa-file-video-o<mt:elseif name="class" eq="audio">fa-file-audio-o<mt:else>fa-file-o</mt:if> fa-3x" aria-hidden="true"></i>
+    <mt:setvar name="preview_width" value="150">
+    <mt:if name="object_class" eq="image">
+      <mt:if name="_meta_id">
+      <mt:setvar name="preview_width" value="150">
+      <mt:assetproperty name="file_path" model="upload_file" property="image_width" id="$object_id" setvar="image_width">
+      <mt:if name="image_width">
+      <mt:if name="image_width" lt="$preview_width">
+        <mt:setvar name="preview_width" value="$image_width">
+      </mt:if>
+      </mt:if>
+      </mt:if>
+    </mt:if>
+    <img class="<mt:unless name="object_class" eq="image"><mt:if name="object_file_ext" ne="svg">hidden</mt:if></mt:unless>
+      <mt:unless name="object_file_name"> hidden</mt:unless> preview-file-field lazy"
+      id="image_preview-file"
+      src="<mt:var name="prototype_path">assets/img/spacer.gif"
+      style="max-width:<mt:var name="preview_width">px;max-height:<mt:var name="preview_width">px;background-image:url('<mt:var name="prototype_path">assets/img/loading.gif');background-size:40px;background-repeat:no-repeat;background-position:center;"
+      data-original="<mt:var name="thumbnail">" alt="<mt:trans phrase="Preview">">
+      &nbsp; <a id="file_view-btn" target="_blank" class="btn btn-secondary <mt:unless name="object_file_name">hidden</mt:unless>" href="<mt:var name="object_url" escape>"><mt:trans phrase="View"> <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></a> 
+    <mt:ifcomponent component="ImageInfo">
+      <mt:property name="imageinfo_pdfinfo_path" setvar="imageinfo_pdfinfo_path">
+      <mt:if name="imageinfo_pdfinfo_path"><mt:if name="object_class" eq="pdf"><mt:setvar name="_pdf_support" value="1"></mt:if></mt:if>
+      <button type="button" id="info-file_path" class="btn btn-info<mt:unless name="object_id"> hidden</mt:unless><mt:unless name="object_class" eq="image"> <mt:unless name="_pdf_support"> hidden</mt:unless></mt:unless>" data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=get_imageinfo_dialog&amp;_model=<mt:var name="model">&amp;id=<mt:var name="request.id" escape>&amp;view=<mt:if name="upload_file_magic">file<mt:else>file_path</mt:if>&amp;_screen_id=<mt:if name="upload_file_magic"><mt:var name="upload_file_magic"><mt:else><mt:var name="screen_id" escape></mt:if><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"><mt:trans phrase="Info..." component="ImageInfo"></button>
+      <mt:assetproperty name="file_path" model="$model" property="image_verified" setvar="image_verified">
+      <span id="files-file_path-verified" class="<mt:unless name="image_verified">hidden</mt:unless>">
+        <i class="fa fa-check-circle" style="color:#089" aria-hidden="true" title="<mt:trans phrase="Verified This Image" component="ImageInfo">">
+        <span class="sr-only"><mt:trans phrase="Verified This Image" component="ImageInfo"></span>
+        </i>
+      </span>
+      &nbsp;
+    </mt:ifcomponent>
+    <span id="file-chooser" class="btn btn-success fileinput-button">
+        <span><mt:trans phrase="Select File..."></span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files"
+            onfocus="$('#file-chooser').css('border','2px solid green');"
+            onblur="$('#file-chooser').css('border','none');">
+    </span>
+    <!-- The global progress bar -->
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"><mt:var name="object_file_name" escape></div>
+      <div class="input-group copy-url<mt:unless name="object_url"> hidden</mt:unless>" id="clipboard-file-wrapper">
+        <mt:var name="object_url" escape setvar="__permalink">
+        <mt:if name="request.workspace_id">
+          <mt:if name="workspace_link_url">
+            <mt:var name="__permalink" replace="'$workspace_site_url','$workspace_link_url'" setvar="__permalink">
+          </mt:if>
+        <mt:else>
+          <mt:if name="link_url">
+            <mt:var name="__permalink" replace="'$site_url','$link_url'" setvar="__permalink">
+          </mt:if>
+        </mt:if>
+        <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-file"
+          readonly value="<mt:var name="__permalink">">
+        <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-<mt:var name="__col_name__">"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+        <button id="view-file" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+      <mt:if name="_show_both">
+        <button id="view-published" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View Published">" type="button" class="input-group-addon"><i class="fa fa-globe" aria-hidden="true" aria-label="<mt:trans phrase="View Published">"></i></button>
+      </mt:if>
+      </div>
+      <input type="hidden" id="__permalink" value="<mt:if name="_show_both"><mt:var name="object_url" escape><mt:else><mt:var name="__permalink"></mt:if>">
+      <input type="hidden" id="__permalink_published" value="<mt:var name="__permalink">">
+    </div>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="assets/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="assets/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="assets/js/jquery.fileupload.js"></script>
+<script>
+$('#view-file').click(function(){
+    var viewlink = '<mt:var name="object_url">';
+    window.open( viewlink, '_blank');
+});
+$('#view-published').click(function(){
+    var viewlink = '<mt:var name="__permalink">';
+    window.open( viewlink, '_blank');
+});
+var DropZone = document.getElementById('drop-zone');
+DropZone.addEventListener('dragover', function (event) {
+    $('#drop-zone').css('background-color','#ddf');
+});
+DropZone.addEventListener('dragleave', function (event) {
+    $('#drop-zone').css('background-color','#fff');
+});
+$('#drop-zone').css('border','3px dashed #ccc');
+$('#drop-zone').css('padding','12px');
+$('.fileinput-button').css('margin','12px 0px');
+var uploading = false;
+$(function () {
+    'use strict';
+    var url = '<mt:var name="script_uri">?__mode=fileuploader_upload&magic_token=<mt:var name="magic_token" escape>&workspace_id=<mt:var name="workspace_id">&request_id=<mt:property name="request_id" escape>&chunk_upload=1';
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        maxChunkSize: <mt:if tag="property" name="fileuploader_max_chunk_size"><mt:property name="fileuploader_max_chunk_size" cast_to="int"><mt:else>1048576</mt:if>,
+        <mt:if tag="property" name="fileuploader_upload_size_limit">maxFileSize: <mt:property name="fileuploader_upload_size_limit" cast_to="int">,</mt:if>
+        dropZone: $("#drop-zone"),
+        add: function (e, data) {
+            if ( uploading == true ) {
+                alert("<mt:trans phrase="You cannot upload multiple files at once.">");
+                return false;
+            } else {
+                if ( $('#upload-file-magic').val() ) {
+                    $.post("<mt:var name="script_uri">",
+                      {
+                        '__mode': 'start_chunk_upload',
+                        'magic_token' : '<mt:var name="magic_token" escape>',
+                        'request_id': '<mt:property name="request_id" escape>',
+                        'upload-file-magic' : $('#upload-file-magic').val(),
+                      }
+                    );
+                }
+            }
+            uploading = true;
+            data.submit();
+        },
+        done: function (e, data) {
+            if (!data.result.files) {
+                var error = data.result.message;
+                $('#progress .progress-bar').css(
+                    'width', 0
+                );
+                alert("<mt:trans phrase="An error occurred while uploading.">"+' (' + error + ')');
+                return;
+            }
+            $.each(data.result.files, function (index, file) {
+                $('#files').html('');
+                file.name = escape_html( decodeURIComponent(file.name) );
+                var basename = escape_html( file.basename );
+                file.basename = escape_html( decodeURIComponent(file.basename) );
+                file.hashed_name = escape_html( file.hashed_name );
+                file_class = escape_html( file_class );
+                $('<span/>').text(file.name).appendTo('#files');
+                $('#upload-file-magic').val(file.magic);
+              <mt:ifcomponent component="ImageInfo">
+                var upload_file_magic = file.magic;
+                upload_file_magic = upload_file_magic.replace( /\-file$/, '' );
+                var upload_file_magic_url = '<mt:var name="script_uri">?__mode=get_imageinfo_dialog&_model=<mt:var name="model">&id=<mt:var name="request.id" escape>&view=file<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&_screen_id=' + upload_file_magic;
+                $('#info-file_path').attr('data-href', upload_file_magic_url);
+                $('#files-file_path-verified').attr('id', 'files-file-verified');
+              </mt:ifcomponent>
+                var file_class = file.class;
+                $('#class').val(file_class);
+                $('#mime_type').val(file.type);
+                $('#size').val(file.size);
+                $('#image_width').val(file.width);
+                $('#image_height').val(file.height);
+                $('#file_ext').val(file.extension);
+                <mt:property name="no_encode_filename" setvar="no_encode_filename">
+                <mt:property name="encode_filename_compat" setvar="encode_filename_compat">
+                <mt:property name="hash_multibyte_filename" setvar="hash_multibyte_filename">
+                <mt:if name="encode_filename_compat">
+                  <mt:var name="no_encode_filename" value="0">
+                </mt:if>
+                <mt:if name="hash_multibyte_filename">
+                $('#file_name').val(file.hashed_name + '.' + file.extension);
+                <mt:elseif name="no_encode_filename">
+                $('#file_name').val(file.name);
+                <mt:else>
+                $('#file_name').val(basename + '.' + file.extension);
+                </mt:if>
+                if (! $('#label').val() ) {
+                    if ( file.basename ) {
+                        $('#label').val(file.basename);
+                    } else {
+                        $('#label').val(file.name);
+                    }
+                }
+                var file_size = file.size;
+                if ( file_size >= 1048576 ) {
+                    file_size = Math.round( ( file_size / 1048576 )*10 )/10 + 'MB';
+                } else if ( file_size >= 1024 ) {
+                    file_size = Math.round( ( file_size / 1024 )*10 )/10 + 'KB';
+                } else {
+                    file_size = file_size + 'Byte';
+                }
+                if ( file_class == 'image' || file.extension == 'svg' ) {
+                    var thumbnail = 'data:' + file.type + ';base64,' + file.thumbnail;
+                    $('#image_preview-file').attr( 'src', thumbnail );
+                    $('#image_preview-file').removeClass( 'hidden' );
+                    $('#image_preview-file').css( 'max-width', '150px' );
+                    $('#image_preview-file').css( 'max-height', '150px' );
+                    $('#image_preview-file').show();
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-image-o');
+                } else if ( file.extension == 'zip' || file.extension == 'gz' || file.extension == 'tar') {
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-archive-o');
+                } else if ( file_class == 'pdf') {
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-pdf-o');
+                } else if ( file_class == 'video') {
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').addClass('fa-file-video-o');
+                } else {
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-o');
+                }
+                if ( file_class != 'image' && file.extension != 'svg' ) {
+                    $('#image_preview-file').hide();
+                }
+                <mt:ifcomponent component="ImageInfo">
+                if (file_class == 'image' && file.extension != 'svg' ) {
+                    $('#info-file_path').show();
+                } else {
+                    $('#info-file_path').hide();
+                }
+                </mt:ifcomponent>
+                var magic = file.magic;
+                magic = magic.replace( /\-file$/, '' );
+                var preview_url = '<mt:var name="script_uri">?__mode=view&_type=edit&_model=upload_file&view=file&id=<mt:var name="request.id" escape>&view=file&_screen_id=' + magic + '<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                $('#file_view-btn').attr( 'href', preview_url );
+                $('#clipboard-file').val( preview_url );
+                $('#__permalink').val( preview_url );
+                $('#__permalink_published').val( preview_url );
+                $('#file_view-btn').removeClass( 'hidden' );
+                $('#file_view-btn').show();
+                $('#clipboard-file-wrapper').removeClass( 'hidden' );
+                $('#clipboard-file-wrapper').show();
+                $('#_object_size').html(file_size);
+                if ( file.width ) {
+                    $('#_object_width').html(file.width + 'px') ;
+                    $('#_object_height').html(file.height + 'px');
+                } else {
+                    $('#_object_width').html('');
+                    $('#_object_height').html('');
+                }
+                $('#progress .progress-bar').css(
+                    'width', 0
+                );
+                uploading = false;
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+</script>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:unless name="request.id">
+      <mt:pluginsetting component="FileUploader" name="fileuploader_extra_path" workspace_id="$workspace_id" setvar="value">
+      <mt:unless name="value">
+        <mt:unless name="request.workspace_id">
+          <mt:getoption key="extra_path" escape setvar="value">
+        <mt:else>
+          <mt:var name="workspace_extra_path" escape setvar="value">
+        </mt:unless>
+        <mt:if name="model_out_path">
+          <mt:var name="model_out_path" escape add_slash setvar="model_out_path">
+          <mt:setvar name="value" value="$model_out_path" append="1">
+        </mt:if>
+      </mt:unless>
+    </mt:unless>
+    <input id="<mt:var name="__col_name__">" type="text" class="form-control watch-changed <mt:var name="ctrl_class">" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      <mt:if name="readonly">readonly</mt:if>>
+    <mt:var name="_hint">
+  </div>
+</div>

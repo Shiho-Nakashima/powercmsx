@@ -1,0 +1,10 @@
+<mt:includeblock module="(Media) Site Layout" without_contenner="1">
+  <mt:include module="(Media) Site Config">
+  <mt:trans phrase="Page not found." language="$language" setvar="archive_title">
+
+  <main class="content-section">
+    <div class="section-head">
+      <h1 class="section-title align-center mb-4 display-5"><mt:var name="archive_title" escape="single"></h1>
+    </div>
+  </main>
+</mt:includeblock>

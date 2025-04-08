@@ -1,0 +1,139 @@
+{
+    "label"       : "DisplayOptions",
+    "id"          : "displayoptions",
+    "component"   : "DisplayOptions",
+    "version"     : "1.7",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "doc_link"    : "https://powercmsx.jp/about/displayoptions.html",
+    "description" : "Make custom display options configurable for each workspace or system.",
+    "config_settings" : {
+        "displayoptions_v1_compat" : false,
+        "displayoptions_add_new_workspace" : false
+    },
+    "hooks": {
+        "displayoptions_post_init": {
+            "post_init" : {
+                "component" : "DisplayOptions",
+                "priority"  : 1,
+                "method" : "post_init"
+            }
+        },
+        "displayoptions_pre_view": {
+            "pre_view" : {
+                "component" : "DisplayOptions",
+                "priority"  : 10,
+                "method" : "pre_view"
+            }
+        }
+    },
+    "methods": {
+        "customize_menus": {
+            "component"  : "DisplayOptions",
+            "permission" : "create_displayoption",
+            "method"     : "customize_menus"
+        }
+    },
+    "menus": {
+        "customize_menus": {
+            "display_system" : 1,
+            "display_space" : 1,
+            "component"  : "DisplayOptions",
+            "mode"       : "customize_menus",
+            "label"      : "Customize Menus",
+            "permission" : "create_displayoption",
+            "order"      : 300
+        }
+    },
+    "tags": {
+        "function": {
+            "getmenuposition" : {
+                "component" : "DisplayOptions",
+                "method" : "hdlr_get_menu_position"
+            }
+        }
+    },
+    "callbacks": {
+        "displayoptions_template_source_edit": {
+            "edit" : {
+                "template_source" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "template_source_edit"
+                }
+            }
+        },
+        "displayoptions_template_source_list": {
+            "list" : {
+                "template_source" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "template_source_list"
+                }
+            }
+        },
+        "displayoptions_pre_load_objects": {
+            "table" : {
+                "pre_load_objects" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "pre_load_objects"
+                }
+            }
+        },
+        "displayoptions_pre_save_displayoption": {
+            "displayoption" : {
+                "pre_save" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "pre_save_displayoption"
+                }
+            }
+        },
+        "displayoptions_post_save_displayoption": {
+            "displayoption" : {
+                "post_save" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "post_save_displayoption"
+                }
+            }
+        },
+        "displayoptions_post_delete_displayoption": {
+            "displayoption" : {
+                "post_delete" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "post_delete_displayoption"
+                }
+            }
+        },
+        "displayoptions_post_save_table": {
+            "table" : {
+                "post_save" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "post_save_table"
+                }
+            }
+        },
+        "displayoptions_post_save_workspace": {
+            "workspace" : {
+                "post_save" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "post_save_workspace"
+                }
+            }
+        },
+        "displayoptions_permission_can_do": {
+            "permission" : {
+                "can_do" : {
+                    "component" : "DisplayOptions",
+                    "priority"  : 10,
+                    "method" : "permission_can_do"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+<textarea id="<mt:var name="__col_name__">" rows="<mt:if name="options"><mt:var name="options" escape><mt:else>5</mt:if>"
+  class="form-control watch-changed" name="<mt:var name="__col_name__">"
+  <mt:if name="readonly">readonly</mt:if>>
+<mt:var name="value"></textarea>
+  <p class="text-muted hint-block hidden" id="default_value-hint-wrapper">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <span id="options-hint"><mt:trans phrase="Enter the value to set in the hidden field."></span>
+  </p>
+  </div>
+</div>
+<script>
+$('#questiontype_id-selector').change(function(){
+    let class_name = $('[name=questiontype_id] option:selected').prop('class');
+    if ( class_name.indexOf('hidden') != -1 ) {
+        $('#default_value-hint-wrapper').show();
+    } else {
+        $('#default_value-hint-wrapper').hide();
+    }
+});
+let class_name = $('[name=questiontype_id] option:selected').prop('class');
+if ( class_name.indexOf('hidden') != -1 ) {
+    $('#default_value-hint-wrapper').show();
+} else {
+    $('#default_value-hint-wrapper').hide();
+}
+</script>

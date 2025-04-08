@@ -1,0 +1,75 @@
+{
+    "label": "Association",
+    "plural": "Associations",
+    "version": "1.1",
+    "primary": "name",
+    "auditing": 1,
+    "order": 510,
+    "menu_type": 5,
+    "display_system": 1,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "name": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "users": {
+            "type": "relation"
+        },
+        "created_on": {
+            "type": "datetime",
+            "default": null
+        },
+        "modified_on": {
+            "type": "datetime",
+            "default": null
+        },
+        "created_by": {
+            "type": "int",
+            "size": 11,
+            "default": null
+        },
+        "modified_by": {
+            "type": "int",
+            "size": 11,
+            "default": null
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "created_on": "created_on",
+        "modified_on": "modified_on",
+        "created_by": "created_by",
+        "modified_by": "modified_by"
+    },
+    "relations": {
+        "users": "user"
+    },
+    "sort_by": {
+        "id": "descend"
+    },
+    "autoset": [
+        "created_on",
+        "modified_on",
+        "created_by",
+        "modified_by"
+    ],
+    "edit_properties": {
+        "id": "hidden",
+        "name": "primary",
+        "users": "relation:user:nickname:dialog"
+    },
+    "list_properties": {
+        "id": "number",
+        "name": "primary",
+        "users": "reference:user:name",
+        "modified_on": "datetime",
+        "modified_by": "reference:user:nickname"
+    }
+}

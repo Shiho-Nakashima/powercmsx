@@ -1,0 +1,109 @@
+<div class="row form-group" id="<mt:var name="upload_col_name">_fileupload-wrapper">
+  <div class="col-lg-2">
+    <label for="<mt:var name="upload_col_name">_fileupload">
+    <mt:if name="upload_col_label">
+      <mt:var name="upload_col_label">
+    <mt:else>
+      <mt:trans phrase="File">
+    </mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 container-fluid">
+    <input type="hidden" name="<mt:var name="upload_col_name">_magic" value="" id="<mt:var name="upload_col_name">_upload-file-magic">
+    <div id="<mt:var name="upload_col_name">_drop-zone" class="pb-0">
+    <span id="<mt:var name="upload_col_name">_file-chooser" class="btn btn-success fileinput-button">
+        <span><mt:trans phrase="Select File..."></span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="<mt:var name="upload_col_name">_fileupload" type="file" name="files"
+            onfocus="$('#<mt:var name="upload_col_name">_file-chooser').css('border','2px solid green');"
+            onblur="$('#<mt:var name="upload_col_name">_file-chooser').css('border','none');">
+    </span>
+    &nbsp; <mt:var name="upload_col_additional_buttons">
+    <!-- The global progress bar -->
+    <div id="<mt:var name="upload_col_name">_progress" class="progress mb-2">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="<mt:var name="upload_col_name">_files" class="files mb-0 mt-0"></div>
+    <mt:var name="upload_col_additional_html">
+    </div>
+  </div>
+</div>
+<script>
+var DropZone_<mt:var name="upload_col_name"> = document.getElementById('<mt:var name="upload_col_name">_drop-zone');
+DropZone_<mt:var name="upload_col_name">.addEventListener('dragover', function (event) {
+    $('#<mt:var name="upload_col_name">_drop-zone').css('background-color','#ddf');
+});
+DropZone_<mt:var name="upload_col_name">.addEventListener('dragleave', function (event) {
+    $('#<mt:var name="upload_col_name">_drop-zone').css('background-color','#fff');
+});
+$('#<mt:var name="upload_col_name">_drop-zone').css('border','3px dashed #ccc');
+$('#<mt:var name="upload_col_name">_drop-zone').css('padding','12px');
+$('#<mt:var name="upload_col_name">_file-chooser').css('margin','12px 0px');
+var <mt:var name="upload_col_name">_uploading = false;
+<mt:unless name="upload_model">
+<mt:var name="model" setvar="upload_model">
+</mt:unless>
+$(function () {
+    'use strict';
+    var url = '<mt:var name="script_uri">?__mode=chunk_upload&magic_token=<mt:var name="magic_token" escape>&workspace_id=<mt:var name="workspace_id">&request_id=<mt:property name="request_id" escape>&chunk_upload=1&_model=<mt:var name="upload_model">&column=<mt:var name="upload_col_name">';
+    $('#<mt:var name="upload_col_name">_fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        dropZone: $("#<mt:var name="upload_col_name">_drop-zone"),
+        maxChunkSize: <mt:if tag="property" name="max_chunk_size"> <mt:property name="max_chunk_size" cast_to="int"><mt:else> 1047552</mt:if>,
+        maxFileSize:<mt:if tag="property" name="chunk_upload_size_limit"> <mt:property name="chunk_upload_size_limit" cast_to="int"><mt:else> 1073741824</mt:if>,
+        formData: {},
+        add: function (e, data) {
+            if ( <mt:var name="upload_col_name">_uploading == true ) {
+                alert("<mt:trans phrase="You cannot upload multiple files at once.">");
+                return false;
+            } else {
+                if ( $('#<mt:var name="upload_col_name">_upload-file-magic').val() ) {
+                    $.post("<mt:var name="script_uri">",
+                      {
+                        '__mode': 'start_chunk_upload',
+                        'magic_token' : '<mt:var name="magic_token" escape>',
+                        'request_id': '<mt:property name="request_id" escape>',
+                        'upload-file-magic' : $('#<mt:var name="upload_col_name">_upload-file-magic').val(),
+                      }
+                    );
+                }
+            }
+            <mt:var name="upload_col_name">_uploading = true;
+            data.submit();
+        },
+        done: function (e, data) {
+            if (!data.result.files) {
+                var error = data.result.message;
+                $('#<mt:var name="upload_col_name">_progress .progress-bar').css(
+                    'width', 0
+                );
+                alert("<mt:trans phrase="An error occurred while uploading.">"+' (' + error + ')');
+                <mt:var name="upload_col_name">_uploading = false;
+                return;
+            }
+            $.each(data.result.files, function (index, file) {
+                // alert(JSON.stringify(file));
+                $('#<mt:var name="upload_col_name">_files').html('');
+                $('<p/>').text(file.name).appendTo('#<mt:var name="upload_col_name">_files');
+                $('#<mt:var name="upload_col_name">_upload-file-magic').val(file.magic);
+                <mt:var name="upload_col_additional_js">
+                <mt:var name="upload_col_name">_uploading = false;
+                editContentChanged = true;
+                $('#<mt:var name="upload_col_name">_progress .progress-bar').css(
+                    'width','0%'
+                );
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#<mt:var name="upload_col_name">_progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+</script>

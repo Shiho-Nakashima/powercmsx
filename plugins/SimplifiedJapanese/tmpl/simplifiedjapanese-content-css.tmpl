@@ -1,0 +1,47 @@
+body {
+    <mt:if name="canvas_forecolor">color: <mt:var name="canvas_forecolor" escape>;</mt:if>
+    <mt:if name="canvas_bgcolor">background-color: <mt:var name="canvas_bgcolor" escape>;</mt:if>
+}
+<mt:if name="canvas_webfont">
+  <mt:if name="canvas_font_face" eq="Noto Sans JP">
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 900 !important;
+}
+  </mt:if>
+</mt:if>
+a {
+    color: #0275d8 !important;
+}
+h1 {
+    margin-top: 16px !important;
+    margin-bottom: 10px !important;
+    font-size: 2.1em !important;
+}
+h2 {
+    margin-top: 16px !important;
+    margin-bottom: 10px !important;
+    font-size: 1.55em !important;
+}
+h3 {
+    margin-top: 16px !important;
+    margin-bottom: 10px !important;
+    font-size: 1.24em !important;
+}
+h4, h5, h6 {
+    margin-top: 16px !important;
+    margin-bottom: 10px !important;
+}
+rt {
+    font-size: 50% !important;
+}
+<mt:if name="canvas_font_face" match="/^BIZ\sUD/">
+rt { transform: translateY(-0.5em)!important;margin-bottom: .33rem }
+</mt:if>
+* {
+    <mt:if name="canvas_font">font-family: <mt:var name="canvas_font" escape>;</mt:if>
+<mt:if name="canvas_webfont">
+    font-family: '<mt:var name="canvas_font_face">', <mt:var name="canvas_font"> !important;
+</mt:if>
+    line-height: 2.2rem !important;
+    <mt:var name="canvas_custom_style">
+}

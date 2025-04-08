@@ -1,0 +1,9 @@
+            ed.ui.registry.addIcon('pt-video', '<img src="<mt:if name="video_captions_assets_base"><mt:var name="video_captions_assets_base"><mt:else><mt:var name="prototype_path">plugins/VideoCaptions/assets</mt:if>/img/insert_video.png" alt="<mt:trans phrase="Insert Video" component="VideoCaptions">" style="height:18px;width:18px;margin-top:3px;">');
+            ed.ui.registry.addButton('pt-video', {
+                icon: 'pt-video',
+                tooltip: '<mt:trans phrase="Insert Video" component="VideoCaptions">',
+                onAction: function () {
+                    url = '<mt:var name="script_uri">?__mode=view&_type=list&_model=upload_file<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&dialog_view=1&select_system_filters=filter_class_video&_system_filters_option=video&_filter=upload_file&insert_editor=1&single_select=1&ref_model=<mt:var name="_model">&insert=' + ed.id + '&target=' + ed.id;
+                    $('#modal').modal().find('iframe').attr( 'src', url );
+                }
+            });

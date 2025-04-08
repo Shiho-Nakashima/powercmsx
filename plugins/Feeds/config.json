@@ -1,0 +1,54 @@
+{
+    "label"       : "Feeds",
+    "id"          : "feeds",
+    "component"   : "Feeds",
+    "version"     : "1.0",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Get and parse RSS Feed and set template variables.",
+    "config_settings" : {
+        "feeds_useragent" : "User-Agent: Mozilla/5.0"
+    },
+    "tags": {
+        "block": {
+            "feed" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feed"
+            },
+            "feedentries" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feedentries"
+            },
+            "getxml2vars" : {
+                "component" : "Feeds",
+                "method" : "hdlr_getxml2vars"
+            },
+            "getjson2vars" : {
+                "component" : "Feeds",
+                "method" : "hdlr_getjson2vars"
+            }
+        },
+        "function": {
+            "feedtitle" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feedtitle"
+            },
+            "feedlink" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feedlink"
+            },
+            "feedentrylink" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feedentrylink"
+            },
+            "feedentrytitle" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feedentrytitle"
+            },
+            "feedinclude" : {
+                "component" : "Feeds",
+                "method" : "hdlr_feedinclude"
+            }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+<mt:cacheblock cache_key="__footer__" workspace_id="$website_id">
+  <footer class="footer-section">
+    <div class="container">
+      <div class="media-container-row align-center white">
+        <div class="row social-row mb-2">
+          <div class="social-list pb-2">
+            <div class="soc-item">
+              <a href="" target="_blank">
+                <i class="fa fa-twitter-square fa-2x white" aria-hidden="true"></i>
+                <span class="sr-only">Twitter</span>
+              </a>
+            </div>
+            <div class="soc-item">
+              <a href="" target="_blank">
+                <i class="fa fa-facebook-square fa-2x white" aria-hidden="true"></i>
+                <span class="sr-only">Facebook</span>
+              </a>
+            </div>
+            <div class="soc-item">
+              <a href="" target="_blank">
+                <i class="fa fa-instagram fa-2x white" aria-hidden="true"></i>
+                <span class="sr-only">Instagram</span>
+              </a>
+            </div>
+            <div class="soc-item">
+              <a href="" target="_blank">
+                <i class="fa fa-youtube-square fa-2x white" aria-hidden="true"></i>
+                <span class="sr-only">YouTube</span>
+              </a>
+            </div>
+          </div>
+        </div>
+    <mt:menuitems basename="media_footer_navigation" cols="id">
+      <mt:if name="__first__">
+        <div class="row row-links">
+          <ul class="foot-menu">
+      </mt:if>
+            <li class="foot-menu-item"><a href="<mt:var name="__item_url__">" class="text-success"><mt:var name="__item_primary__" regex_replace="'/^\(Media\)\s/',''" language="$language" escape="single"></a></li>
+      <mt:if name="__last__">
+          </ul>
+        </div>
+      </mt:if>
+    </mt:menuitems>
+        <div class="row row-copirayt">
+          <p class="text mb-0 white align-center"><mt:var name="website_copyright" _eval="1"></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</mt:cacheblock>
+<mt:include module="(Media) Scripts">
+<mt:if name="use_furigana_js">
+<mt:include module="(Furigana) Footer HTML" />
+</mt:if>
+</body>
+</html>

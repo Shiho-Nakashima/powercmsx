@@ -1,0 +1,10 @@
+<div class="<mt:var name="widget_class" escape> widget-panel bn-<mt:widgetbasename>" style="background-color:<mt:widgetbackcolor escape>; color:<mt:widgetforecolor escape>;<mt:if tag="widgetimage">background-image:url(<mt:widgetimageurl relative><mt:if tag="widgetimageurl" like="?"><mt:else>?ts=<mt:widgetmodifiedon format="YmdHis"></mt:if>)</mt:if>">
+  <mt:widgetbackcolor escape setvar="widgetbackcolor">
+  <div style="background-color:rgba(<mt:hex2rgba hex="$widgetbackcolor">)">
+    <mt:if name="widget_class" eq="jumbotron">
+      <mt:widgetbody convert_breaks="auto" decode_html _eval="1">
+    <mt:else>
+      <mt:widgetbody convert_breaks="auto" _eval="1">
+    </mt:if>
+  </div>
+</div>

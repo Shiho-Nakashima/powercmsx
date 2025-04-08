@@ -1,0 +1,134 @@
+<mt:setvarblock name="alert_close">
+<button type="button" class="close" data-dismiss="alert" aria-label="<mt:trans phrase="Close">">
+  <span aria-hidden="true">&times;</span>
+</button>
+</mt:setvarblock>
+<mt:if name="request.skip_proccess_running">
+  <div id="header-alert-message" class="alert alert-warning" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="Skipped because another ax-core check process is running." component="AxeRunner">
+    <mt:trans phrase="Please try again after a while." component="AxeRunner">
+  </div>
+  <script>
+  $('#header-alert-message').focus();
+  </script>
+</mt:if>
+<mt:if name="request.rebuilt_report">
+  <div id="header-alert-message" class="alert alert-info" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="A11Y Check Summary has been updated." component="AxeRunner">
+  </div>
+  <script>
+  $('#header-alert-message').focus();
+  </script>
+</mt:if>
+<mt:if name="request.background_proccess_running">
+  <div id="header-alert-message" class="alert alert-info" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:var name="request.apply_actions" setvar="apply_actions">
+    <mt:if name="apply_actions" eq="1">
+      <mt:trans phrase="You applied an action to %s %s." params="'$apply_actions','$label'">
+    <mt:else>
+      <mt:trans phrase="You applied an action to %s %s." params="'$apply_actions','$plural'">
+    </mt:if>
+    <mt:trans phrase="Validation runs in the background process." component="AxeRunner">
+  </div>
+  <script>
+  $('#header-alert-message').focus();
+  </script>
+</mt:if>
+<mt:if name="a11y_report_summary">
+<mt:unless name="request.offset">
+<mt:var name="request.workspace_id" setvar="workspace_id">
+<script src="<mt:var name="prototype_path">assets/Chart.js/Chart.min.js"></script>
+<div class="card dashboard-widget mt-3" id="widget-axe-core-result">
+  <h2 class="card-header"><mt:trans phrase="A11Y Check Summary" component="AxeRunner"> ( <mt:trans phrase="Date Created"> : <mt:var name="a11y_report_date"> ) <a style="position:absolute; right: 5px;top:0px;font-size:90%;" class="mb-1 btn btn-secondary btn-sm" href="<mt:var name="script_uri">?__mode=axe_core_rebuild_report<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id" escape></mt:if>"><i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Update"></a></h2>
+  <div class="card-block" style="padding-bottom:18px;">
+<mt:if name="request.__mode" eq="view">
+  <mt:property name="axerunner_list_limit" setvar="list_limit">
+<mt:else>
+  <mt:setvar name="list_limit" value="10000000000000000">
+</mt:if>
+<mt:loop name="a11y_report_summary" limit="$list_limit">
+<mt:if name="__first__">
+<div style="width:280px;margin:auto">
+<canvas id="chart-1" height="120" width="120"></canvas>
+</div>
+<script>
+var ctx = document.getElementById('chart-1').getContext('2d');
+var data = {
+  datasets: [{
+    data: [<mt:loop name="a11y_report_summary" glue=","><mt:var name="__value__"></mt:loop>],
+    backgroundColor: [<mt:loop name="a11y_graph_colors" glue=",">'<mt:var name="__value__" escape>'</mt:loop>],
+    borderColor : 'rgb(100,100,100)',
+    borderWidth: 1
+  }],
+  labels: [<mt:loop name="a11y_report_summary" glue=",">'<mt:var name="__key__" escape>'</mt:loop>]
+};
+var options = {
+    legend: {
+        display: true,
+        position :'bottom'
+    },
+    cutoutPercentage: 40
+};
+var PieChart1 = new Chart(ctx,{
+    type: 'doughnut',
+    data: data,
+    options: options
+});
+</script>
+<mt:if name="request.__mode" eq="view">
+<p class="text-right" style="font-size:95%"><mt:var name="a11y_count_str"></p>
+</mt:if>
+<table class="table table-striped table-sm">
+<thead><th><mt:trans phrase="Rule ID" component="AxeRunner"></th><th><mt:trans phrase="Detail" component="AxeRunner"></th><th class="text-right" style="width:66px"><mt:trans phrase="Total"></th></thead></mt:if>
+<tr>
+<td><span style="width:100px;background-color:<mt:var name="a11y_graph_colors[$__index__]">">&nbsp; &nbsp; &nbsp;</span>
+  <a href="<mt:var name="a11y_report_hints[$__key__]">" target="_blank">
+    <mt:var name="__key__" escape> (<mt:var name="a11y_report_criterion[$__key__]">)
+    <i class="fa fa-external-link-square" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Open in new window"></span>
+  </a>
+  &nbsp; 
+  <a href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=axe_core_result&amp;select_system_filters=filter_axe_core_result_sc_<mt:var name="a11y_report_criterion[$__key__]" regex_replace="'/[^0-9]/',''">&amp;_system_filters_option=<mt:var name="a11y_report_criterion[$__key__]" encode_url>&amp;_filter=axe_core_result&amp;workspace_select=&amp;_filter=axe_core_result<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id" escape></mt:if>">
+    <i class="fa fa-search" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Filter"></span>
+  </a>
+</td>
+<td>
+<mt:var name="a11y_report_messages[$__key__]" escape>
+</td>
+<td class="text-right"><mt:var name="__value__" numify="1"></td>
+</tr>
+<mt:if name="__last__"></table>
+<div class="text-center mb-2" style="font-size:95%">
+<mt:trans phrase="No Problem Detected" component="AxeRunner"> : <mt:var name="a11y_no_problem">
+/
+<mt:trans phrase="Violation or Incomplete" component="AxeRunner"> : <mt:var name="a11y_has_problem">
+/
+<mt:trans phrase="Violations" component="AxeRunner"> : <mt:var name="a11y_violations">
+<mt:if name="a11y_incompletes">/
+<mt:trans phrase="Incompletes" component="AxeRunner"> : <mt:var name="a11y_incompletes">
+</mt:if>
+</div>
+<mt:if name="request.__mode" eq="view">
+<mt:if name="__total__" gt="$list_limit">
+<a class="btn btn-secondary btn-sm full" href="<mt:var name="script_uri">?__mode=axe_runner_summary<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id" escape></mt:if>"><mt:trans phrase="View All" component="AxeRunner"></a>
+</mt:if>
+</mt:if>
+</mt:if>
+</mt:loop>
+</div>
+</div>
+</mt:unless>
+<mt:else>
+  <div id="header-alert-message" class="alert alert-success" tabindex="0">
+    <i class="fa fa-universal-access" aria-hidden="true"></i>
+    <mt:trans phrase="No web accessibility errors were found." component="AxeRunner">
+    <a style="font-size:90%;" class="mb-1 btn btn-secondary btn-sm" href="<mt:var name="script_uri">?__mode=axe_core_rebuild_report<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id" escape></mt:if>"><i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Update"></a>
+  </div>
+  <script>
+  $('#header-alert-message').focus();
+  </script>
+</mt:if>

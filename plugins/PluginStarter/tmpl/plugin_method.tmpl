@@ -1,0 +1,3 @@
+        $app->ctx->vars['page_title'] = $this->translate( '<mt:var name="this_label">' );
+        $tmpl = $app->ctx->get_template_path( '<mt:var name="this_mode">.tmpl' );
+        echo $app->build_page( $tmpl );

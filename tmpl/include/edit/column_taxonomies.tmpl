@@ -1,0 +1,255 @@
+<mt:var name="edit" split=":" setvar="edit_props">
+<mt:var name="edit_props[1]" setvar="rel_model">
+<mt:var name="edit_props[2]" setvar="rel_col">
+<mt:var name="edit_props[3]" setvar="rel_type">
+<mt:var name="type" setvar="__col_type"><mt:ignore>The model has column named 'type'.</mt:ignore>
+<mt:if name="rel_type" eq="hierarchy">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+        <mt:if name="edit" like=":hierarchy">
+        <mt:var name="edit" split=":" setvar="hierarchy_props">
+        <mt:var name="hierarchy_props[1]" setvar="hierarchy_model">
+        <mt:var name="hierarchy_props[2]" setvar="hierarchy_col">
+        <mt:var name="hierarchy_props[3]" setvar="hierarchy_type">
+          <mt:if name="hierarchy_type" eq="hierarchy">
+            <mt:ifusercan action="hierarchy" model="$hierarchy_model" workspace_id="0">
+              <button type="button" class="btn btn-secondary btn-sm" aria-label="<mt:trans phrase="Manage">"
+                data-toggle="modal" data-target="#modal"
+                data-href="<mt:var name="script_uri">?__mode=view&amp;_type=hierarchy&amp;_model=<mt:var name="hierarchy_model" escape>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;dialog_type=<mt:if name="__col_type" eq="int">int<mt:else>relation</mt:if>">
+                <mt:modelproperty name="$hierarchy_model" property="plural" translate setvar="hierarchy_plural">
+                <i class="fa fa-sitemap" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Manage %s" params="$hierarchy_plural">"></i>
+                <span class="sr-only"><mt:trans phrase="Manage"></span>
+              </button>
+            </mt:ifusercan>
+          </mt:if>
+        </mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+    <mt:if name="__col_type" eq="relation">
+      <mt:setvartemplate name="nestable_obj_list">
+      <mt:setvar name="__hierarchy_out" value="0">
+      <mt:var name="$__rel_name__" index="0" setvar="relation_primary_id">
+      <mt:nestableobjects model="$rel_model" parent_id="$_parent_id">
+        <mt:if name="__first__"><ul class="nestableobjects-list" id="nestableobjects-list-<mt:var name="__col_name__">"></mt:if>
+          <li>
+            <button style="padding:0px 5px" <mt:if name="readonly">disabled</mt:if> id="<mt:var name="__col_name__">_id_<mt:var name="id">" type="button" class="<mt:var name="__col_name__">_primary_chooser btn btn-sm btn-outline-secondary">
+              <i class="fa <mt:if name="id" eq="$relation_primary_id">fa fa-star<mt:else>fa-check</mt:if>" style="<mt:if name="id" eq="$relation_primary_id">margin-right:0px;color:#00a;<mt:else>margin-right:3px;color:#777;font-size:70%</mt:if>" aria-hidden="true"></i>
+              <span class="sr-only"><mt:if name="id" eq="$relation_primary_id"><mt:trans phrase="Specified"><mt:else><mt:trans phrase="Unspecified"></mt:if></span>
+            </button>
+            &nbsp;
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+                id="<mt:var name="__col_name__">_cb_<mt:var name="id">"
+                class="custom-control-input watch-changed" name="<mt:var name="__col_name__">[]" value="<mt:var name="id">" <mt:ifinarray array="$__rel_name__" value="$id">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:ifinarray>>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if>
+              </span>
+            </label>
+            <mt:if name="has_children">
+              <mt:var name="id" setvar="_parent_id">
+              <mt:var name="nestable_obj_list">
+            </mt:if>
+          </li>
+        <mt:if name="__last__"></ul><mt:setvar name="__hierarchy_out" value="1"></mt:if>
+      </mt:nestableobjects>
+      <mt:unless name="__hierarchy_out">
+      <mt:ifusercan action="hierarchy" model="$hierarchy_model" workspace_id="0">
+      <mt:else>
+        <script>
+          $('#<mt:var name="__col_name__">-wrapper').hide();
+        </script>
+      </mt:ifusercan>
+      </mt:unless>
+      </mt:setvartemplate>
+    <mt:else>
+      <mt:setvartemplate name="nestable_obj_list">
+      <mt:nestableobjects model="$rel_model" parent_id="$_parent_id">
+        <mt:if name="__first__"><ul>
+          <mt:unless name="_parent_id">
+          <li class="nestable-unspecified">
+          <label class="custom-control custom-radio">
+            <input class="custom-control-input" type="radio" 
+              <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+            <mt:unless name="__col_value__">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:unless> name="<mt:var name="__col_name__">" value="">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"><mt:trans phrase="Unspecified"></span>
+          </label>
+          </li>
+          </mt:unless>
+        </mt:if>
+          <li <mt:unless name="__index__">class="nestable-first"</mt:unless>>
+            <label class="custom-control custom-radio">
+              <input class="custom-control-input watch-changed" type="radio"
+              <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+              <mt:if name="__col_value__" eq="$id">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:if> name="<mt:var name="__col_name__">" value="<mt:var name="id">">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if></span>
+            </label>
+            <mt:if name="has_children">
+              <mt:var name="id" setvar="_parent_id">
+              <mt:var name="nestable_obj_list">
+            </mt:if>
+          </li>
+        <mt:if name="__last__"></ul><mt:setvar name="__hierarchy_out" value="1"></mt:if>
+      </mt:nestableobjects>
+      <mt:unless name="__hierarchy_out">
+      <mt:ifusercan action="hierarchy" model="$hierarchy_model" workspace_id="0">
+      <mt:else>
+        <script>
+          $('#<mt:var name="__col_name__">-wrapper').hide();
+        </script>
+      </mt:ifusercan>
+      </mt:unless>
+      </mt:setvartemplate>
+    </mt:if>
+    <div class="relation_nestable_list">
+      <mt:setvar name="_parent_id" value="0">
+      <div id="nestable_list-<mt:var name="__col_name__">">
+      <mt:var name="nestable_obj_list">
+      </div>
+      <mt:if name="__col_type" eq="relation">
+      <input type="hidden" value="<mt:var name="relation_primary_id" escape>" id="<mt:var name="__col_name__">_primary_id" name="<mt:var name="__col_name__">_primary_id">
+        <mt:if name="rel_type" eq="hierarchy">
+        <script>
+        var orig_selected_id;
+        var selected_id = '<mt:var name="relation_primary_id" escape>';
+        $(document).on('click','.<mt:var name="__col_name__">_primary_chooser',function(){
+            orig_selected_id = $(this).attr('id');
+            selected_id = orig_selected_id.replace( '<mt:var name="__col_name__">_id_', '' );
+            $('#<mt:var name="__col_name__">_primary_id').val( selected_id );
+            $('.<mt:var name="__col_name__">_primary_chooser').each(function(){
+                if ( $(this).prop('id') == orig_selected_id ) {
+                    $(this).children('i').css('color', '#00a');
+                    $(this).children('i').css('font-size', '100%');
+                    $(this).children('i').prop('class', 'fa fa-star');
+                    $(this).children('i').css('margin-right', '0px');
+                    $(this).children('span').css('color', '#000');
+                    $(this).children('span').html('<mt:trans phrase="Specified">');
+                } else {
+                    $(this).children('i').css('color', '#777');
+                    $(this).children('i').css('font-size', '70%');
+                    $(this).children('i').css('margin-right', '4px');
+                    $(this).children('i').prop('class', 'fa fa-check');
+                    $(this).children('span').css('color', '#777');
+                    $(this).children('span').html('<mt:trans phrase="Unspecified">');
+                }
+            });
+            $('#<mt:var name="__col_name__">_cb_' + selected_id ).prop('checked', true );
+            return false;
+        });
+        $(document).on('change','input[name="<mt:var name="__col_name__">[]"]',function(){
+            if ( $(this).prop('checked') == false ) {
+                if ( selected_id == $(this).val() ) {
+                    $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('color', '#777');
+                    $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('font-size', '70%');
+                    $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').prop('class', 'fa fa-check');
+                    $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('margin-right', '4px');
+                    $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').css('color', '#777');
+                    $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').html('<mt:trans phrase="Unspecified">');
+                    $('#<mt:var name="__col_name__">_primary_id').val('');
+                    selected_id = null;
+                    $('.<mt:var name="__col_name__">_primary_chooser').each(function(){
+                        var cBox_id = $(this).attr('id');
+                        cBox_id = cBox_id.replace( '<mt:var name="__col_name__">_id_', '' );
+                        if ( $('#<mt:var name="__col_name__">_cb_' + cBox_id).prop('checked') ) {
+                            if (! selected_id ) {
+                                $('#<mt:var name="__col_name__">_primary_id').val(cBox_id);
+                                selected_id = cBox_id;
+                                $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').css('color', '#00a');
+                                $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').css('font-size', '100%');
+                                $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').prop('class', 'fa fa-star');
+                                $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').css('margin-right', '0px');
+                                $('#<mt:var name="__col_name__">_id_' + cBox_id).children('span').css('color', '#000');
+                                $('#<mt:var name="__col_name__">_id_' + cBox_id).children('span').html('<mt:trans phrase="Specified">');
+                            }
+                        }
+                    });
+                }
+            } else if (! selected_id ) {
+                $('#<mt:var name="__col_name__">_primary_id').val($(this).val());
+                selected_id = $(this).val();
+                $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('color', '#00a');
+                $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('font-size', '100%');
+                $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').prop('class', 'fa fa-star');
+                $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('margin-right', '0px');
+                $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').css('color', '#000');
+                $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').html('<mt:trans phrase="Specified">');
+            }
+        });
+        </script>
+        </mt:if>
+        </mt:if>
+    </div>
+  </div>
+</div>
+<mt:else>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="additional_taxonomies">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:if name="rel_type" eq="checkbox">
+    <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+    <mt:objectloop cols="$rel_cols" model="$rel_model" sort_by="$relation_sort_by" sort_order="$relation_sort_order" include_draft="1" workspace_id="$workspace_id">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if> class="custom-control-input watch-changed" name="<mt:var name="__col_name__">[]" value="<mt:var name="id">" <mt:ifinarray array="$__rel_name__" value="$id">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:ifinarray>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if></span>
+      </label>
+    </mt:objectloop>
+  <mt:else>
+  <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+  <ul id="<mt:var name="__col_name__">" class="relation-list">
+    <li <mt:if name="$__rel_name__">style="display:none" </mt:if>class="badge badge-default badge-relation" id="<mt:var name="__col_name__">-none">
+    <span><mt:trans phrase="(None selected)">&nbsp;</span>
+    </li>
+    <li class="hidden badge badge-default badge-relation badge-draggable" id="<mt:var name="__col_name__">-tmpl">
+    <span><mt:trans phrase="Default"></span>
+    <button type="button" class="btn btn-secondary btn-sm close-sm" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <input type="hidden" name="<mt:var name="__col_name__">[]" value="">
+    </li>
+  <mt:setvarblock name="selected_ids"><mt:loop name="$__rel_name__" glue=","><mt:var name="__value__"></mt:loop></mt:setvarblock>
+  <mt:loop name="$__rel_name__">
+    <li class="<mt:var name="__col_name__">-child badge badge-default badge-relation badge-draggable">
+    <span><mt:getobjectname id="$__value__" type="$edit"></span>
+    <button type="button" class="btn btn-secondary btn-sm close-sm" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <input type="hidden" name="<mt:var name="__col_name__">[]" value="<mt:var name="__value__" escape>"></li>
+  </mt:loop>
+  </ul>
+<mt:unless name="readonly">
+  <button type="button" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+    data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="rel_model" escape>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1"><mt:trans phrase="Add..."></button>
+</mt:unless>
+<script>
+$('#<mt:var name="__col_name__">').sortable ( {
+});
+$('#<mt:var name="__col_name__">').ksortable();
+</script>
+  </mt:if>
+  </div>
+</div>
+<mt:unless name="readonly">
+<mt:property name="taxonomy_permission" setvar="taxonomy_permission">
+<mt:if name="taxonomy_permission" ne="2">
+<div class="row form-group add-tags">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="text" placeholder="<mt:trans phrase="Please enter comma-separated taxonomies to add.">" class="form-control" id="additional_taxonomies" name="additional_taxonomies" value="<mt:if name="request.additional_taxonomies"><mt:var name="request.additional_taxonomies" escape></mt:if>">
+  </div>
+</div>
+</mt:if>
+</mt:unless>
+</mt:if>

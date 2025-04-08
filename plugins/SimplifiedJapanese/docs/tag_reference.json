@@ -1,0 +1,38 @@
+{
+    "makemp3" : {
+        "description" : "Generates an MP3 file and returns its URL.",
+        "attributes" : {
+            "path" : "File path under WorkSpace site path.",
+            "text" : "Text to read aloud.",
+            "language" : "To specify the language.",
+            "lang" : "Alias for 'language'.",
+            "js_caption" : "Generate a JavaScript file to display subtitles that sync with the audio."
+        }
+    },
+    "furiganajsonurl" : {
+        "description" : "When 'Generate JSON for Furigana is set in URL Mapping, a JSON URL will be output. When previewing, the preview admin URL will be output. When dynamic publishing, RESTful API EndPoint will be output.",
+        "attributes" : {
+            "mode" : "For dynamic publishing only, Specify '1' to add furigana, Specify '2' to add furigana and break with clauses and Specify '3' to only break with clauses.",
+            "api" : "Output API endpoint instead of statically output file's URL."
+        }
+    },
+    "modifier_furigana" : {
+        "description" : "Add Furigana as ruby markup.",
+        "attribute" : "Specify '1' to add furigana, Specify '2' to add furigana and break with clauses and Specify '3' to only break with clauses."
+    },
+    "modifier_hiragana" : {
+        "description" : "Converts kanji and katakana to hiragana.",
+        "attribute" : "Specify '2' converts kanji only."
+    },
+    "modifier_katakana" : {
+        "description" : "Converts kanji and hiragana to katakana.",
+        "attribute" : "Specify '2' converts kanji only."
+    },
+    "modifier_ssml2furigana" : {
+        "description" : "Convert the phoneme element to the ruby element, convert the katakana of the rt element and ph attributes to hiragana, and delete '."
+    },
+    "modifier_textnode_furigana_to_json" : {
+        "description" : "Returns text nodes in HTML and converted text in key-value format JSON.",
+        "attribute" : "Specify '1' to add furigana, Specify '2' to add furigana and break with clauses and Specify '3' to only break with clauses."
+    }
+}

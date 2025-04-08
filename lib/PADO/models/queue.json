@@ -1,0 +1,176 @@
+{
+    "label": "Queue",
+    "plural": "Queues",
+    "version": "1.1",
+    "primary": "key",
+    "order": 500,
+    "menu_type": 3,
+    "display_system": 1,
+    "display_space": 1,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "key": {
+            "type": "string",
+            "size": 255
+        },
+        "component": {
+            "type": "string",
+            "size": 50
+        },
+        "method": {
+            "type": "string",
+            "size": 50
+        },
+        "class": {
+            "type": "string",
+            "size": 50
+        },
+        "value": {
+            "type": "text"
+        },
+        "metadata": {
+            "type": "text"
+        },
+        "model": {
+            "type": "string",
+            "size": 50
+        },
+        "object_id": {
+            "type": "int",
+            "size": 11
+        },
+        "data": {
+            "type": "blob"
+        },
+        "interval": {
+            "type": "int",
+            "size": 11
+        },
+        "ts_job_id": {
+            "type": "int",
+            "size": 11
+        },
+        "max_retries": {
+            "type": "int",
+            "size": 11
+        },
+        "errors": {
+            "type": "int",
+            "size": 11
+        },
+        "created_by": {
+            "type": "int",
+            "size": 11
+        },
+        "created_on": {
+            "type": "datetime"
+        },
+        "start_on": {
+            "type": "datetime"
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "key": "key",
+        "component": "component",
+        "method": "method",
+        "class": "class",
+        "ts_job_id": "ts_job_id",
+        "created_on": "created_on",
+        "start_on": "start_on",
+        "workspace_id": "workspace_id"
+    },
+    "translate": [
+        "class"
+    ],
+    "options": {
+        "value": "3",
+        "metadata": "3"
+    },
+    "sort_by": {
+        "id": "ascend"
+    },
+    "autoset": [
+        "key",
+        "component",
+        "method",
+        "class",
+        "model",
+        "object_id",
+        "value",
+        "metadata",
+        "data",
+        "interval",
+        "ts_job_id",
+        "max_retries",
+        "errors",
+        "created_by",
+        "created_on",
+        "start_on",
+        "workspace_id"
+    ],
+    "unchangeable": [
+        "key",
+        "component",
+        "method",
+        "class",
+        "model",
+        "object_id",
+        "value",
+        "metadata",
+        "data",
+        "interval",
+        "ts_job_id",
+        "max_retries",
+        "errors",
+        "created_by",
+        "created_on",
+        "start_on",
+        "workspace_id"
+    ],
+    "edit_properties": {
+        "id": "hidden",
+        "key": "text",
+        "component": "text",
+        "method": "text",
+        "class": "text",
+        "model": "text_short",
+        "object_id": "number",
+        "value": "textarea",
+        "metadata": "textarea",
+        "ts_job_id": "number",
+        "max_retries": "number",
+        "errors": "number",
+        "created_by": "reference:user:nickname",
+        "created_on": "datetime",
+        "start_on": "datetime"
+    },
+    "list_properties": {
+        "id": "number",
+        "key": "text_short",
+        "component": "text_short",
+        "method": "text_short",
+        "class": "text_short",
+        "model": "text_short",
+        "object_id": "number",
+        "value": "text",
+        "metadata": "text",
+        "ts_job_id": "number",
+        "max_retries": "number",
+        "errors": "number",
+        "created_by": "reference:user:nickname",
+        "created_on": "datetime",
+        "start_on": "datetime",
+        "workspace_id": "reference:workspace:name"
+    }
+}

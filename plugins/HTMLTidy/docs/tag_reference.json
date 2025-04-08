@@ -1,0 +1,6 @@
+{
+    "modifier_htmltidy" : {
+        "description" : "Partially reflects repairs by the HTMLTidy plugin.",
+        "attribute" : "The 'tidy_css_to_head' setting is not reflected, but if you specify '2' for the attribute value, a style tag will be added in the head when publishing."
+    }
+}

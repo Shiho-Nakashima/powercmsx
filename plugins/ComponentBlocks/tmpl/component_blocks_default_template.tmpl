@@ -1,0 +1,39 @@
+<mt:block replace_curly_brackets remove_blank>
+<mt:setvartemplate name="tmpl_output_field">
+<mt:if name="edit" eq="editor"><mt:setvar name="use_editor" value="1" /></mt:if>
+<mt:ifblockissinglefield><mt:setvar name="is_single" value="1" /><mt:else><mt:setvar name="is_single" value="0" /></mt:ifblockissinglefield>
+<div class="form-group">
+<mt:if test="($edit === 'radio' || $edit === 'checkbox')">
+<mt:if name="label"><div class="label"><mt:var name="label" escape /></div></mt:if>
+<mt:var name="choiceOptions" component_blocks_options="choice_options" />
+<div class="choices">
+<mt:loop name="choice_options">
+<mt:if name="choice_options_label_only">
+{{mt:blockparts type="<mt:var name="edit" />" key="<mt:var name="key" />" label="<mt:var name="__value__" />" required="<mt:var name="required" />" /}}
+<mt:else>
+{{mt:blockparts type="<mt:var name="edit" />" key="<mt:var name="key" />" label="<mt:var name="__value__" />" value="<mt:var name="__value__" />" required="<mt:var name="required" />" /}}
+</mt:if>
+</mt:loop>
+</div>
+<mt:if name="hint"><p class="text-muted hint-block mb-0"><i class="fa fa-question-circle-o" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Hint"></span>&ensp;<mt:trans phrase="$hint" /></p></mt:if>
+<mt:else>
+{{mt:blockparts type="<mt:var name="edit" />"<mt:if name="relationModel"> relation_model="<mt:var name="relationModel" />"</mt:if><mt:if name="assetClass"> asset_class="<mt:var name="assetClass" />"</mt:if> key="<mt:var name="key" />"<mt:if name="is_single"> single="<mt:var name="is_single" />"</mt:if><mt:if name="singleChoice"> single_choice="1"</mt:if> index="<mt:var name="__index__" />"<mt:if name="label"> label="<mt:var name="label" />"</mt:if><mt:if name="hint"> hint="<mt:var name="hint" />"</mt:if> required="<mt:var name="required" />" /}}
+</mt:if>
+</div>
+</mt:setvartemplate>
+
+<ul class="alert-danger validation-messages" v-if="element.invalidMessages && element.invalidMessages.length"><li v-for="message in element.invalidMessages">{{message}}</li></ul>
+<mt:loop name="fields_definition">
+<mt:if name="edit" eq="editor"><mt:setvar name="use_editor" value="1" /><mt:else><mt:setvar name="use_editor" value="0" /></mt:if>
+<mt:ifblockissinglefield><mt:setvar name="is_single" value="1" /><mt:else><mt:setvar name="is_single" value="0" /></mt:ifblockissinglefield>
+<mt:var name="tmpl_output_field" />
+</mt:loop>
+
+<mt:loop name="repeat_fields_definition">
+<mt:if name="__first__"><mt:setvar name="use_field" value="1" />{{mt:blockpartsfields}}
+<div class="col"></mt:if>
+<mt:var name="tmpl_output_field" />
+<mt:if name="__last__"></div>
+{{/mt:blockpartsfields}}</mt:if>
+</mt:loop>
+</mt:block>

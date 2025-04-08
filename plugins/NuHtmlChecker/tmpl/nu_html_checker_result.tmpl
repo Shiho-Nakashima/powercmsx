@@ -1,0 +1,122 @@
+<mt:setvarblock name="html_head" append="1">
+<style>
+nav { position: absolute !important; }
+.checked-html code {
+  background-color: transparent;
+  color: #292b2c;
+}
+.checked-html b {
+  background-color: #ffffa0;
+  color: #a00;
+}
+</style>
+</mt:setvarblock>
+<mt:setvar name="header_alert_force" value="1">
+<mt:unless name="success">
+  <mt:count name="errors" setvar="cnt_errors">
+  <mt:setvarblock name="header_alert_message"><mt:var name="error_mssage"></mt:setvarblock>
+  <mt:setvar name="header_alert_class" value="$alert_class">
+<mt:else>
+  <mt:setvarblock name="header_alert_message">
+    <mt:trans phrase="Found no errors." component="NuHtmlChecker">
+  </mt:setvarblock>
+</mt:unless>
+<mt:trans phrase="HTML Check Result" component="NuHtmlChecker" setvar="page_title">
+<mt:include file="include/header.tmpl">
+<mt:unless name="success">
+<mt:trans phrase="At line" component="NuHtmlChecker" setvar="trans_at_lime">
+<mt:trans phrase="From line" component="NuHtmlChecker" setvar="trans_from_lime">
+<mt:trans phrase="to line" component="NuHtmlChecker" setvar="trans_to_lime">
+<mt:trans phrase="column" component="NuHtmlChecker" setvar="trans_column">
+<div class="container-fluid">
+<mt:loop name="errors">
+  <mt:if name="__first__">
+  <h2><small><mt:var name="page_title"></small></h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th style="width :7%; white-space:nowrap"><mt:trans phrase="Type" component="NuHtmlChecker"></th>
+      <th style="width :31%"><mt:trans phrase="Message" component="NuHtmlChecker"></th>
+      <th style="width :31%"><mt:trans phrase="Location" component="NuHtmlChecker"></th>
+      <th style="width :31%"><mt:trans phrase="Extract" component="NuHtmlChecker"></th></tr>
+    </thead>
+    <tbody>
+  </mt:if>
+    <tr>
+      <td><mt:trans phrase="$type" component="NuHtmlChecker"></td>
+      <td style="width :31%; max-width: 400px;overflow-x: auto;"><mt:var name="message"></td>
+      <td style="min-width: 200px;">
+      <mt:var name="location" setvar="__location">
+      <mt:var name="__location" replace="'At line','$trans_at_lime'" setvar="__location">
+      <mt:var name="__location" replace="'From line','$trans_from_lime'" setvar="__location">
+      <mt:var name="__location" replace="'to line','$trans_to_lime'" setvar="__location">
+      <mt:var name="__location" replace="'column','$trans_column'" setvar="__location">
+      <mt:var name="__location">
+      </td>
+      <td><div style="width:100% !important; max-width: 400px;overflow-x: scroll;"><mt:var name="extract"></div></td>
+    </tr>
+  <mt:if name="__last__">
+    </tbody>
+  </table>
+  </mt:if>
+</mt:loop>
+<hr>
+<h2><small><mt:trans phrase="HTML Source" component="NuHtmlChecker"></small></h2>
+<div class="mb-4 checked-html">
+<div style="width:100%;overflow: auto; font-size:90%"><ol><mt:var name="source" trim></ol></div>
+</div>
+<hr>
+<h2><small></small></h2>
+<div class="row mt-3 mb-3" style="margin-left:-6px;">
+<button id="re-edit-toggler" type="type" class="btn btn-secondary"><mt:trans phrase="Re-Edit" component="NuHtmlChecker"> <i id="re-edit-icon" class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+</div>
+<div class="mb-4 hidden" id="re-edit-wrapper">
+<form id="reassessment-form" action="<mt:var name="script_uri">" method="POST">
+<input type="hidden" name="__mode" value="nuhtmlchecker_htmlcheck">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" name="editor_height" value="" id="editor_height">
+<textarea id="edit-html" name="html" style="font-size:97%" class="form-control" rows="10"><mt:var name="html" escape></textarea>
+<div class="row mt-3" style="margin-left:-6px;">
+<button id="reassessment-btn" type="button" class="btn btn-primary"><mt:trans phrase="Reassessment" component="NuHtmlChecker"></button>
+</div>
+</form>
+<br class="mb-5">
+</div>
+<script>
+$('#re-edit-toggler').click(function(){
+    $('#re-edit-wrapper').toggle(100);
+    $('#edit-html').focus();
+    var iconClass = $('#re-edit-icon').attr('class');
+    if ( iconClass == 'fa fa-pencil-square-o' ) {
+        $('#re-edit-icon').attr('class', 'fa fa-eye-slash');
+        window.setTimeout( scrollToBottom, 500 );
+    } else {
+        $('#re-edit-icon').attr('class', 'fa fa-pencil-square-o');
+    }
+});
+function scrollToBottom () {
+    $(window).scrollTop( 9999999 );
+}
+$('#reassessment-btn').click(function(){
+    var editor_height = $('#edit-html').height();
+    $('#editor_height').val( editor_height );
+    $('#reassessment-form').submit();
+});
+<mt:if name="request.editor_height">
+$('#edit-html').height( <mt:var name="request.editor_height" cast_to="int"> );
+</mt:if>
+</script>
+</div>
+</mt:unless>
+
+<hr class="mt-5">
+<ul class="list-unstyled mt-4 mb-5">
+  <li class="float-lg-left mr-3"><a href="#page-title"><i class="fa fa-arrow-up" aria-hidden="true"></i> <mt:trans phrase="Top of Page"></a></li>
+  <li class="float-lg-left mr-3"><a href="https://validator.w3.org/nu/about.html" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i> <mt:trans phrase="About Nu Html Checker" component="NuHtmlChecker"></a></li>
+  <li class="float-lg-left mr-3"><a href="https://validator.w3.org/nu/about.html#issues" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i> <mt:trans phrase="Report an issue" component="NuHtmlChecker"></a></li>
+  <li class="float-lg-left mr-3"><a href="https://powercmsx.jp/contact/support.html" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i> <mt:trans phrase="Report about translation" component="NuHtmlChecker"></a></li>
+</ul>
+<br class="mb-5">
+<br class="mb-5">
+<mt:include file="include/footer.tmpl">

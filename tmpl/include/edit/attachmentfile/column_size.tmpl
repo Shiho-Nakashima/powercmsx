@@ -1,0 +1,13 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <input id="<mt:var name="__col_name__">" type="text" class="form-control form-control-sm p-2 watch-changed short" name="<mt:var name="__col_name__">" value="<mt:var name="value">" readonly>
+    <mt:var name="_hint">
+  </div>
+</div>

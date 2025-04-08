@@ -1,0 +1,64 @@
+(function(){
+  const audioCaptions = <mt:loop name="captions_loop"><mt:if name="__first__">{</mt:if><mt:if name="caption">
+  "<mt:var name="start">-<mt:var name="end">" : "<mt:var name="caption" escape="js">"<mt:unless name="__last__">,</mt:unless></mt:if><mt:if name="__last__">
+  }</mt:if></mt:loop>;
+  var audioPlayer = document.getElementById('<mt:if name="html_id"><mt:var name="html_id"><mt:else><mt:property name="simplifiedjapanese_audio_id"></mt:if>');
+  var captionArea = document.createElement('p');
+  captionArea.setAttribute('id', '<mt:if name="html_id">caption-area-<mt:var name="html_id"><mt:else><mt:property name="simplifiedjapanese_caption_id"></mt:if>');
+  captionArea.style.display = 'none';
+  captionArea.style.border = '1px solid gray';
+  captionArea.style.padding = '1rem';
+  captionArea.style.lineHeight = '2.8rem';
+  captionArea.style.borderRadius = '0.4rem';
+  captionArea.style.textAlign = '<mt:property name="simplifiedjapanese_caption_align">';
+  captionArea.style.backgroundColor = '<mt:property name="simplifiedjapanese_caption_backcolor">';
+  captionArea.style.color = '<mt:property name="simplifiedjapanese_caption_forecolor">';
+  captionArea.style.width = '100%';
+  audioPlayer.parentNode.insertBefore( captionArea, audioPlayer.nextSibling );
+  var audioCaptions_html = {};
+  var current_text = '';
+  Object.keys(audioCaptions).forEach(key => {
+    let text = document.createElement('span');
+    text.style.display = 'none';
+    text.innerHTML = audioCaptions[ key ];
+    captionArea.appendChild(text);
+    audioCaptions_html[ key ] = text;
+  });
+  var playEvent = null;
+  var stopEvent = null;
+  window.addEventListener('DOMContentLoaded', function(){
+    audioPlayer.addEventListener('play', (e)=> {
+      playEvent = setInterval( setCaption, 300 );
+    });
+    audioPlayer.addEventListener('pause', (e)=> {
+      clearInterval( playEvent );
+    });
+    audioPlayer.addEventListener('ended', (e)=> {
+      clearInterval( playEvent );
+      setTimeout( removeCaption, 1500 );
+    });
+  });
+  const setCaption = () => {
+    var currentSec = audioPlayer.currentTime;
+    Object.keys(audioCaptions).forEach(key => {
+      let startEnd = key.split( '-' );
+      if ( startEnd[0] < currentSec && currentSec < startEnd[1] ) {
+        captionArea.style.display = 'block';
+        if ( current_text != audioCaptions[ key ] ) {
+          current_text = audioCaptions[ key ];
+          Object.keys(audioCaptions_html).forEach(key2 => {
+            audioCaptions_html[ key2 ].style.display = 'none';
+          });
+          audioCaptions_html[ key ].style.display = '';
+        }
+      }
+    })
+  }
+  const removeCaption = () => {
+    current_text = '';
+    Object.keys(audioCaptions_html).forEach(key2 => {
+      audioCaptions_html[ key2 ].style.display = 'none';
+    });
+    captionArea.style.display = 'none';
+  }
+})();

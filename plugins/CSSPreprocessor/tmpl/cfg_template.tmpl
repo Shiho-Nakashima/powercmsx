@@ -1,0 +1,46 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_csspreprocessor_compile" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_csspreprocessor_compile" class="custom-control-input watch-changed"
+      type="checkbox" name="setting_csspreprocessor_compile" value="1" <mt:if name="setting_csspreprocessor_compile">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Automatically Compile" component="CSSPreprocessor"></span>
+    </label>
+    <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Automatically compiles when the extension of the file specified in the 'Link to File' matches one of 'sass', 'scss', 'styl', 'less' and the extension of the output file is 'css'." component="CSSPreprocessor">
+    <mt:property name="csspreprocessor_sass_cmd" setvar="sass_cmd">
+    <mt:if name="sass_cmd">
+      <mt:trans phrase="The execution engine of Sass is '%s'." params="$sass_cmd" component="CSSPreprocessor">
+    </mt:if>
+    </p>
+  </div>
+</div>
+<div class="row form-group<mt:unless name="setting_csspreprocessor_compile"> hidden</mt:unless>" id="csspreprocessor_minify-wrapper">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_csspreprocessor_minify" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_csspreprocessor_minify" class="custom-control-input watch-changed"
+      type="checkbox" name="setting_csspreprocessor_minify" value="1" <mt:if name="setting_csspreprocessor_minify">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Minify CSS" component="CSSPreprocessor"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_csspreprocessor_compile').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#csspreprocessor_minify-wrapper').show( 100 );
+    } else {
+        $('#csspreprocessor_minify-wrapper').hide( 100 );
+    }
+});
+</script>

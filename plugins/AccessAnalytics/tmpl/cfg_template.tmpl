@@ -1,0 +1,62 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_accessanalytics_app_url">
+      <mt:trans phrase="App URL" component="AccessAnalytics">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_accessanalytics_app_url" name="setting_accessanalytics_app_url" class="form-control" value="<mt:var name="setting_accessanalytics_app_url" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_accessanalytics_queries">
+      <mt:trans phrase="Query Parameters  (Comma Separated)" component="AccessAnalytics">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_accessanalytics_queries" name="setting_accessanalytics_queries" class="form-control" value="<mt:var name="setting_accessanalytics_queries" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_accessanalytics_activity_limit">
+      <mt:trans phrase="Aggregation Period(Days)" component="AccessAnalytics">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_accessanalytics_activity_limit" name="setting_accessanalytics_activity_limit" class="form-control num very-short" value="<mt:var name="setting_accessanalytics_activity_limit" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_accessanalytics_rank_limit">
+      <mt:trans phrase="Number of items displayed in the Ranking" component="AccessAnalytics">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_accessanalytics_rank_limit" name="setting_accessanalytics_rank_limit" class="form-control num very-short" value="<mt:var name="setting_accessanalytics_rank_limit" escape>">
+  </div>
+</div>
+<mt:unless name="request.workspace_id">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_accessanalytics_exclude_ips">
+      <mt:trans phrase="IP Addresses to exclude (Comma Separated)" component="AccessAnalytics">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_accessanalytics_exclude_ips" name="setting_accessanalytics_exclude_ips" class="form-control" value="<mt:var name="setting_accessanalytics_exclude_ips" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_accessanalytics_exclude_bots">
+      <mt:trans phrase="User Agent substring that does not allow recording (Comma Separated)" component="AccessAnalytics">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_accessanalytics_exclude_bots" name="setting_accessanalytics_exclude_bots" class="form-control" value="<mt:var name="setting_accessanalytics_exclude_bots" escape>">
+  </div>
+</div>
+</mt:unless>

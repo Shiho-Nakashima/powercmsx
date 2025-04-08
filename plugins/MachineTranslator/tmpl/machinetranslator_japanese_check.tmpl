@@ -1,0 +1,354 @@
+<mt:trans phrase="AI Translasion Helper" component="MachineTranslator" setvar="page_title">
+<mt:setvarblock name="page_title" append="1">
+<button type="button" class="mt-0 mb-1 re-edit-btn btn btn-secondary btn-sm" aria-label="<mt:trans phrase="Edit">">
+  <i class="fa fa-pencil-square-o" aria-hidden="true" id="edit-toggle"></i>
+</button>
+</mt:setvarblock>
+<mt:setvarblock name="html_head" append="1">
+<mt:if name="canvas_webfont">
+  <mt:if name="canvas_font_face" eq="RocknRoll One">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+  <mt:elseif name="canvas_font_face" eq="BIZ UDPMincho">
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&display=swap" rel="stylesheet">
+  <mt:else>
+    <link href="https://fonts.googleapis.com/css2?family=<mt:var name="canvas_font_face" replace="' ','+'">:wght@<mt:var name="canvas_font_weight">&display=swap" rel="stylesheet">
+  </mt:if>
+</mt:if>
+<style>
+.result-template { font-family: '<mt:var name="canvas_font_face" escape>', <mt:var name="canvas_font" escape>;}
+h2 {
+    font-size:1rem !important;
+    margin-bottom: 0.5rem;
+}
+.rounded {
+    border: 1px solid gray !important;
+}
+strong.p {
+    color: purple;
+}
+strong.r {
+    color: red;
+}
+strong.b {
+    color: blue;
+}
+strong.g {
+    color: green;
+}
+strong.d {
+    color: forestgreen;
+}
+strong.dp {
+    color: deeppink;
+}
+strong.db {
+    color: darkblue;
+}
+.translated {
+    color: red;
+}
+.reverse {
+    color: purple;
+}
+.N1{ background-color: #055; color: white; padding: 4px; }
+.N2{ background-color: #330; color: white; padding: 4px; }
+.N0{ background-color: black; color: white; padding: 4px; bold; }
+.ID{ background-color: green; color: white; padding: 4px; bold; }
+.ON{ background-color: green; color: white; padding: 4px; bold; }
+.BQ{ background-color: #FFFF6A; color: black; padding: 4px; }
+.PN{ background-color: #FFE5FF; color: black; padding: 4px; }
+.KAN{ background-color: #FFCC89; color: black; padding: 4px; }
+.GAI{ background-color: #FFCC89; color: black; padding: 4px; }
+.p-3 { line-height: 1.7rem }
+</style>
+</mt:setvarblock>
+<mt:property name="machinetranslator_difficulty_check" setvar="difficulty_check">
+<mt:include file="include/dialog_header.tmpl">
+
+<div class="alert alert-success hidden" id="header-result-message" tabindex="0" role="alert">
+  <mt:trans phrase="No warnings found." component="MachineTranslator">
+</div>
+
+<div id="__loader-bg">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<div>
+<div id="result-template" class="hidden">
+  <div class="row">
+    <div class="col-lg-2">
+      <h2><mt:trans phrase="Original Text" component="MachineTranslator"></h2>
+    </div>
+    <div class="col-lg-10">
+      <p class="original rounded p-3"></p>
+      <textarea rows="4" type="text" class="form-control edit-text mb-3 hidden"></textarea>
+    </div>
+  </div>
+  <div class="row form-group warnings-wrapper">
+    <div class="col-lg-2">
+      <h2><strong><mt:trans phrase="Warnings" component="MachineTranslator"></strong></h2>
+    </div>
+    <div class="col-lg-10">
+      <div class="rounded pt-3">
+        <ul class="warnings">
+        </ul>
+      </div>
+    </div>
+  </div>
+<mt:if name="difficulty_check">
+  <div class="row">
+    <div class="col-lg-2">
+      <h2><mt:trans phrase="Words Difficulty" component="MachineTranslator"></h2>
+    </div>
+    <div class="col-lg-10">
+      <p class="difficulty rounded p-3"></p>
+    </div>
+  </div>
+  <div class="row kango_wago-wrapper">
+    <div class="col-lg-2">
+      <h2><mt:trans phrase="Chinese Words/Japanese Words" component="MachineTranslator"></h2>
+    </div>
+    <div class="col-lg-10">
+      <p class="kango_wago rounded p-3"></p>
+    </div>
+  </div>
+<script>
+$('.kango_wago-wrapper').hide();
+</script>
+</mt:if>
+  <div class="row">
+    <div class="col-lg-2">
+      <h2><mt:trans phrase="Translation Result" component="MachineTranslator"></h2>
+    </div>
+    <div class="col-lg-10">
+      <p class="translated rounded p-3"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2">
+      <h2><mt:trans phrase="Reverse Translation Result" component="MachineTranslator"></h2>
+    </div>
+    <div class="col-lg-10">
+      <p class="reverse rounded p-3"></p>
+<p class="text-muted hint-block">
+<i class="fa fa-question-circle-o" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Hint"></span>
+  <mt:trans phrase="If the reverse-translation result is different from the original text, please consider correcting the original text." component="MachineTranslator">
+</p>
+    </div>
+  </div>
+<hr>
+</div>
+</div>
+<div class="mt-2">
+  <button type="button" id="dialog-cancel-btn" class="btn btn-secondary"><mt:trans phrase="Cancel"></button>
+  <button type="button" id="dialog-determine-btn" class="btn btn-primary"><mt:trans phrase="Determine" component="MachineTranslator"></button>
+  <button type="button" id="dialog-apply-to-source-btn" class="btn btn-info hidden"><mt:trans phrase="Apply to Source" component="MachineTranslator"></button>
+</div>
+<script>
+    $('.re-edit-btn').click(function(){
+        if ( $(this).attr('aria-label') == '<mt:trans phrase="Revalidation" component="MachineTranslator">' ) {
+            $('.edit-text').hide();
+            $('.original').show();
+            let html = '';
+            $('.edit-text').each(function(index, element){
+                html += element.value;
+            });
+            let url = '<mt:var name="script_uri">?__mode=machinetranslator_japanese_check&_type=japanese_check<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+            let data = {
+                text: html,
+                magic_token : '<mt:var name="magic_token">'
+            };
+            $('#__loader-bg').show();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data:JSON.stringify(data),
+                contentType: 'application/json',
+                dataType: 'json',
+                timeout: 10000,
+                success: function( responces ){
+                    if ( responces.message ) {
+                        alert( responces.message );
+                        $('#__loader-bg').hide();
+                    } else {
+                        $('.result-template').each(function(index, element){
+                            element.parentNode.removeChild( element );
+                        });
+                        let total_errors = false;
+                        let parentBlock = $('#result-template');
+                        let results = responces.results;
+                        $.each(results,function(index,responce){
+                            let addBlock = parentBlock.clone();
+                            addBlock.appendTo(parentBlock.parent());
+                            addBlock.removeAttr('id');
+                            addBlock.addClass('result-template');
+                            addBlock.show();
+                            addBlock.find('.original').html( responce.text );
+                            addBlock.find('.pronunciation').html( responce.pronunciation );
+                            <mt:if name="difficulty_check">
+                            addBlock.find('.difficulty').html( responce.difficulty );
+                            addBlock.find('.kango_wago').html( responce.kango_wago );
+                            if ( responce.kango_wago ) {
+                                addBlock.find('.kango_wago-wrapper').show();
+                            }
+                            </mt:if>
+                            addBlock.find('.translated').html( responce.translated );
+                            addBlock.find('.reverse').html( responce.reverse );
+                            addBlock.find('.edit-text').val( responce.original );
+                            errors = responce.errors;
+                            has_errors = false;
+                            $.each(errors,function(idx,val){
+                                addBlock.find('.warnings').append('<li>' + val + '</li>');
+                                has_errors = true;
+                                total_errors++;
+                            });
+                            if (! has_errors ) {
+                                addBlock.find('.warnings-wrapper').hide();
+                            }
+                        });
+                        if ( total_errors ) {
+                            $('#header-result-message').html('<mt:trans phrase="Warnings found." component="MachineTranslator">');
+                            $('#header-result-message').removeClass( 'alert-success' );
+                            $('#header-result-message').addClass( 'alert-warning' );
+                        } else {
+                            $('#header-result-message').html('<mt:trans phrase="No warnings found." component="MachineTranslator">');
+                            $('#header-result-message').removeClass( 'alert-warning' );
+                            $('#header-result-message').addClass( 'alert-success' );
+                        }
+                        $('#header-result-message').show();
+                        $('#header-result-message').focus();
+                        $('#__loader-bg').hide();
+                    }
+                },
+                error: function(){
+                    $('#__loader-bg').hide();
+                    alert( '<mt:trans phrase="An error occurred while translate content." component="MachineTranslator">' );
+                }
+            });
+            $('#dialog-apply-to-source-btn').show();
+            $('#edit-toggle').removeClass( 'fa-refresh' );
+            $('#edit-toggle').addClass( 'fa-pencil-square-o' );
+            $(this).attr( 'aria-label', '<mt:trans phrase="Edit">' );
+            return;
+        }
+        $('.edit-text').show();
+        $('.original').hide();
+        setTimeout(function(){
+            $('.edit-text').each(function(index, element){
+                if ( index == 1 ) {
+                    element.select();
+                }
+            });
+        },100 );
+        $('#edit-toggle').removeClass( 'fa-pencil-square-o' );
+        $('#edit-toggle').addClass( 'fa-refresh' );
+        $(this).attr( 'aria-label', '<mt:trans phrase="Revalidation" component="MachineTranslator">' );
+    });
+    var editor = parent.tinymce.activeEditor;
+    let html = editor.selection.getContent();
+    let innerHTML = editor.selection.getNode().innerHTML;
+    let outerHTML = editor.selection.getNode().outerHTML;
+    var selectEqual = ( html === innerHTML || html === outerHTML );
+    let url = '<mt:var name="script_uri">?__mode=machinetranslator_japanese_check&_type=japanese_check<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+    let data = {
+        text: html,
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $('#__loader-bg').show();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responces ){
+            if ( responces.message ) {
+                alert( responces.message );
+                $('#__loader-bg').hide();
+            } else {
+                let total_errors = false;
+                let parentBlock = $('#result-template');
+                let results = responces.results;
+                $.each(results,function(index,responce){
+                    let addBlock = parentBlock.clone();
+                    addBlock.appendTo(parentBlock.parent());
+                    addBlock.removeAttr('id');
+                    addBlock.addClass('result-template');
+                    addBlock.show();
+                    addBlock.find('.original').html( responce.text );
+                    addBlock.find('.pronunciation').html( responce.pronunciation );
+                    <mt:if name="difficulty_check">
+                    addBlock.find('.difficulty').html( responce.difficulty );
+                    addBlock.find('.kango_wago').html( responce.kango_wago );
+                    if ( responce.kango_wago ) {
+                        addBlock.find('.kango_wago-wrapper').show();
+                    }
+                    </mt:if>
+                    addBlock.find('.translated').html( responce.translated );
+                    addBlock.find('.reverse').html( responce.reverse );
+                    addBlock.find('.edit-text').val( responce.original );
+                    errors = responce.errors;
+                    has_errors = false;
+                    $.each(errors,function(idx,val){
+                        addBlock.find('.warnings').append('<li>' + val + '</li>');
+                        has_errors = true;
+                        total_errors++;
+                    });
+                    if (! has_errors ) {
+                        addBlock.find('.warnings-wrapper').hide();
+                    }
+                });
+                if ( total_errors ) {
+                    $('#header-result-message').html('<mt:trans phrase="Warnings found." component="MachineTranslator">');
+                    $('#header-result-message').removeClass( 'alert-success' );
+                    $('#header-result-message').addClass( 'alert-warning' );
+                }
+                $('#header-result-message').show();
+                $('#header-result-message').focus();
+                $('#__loader-bg').hide();
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while translate content." component="MachineTranslator">' );
+        }
+    });
+    $('#dialog-determine-btn').click(function(){
+        let textTranslated = '';
+        $('.translated').each(function(index, element){
+            textTranslated += textTranslated ? ' ' + element.innerHTML : element.innerHTML;
+        });
+        editor.insertContent( textTranslated );
+        if ( selectEqual ) {
+            editor.selection.select( editor.selection.getNode() );
+        }
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+        window.parent.$('#modal').modal('hide');
+    });
+    $('#dialog-apply-to-source-btn').click(function(){
+        let textEdited = '';
+        $('.edit-text').each(function(index, element){
+            textEdited += element.value;
+        });
+        editor.insertContent( textEdited );
+        if ( selectEqual ) {
+            editor.selection.select( editor.selection.getNode() );
+        }
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+        window.parent.$('#modal').modal('hide');
+    });
+    $(document).keydown(evnt_keydown);
+    function evnt_keydown(e) {
+        if ( e.keyCode == 27 ) {
+            window.location.href = '<mt:var name="script_uri">?__mode=loading';
+            window.parent.$('#modal').modal('hide');
+        }
+    }
+    $('#dialog-cancel-btn').click(function(){
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+        window.parent.$('#modal').modal('hide');
+        return false;
+    });
+</script>
+<mt:include file="include/dialog_footer.tmpl">

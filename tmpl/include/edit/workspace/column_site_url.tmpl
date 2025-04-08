@@ -1,0 +1,30 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <div class="input-group">
+      <input id="<mt:var name="__col_name__">" type="url" name="<mt:var name="__col_name__">" value="<mt:if name="value"><mt:var name="value"><mt:else><mt:var name="site_url" escape></mt:if>"
+        <mt:if name="readonly">readonly</mt:if> class="watch-changed form-control <mt:var name="ctrl_class">" placeholder="https://">
+      <div class="input-group-addon" style="border: 1px solid <mt:var name="user_control_border" escape>;border-left:none">
+      <a href="javascript:void(0);" id="<mt:var name="__col_name__">-btn">
+        <i class="fa fa-external-link" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Open in new window"></span>
+      </a>
+      </div>
+    </div>
+    <mt:var name="_hint">
+  </div>
+</div>
+<script>
+$('#<mt:var name="__col_name__">-btn').click(function(){
+    var url = $('#<mt:var name="__col_name__">').val();
+    if ( url && url.match( /^https?:\/\// ) ) {
+        window.open( url, '_blank');
+    }
+    return false;
+});
+</script>

@@ -1,0 +1,34 @@
+{
+    "label": "AssetScope",
+    "id": "assetscope",
+    "component": "AssetScope",
+    "description": "Make assets of other scopes available for each scope.",
+    "version": "1.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "settings": {
+        "assetscope_workspace_id": "",
+        "assetscope_label_column": "label"
+    },
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system": 1,
+    "cfg_space": 1,
+    "hooks": {
+        "assetscope_start_app": {
+            "start_app": {
+                "component": "AssetScope",
+                "priority": 2,
+                "method": "start_app"
+            }
+        }
+    },
+    "tasks": {
+        "assetscope_move_assets": {
+            "label": "Move Assets Scope",
+            "component": "AssetScope",
+            "method": "move_assets",
+            "frequency": 1,
+            "priority": 100
+        }
+    }
+}

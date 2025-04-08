@@ -1,0 +1,631 @@
+{
+    "label"        : "Media",
+    "id"           : "media",
+    "version"      : "1.0",
+    "thumbnail"    : "theme.png",
+    "author"       : "Alfasado Inc.",
+    "author_link"  : "https://alfasado.net/",
+    "description"  : "Simple information site theme based on Bootstrap.",
+    "objects"      : ["phrase", "category", "entry", "folder", "page", "question", "form", "menu", "asset"],
+    "plugins"      : ["AccessAnalytics"],
+    "component"    : "ThemeMedia",
+    "publish_theme": true,
+    "views": {
+        "facd24c0-f4c8-4486-985b-99757ae9f937": {
+            "name": "(Media) .htaccess",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_htaccess",
+            "urlmappings": [
+                {
+                    "name": "(Media) .htaccess",
+                    "model": "template",
+                    "mapping": ".htaccess",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "70cb5c0d-0af8-4c93-82ff-8d8d895de79f": {
+            "name": "(Media) Bootstrapper",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_bootstrapper",
+            "urlmappings": [
+                {
+                    "name": "(Media) Bootstrapper",
+                    "model": "template",
+                    "mapping": "pt-view.php",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "d9cd3c97-3799-40fd-a9fb-3067d4b91278": {
+            "name": "(Media) Stylesheet",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_stylesheet",
+            "urlmappings": [
+                {
+                    "name": "(Media) Stylesheet",
+                    "model": "template",
+                    "mapping": "css\/theme.css",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "8e27fbb0-66ae-416f-9b07-94f8761e8211": {
+            "name": "(Media) Top Page",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_main_page",
+            "urlmappings": [
+                {
+                    "name": "(Media) Top Page",
+                    "model": "template",
+                    "mapping": "index.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1",
+                    "triggers": [
+                        "entry"
+                    ]
+                }
+            ]
+        },
+        "e9654dce-e35c-440a-ac3e-1cedea1d318e": {
+            "name": "(Media) Page",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_page",
+            "urlmappings": [
+                {
+                    "name": "(Media) Page",
+                    "model": "page",
+                    "mapping": "<mt:pagefoldercontext><mt:folderpath>\/<\/mt:pagefoldercontext><mt:pagebasename>.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1",
+                    "is_preferred": "1"
+                }
+            ]
+        },
+        "9de251d2-d8cc-494c-bed7-763fe959b23b": {
+            "name": "(Media) Entry",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_entry",
+            "urlmappings": [
+                {
+                    "name": "(Media) Entry",
+                    "model": "entry",
+                    "mapping": "<mt:entrycategories limit=\"1\"><mt:categorypath \/>\/<\/mt:entrycategories><mt:entrybasename>.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1",
+                    "is_preferred": "1"
+                }
+            ]
+        },
+        "0d34292c-d42f-4217-a201-92820b034903": {
+            "name": "(Media) Ranking",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_ranking",
+            "urlmappings": [
+                {
+                    "name": "(Media) Ranking",
+                    "model": "template",
+                    "mapping": "ranking.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1",
+                    "triggers": [
+                        "entry"
+                    ]
+                }
+            ]
+        },
+        "76611a5c-b0d9-45b7-ba96-398ed29701f9": {
+            "name": "(Media) Widget : Ranking - Async Parts",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_widget_ranking_async",
+            "urlmappings": [
+                {
+                    "name": "(Media) Widget : Ranking - Async Parts",
+                    "model": "template",
+                    "mapping": "parts\/widgets\/ranking.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "6",
+                    "container": "",
+                    "container_scope": "0",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "5711d030-f266-420b-850d-e8e737033b19": {
+            "name": "(Media) Latest Entries",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_entries",
+            "urlmappings": [
+                {
+                    "name": "(Media) Latest Entries",
+                    "model": "template",
+                    "mapping": "latest_entries.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "entry",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                },
+                {
+                    "name": "(Media) Fiscal Yearly",
+                    "model": "template",
+                    "mapping": "<mt:archivedate format=\"Y\">\/index.html",
+                    "date_based": "Fiscal-Yearly",
+                    "fiscal_start": "4",
+                    "publish_file": "1",
+                    "container": "entry",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "8791837a-7a30-4d78-afc3-e1696793bee9": {
+            "name": "(Media) Category",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_category",
+            "urlmappings": [
+                {
+                    "name": "(Media) Category",
+                    "model": "category",
+                    "mapping": "<mt:categorypath>\/index.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "entry",
+                    "container_scope": "1",
+                    "trigger_scope": "1",
+                    "is_preferred": "1"
+                }
+            ]
+        },
+        "3eb491b5-f79f-4854-ac59-f4f772fe612f": {
+            "name": "(Media) Latest Entries by Category - Async Parts",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_latest_entries_by_category_async",
+            "urlmappings": [
+                {
+                    "name": "(Media) Latest Entries by Category - Async Parts",
+                    "model": "category",
+                    "mapping": "parts\/latest_entries\/<mt:categoryid>.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "entry",
+                    "container_scope": "0",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "2dc604cd-2eb3-41f4-9282-8da006732f5b": {
+            "name": "(Media) Tag",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_tag",
+            "urlmappings": [
+                {
+                    "name": "(Media) Tag",
+                    "model": "tag",
+                    "mapping": "<mt:unless tag=\"tagname\" match=\"\/^@\/\">tag-<mt:tagid>\/index.html<\/mt:unless>",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "entry",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "b904000f-1d5c-433c-b32d-e5d951398b7a": {
+            "name": "(Media) Form",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_form",
+            "urlmappings": [
+                {
+                    "name": "(Media) Form",
+                    "model": "form",
+                    "mapping": "contact\/<mt:formbasename>.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1",
+                    "is_preferred": "1"
+                }
+            ]
+        },
+        "929cd9e2-f789-4ea1-9425-4c7f76a2c8ed": {
+            "name": "(Media) Search",
+            "subject": "",
+            "status": "1",
+            "class": "Archive",
+            "basename": "media_search",
+            "urlmappings": [
+                {
+                    "name": "(Media) Search",
+                    "model": "template",
+                    "mapping": "search.html",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "6",
+                    "container": "",
+                    "container_scope": "1",
+                    "trigger_scope": "1"
+                }
+            ]
+        },
+        "aa8d2ece-2ca8-4ec6-aaf9-78a9987ac2a3": {
+            "name": "(Media) RSS",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "media_rss",
+            "urlmappings": [
+                {
+                    "name": "(Media) RSS",
+                    "model": "template",
+                    "mapping": "index.xml",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1",
+                    "container": "",
+                    "container_scope": "0",
+                    "trigger_scope": "1",
+                    "triggers": [
+                        "entry"
+                    ]
+                }
+            ]
+        },
+        "e6f5d002-cf23-4943-bbd7-04885cc8c3ce": {
+            "name": "(Media) Page not found",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "404-error"
+        },
+        "5d40f918-11eb-4b47-bed9-c5baeb01f1d5": {
+            "name": "(Media) Site Config",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_site_config"
+        },
+        "e5d04b26-39be-41ca-ad05-7b449e3b1ecc": {
+            "name": "(Media) OGP Image URL",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_ogp_image_url"
+        },
+        "b96af66e-2682-4558-afeb-334d2788455c": {
+            "name": "(Media) Site Layout",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_site_layout"
+        },
+        "fe6cd004-8d5f-4063-8708-c73d583d96c6": {
+            "name": "(Media) Header",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_header"
+        },
+        "7b2c2544-70fb-4ade-98b4-f125d29ad5e0": {
+            "name": "(Media) HTML Header",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_html_header"
+        },
+        "3b9bace5-31e4-4457-9c4c-752fa6c5902e": {
+            "name": "(Media) Footer",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_footer"
+        },
+        "9112d283-7bc2-48b4-8e91-777c220e4eba": {
+            "name": "(Media) Scripts",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_scripts"
+        },
+        "54a5f2de-174c-4407-b3df-1069d84f8d9e": {
+            "name": "(Media) Scripts - AccessTracking",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_scripts_accesstracking"
+        },
+        "e931ae02-baac-4d25-af4d-0f04e6ce11b4": {
+            "name": "(Media) Side Bar",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_side_bar"
+        },
+        "48dc348f-6fd6-462c-bd23-f7384948d156": {
+            "name": "(Media) Widget : Date Based Archives",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_widget_date_based_archives"
+        },
+        "decddbe4-a7ec-4610-86e6-087505bb6364": {
+            "name": "(Media) Widget : Category Archives",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_widget_category_archives"
+        },
+        "50ba6ccc-eaa8-4bd6-ae3c-b435168fa4a5": {
+            "name": "(Media) Widget : Ranking",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_widget_ranking"
+        },
+        "179dc1df-2863-4f4d-887a-b127027af735": {
+            "name": "(Media) List of Entries",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_list_of_entries"
+        },
+        "04ff12b9-bbc4-482a-9920-9960b5a5f7f2": {
+            "name": "(Media) Latest Entries by Category",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_latest_entries_by_category"
+        },
+        "9365df57-5ccd-4651-95f0-1a982c23cbd0": {
+            "name": "(Media) Pagination : Prev and Next",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_pagination_prevnext"
+        },
+        "8d5296ac-0b79-4bc5-9618-4362774d8b36": {
+            "name": "(Media) Comment Form",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_comment_form"
+        },
+        "a3460a16-ed92-4611-8284-6c9967ca8170": {
+            "name": "(Media) Comments",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_comments"
+        },
+        "a0766e79-d36a-4b1b-bc15-f6a6f21b46df": {
+            "name": "(Media) Commnter's Picture",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_commnters_picture"
+        },
+        "9794faae-cd02-4143-995b-184e30624091": {
+            "name": "(Media) Contact Form",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_contact_form"
+        },
+        "d6137f8c-0901-4575-b3da-0070ce0f5457": {
+            "name": "(Media) Mail Footer",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "media_mail_footer"
+        },
+        "b6b3e0c0-8e46-4205-987f-fb7f9a53b33b": {
+            "name": "(Media) Entries LivePreview",
+            "class": "Module",
+            "basename": "media_entries_livepreview"
+        },
+        "5fb84cb4-8bf9-4da6-9be2-43c9620ee328": {
+            "name": "(Media) Notification of Inquiry",
+            "subject": "<mt:var name=\"form_name\" language=\"$language\" setvar=\"form_name\"><mt:trans phrase=\"(%s) The inquiry posted for %s has been received.\" params=\"'$app_name','$form_name'\">",
+            "status": "2",
+            "class": "Mail",
+            "basename": "media_form_notify"
+        },
+        "5d5da5a0-93d7-46e5-8479-af304a1d4384": {
+            "name": "(Media) Thanks for Inquiry",
+            "subject": "<mt:var name=\"form_name\" language=\"$language\" setvar=\"form_name\"><mt:trans phrase=\"(%s) The inquiry you posted for %s has been received.\" params=\"'$app_name','$form_name'\">",
+            "status": "2",
+            "class": "Mail",
+            "basename": "media_form_thanks"
+        },
+        "114f0988-87ca-4db7-9980-7663fbd43d2a": {
+            "name": "(Media) Notification of Comment",
+            "subject": "<mt:var name=\"object_name\" language=\"$language\" setvar=\"object_name\"><mt:trans phrase=\"(%s) The comment posted for %s has been received.\" params=\"'$app_name','$object_name'\">",
+            "status": "2",
+            "class": "Mail",
+            "basename": "comment_notify"
+        },
+        "7b4675bc-d223-461d-8251-d131781af3d6": {
+            "name": "(Media) Thanks for Comment",
+            "subject": "<mt:var name=\"object_name\" language=\"$language\" setvar=\"object_name\"><mt:trans phrase=\"(%s) The comment you posted for %s has been received.\" params=\"'$app_name','$object_name'\">",
+            "status": "2",
+            "class": "Mail",
+            "basename": "comment_thanks"
+        },
+        "e544197c-9c1a-4960-b738-ff31e42cb1f7": {
+            "name": "(Furigana) Button HTML",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "furigana_header_html",
+            "linked_file": ""
+        },
+        "36a46be5-6e39-4d75-a94a-6848c3640330": {
+            "name": "(Furigana) Footer HTML",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "furigana_footer_html",
+            "linked_file": ""
+        },
+        "d752e32f-f8c1-4022-b424-609f447e9af4": {
+            "name": "(Furigana) Head HTML",
+            "subject": "",
+            "status": "2",
+            "class": "Module",
+            "basename": "furigana_head_html",
+            "linked_file": ""
+        },
+        "ac043a70-2dd1-488b-a85b-60098cd7aeb0": {
+            "name": "(Furigana) CSS",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "furigana_css",
+            "linked_file": "",
+            "urlmappings": [
+                {
+                    "name": "(Furigana) CSS",
+                    "model": "template",
+                    "mapping": "css/furigana.css",
+                    "container": "",
+                    "container_scope": "1",
+                    "skip_empty": "0",
+                    "trigger_scope": "1",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1"
+                }
+            ]
+        },
+        "055f090e-9252-4506-92a7-d4e177d6163a": {
+            "name": "(Furigana) JS",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "furigana_js",
+            "linked_file": "",
+            "urlmappings": [
+                {
+                    "name": "(Furigana) JS",
+                    "model": "template",
+                    "mapping": "js/furigana.js",
+                    "container": "",
+                    "container_scope": "1",
+                    "skip_empty": "0",
+                    "trigger_scope": "1",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1"
+                }
+            ]
+        },
+        "b9ae899e-6efc-4c2f-b7cb-b4edffdf6b57": {
+            "name": "(Furigana) Site JS",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "furigana_site_js",
+            "linked_file": "",
+            "urlmappings": [
+                {
+                    "name": "(Furigana) Site JS",
+                    "model": "template",
+                    "mapping": "js/furigana_site.js",
+                    "container": "",
+                    "container_scope": "1",
+                    "skip_empty": "0",
+                    "trigger_scope": "1",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1"
+                }
+            ]
+        },
+        "99b51295-ba24-4476-b721-2c36ca2eb14c": {
+            "name": "(Furigana) Site CSS",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "furigana_site_css",
+            "linked_file": "",
+            "urlmappings": [
+                {
+                    "name": "(Furigana) Site CSS",
+                    "model": "template",
+                    "mapping": "css/furigana_site.css",
+                    "container": "",
+                    "container_scope": "1",
+                    "skip_empty": "0",
+                    "trigger_scope": "1",
+                    "date_based": "",
+                    "fiscal_start": "1",
+                    "publish_file": "1"
+                }
+            ]
+        }
+    }
+}

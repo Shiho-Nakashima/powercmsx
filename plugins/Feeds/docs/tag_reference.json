@@ -1,0 +1,60 @@
+{
+    "feed" : {
+        "description" : "This is a block tag for displaying the contents of the feed specified by the uri attribute.",
+        "attributes" : {
+            "uri" : "URL of feed.",
+            "cache_ttl" : "Cache expiration (seconds)."
+        }
+    },
+    "feedentries" : {
+        "description" : "This is a block tag to fetch entries from the specified feed.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "offset" : "Starts N value from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "sort_order" : "If 'ascend' is specified, the display order will be reversed.",
+            "lastn" : "Alias for 'limit'."
+        }
+    },
+    "getxml2vars" : {
+        "description" : "Get XML other than feed generically and use XML key as variable name to set the value in template variable.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "uri" : "URL of feed.",
+            "cache_ttl" : "Cache expiration (seconds).",
+            "key" : "Array key to get.",
+            "offset" : "Starts N value from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "sort_order" : "If 'ascend' is specified, the display order will be reversed.",
+            "lastn" : "Alias for 'limit'."
+        }
+    },
+    "getjson2vars" : {
+        "description" : "Get JSON and use JSON key as variable name to set the value in template variable.<br>Reserved Variables and offset,limit,lastn,sort_order attributes are available only when key attribute is specified.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "uri" : "URL of feed.",
+            "cache_ttl" : "Cache expiration (seconds).",
+            "key" : "Array key to get.",
+            "offset" : "Starts N value from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "sort_order" : "If 'ascend' is specified, the display order will be reversed.",
+            "lastn" : "Alias for 'limit'."
+        }
+    },
+    "feedtitle" : {
+        "description" : "Displays the name of the site that has the RSS feed loaded."
+    },
+    "feedlink" : {
+        "description" : "Displays the URL of the site that has the RSS feed loaded."
+    },
+    "feedentrytitle" : {
+        "description" : "Displays the title of the individual page in the loaded RSS feed."
+    },
+    "feedentrylink" : {
+        "description" : "Displays the URL of the individual page in the loaded RSS feed."
+    },
+    "feedinclude" : {
+        "description" : "Function tag to display the RSS feed specified by the uri attribute in a predetermined format.<hr><code style=padding:0>&lt;mt:feed uri=&quot;https://www.metro.tokyo.lg.jp/rss/index.rdf&quot;&gt;<br>&lt;h2&gt;&lt;a href=&quot;&lt;mt:feedlink&gt;&quot;&gt;&lt;mt:feedtitle&gt;&lt;/a&gt;&lt;/h2&gt;<br>&lt;ul&gt;<br>&lt;mt:feedentries&gt;<br>&nbsp;&nbsp;&lt;li&gt;&lt;a href=&quot;&lt;mt:feedentrylink escape&gt;&quot;&gt;&lt;mt:feedentrytitle&gt;&lt;/a&gt;&lt;/li&gt;<br>&lt;/mt:feedentries&gt;<br>&lt;/ul&gt;<br>&lt;/mt:feed&gt;</code>"
+    }
+}

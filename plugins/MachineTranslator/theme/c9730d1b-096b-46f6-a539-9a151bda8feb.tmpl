@@ -1,0 +1,124 @@
+<style>
+#language-select-wrapper {
+  width:120px;position:fixed;z-index:99999;color: white;text-align: center;bottom:0px;left:0px;font-size:80%;border-radius:2px;background:#0067B7;box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5)
+}
+.language-select{
+  padding:3px;display:none
+}
+.language-select-btn{
+  color:white;background-color:transparent;border:none;cursor:pointer;outline:none;padding:0;appearance:none;width:85%
+}
+.language-select-btn:hover{
+  background-color:#004597
+}
+</style>
+<div id="language-select-wrapper" class="pt-no-translate">
+<div id="language-select-ja" class="language-select" role="button" onclick="toggle_language_selector()"><button onclick="select_translate_language('ja')" class="language-select-btn">日本語</button></div>
+<div id="language-select-en" class="language-select" role="button" onclick="toggle_language_selector()"><button onclick="select_translate_language('en')" class="language-select-btn">English</button></div>
+<div id="language-select-zh-Hans" class="language-select" role="button" onclick="toggle_language_selector()"><button onclick="select_translate_language('zh-Hans')" class="language-select-btn">简体中文</button></div>
+<div id="language-select-zh-Hant" class="language-select" role="button" onclick="toggle_language_selector()"><button onclick="select_translate_language('zh-Hant')" class="language-select-btn">繁體中文</button></div>
+<div id="language-select-ko" class="language-select" role="button" onclick="toggle_language_selector()"><button onclick="select_translate_language('ko')" class="language-select-btn">한국어</button></div>
+</div>
+<script>
+var currentLanguage = 'ja';
+var isExclude = false;
+var cookies = document.cookie;
+var allCookies = cookies.split(';');
+var wrapper = document.getElementById('language-select-wrapper');
+for( var cookie of allCookies ) {
+  var cArray = cookie.split('=');
+  var cookieKey = cArray[0];
+  cookieKey = cookieKey.trim();
+  if ( cookieKey == "<mt:property name="machinetranslator_cookie_name" escape="js">" ) {
+    currentLanguage = cArray[1];
+  } else if ( cookieKey == "<mt:property name="machinetranslator_exclude_cookie" escape="js">" ) {
+    isExclude = cArray[1];
+  }
+}
+<mt:property name="machinetranslator_async_api" setvar="mt_async_api">
+if ( currentLanguage != 'ja' ) {
+  window.__mutationTranslate_config = {
+    api: '<mt:if name="mt_async_api"><mt:var name="mt_async_api"><mt:else><mt:property name="app_path">plugins/MachineTranslator/app/pt-mt-async.php</mt:if>',
+    from: 'ja',
+    to: currentLanguage
+  }
+}
+</script>
+<script src="<mt:if name="machinetranslator_assets_base"><mt:var name="machinetranslator_assets_base">/js<mt:else><mt:var name="prototype_path">plugins/MachineTranslator/assets/js</mt:if>/mt-async.js"></script>
+<script>
+var currentBtn = document.getElementById('language-select-' + currentLanguage );
+currentBtn.firstChild.innerHTML = '&raquo; ' + currentBtn.firstChild.innerHTML + '&nbsp;&nbsp;';
+var toggeStatus = true;
+function toggle_language_selector () {
+  var buttons = document.getElementsByClassName('language-select');
+  var buttons = Array.prototype.slice.call( buttons );
+  var thisId = 'language-select-' + currentLanguage;
+  for( var index in buttons ){
+    if ( toggeStatus == false ) {
+      buttons[index].style.display = 'block';
+    } else {
+      if ( buttons[index].id != thisId ) {
+        buttons[index].style.display = 'none';
+      } else {
+        buttons[index].style.display = 'block';
+      }
+    }
+  }
+  if ( toggeStatus == false ) {
+    toggeStatus = true;
+  } else {
+    toggeStatus = false;
+  }
+}
+if (! isExclude ) {
+  toggle_language_selector();
+}
+function select_translate_language ( language ) {
+  if ( language == currentLanguage ) {
+    return false;
+  }
+  var buttons = document.getElementsByClassName('language-select-btn');
+  var buttons = Array.prototype.slice.call( buttons );
+  for( var index in buttons ){
+    buttons[index].setAttribute( 'disabled', 'disabled' );
+  }  
+  if ( language != 'ja' ) {
+    var cookieVal = 'pt-mt-language=' + encodeURIComponent( language ) + ';';
+    cookieVal += 'max-age=<mt:property name="machinetranslator_cookie_expires" cast_to="int">;path=/;';
+  } else {
+    var cookieVal = 'pt-mt-language=;';
+    cookieVal += 'max-age=0;path=/;';
+  }
+  document.cookie = cookieVal;
+  currentLanguage = language;
+  location.reload();
+}
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('#language-select-wrapper')) {
+    if ( toggeStatus == true ) {
+      toggle_language_selector();
+    }
+  }
+})
+function asyncTranslate ( element ) {
+  let mtData = new Object();
+  mtData.data = element.innerHTML;
+  mtData.pt_mt_from = '<mt:websitelanguage>'; // translate from
+  mtData.pt_mt_language = currentLanguage;
+  mtData.baseUrl = location.href;
+  let data = JSON.stringify( mtData );
+  let endPoint = '<mt:property name="app_path">plugins/MachineTranslator/app/pt-mt-async.php';
+  var xhr = new XMLHttpRequest();
+  xhr.open( 'POST', endPoint );
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = () => {
+    if ( xhr.readyState == 4 && xhr.status == 200 ) {
+      const jsonObj = JSON.parse(xhr.responseText);
+      element.innerHTML = jsonObj.translations;
+    }
+  };
+  xhr.onerror = () => {
+  };
+  xhr.send( data );
+}
+</script>

@@ -1,0 +1,8 @@
+{
+    "assetmodels" : {
+        "description" : "Loop out the name and label of the model with the asset field.",
+        "attributes" : {
+            "workspace_id" : "The 'id' of workspace."
+        }
+    }
+}

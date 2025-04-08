@@ -1,0 +1,13 @@
+<mt:for merge_linefeeds="1">
+<mt:var name="object_name" language="$language" setvar="object_name">
+<mt:trans phrase="(%s) The comment posted for %s has been received." params="'$app_name','$object_name'">
+
+<mt:loop name="comment_params">
+<mt:var name="__key__" language="$language"> :
+<mt:var name="__value__">
+</mt:loop>
+
+<mt:var name="admin_url"><mt:var name="comment_param">
+
+<mt:include module="(Website) Mail Footer">
+</mt:for>

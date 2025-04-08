@@ -1,0 +1,370 @@
+.component-blocks {
+  margin-bottom: 2rem;
+  border-width: 0;
+}
+
+.component-blocks .card-header {
+  padding: .75rem 15px;
+  border-width: 1px 1px 0;
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.component-blocks .card-body {
+  border-width: 0 1px 1px;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.component-blocks legend {
+  font-size: 1rem;
+}
+
+.component-blocks .col-md.row {
+  width: auto;
+}
+
+.component-blocks .component-blocks-row {
+  margin-bottom: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.component-blocks-rows > div > .form-group:nth-child(2n) {
+  background-color: #F2F2F2;
+}
+
+.component-blocks-rows .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.component-blocks .form-group .label {
+  margin-bottom: 0.5em;
+}
+
+.component-blocks .fields .form-group .label {
+  padding-left: 1.5em;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>');
+  background-position: -4px center;
+  background-repeat: no-repeat;
+  background-size: 30px auto;
+}
+
+.component-blocks .repeat-field-container > div > .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.component-blocks .repeat-field-container > div > .row:not(:last-child) {
+  padding-bottom: 20px;
+  border-bottom: 1px dotted #aaa;
+}
+
+.component-blocks .validation-messages {
+  padding: 0.5em 1em 0.5em 2em;
+  border-radius: 3px;
+}
+
+.component-blocks .badge-secondary {
+  background-color: #6c757d;
+}
+
+.component-blocks .dialog-chooser {
+  /* .btn-sm標準 */
+  padding: .25rem .5rem;
+  font-size: .875rem;
+}
+
+.component-blocks .image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.component-blocks .relation-list ul {
+  margin-bottom: 0.5em;
+  padding-left: 0;
+}
+
+.component-blocks .relation-list .detach-relation {
+  /* .close-smを使用するとイベントが発火するためtheme.min.cssよりコピー */
+  padding: 0px 3px 2px 3px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  font-size: 66%;
+  width: 18px;
+  height: 18px
+}
+
+.component-blocks .relation-list .detach-relation span {
+  line-height: 1;
+  font-size: 1.25em;
+}
+
+.component-blocks .thumbnail {
+  margin-bottom: 10px;
+  max-width: 75%;
+  max-height: 150px;
+}
+
+.component-blocks .thumbnail + .btn {
+  margin: 10px;
+}
+
+.component-blocks .select-asset .btn {
+  margin-left: 0;
+}
+
+.component-blocks .inline-mce.text {
+  min-height: 120px;
+}
+
+.component-blocks .inline-mce.text img {
+  max-width: 100%;
+  height: auto;
+}
+
+.component-blocks .multiblock-container {
+  margin-bottom: 20px;
+  padding: 0 15px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+
+.component-blocks .multiblock-container .header {
+  padding: 0.5em 0;
+  border-radius: 5px 5px 0 0;
+  background-color: #f7f7f9;
+}
+
+.component-blocks .multiblock-container .blocks {
+  border-radius: 0 0 5px 5px;
+  background-color: #fff;
+}
+
+.component-blocks .multiblock-container .blocks .block {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.component-blocks .multiblock-container .blocks .block:nth-child(2n) {
+  background-color: #F2F2F2;
+}
+
+.component-blocks .multiblock-container .blocks .block + .block {
+  border-top: 1px dotted #aaa;
+}
+
+.component-blocks .multiblock-container .block-name {
+  margin-bottom: 0.25em;
+}
+
+.component-blocks .multiblock-container .header .control {
+  display: inline-grid;
+  margin-left: 30px;
+}
+
+.component-blocks .multiblock-container .header .control ul {
+  grid-template-columns: repeat(3, 28px);
+}
+
+.component-blocks .control {
+  display: grid;
+  align-items: center;
+}
+
+.component-blocks .control ul {
+  display: grid;
+  grid-template-columns: repeat(3, 28px);
+  grid-template-rows: auto;
+  gap: 5px;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.component-blocks .control .down {
+  grid-column: 2;
+}
+
+.component-blocks .control .delete {
+  grid-column: 3;
+}
+
+.component-blocks .btn-xsm {
+  padding: 0.25em 0.25em 0.2em;
+}
+
+.component-blocks .control .btn {
+  box-sizing: content-box;
+  margin-left: 0;
+  padding: 5px;
+  height: 16px;
+}
+
+.component-blocks .btn.delete {
+  border-color: #D9534F !important; /* CMSのスタイルを上書き */
+  color: #D9534F;
+}
+
+.component-blocks .btn.delete:hover,
+.component-blocks .btn.delete:active,
+.component-blocks .btn.delete:focus {
+  background-color: #D9534F;
+  color: #fff;
+}
+
+.component-blocks .handle {
+  position: relative;
+  top: 0.3em;
+  left: -2px;
+  cursor: move;
+}
+
+@media (min-width: 576px) {
+  .component-blocks .handle {
+    top: 0.15em;
+  }
+}
+
+.component-blocks .handle-container {
+  margin-top: 0.75em;
+  cursor: move;
+}
+
+.component-blocks .btn.deselect {
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
+  height: 26px;
+  font-size: 1rem;
+}
+
+.component-blocks-symbols {
+  position: absolute;
+  visibility: hidden;
+  height: 0;
+}
+
+.component-blocks .select-component-container {
+  position: sticky;
+  bottom: 0;
+  padding: 10px 0;
+  background-color: #fff;
+}
+
+.with-debug-footer .component-blocks .select-component-container {
+  bottom: var(--debug-footer-height);
+}
+
+.component-blocks .select-component {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #D5EEFF;
+}
+
+.component-blocks .insert-position {
+  display: inline;
+  width: 4.2em;
+}
+
+.component-blocks .select-component.multiblock {
+  background-color: #e2f4ec;
+}
+
+.component-blocks .select-component.multiblock button {
+  margin-top: 10px;
+  margin-left: 0;
+}
+
+@media (min-width: 450px) {
+  .component-blocks .select-component.multiblock button {
+    margin-top: 0;
+  }
+}
+
+.component-blocks .box-border {
+  box-sizing: border-box;
+}
+
+/* part table */
+.FieldBlockBuilder-table-editor .editor-table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  margin: 0px 0px 10px 0px;
+  width: 100%;
+  border: none;
+}
+.FieldBlockBuilder-table-editor .editor-table td,
+.FieldBlockBuilder-table-editor .editor-table th {
+  border: 1px solid #BBB;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.FieldBlockBuilder-table-editor .editor-table td {
+  background-color: #fff;
+}
+
+.FieldBlockBuilder-table-editor .editor-header {
+  background: #CCC;
+  text-align: center;
+}
+
+.FieldBlockBuilder-table-editor .header-col-cell,
+.FieldBlockBuilder-table-editor .header-row-cell {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEdJREFUeNpi1NbWXs3AwBDCgB2sYQISWUD8DoskSCwLpOA1EKdjUQASe80EMwqKGdD5TEiCMKveQdlgwIKkANmq1zBBgAADAM1aDyt1fvuPAAAAAElFTkSuQmCC');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.FieldBlockBuilder-table-editor .header-col-cell:hover,
+.FieldBlockBuilder-table-editor .header-row-cell:hover {
+  background-color: #eee;
+}
+
+.FieldBlockBuilder-table-editor .editor-table th .spacer {
+  width: 16px;
+  height: 16px;
+}
+
+.FieldBlockBuilder-table-editor .editor-table.has-col-header tbody tr:first-child td {
+  background: #f4f4f4;
+  border-bottom: 2px solid #CCC;
+}
+
+.FieldBlockBuilder-table-editor .editor-table.has-row-header tbody td:first-of-type {
+  background: #f4f4f4;
+  border-right: 2px solid #CCC;
+}
+
+.FieldBlockBuilder-table-editor .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.FieldBlockBuilder-table-editor .menu-wrapper {
+  position: absolute;
+  z-index: 1000;
+}
+
+.FieldBlockBuilder-table-editor .menu-wrapper div {
+  font-size: 0.875rem;
+}
+
+.FieldBlockBuilder-table-editor .menu-wrapper .ui-state-active {
+  border-width: 0;
+  margin: 0;
+}
+
+.FieldBlockBuilder-table-editor .cell-width div {
+  width: 8em;
+}
+
+.FieldBlockBuilder-table-editor td[data-is-row-header="1"],
+.FieldBlockBuilder-table-editor td[data-is-col-header="1"] {
+  background-color: #f4f4f4;
+}
+
+.FieldBlockBuilder-table-editor td[data-align="center"] {
+  text-align: center;
+}
+.FieldBlockBuilder-table-editor td[data-align="right"] {
+  text-align: right;
+}

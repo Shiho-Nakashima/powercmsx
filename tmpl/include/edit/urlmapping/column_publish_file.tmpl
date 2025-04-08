@@ -1,0 +1,72 @@
+<mt:property name="publish_file" setvar="__publish_file_default">
+<mt:unless name="__publish_file_default"><mt:setvar name="__publish_file_default" value="1"></mt:unless>
+<mt:unless name="request.id"><mt:unless name="request.publish_file">
+<mt:var name="__publish_file_default" setvar="__col_value__">
+</mt:unless></mt:unless>
+<mt:var name="options" split="," setvar="_options_loop">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape="1">
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-3">
+    <select id="__publish_file_selector" class="form-control custom-select short watch-changed" name="<mt:var name="__col_name__">">
+    <mt:loop name="_options_loop">
+    <mt:if name="__index__" eq="0">
+      <option <mt:if name="__col_value__" eq="6">selected</mt:if> value="6"><mt:trans phrase="$__value__" escape></option>
+    <mt:elseif name="__index__" eq="5">
+      <option id="__type_manually" <mt:if name="__index__" eq="$__col_value__">selected</mt:if> value="<mt:var name="__index__" escape>"><mt:trans phrase="$__value__" escape></option>
+    <mt:else>
+      <option <mt:if name="__index__" eq="$__col_value__">selected</mt:if> value="<mt:var name="__index__" escape>"><mt:trans phrase="$__value__" escape></option>
+    </mt:if>
+    </mt:loop>
+    </select>
+    <mt:var name="_hint">
+  </div>
+</div>
+<script>
+$('#__model_selector').change(function(){
+    if ( $(this).val() == '' || $(this).val() == 'template' ) {
+        $('#__type_manually').show();
+    } else {
+        $('#__type_manually').hide();
+        if ( $('#__publish_file_selector').val() == 5 ) {
+            $('#__publish_file_selector').val( <mt:var name="__publish_file_default"> );
+        }
+    }
+});
+if ( $('#__model_selector').val() == '' || $('#__model_selector').val() == 'template' ) {
+} else {
+    $('#__type_manually').hide();
+}
+$('#__publish_file_selector').change(function(){
+    if ( $(this).val() < 5 ) {
+        $('#triggers-wrapper').show();
+    } else {
+        $('#triggers-wrapper').hide();
+    }
+});
+<mt:if name="object_publish_file" gt="4">
+$('#triggers-wrapper').hide();
+</mt:if>
+toggleContainerOption(0);
+function toggleContainerOption ( speed ) {
+    var selectedType = $('option:selected', '#__model_selector').val();
+    var mappingContainer = $('option:selected', '#container-selector').val();
+    var optionDateBased = $('option:selected', '#option-date_based').val();
+    if ( !optionDateBased && !mappingContainer ) {
+        $('#skip_empty-wrapper').hide();
+        $('#container_scope-wrapper').hide();
+    } else {
+        if ( ( selectedType == '' <mt:ifcomponent component="SplitPage"><mt:else>|| selectedType == 'template'</mt:ifcomponent> ) && !optionDateBased && !mappingContainer ) {
+            $('#skip_empty-wrapper').hide();
+            $('#container_scope-wrapper').hide();
+        } else {
+            $('#skip_empty-wrapper').show();
+            $('#container_scope-wrapper').show();
+        }
+    }
+}
+</script>

@@ -1,0 +1,29 @@
+<mt:setvar name="body_class" value="black">
+<mt:websitename setvar="website_name">
+<mt:websiteurl setvar="website_url">
+<mt:websitecopyright setvar="website_copyright">
+<mt:websitelanguage setvar="language">
+<mt:widgets class="jumbotron" limit="1"><mt:widgetimageurl setvar="og_image"></mt:widgets>
+
+<mt:ifcomponent component="SimplifiedJapanese">
+<mt:if tag="property" name="simplifiedjapanese_furigana_api_only">
+<mt:if tag="property" name="simplifiedjapanese_api_endpoint">
+<mt:setvar name="use_furigana_js" value="1">
+</mt:if>
+</mt:if>
+</mt:ifcomponent>
+
+<mt:if name="request._language">
+<mt:var name="request._language" escape setvar="language">
+</mt:if>
+<mt:websitedescription setvar="page_description">
+<mt:setvar name="page_keywords" value="">
+
+<mt:setvarblock name="side_bar_cache_key">__side_bar_<mt:websiteid>__</mt:setvarblock>
+<mt:setvarblock name="footer_cache_key">__footer_<mt:websiteid>__</mt:setvarblock>
+
+<mt:if tag="websiteid">
+<mt:workspacelinkurl setvar="link_url">
+<mt:else>
+<mt:property name="link_url" setvar="link_url">
+</mt:if>

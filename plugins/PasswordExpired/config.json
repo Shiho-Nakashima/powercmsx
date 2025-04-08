@@ -1,0 +1,52 @@
+{
+    "label"       : "PasswordExpired",
+    "id"          : "passwordexpired",
+    "component"   : "PasswordExpired",
+    "version"     : "1.0",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Set the password expiration settings.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "settings"    : {
+        "password_expired_enabled" : 0,
+        "password_expiration_days" : 30,
+        "password_expired_mode" : 1,
+        "password_history_enabled" : 0,
+        "password_history_max" : 2
+    },
+    "hooks" : {
+        "passwordexpired_start_app" : {
+            "start_app" : {
+                "component" : "PasswordExpired",
+                "method" : "start_app"
+            }
+        }
+    },
+    "callbacks" : {
+        "passwordexpired_post_login": {
+            "post_login" : {
+                "user" : {
+                    "component" : "PasswordExpired",
+                    "method" : "post_login_user"
+                }
+            }
+        },
+        "passwordexpired_template_source_edit": {
+            "edit" : {
+                "template_source" : {
+                    "component" : "PasswordExpired",
+                    "method" : "template_source_edit"
+                }
+            }
+        }
+    },
+    "tags" : {
+        "conditional" : {
+            "ifpasswordexpired" : {
+                "component" : "PasswordExpired",
+                "method" : "hdlr_if_password_expired"
+            }
+        }
+    }
+}

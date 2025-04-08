@@ -1,0 +1,40 @@
+<mt:if name="object_count" op="%" value="$pagination_limit">
+  <mt:setvar name="is_divisible" value="0">
+<mt:else>
+  <mt:setvar name="is_divisible" value="1">
+</mt:if>
+<mt:var name="object_count" setvar="count_for_pager">
+<mt:if name="is_divisible">
+  <mt:var name="object_count" decrement setvar="count_for_pager">
+</mt:if>
+<mt:if name="object_count" gt="$pagination_limit">
+  <mt:if name="filter_add_params">
+    <mt:setvarblock name="pagination_base_url"><mt:var name="current_archive_url">?<mt:var name="filter_add_params" regex_replace="'/^&/','','1'"></mt:setvarblock>
+  <mt:else>
+    <mt:setvarblock name="pagination_base_url"><mt:var name="current_archive_url">?_filter=<mt:var name="filter_model"></mt:setvarblock>
+  </mt:if>
+<div class="row justify-content-center next-prev">
+  <div class="next-prev-btns align-center">
+  <mt:if name="current_page" ge="2">
+    <a class="btn btn-secondary btn-sm display-4" href="<mt:var name="pagination_base_url">&amp;limit=<mt:var name="pagination_limit"><mt:if name="prev_offset">&amp;offset=<mt:var name="prev_offset"></mt:if>"><mt:trans language="$language" phrase="Previous" escape="single"></a>
+  <mt:else>
+    <span class="btn btn-white btn-sm display-4 disabled"><mt:trans language="$language" phrase="Previous" escape="single"></span>
+  </mt:if>
+  <mt:setvar name="has_next" value="0">
+  <mt:if name="current_page" eq="$offset_last">
+    <mt:unless name="is_divisible">
+      <mt:setvar name="has_next" value="1">
+    </mt:unless>
+  <mt:elseif name="current_page" le="$offset_last">
+    <mt:setvar name="has_next" value="1">
+  <mt:elseif name="current_page" eq="1">
+    <mt:setvar name="has_next" value="1">
+  </mt:if>
+  <mt:if name="has_next">
+  <a class="btn btn-secondary btn-sm display-4" href="<mt:var name="pagination_base_url">&amp;limit=<mt:var name="pagination_limit">&amp;offset=<mt:if name="next_offset"><mt:var name="next_offset"><mt:else><mt:var name="pagination_limit"></mt:if>"><mt:trans language="$language" phrase="Next" escape="single"></a>
+  <mt:else>
+  <span class="btn btn-white btn-sm display-4 disabled"><mt:trans language="$language" phrase="Next" escape="single"></span>
+  </mt:if>
+  </div>
+</div>
+</mt:if>

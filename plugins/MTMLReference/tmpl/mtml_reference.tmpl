@@ -1,0 +1,332 @@
+<mt:trans phrase="Tag Reference" component="MTMLReference" setvar="page_title">
+<mt:setvarblock name="html_head" append="1">
+<style>
+.reserved-variables { background-color:#eef;padding:12px; border: 1px solid #ccc }
+#search-box { position:absolute; right: 15px; top: 6px; }
+.badge-info { background-color:blue; padding: 4px 8px; }
+.badge-success { background-color:green; padding: 4px 8px; }
+@media (max-width: 768px) {
+  #query_box{
+    width: 160px;
+  }
+}
+@media (max-width: 490px) {
+  #search-box {
+    position: relative;
+    margin-top: -1.5rem;
+  }
+}
+</style>
+</mt:setvarblock>
+<mt:include file="include/header.tmpl">
+<mt:var name="request.query" escape setvar="query">
+<mt:if name="query">
+<mt:if name="total_count">
+  <div id="alert-search" class="alert alert-info" tabindex="0">
+    <mt:trans phrase="Search results for '%s'" params="$query" component="MTMLReference">
+  </div>
+  <script>
+  $('#alert-search').focus();
+  </script>
+</mt:if>
+</mt:if>
+<div id="search-box" class="form-group mb-4 mx-auto">
+  <form class="" action="<mt:var name="script_uri">">
+    <div class="form-inline">
+      <input type="hidden" name="__mode" value="mtml_reference">
+      <label class="sr-only" for="query_box"><mt:trans phrase="Name of Tag or Global Modifier" component="MTMLReference"></label>
+      <input class="form-control mr-sm-2" id="query_box" name="query" type="text" value="<mt:var name="query">">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit"><mt:trans phrase="Search"></button>
+    </div>
+  </form>
+</div>
+<mt:setvar name="reference_out" value="0">
+<mt:loop name="block_tags">
+<mt:if name="__first__">
+<mt:setvar name="reference_out" value="1">
+<h2 id="block_tags" class="mt-4"><mt:trans phrase="Block Tags" component="MTMLReference"></h2>
+<table class="table table-striped">
+<thead class="thead-dark">
+<tr>
+<th scope="col" style="width:25%"><mt:trans phrase="Tag"></th>
+<th scope="col" style="width:40%"><mt:trans phrase="Description"></th>
+<th scope="col" style="width:35%"><mt:trans phrase="Attributes" component="MTMLReference"></th>
+</tr>
+</thead>
+</mt:if>
+<tr class="<mt:var name="name">">
+<td style="width:25%">
+&lt;mt:<mt:var name="name">&gt; ~ &lt;/mt:<mt:var name="name">&gt;
+<div class="mt-1">
+<span class="badge badge-success badge-sm"><mt:var name="component"></span>
+<mt:if name="block_versions.$name">
+<span class="badge badge-info badge-sm">ver.<mt:var name="block_versions.$name"></span>
+</mt:if>
+</div>
+</td>
+<td style="width:40%">
+<mt:trans phrase="$model" setvar="model_name">
+<mt:trans phrase="$relation" setvar="relation_name">
+<mt:if name="column" eq="__primary__">
+  <mt:trans phrase="Primary column value" component="MTMLReference" setvar="column_name">
+<mt:else>
+  <mt:trans phrase="$column" language="default" setvar="column_name">
+  <mt:trans phrase="$column_name" setvar="column_name">
+</mt:if>
+<mt:if name="description">
+  <mt:trans phrase="$description" params="'$model_name','$column_name','$relation_name'" component="$plugin" trans="MTMLReference">
+</mt:if>
+<mt:loop name="variables">
+<mt:if name="__first__"><div class="mt-3 reserved-variables">
+<em><mt:trans phrase="Reserved Variables" component="MTMLReference"></em>
+<ul class="mb-0"></mt:if>
+<mt:ifinarray array="reserved_vars" value="$__key__">
+<mt:setvar name="locale" value="MTMLReference">
+<mt:else>
+<mt:setvar name="locale" value="$plugin">
+</mt:ifinarray>
+<li><i><mt:var name="__key__"></i> : <mt:trans phrase="$__value__" params="'$model_name','$relation_name'" component="$locale" trans="MTMLReference"></li>
+<mt:if name="__last__"></ul></div></mt:if>
+</mt:loop>
+</td>
+<td style="width:35%">
+<mt:loop name="attributes">
+<mt:if name="__first__"><ul class="mb-0"></mt:if>
+<li>
+  <i><mt:var name="__key__"></i> : <mt:trans phrase="$__value__" params="'$model_name','$relation_name'" component="$plugin" trans="MTMLReference">
+  <mt:if name="__key__" eq="op">
+    <a href="https://powercmsx.jp/about/modifier_op.html" target="blank" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Read the op modifier documentation" component="MTMLReference">">
+    <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Read the op modifier documentation" component="MTMLReference">"></i>
+    </a>
+  </mt:if>
+</li>
+<mt:if name="name" eq="tags">
+  <mt:if name="__counter__" eq="12">
+  <li><i>include_private</i> : <mt:trans phrase="Include private tag(the Tag name start with '@')." component="MTMLReference"></li>
+  </mt:if>
+<mt:elseif name="handler" eq="hdlr_get_relatedobjs">
+  <mt:if name="relation_status">
+    <mt:if name="__counter__" eq="5">
+      <li><i>include_draft</i> : <mt:trans phrase="Whether to include not published objects." component="MTMLReference"></li>
+    </mt:if>
+  </mt:if>
+  <mt:if name="relation" eq="Tag">
+  <mt:if name="__counter__" eq="5">
+    <li><i>include_private</i> : <mt:trans phrase="Include private tag(the Tag name start with '@')." component="MTMLReference"></li>
+  </mt:if>
+  </mt:if>
+<mt:elseif name="handler" eq="hdlr_nextprev">
+  <mt:if name="__first__">
+  <mt:if name="model_status">
+    <li><i>include_draft</i> : <mt:trans phrase="Whether to include not published objects." component="MTMLReference"></li>
+  </mt:if>
+  </mt:if>
+</mt:if>
+<mt:if name="handler" eq="hdlr_objectloop">
+  <mt:if name="model_status">
+    <mt:if name="__key__" eq="(column name[s])">
+      <li><i>conditions</i> : <mt:trans phrase="Hash array with cokumn name as key and condition(ex.like),filter value (comma separated text) as value." component="MTMLReference"></li>
+      <li><i>include_draft</i> : <mt:trans phrase="Whether to include not published objects." component="MTMLReference"></li>
+      <li><i>status</i> : <mt:trans phrase="Get %s status is equal the value." params="$model_name" component="MTMLReference"></li>
+      <li><i>status_lt</i> : <mt:trans phrase="Get %s status is less than the value." params="$model_name" component="MTMLReference"></li>
+      <li><i>status_lt</i> : <mt:trans phrase="Get %s status is grater than the value." params="$model_name" component="MTMLReference"></li>
+      <li><i>status_not</i> : <mt:trans phrase="Get %s status is not equal the value." params="$model_name" component="MTMLReference"></li>
+    </mt:if>
+  </mt:if>
+  <mt:if name="model_hierarchy">
+    <mt:if name="model_workspace">
+      <mt:if name="__counter__" eq="13">
+        <li><i>root_id</i> : <mt:trans phrase="When %s has hierarchy and exclude_workspaces is equal to 'children', specify the root object id." params="$model_name" component="MTMLReference"></li>
+      </mt:if>
+    </mt:if>
+  </mt:if>
+  <mt:if name="model_workspace">
+    <mt:if name="__key__" eq="ignore_archive_context">
+      <li><i>include_workspaces</i> : <mt:trans phrase="%s matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children')." params="$model_name" component="MTMLReference"></li>
+      <li><i>exclude_workspaces</i> : <mt:trans phrase="%s excluding the specified workspace_ids(Comma separated values)." params="$model_name" component="MTMLReference"></li>
+      <li><i>workspace_id</i> : <mt:trans phrase="Specify when filtering by workspace_id." component="MTMLReference"></li>
+      <li><i>workspace_ids</i> : <mt:trans phrase="Alias for 'include_workspaces'." component="MTMLReference"></li>
+    </mt:if>
+  </mt:if>
+</mt:if>
+<mt:if name="__last__"></ul></mt:if>
+</mt:loop>
+</td>
+</tr>
+<mt:if name="__last__">
+</table>
+</mt:if>
+</mt:loop>
+
+<mt:loop name="conditional_tags">
+<mt:if name="__first__">
+<mt:setvar name="reference_out" value="1">
+<h2 id="conditional_tags" class="mt-4"><mt:trans phrase="Conditional Tags" component="MTMLReference"></h2>
+<table class="table table-striped">
+<thead class="thead-dark">
+<tr>
+<th scope="col" style="width:25%"><mt:trans phrase="Tag"></th>
+<th scope="col" style="width:40%"><mt:trans phrase="Description"></th>
+<th scope="col" style="width:35%"><mt:trans phrase="Attributes" component="MTMLReference"></th>
+</tr>
+</thead>
+</mt:if>
+<tr class="<mt:var name="name">">
+<td style="width:25%">
+&lt;mt:<mt:var name="name">&gt;<mt:unless name="name" like="else"> ~ &lt;/mt:<mt:var name="name">&gt;</mt:unless>
+<div class="mt-1">
+<span class="badge badge-success badge-sm"><mt:var name="component"></span>
+<mt:if name="conditional_versions.$name">
+<span class="badge badge-info badge-sm">ver.<mt:var name="conditional_versions.$name"></span>
+</mt:if>
+</div>
+</td>
+<td style="width:40%">
+<mt:trans phrase="$model" setvar="model_name">
+<mt:if name="description">
+  <mt:trans phrase="$description" params="$model_name" component="$plugin" trans="MTMLReference">
+</mt:if>
+</td>
+<td style="width:35%">
+<mt:loop name="attributes">
+<mt:if name="__first__"><ul class="mb-0"></mt:if>
+<li>
+  <i><mt:var name="__key__"></i> : <mt:trans phrase="$__value__" params="'$model_name','$relation_name'" component="$plugin" trans="MTMLReference">
+  <mt:if name="__key__" eq="op">
+    <a href="https://powercmsx.jp/about/modifier_op.html" target="blank" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Read the op modifier documentation" component="MTMLReference">">
+    <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Read the op modifier documentation" component="MTMLReference">"></i>
+    </a>
+  </mt:if>
+</li>
+<mt:if name="__last__"></ul></mt:if>
+</mt:loop>
+</td>
+</tr>
+<mt:if name="__last__">
+</table>
+</mt:if>
+</mt:loop>
+
+<mt:loop name="function_tags">
+<mt:if name="__first__">
+<mt:setvar name="reference_out" value="1">
+<h2 id="function_tags" class="mt-4"><mt:trans phrase="Function Tags" component="MTMLReference"></h2>
+<table class="table table-striped">
+<thead class="thead-dark">
+<tr>
+<th scope="col" style="width:25%"><mt:trans phrase="Tag"></th>
+<th scope="col" style="width:40%"><mt:trans phrase="Description"></th>
+<th scope="col" style="width:35%"><mt:trans phrase="Attributes" component="MTMLReference"></th>
+</tr>
+</thead>
+</mt:if>
+<tr class="<mt:var name="name">">
+<td style="width:25%">
+&lt;mt:<mt:var name="name"> /&gt;
+<div class="mt-1">
+<span class="badge badge-success badge-sm"><mt:var name="component"></span>
+<mt:if name="function_versions.$name">
+<span class="badge badge-info badge-sm">ver.<mt:var name="function_versions.$name"></span>
+</mt:if>
+</div>
+</td>
+<td style="width:40%">
+<mt:trans phrase="$model" setvar="model_name">
+<mt:trans phrase="$relation" setvar="relation_name">
+<mt:if name="column" eq="__primary__">
+  <mt:trans phrase="Primary column value" component="MTMLReference" setvar="column_name">
+<mt:else>
+  <mt:trans phrase="$column" language="default" setvar="column_name">
+  <mt:trans phrase="$column_name" setvar="column_name">
+</mt:if>
+<mt:if name="description">
+  <mt:trans phrase="$description" params="'$model_name','$column_name','$relation_name'" component="$plugin" trans="MTMLReference">
+<mt:elseif name="handler" eq="hdlr_get_objectcol">
+  <mt:if name="relation">
+    <mt:setvar name="author_tag" value="0">
+    <mt:if name="relation" eq="user"><mt:if name="name" like="author">
+      <mt:setvar name="author_tag" value="1">
+    </mt:if></mt:if>
+    <mt:if name="author_tag">
+      <mt:trans phrase="Get the '%1$s' object's owner's '%2$s'." params="'$model_name','$column_name'" component="MTMLReference">
+    <mt:else>
+      <mt:trans phrase="Get the '%1$s' object's related '%2$s' object's '%3$s'." params="'$model_name','$relation_name','$column_name'" component="MTMLReference">
+    </mt:if>
+  </mt:if>
+</mt:if>
+<mt:loop name="variables">
+<mt:if name="__first__"><div class="mt-3 reserved-variables">
+<em><mt:trans phrase="Reserved Variables" component="MTMLReference"></em>
+<ul class="mb-0"></mt:if>
+<mt:ifinarray array="reserved_vars" value="$__key__">
+<mt:setvar name="locale" value="MTMLReference">
+<mt:else>
+<mt:setvar name="locale" value="$plugin">
+</mt:ifinarray>
+<li><i><mt:var name="__key__"></i> : <mt:trans phrase="$__value__" params="'$model_name','$relation_name'" component="$locale" trans="MTMLReference"></li>
+<mt:if name="__last__"></ul></div></mt:if>
+</mt:loop>
+</td>
+<td style="width:35%">
+<mt:loop name="attributes">
+<mt:if name="__first__"><ul class="mb-0"></mt:if>
+<li>
+  <i><mt:var name="__key__"></i> : <mt:trans phrase="$__value__" params="'$model_name','$relation_name'" component="$plugin" trans="MTMLReference">
+  <mt:if name="__key__" eq="op">
+    <a href="https://powercmsx.jp/about/modifier_op.html" target="blank" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Read the op modifier documentation" component="MTMLReference">">
+    <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Read the op modifier documentation" component="MTMLReference">"></i>
+    </a>
+  </mt:if>
+</li>
+<mt:if name="__last__"></ul></mt:if>
+</mt:loop>
+</td>
+</tr>
+<mt:if name="__last__">
+</table>
+</mt:if>
+</mt:loop>
+
+<mt:loop name="global_modifiers">
+<mt:if name="__first__">
+<mt:setvar name="reference_out" value="1">
+<h2 id="global_modifiers" class="mt-4"><mt:trans phrase="Global Modifiers" component="MTMLReference"></h2>
+<table class="table table-striped">
+<thead class="thead-dark">
+<tr>
+<th scope="col" style="width:25%"><mt:trans phrase="Name"></th>
+<th scope="col" style="width:40%"><mt:trans phrase="Description"></th>
+<th scope="col" style="width:35%"><mt:trans phrase="Attribute" component="MTMLReference"></th>
+</tr>
+</thead>
+</mt:if>
+<tr class="<mt:var name="name">">
+<td style="width:25%">
+<mt:var name="name">
+<div class="mt-1">
+<span class="badge badge-success badge-sm"><mt:var name="component"></span>
+<mt:if name="modifier_versions.$name">
+<span class="badge badge-info badge-sm">ver.<mt:var name="modifier_versions.$name"></span>
+</mt:if>
+</div>
+</td>
+<td style="width:40%">
+  <mt:trans phrase="$description" component="$plugin" trans="MTMLReference">
+</td>
+<td style="width:35%">
+  <mt:trans phrase="$attribute" component="$plugin" trans="MTMLReference">
+</td>
+</tr>
+<mt:if name="__last__">
+</table>
+</mt:if>
+</mt:loop>
+<mt:unless name="reference_out">
+  <div id="alert-no_match" class="alert alert-success" tabindex="0">
+    <mt:trans phrase="Did not find results for '%s'." params="$query" component="MTMLReference">
+  </div>
+  <script>
+  $('#alert-no_match').focus();
+  </script>
+</mt:unless>
+<mt:include file="include/footer.tmpl">

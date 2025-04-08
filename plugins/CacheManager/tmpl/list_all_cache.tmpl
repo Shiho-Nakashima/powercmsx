@@ -1,0 +1,151 @@
+<mt:include file="include/popup_header.tmpl">
+<mt:if name="cache_cleared">
+  <div id="cleared-alert-message" class="alert alert-success" role="alert" tabindex="0">
+    <mt:if name="cache_cleared" eq="1">
+      <mt:trans phrase="The %s cache has been delete." params="$cache_cleared" component="CacheManager"></li>
+    <mt:else>
+      <mt:trans phrase="The %s caches has been delete." params="$cache_cleared" component="CacheManager"></li>
+    </mt:if>
+  </div>
+  <script>
+  $('#cleared-alert-message').focus();
+  </script>
+</mt:if>
+<mt:setvarblock name="regex">'/^<mt:var name="prefix">/',''</mt:setvarblock>
+<mt:loop name="list_all_cache">
+  <mt:if name="__first__">
+  <div class="text-right mb-2 mr-2 ml-2"><mt:var name="total_result"> <mt:trans phrase="Items"></div>
+  <mt:setvar name="print_cache" value="1">
+  <div id="search-box" class="form-group mb-4 mx-auto">
+    <div class="form-inline">
+    <button type="button" id="delete-btn" class="list-delete-btn btn btn-secondary btn-sm">
+    <i class="fa fa-trash" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Delete"></span>
+    </button>
+    <form action="<mt:var name="script_uri">">
+      <input type="hidden" name="__mode" value="cachemanager_manage_cache">
+      <label class="sr-only" for="query_box"><mt:trans phrase="Path"></label>
+      <input class="form-control mr-sm-2 form-control-sm" id="query_box" name="query" type="text" value="<mt:var name="request.query" escape>">
+      <button class="btn btn-secondary ml-0 my-2 my-sm-0 btn-sm" type="submit"><mt:trans phrase="Search"></button>
+    </form>
+  <mt:if name="request.query">
+  &nbsp; <a class="ml-3" href="<mt:var name="script_uri">?__mode=cachemanager_manage_cache">
+    <mt:var name="request.query" escape setvar="condition">
+    <i class="fa fa-list" aria-hidden="true"></i> <mt:trans phrase="Remove the search condition '%s'" params="$condition" component="CacheManager">
+  </a>
+  </mt:if>
+    </div>
+  </div>
+  <form action="<mt:var name="script_uri">" method="POST" id="list-delete-form">
+    <input type="hidden" name="__mode" value="cachemanager_manage_cache">
+    <input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+    <input type="hidden" name="_type" value="delete">
+    <textarea id="merged_params" name="merged_params" class="hidden"></textarea>
+    <mt:if name="request.query"><input type="hidden" name="query" value="<mt:var name="request.query" escape>"></mt:if>
+  <table class="table table-sm listing-table table-hover table-striped">
+  <thead>
+    <th class="text-center" style="width:10px;">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="selector custom-control-input cb-all-select"
+        aria-label="<mt:trans phrase="Select all">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+    </th>
+    <th class="text-center"><mt:trans phrase="Path"></th>
+  </thead>
+  <tbody id="list_body">
+  </mt:if>
+  <tr id="line_<mt:var name="__counter__">">
+  <th style="width:10px;">
+  <mt:var name="__value__" regex_replace="$regex" setvar="cache_path">
+  <label class="custom-control custom-checkbox">
+    <input id="box_<mt:var name="__counter__">" type="checkbox" name="paths[]"
+      value="<mt:var name="cache_path" escape>" class="custom-control-input cb-select-path"
+      aria-label="<mt:trans phrase="Select or deselect %s in this row." params="$__value__" escape>">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"></span>
+  </label>
+  </th>
+  <td>
+    <mt:var name="cache_path" escape>
+  </td>
+  </tr>
+<mt:if name="__last__">
+</tbody>
+</table>
+</form>
+</div>
+<script>
+$('#list_body tr').click(function() {
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+    is_all = true;
+    $("input[name='paths[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            $('.cb-all-select').prop('checked', false);
+            return false;
+        }
+    });
+    $('.cb-all-select').prop('checked', is_all );
+});
+$('.cb-all-select').change(function(){
+    $('.cb-select-path').prop('checked', $(this).prop('checked'));
+});
+$('.cb-select-path').change(function(){
+    is_all = true;
+    $("input[name='paths[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            $('.cb-all-select').prop('checked', false);
+            return false;
+        }
+    });
+    $('.cb-all-select').prop('checked', is_all );
+});
+$('#delete-btn').click(function(){
+    let selected_items = 0;
+    let input_data = [];
+    $("input[name='paths[]']").each(function(){
+        if ( $(this).prop('checked') == true ) {
+             selected_items++;
+             input_data.push( $(this).val() );
+        }
+    });
+    if (! selected_items ) {
+        alert( "<mt:trans phrase="You did not select any cache." component="CacheManager">" );
+        return;
+    }
+    let message;
+    if ( selected_items == 1 ) {
+        message = "<mt:trans phrase="Are you sure you want to remove _1 cache?" component="CacheManager">";
+    } else {
+        message = "<mt:trans phrase="Are you sure you want to remove _1 caches?" component="CacheManager">";
+    }
+    message = message.replace( '_1', selected_items );
+    if(! confirm( message ) ) {
+        return false;
+    }
+    $('#merged_params').val(JSON.stringify( input_data ));
+    $("input[name='paths[]']").prop('disabled',true);
+    $('#list-delete-form').submit();
+});
+</script>
+</mt:if>
+</mt:loop>
+<mt:unless name="print_cache">
+  <div class="alert alert-info" role="alert" tabindex="0" id="cache-alert-message">
+    <mt:trans phrase="There is no cache." component="CacheManager">
+  </div>
+  <script>
+  $('#cache-alert-message').focus();
+  </script>
+</mt:unless>
+<mt:include file="include/popup_footer.tmpl">

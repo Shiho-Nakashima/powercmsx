@@ -1,0 +1,66 @@
+<mt:if name="workspace_id">
+<div class="row form-group">
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_themegithub_use_system_setting" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input individual-setting"
+        id="setting_themegithub_use_system_setting" name="setting_themegithub_use_system_setting" value="1"
+        <mt:if name="setting_themegithub_use_system_setting">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Use System Setting" component="Theme_GitHub"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_themegithub_use_system_setting').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide( 100 );
+    } else {
+        $('#individual-setting-container').show( 100 );
+    }
+});
+</script>
+</mt:if>
+<div class="<mt:if name="setting_themegithub_use_system_setting">hidden</mt:if>" id="individual-setting-container">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_themegithub_account">
+      <mt:trans phrase="GitHub Account">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_themegithub_account" name="setting_themegithub_account" class="form-control" value="<mt:var name="setting_themegithub_account" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_themegithub_token">
+      <mt:trans phrase="Token for GitHub">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" id="setting_themegithub_token" name="setting_themegithub_token" class="form-control" value="<mt:var name="setting_themegithub_token" escape>">
+  </div>
+</div>
+<p class="text-muted hint-block">
+  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Hint"></span>
+  <mt:trans phrase="If there is a user setting, the user setting has priority." component="Theme_GitHub">
+</p>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_themegithub_gitignore">
+      <mt:trans phrase=".gitignore">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_themegithub_gitignore" name="setting_themegithub_gitignore" class="form-control" value="<mt:var name="setting_themegithub_gitignore" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The file name(s) to not commit(Comma separated values)." component="Theme_GitHub">
+    </p>
+  </div>
+</div>
+</div>

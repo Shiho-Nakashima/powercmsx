@@ -1,0 +1,24 @@
+{
+    "Provide preview function with UUID specified." : "UUIDパラメタ指定での外部ユーザーのプレビュー機能を提供します。",
+    "Target Models" : "対象モデル",
+    "External Preview" : "外部プレビュー",
+    "External Preview Link" : "外部プレビューリンク",
+    "Base URL" : "ベースURL",
+    "You are trying to preview the pre-published %s." : "公開前の%sをプレビューしようとしています。",
+    "To preview, enter your password and click the 'Preview' button."
+        : "パスワードを入力して「プレビュー」ボタンをクリックしてください。",
+    "You have not entered a password for the External Preview."
+        : "外部プレビューのパスワードが入力されていません。",
+    "Enable External Preview" : "外部プレビューを有効にする",
+    "Your password is incorrect." : "パスワードが一致しません。",
+    "Expires" : "有効期限",
+    "Common Password" : "共通パスワード",
+    "Unique Password" : "オブジェクトごとのパスワード",
+    "Default Expires" : "有効期限の規定値",
+    "day(s) after" : "日後",
+    "There is no target model." : "対象のモデルがありません。",
+    "In order to use this function, UUID is set in the model, and URL Map needs to be present."
+        : "この機能を利用するためには、モデルにUUIDが設定されていて、URLマップが存在する必要があります。",
+    "When the password is blank, a preview is displayed immediately when click the preview URL."
+        : "パスワードが空欄の時、プレビュー用URLをクリックすると直ちにプレビューが表示されます。"
+}

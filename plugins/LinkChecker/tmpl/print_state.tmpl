@@ -1,0 +1,61 @@
+<mt:setvar name="admin_url" value="">
+<mt:setvar name="errors_count" value="0">
+<div class="ml-2 mr-2">
+  <mt:isarray name="__value__">
+    <mt:count name="__value__" setvar="errors_count">
+    <mt:setvar name="has_error" value="1">
+  <mt:else>
+    <mt:if name="__value__" ne="OK">
+      <mt:setvar name="has_error" value="1">
+    </mt:if>
+  </mt:isarray>
+<div class="p-2" <mt:if name="errors_count">style="background-color:#fee;color:#b00"<mt:elseif name="__value__" ne="OK">style="background-color:#fee;color:#b00"<mt:else><mt:unless name="__odd__">style="background-color:#eee"</mt:unless></mt:if>>
+  <mt:if name="__key__" like="  ">
+    <mt:var name="__key__" split="  " setvar="urls">
+    <mt:var name="urls[0]" trim setvar="link_url">
+    <mt:var name="urls[1]" trim setvar="admin_url">
+  <mt:else>
+    <mt:var name="__key__" setvar="link_url">
+  </mt:if>
+  <a href="<mt:var name="link_url">" target="_blank">
+    <mt:var name="link_url">
+      <i class="fa fa-external-link-square" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Open in new window"></span>
+  </a>
+  <mt:if name="has_error">
+  <mt:setvarblock name="page_errors_name">page_errors[<mt:var name="link_url">]</mt:setvarblock>
+    <mt:if name="errors_count">
+    <span style="font-size:90%">( <mt:trans phrase="%s broken links found" params="$errors_count" component="LinkChecker"> )</span>
+    </mt:if>
+    <mt:if name="admin_url">
+    &nbsp;
+    <a href="<mt:var name="admin_url">" title="<mt:trans phrase="Edit">" target="_blank">
+      <i class="fa fa-pencil-square" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Edit">(<mt:trans phrase="Open in new window">)</span>
+    </a>
+    </mt:if>
+  </mt:if>
+<ul class="mt-1 mb-0 ml-0" style="padding-left:3px">
+<mt:isarray name="__value__">
+<mt:loop name="__value__">
+  <li style="font-size:90%;list-style-type:none">
+    <i class="fa fa-chain-broken" aria-hidden="true"></i> <a href="<mt:var name="__value__">" target="_blank"><mt:trans phrase="'%s' does not exist." params="$__value__" component="LinkChecker"></a>
+  </li>
+</mt:loop>
+<mt:else>
+  <li style="font-size:90%;list-style-type:none;">
+    <mt:if name="__value__" eq="OK">
+      <i class="fa fa-check-circle-o" aria-hidden="true"></i> <mt:trans phrase="Found no broken links." component="LinkChecker">
+    <mt:elseif name="__value__" eq="ERROR">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <mt:trans phrase="Parse failed while checking the HTML." component="LinkChecker">
+    <mt:elseif name="__value__" eq="404ERROR">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <mt:trans phrase="Could not get page." component="LinkChecker">
+    </mt:if>
+  </li>
+</mt:isarray>
+</ul>
+</div>
+</div>
+<script>
+  setTimeout( scrollBottom, 100 );
+</script>

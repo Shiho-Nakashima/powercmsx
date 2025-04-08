@@ -1,0 +1,23 @@
+{
+    "gethierarchy" : {
+        "description" : "Get objects with hierarchy as an array.",
+        "attributes" : {
+            "model" : "Model name.",
+            "(column name)" : "Search object by column value.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "cols" : "Column name for SELECT(Comma separated values).",
+            "with_relation" : "Get related objects in results."
+        }
+    },
+    "getmenustructure" : {
+        "description" : "Get menu items with hierarchy as an array. When id, name, basename are not specified, get all menu items.",
+        "attributes" : {
+            "id" : "The Menu's 'id'.",
+            "name" : "Column 'name' of the Menu.",
+            "basename" : "Column 'basename' of the Menu.",
+            "global" : "When a value is specified, SELECT the system scope Menu.",
+            "workspace_id" : "The Menu's 'workspace_id'.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects."
+        }
+    }
+}

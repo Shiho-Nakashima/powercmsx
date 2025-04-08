@@ -1,0 +1,89 @@
+<mt:trans phrase="Generate og:image for SNS" component="Text2OgImage" setvar="page_title">
+<mt:setvarblock name="html_head" append="1">
+<style>
+h1{display: none}
+#close-btn{position:absolute; top: 3px; right:3px;font-size:135%}
+</style>
+</mt:setvarblock>
+<mt:include file="include/dialog_header.tmpl">
+<button id="close-btn" type="button" class="close btn-sm" aria-label="<mt:trans phrase="Close">">
+<span aria-hidden="true">&times;</span>
+</button>
+<div id="__loader-bg">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<div class="mb-3">
+<img class="full hidden" src="<mt:var name="prototype_path">assets/img/loading.gif" alt="<mt:trans phrase="Preview">" id="og-image-preview">
+</div>
+<div class="mb-3">
+<input type="range" value="<mt:var name="coefficient">" step="0.025" id="coefficient" name="coefficient" min="0.1" max="0.9" class="full form-control-range" />
+</div>
+<button type="button" id="dialog-close-btn" class="ml-0 btn btn-secondary"><mt:trans phrase="Close"></button>
+<a class="btn btn-primary" href="" download="export.png" id="og-image-export"><mt:trans phrase="Export"></a>
+<button type="button" id="regenerate-btn" class="btn btn-secondary"><mt:trans phrase="Re-Generate" component="Text2OgImage"></button>
+<mt:if name="debug_mode">
+<div style="height:50px;"></div>
+</mt:if>
+<script>
+    var current_coefficient;
+    $('#coefficient').change(function() {
+        let changed_value = $(this).val();
+        if ( current_coefficient != changed_value ) {
+            $('#regenerate-btn').css( 'color', 'white' );
+            $('#regenerate-btn').css( 'background-color', 'black' );
+            current_coefficient = changed_value;
+        }
+    });
+<mt:setvarblock name="ogimage_script">
+    let editor = window.parent.tinymce.activeEditor;
+    let html = editor.selection.getContent();
+    let url = '<mt:var name="script_uri">?__mode=editor_ogimage<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>';
+    let coefficient = 1.0 - $('#coefficient').val();
+    current_coefficient = coefficient;
+    let data = {
+        text: html,
+        coefficient: coefficient,
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $('#__loader-bg').show();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#__loader-bg').hide();
+            } else {
+                $('#og-image-preview').attr( 'src', responce.src );
+                $('#og-image-preview').show();
+                $('#og-image-export').attr( 'href', responce.src );
+                $('#og-image-export').attr( 'download', responce.filename );
+                $('#regenerate-btn').css( 'color', 'black' );
+                $('#regenerate-btn').css( 'background-color', 'white' );
+                $('#__loader-bg').hide();
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while generating the og:image." component="Text2OgImage">' );
+        }
+    });
+</mt:setvarblock>
+<mt:var name="ogimage_script">
+    $('#regenerate-btn').click(function() {
+<mt:var name="ogimage_script">
+    });
+    $('#close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+    $('#dialog-close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+</script>
+<mt:include file="include/dialog_footer.tmpl">

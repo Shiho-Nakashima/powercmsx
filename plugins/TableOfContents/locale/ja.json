@@ -1,0 +1,6 @@
+{
+    "Generates a table of contents (anchor links) from headings.": "見出しから目次(ページ内アンカー)を生成します。",
+    "Variable name that stores the array of nested lists (default is 'generated_table_of_contents').": "ネストされたリストの配列を格納する変数名(省略時は「generated_table_of_contents」)",
+    "Prefix of the ID attribute added to the heading tag (default is 'anchor').": "アンカーとなる見出しタグに追加されるID属性のプレフィックス(省略時は「anchor」)",
+    "If specified, the table of contents list and the content with the ID will be concatenated and output.": "指定すると目次のリストとIDを付与したコンテンツを連結して出力します"
+}

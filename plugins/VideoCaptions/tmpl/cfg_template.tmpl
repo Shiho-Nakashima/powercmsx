@@ -1,0 +1,233 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_font">
+      <mt:trans phrase="Font" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:property name="video_captions_fonts" split="," setvar="video_captions_fonts">
+    <select style="width:120px !important" class="form-control custom-select short" style="width:160px !important" id="setting_video_captions_font" name="setting_video_captions_font">
+      <option value="sans-serif" <mt:if name="setting_video_captions_font" eq="sans-serif">selected</mt:if>>sans-serif</option>
+      <option value="serif" <mt:if name="setting_video_captions_font" eq="serif">selected</mt:if>>serif</option>
+    </select>
+  <mt:loop name="video_captions_fonts">
+    <mt:if name="__first__">
+    <select style="width:150px !important" class="form-control custom-select short" id="setting_video_captions_font_face" name="setting_video_captions_font_face">
+      <option value="" <mt:if name="setting_video_captions_font_face" eq="">selected</mt:if>><mt:trans phrase="Unspecified"></option>
+    </mt:if>
+      <option value="<mt:var name="__value__" escape>" <mt:if name="setting_video_captions_font_face" eq="$__value__">selected</mt:if>><mt:var name="__value__" escape></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+  </mt:loop>
+    <select style="width:100px !important" class="form-control custom-select short" id="setting_video_captions_font_weight" name="setting_video_captions_font_weight">
+      <option id="weight_100" class="font-weight" value="100" <mt:if name="setting_video_captions_font_weight" eq="100">selected</mt:if>>100</option>
+      <option id="weight_200" class="font-weight" value="200" <mt:if name="setting_video_captions_font_weight" eq="200">selected</mt:if>>200</option>
+      <option id="weight_300" class="font-weight" value="300" <mt:if name="setting_video_captions_font_weight" eq="300">selected</mt:if>>300</option>
+      <option id="weight_400" class="font-weight" value="400" <mt:if name="setting_video_captions_font_weight" eq="400">selected</mt:if>>400</option>
+      <option id="weight_500" class="font-weight" value="500" <mt:if name="setting_video_captions_font_weight" eq="500">selected</mt:if>>500</option>
+      <option id="weight_600" class="font-weight" value="600" <mt:if name="setting_video_captions_font_weight" eq="600">selected</mt:if>>600</option>
+      <option id="weight_700" class="font-weight" value="700" <mt:if name="setting_video_captions_font_weight" eq="700">selected</mt:if>>700</option>
+      <option id="weight_800" class="font-weight" value="800" <mt:if name="setting_video_captions_font_weight" eq="800">selected</mt:if>>800</option>
+      <option id="weight_900" class="font-weight" value="900" <mt:if name="setting_video_captions_font_weight" eq="900">selected</mt:if>>900</option>
+    </select>
+    &nbsp;
+    <label class="custom-control custom-checkbox" style="display:inline">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_video_captions_canvas_webfont" name="setting_video_captions_canvas_webfont" value="1"
+        <mt:if name="setting_video_captions_canvas_webfont">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Use Google Fonts" component="VideoCaptions"></span>
+    </label>
+  </div>
+</div>
+<script>
+let font = $('#setting_video_captions_font_face').val();
+$('.font-weight').show();
+$('#setting_video_captions_font_weight').show();
+if ( font == 'Noto Sans JP' ) {
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+    $('#weight_800').hide();
+} else if ( font == 'M PLUS Rounded 1c' ) {
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+} else if ( font == 'BIZ UDPGothic' ) {
+    $('.font-weight').hide();
+    $('#weight_400').show();
+    $('#weight_700').show();
+} else if ( font == 'BIZ UDPMincho' ) {
+    $('#setting_video_captions_font_weight').hide();
+} else if ( font == 'Zen Maru Gothic' ) {
+    $('#weight_100').hide();
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+    $('#weight_800').hide();
+} else if ( font == 'Noto Serif JP' ) {
+    $('#weight_100').hide();
+    $('#weight_800').hide();
+} else if ( font == 'Kaisei Opti' ) {
+    $('.font-weight').hide();
+    $('#weight_400').show();
+    $('#weight_500').show();
+    $('#weight_700').show();
+} else if ( font == 'RocknRoll One' ) {
+    $('#setting_video_captions_font_weight').hide();
+}
+$('#setting_video_captions_font_face').change(function(){
+    let font = $(this).val();
+    $('.font-weight').show();
+    $('#setting_video_captions_font_weight').show();
+    if ( font == 'Noto Sans JP' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#weight_800').hide();
+        $('#setting_video_captions_font_weight').val('700');
+    } else if ( font == 'M PLUS Rounded 1c' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#setting_video_captions_font_weight').val('700');
+    } else if ( font == 'BIZ UDPGothic' ) {
+        $('.font-weight').hide();
+        $('#weight_400').show();
+        $('#weight_700').show();
+        $('#setting_video_captions_font_weight').val('700');
+    } else if ( font == 'BIZ UDPMincho' ) {
+        $('#setting_video_captions_font_weight').hide();
+    } else if ( font == 'Zen Maru Gothic' ) {
+        $('#weight_100').hide();
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#weight_800').hide();
+        $('#setting_video_captions_font_weight').val('700');
+    } else if ( font == 'Noto Serif JP' ) {
+        $('#weight_100').hide();
+        $('#weight_800').hide();
+        $('#setting_video_captions_font_weight').val('700');
+    } else if ( font == 'Kaisei Opti' ) {
+        $('.font-weight').hide();
+        $('#weight_400').show();
+        $('#weight_500').show();
+        $('#weight_700').show();
+        $('#setting_video_captions_font_weight').val('700');
+    } else if ( font == 'RocknRoll One' ) {
+        $('#setting_video_captions_font_weight').hide();
+    }
+});
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_default_pos">
+      <mt:trans phrase="Default Position" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_video_captions_default_pos" name="setting_video_captions_default_pos">
+      <option value="1" <mt:if name="setting_video_captions_default_pos" eq="1">selected</mt:if>><mt:trans phrase="Bottom" component="VideoCaptions"></option>
+      <option value="2" <mt:if name="setting_video_captions_default_pos" eq="2">selected</mt:if>><mt:trans phrase="Top" component="VideoCaptions"></option>
+      <option value="3" <mt:if name="setting_video_captions_default_pos" eq="3">selected</mt:if>><mt:trans phrase="Title" component="VideoCaptions"></option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_default_color">
+      <mt:trans phrase="Default Color" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_video_captions_default_color" name="setting_video_captions_default_color">
+      <option value="1" <mt:if name="setting_video_captions_default_pos" eq="1">selected</mt:if>><mt:trans phrase="White" component="VideoCaptions"></option>
+      <option value="2" <mt:if name="setting_video_captions_default_pos" eq="2">selected</mt:if>><mt:trans phrase="Black" component="VideoCaptions"></option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_default_ruby">
+      <mt:trans phrase="Text Processing" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_video_captions_default_ruby" name="setting_video_captions_default_ruby">
+      <option value="0" <mt:if name="setting_video_captions_default_ruby" eq="0">selected</mt:if>><mt:trans phrase="None"></option>
+      <option value="1" <mt:if name="setting_video_captions_default_ruby" eq="1">selected</mt:if>><mt:trans phrase="Auto Ruby" component="VideoCaptions"></option>
+      <option value="2" <mt:if name="setting_video_captions_default_ruby" eq="2">selected</mt:if>><mt:trans phrase="Ruby and Word-Separate" component="VideoCaptions"></option>
+      <option value="3" <mt:if name="setting_video_captions_default_ruby" eq="3">selected</mt:if>><mt:trans phrase="Word-Separate only" component="VideoCaptions"></option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_wordwrap">
+      <mt:trans phrase="Word Wrap" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_video_captions_wordwrap" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+          id="setting_video_captions_wordwrap" name="setting_video_captions_wordwrap"
+          value="1" <mt:if name="setting_video_captions_wordwrap">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Auto Word Wrap" component="VideoCaptions"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_video_tag">
+      <mt:trans phrase="Video Tag" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+      <input type="text" class="form-control"
+          id="setting_video_captions_video_tag" name="setting_video_captions_video_tag" value="<mt:var name="setting_video_captions_video_tag" escape>">
+   <p class="text-muted hint-block mt-2 mb-1">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Enter the start tag of the video tag when inserting it in the editor by specifying the attributes." component="VideoCaptions">
+   </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_video_captions_src_relative">
+      <mt:trans phrase="Preview">
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:if name="workspace_link_url">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_video_captions_src_relative" value="0" <mt:unless name="setting_video_captions_src_relative">checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Link URL"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_video_captions_src_relative" value="2" <mt:if name="setting_video_captions_src_relative" eq="2">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Site URL"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_video_captions_src_relative" value="1" <mt:if name="setting_video_captions_src_relative" eq="1">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Relative URL"></span>
+    </label>
+  <mt:else>
+    <input type="hidden" name="setting_video_captions_src_relative" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+          id="setting_video_captions_src_relative" name="setting_video_captions_src_relative"
+          value="1" <mt:if name="setting_video_captions_src_relative">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Relative URL"></span>
+    </label>
+  </mt:if>
+  </div>
+</div>

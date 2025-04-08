@@ -1,0 +1,16 @@
+<?php $this->get_cache=array (
+  0 => 'session_id',
+  1 => 'session_name',
+  2 => 'session_user_id',
+  3 => 'session_key',
+  4 => 'session_value',
+  5 => 'session_text',
+  6 => 'session_kind',
+  7 => 'session_data',
+  8 => 'session_metadata',
+  9 => 'session_extradata',
+  10 => 'session_object_id',
+  11 => 'session_workspace_id',
+  12 => 'session_start',
+  13 => 'session_expires',
+);

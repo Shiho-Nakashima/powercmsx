@@ -1,0 +1,13 @@
+<mt:block regex_replace="'/^%s+$/um',''" remove_blank="1">
+<mt:include module="(Media) Header">
+<mt:unless name="without_contenner">
+<div class="content-section">
+  <div class="container">
+</mt:unless>
+    <mt:var name="contents">
+<mt:unless name="without_contenner">
+  </div>
+</div>
+</mt:unless>
+<mt:include module="(Media) Footer">
+</mt:block>

@@ -1,0 +1,607 @@
+<mt:include file="include/header.tmpl">
+
+<mt:setvarblock name="field_required">
+  <i class="fa fa-asterisk required" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Required"></span>
+</mt:setvarblock>
+
+<mt:if name="request.saved">
+  <div class="alert alert-success">
+    <mt:trans phrase="Your changes have been saved.">
+  </div>
+</mt:if>
+
+<mt:if name="forward_params">
+  <mt:var name="forward_appname" setvar="appname">
+  <mt:var name="forward_activation_code" setvar="activation_code">
+  <mt:var name="forward_copyright" setvar="copyright">
+  <mt:var name="forward_description" setvar="description">
+  <mt:var name="forward_two_factor_auth" setvar="two_factor_auth">
+  <mt:var name="forward_two_factor_auth" setvar="two_factor_auth">
+  <mt:var name="forward_lockout_limit" setvar="lockout_limit">
+  <mt:var name="forward_lockout_interval" setvar="lockout_interval">
+  <mt:var name="forward_ip_lockout_interval" setvar="ip_lockout_interval">
+  <mt:var name="forward_ip_lockout_limit" setvar="ip_lockout_limit">
+  <mt:var name="forward_no_lockout_allowed_ip" setvar="no_lockout_allowed_ip">
+  <mt:var name="forward_administrator_ip" setvar="administrator_ip">
+  <mt:var name="forward_allowed_ip_only" setvar="allowed_ip_only">
+  <mt:var name="forward_system_email" setvar="system_email">
+  <mt:var name="forward_tmpl_markup" setvar="tmpl_markup">
+  <mt:var name="forward_default_widget" setvar="default_widget">
+  <mt:var name="forward_site_url" setvar="site_url">
+  <mt:var name="forward_preview_url" setvar="preview_url">
+  <mt:var name="forward_link_url" setvar="link_url">
+  <mt:var name="forward_show_both" setvar="show_both">
+  <mt:var name="forward_document_root" setvar="document_root">
+  <mt:var name="forward_site_path" setvar="site_path">
+  <mt:var name="forward_extra_path" setvar="extra_path">
+  <mt:var name="forward_asset_publish" setvar="asset_publish">
+  <mt:var name="forward_accept_comment" setvar="accept_comment">
+  <mt:var name="forward_anonymous_comment" setvar="anonymous_comment">
+  <mt:var name="forward_comment_status" setvar="comment_status">
+  <mt:var name="forward_comment_thanks" setvar="comment_thanks">
+  <mt:var name="forward_enable_api" setvar="enable_api">
+  <mt:var name="forward_show_path_entry" setvar="show_path_entry">
+  <mt:var name="forward_show_path_page" setvar="show_path_page">
+  <mt:var name="forward_language" setvar="language">
+  <mt:var name="forward_barcolor" setvar="barcolor">
+  <mt:var name="forward_bartextcolor" setvar="bartextcolor">
+</mt:if>
+
+<form action="<mt:var name="script_uri">" method="POST">
+<input type="hidden" name="__mode" value="config">
+<input type="hidden" name="_type" value="save">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="app_version">
+      <mt:trans phrase="Version">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input readonly disabled type="text" id="app_version" name="app_version" class="form-control" value="PowerCMS X ver.<mt:property name="app_version" escape> (<mt:property name="version" escape>)">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="appname">
+      <mt:trans phrase="App Name">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input type="text" id="appname" name="appname" class="form-control" value="<mt:var name="appname" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="activation_code">
+      <mt:trans phrase="Activation Code">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input type="text" id="activation_code" name="activation_code" class="form-control" value="<mt:var name="activation_code" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="copyright">
+      <mt:trans phrase="Copyright">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input type="text" id="copyright" name="copyright" class="form-control" value="<mt:var name="copyright" escape>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="description">
+      <mt:trans phrase="Description">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <textarea rows="4" id="description" name="description" class="form-control"><mt:var name="description" escape></textarea>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="two_factor_auth">
+      <mt:trans phrase="Authentication">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <label class="custom-control custom-checkbox">
+    <input id="two_factor_auth" class="custom-control-input"
+     type="checkbox" name="two_factor_auth" value="1" <mt:if name="two_factor_auth">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use Two-factor Authentication"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  <mt:trans phrase="User Lock Out">
+  </div>
+  <div class="col-lg-4 form-inline lockout-col">
+    <label for="lockout_limit">
+      <mt:trans phrase="Lock Out Limit"> : 
+      <input type="number" id="lockout_limit" name="lockout_limit" class="form-control" value="<mt:if name="lockout_limit" ne=""><mt:var name="lockout_limit" escape><mt:else>3</mt:if>">
+    </label>
+  </div>
+  <div class="col-lg-6 form-inline lockout-col">
+    <label for="lockout_interval">
+      <mt:trans phrase="Lock Out Interval(Seconds)"> : 
+      <input type="number" id="lockout_interval" name="lockout_interval" class="form-control" value="<mt:if name="lockout_interval"><mt:var name="lockout_interval" escape><mt:else>600</mt:if>">
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  <mt:trans phrase="IP Lock Out">
+  </div>
+  <div class="col-lg-4 form-inline lockout-col">
+    <label for="ip_lockout_limit">
+      <mt:trans phrase="Lock Out Limit"> : 
+      <input type="number" id="ip_lockout_limit" name="ip_lockout_limit" class="form-control" value="<mt:if name="ip_lockout_limit" ne=""><mt:var name="ip_lockout_limit" escape><mt:else>3</mt:if>">
+    </label>
+  </div>
+  <div class="col-lg-6 form-inline lockout-col">
+    <label for="ip_lockout_interval">
+      <mt:trans phrase="Lock Out Interval(Seconds)"> : 
+      <input type="number" id="ip_lockout_interval" name="ip_lockout_interval" class="form-control" value="<mt:if name="ip_lockout_interval"><mt:var name="ip_lockout_interval" escape><mt:else>600</mt:if>">
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input id="no_lockout_allowed_ip" class="custom-control-input"
+     type="checkbox" name="no_lockout_allowed_ip" value="1" <mt:if name="no_lockout_allowed_ip">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Allowed ip address is not lockout"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group" style="margin-top:-14px">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <p class="text-muted">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="When Lock Out Limit is set to 0, lockout is not performed.">
+    </p>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  <mt:trans phrase="Administrator">
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input id="administrator_ip" class="custom-control-input"
+     type="checkbox" name="administrator_ip" value="1" <mt:if name="administrator_ip">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Apply IP address restriction to Administrator login"></span>
+    </label>
+    <label class="custom-control custom-checkbox">
+    <input id="allowed_ip_only" class="custom-control-input"
+     type="checkbox" name="allowed_ip_only" value="1" <mt:if name="allowed_ip_only">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Apply IP address restriction to all user"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group" style="margin-top:-14px">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <p class="text-muted">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="You need to register at least one administrator login IP address.">
+    <a href="<mt:var name="script_uri">?__mode=view&_type=edit&_model=remote_ip"><i class="fa fa-plus-circle"></i> <mt:trans phrase="Create"></a>
+    </p>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="system_email">
+      <mt:trans phrase="System Email">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input type="text" id="system_email" name="system_email" class="form-control" value="<mt:var name="system_email" escape>">
+    <div class="input-group-addon" style="border: 1px solid #5d5d5d;border-left:none">
+      <a href="javascript:void(0);" id="test_mail">
+      <i class="fa fa-envelope" aria-hidden="true"></i>
+      <mt:trans phrase="Send Test Mail">
+      </a>
+    </div>
+  </div>
+</div>
+<script>
+$('#test_mail').click(function(){
+    result = window.prompt( '<mt:trans phrase="Send Mail To">', '<mt:var name="user_email">' );
+    if (! result ) {
+        return;
+    }
+    var formData = {'magic_token': '<mt:var name="magic_token">', '__mode': 'test_mail', 'email': result};
+    $.ajax({
+        url: '<mt:var name="script_uri">',
+        data: formData,
+        type:'POST',
+        dataType: 'json',
+        success: function(data){
+            if ( data.result == true ) {
+                alert( '<mt:trans phrase="A test mail was sent.">' );
+            } else {
+                alert( '<mt:trans phrase="An error occurred while sending test mail.">' );
+            }
+        },
+        error: function(){
+            alert( '<mt:trans phrase="An error occurred while sending test mail.">' );
+        }
+    });
+});
+</script>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="tmpl_markup">
+      <mt:trans phrase="Template Markup">
+    </label>
+  </div>
+  <div class="col-lg-3">
+    <select class="form-control custom-select" id="tmpl_markup" name="tmpl_markup">
+      <option value="mt" <mt:if name="tmpl_markup" eq="mt">selected</mt:if>><mt:trans phrase="PowerCMS Compatible"></option>
+      <mt:ignore><option value="smarty" <mt:if name="tmpl_markup" eq="smarty">selected</mt:if>><mt:trans phrase="Smarty Compatible"></option></mt:ignore>
+    </select>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="default_widget">
+      <mt:trans phrase="Default Widget">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <textarea rows="10" id="default_widget" name="default_widget" class="form-control"><mt:var name="default_widget" escape></textarea>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="site_url">
+      <mt:trans phrase="Site URL">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input type="text" id="site_url" name="site_url" class="form-control" value="<mt:var name="site_url" escape>">
+  </div>
+</div>
+
+<div class="row form-group mb-1">
+  <div class="col-lg-2">
+    <label for="preview_url">
+      <mt:trans phrase="Preview URL">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="preview_url" name="preview_url" class="form-control" value="<mt:var name="preview_url" escape>">
+    <p class="text-muted mb-2 mt-1">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="When previewing with a URL different from the URL of the management screen, please enter the URL of the PHP application.">
+    </p>
+  </div>
+</div>
+
+<div class="row form-group mt-1 mb-1">
+  <div class="col-lg-2">
+    <label for="link_url">
+      <mt:trans phrase="Link URL">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="link_url" name="link_url" class="form-control" value="<mt:var name="link_url" escape>">
+    <p class="text-muted mb-2 mt-1">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="When viewing with a URL different from the URL of the management screen, please enter the another URL of this website.">
+    </p>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input id="show_both" class="custom-control-input"
+     type="checkbox" name="show_both" value="1" <mt:if name="show_both">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Show Both"></span>
+    </label>
+  <span class="text-muted ">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Check this if you want to display both links together.">
+  </span>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="site_path">
+      <mt:trans phrase="Site Path">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <mt:property name="site_base_path" setvar="site_base_path">
+  <mt:if name="site_base_path">
+    <div class="col-lg-10 form-inline">
+      <mt:var name="site_base_path" preg_quote="/" setvar="search_path">
+      <mt:setvar name="search_path" value="/" append="1">
+      <mt:setvar name="search_path" value="/^" prepend="1">
+      &nbsp; &nbsp; &nbsp; <mt:var name="site_base_path" rtrim="/" rtrim="\\" escape>/<input id="site_path" type="text" style="width: 200px;" class="form-control watch-changed" name="site_path" value="<mt:var name="site_path" regex_replace="'$search_path',''" ltrim="/" ltrim="\\" escape>">
+    </div>
+  <mt:else>
+  <div class="col-lg-10">
+    <input type="text" id="site_path" name="site_path" class="form-control" value="<mt:var name="site_path" escape>">
+  </div>
+  </mt:if>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="application_path">
+      <mt:trans phrase="Application Path">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" readonly disabled id="application_path" name="application_path" class="form-control" value="<mt:property name="pt_path" regex_replace="'/class\.Prototype\.php$/',''" escape>">
+  </div>
+</div>
+
+<div class="row form-group mt-1 mb-1">
+  <div class="col-lg-2">
+    <label for="document_root">
+      <mt:trans phrase="Document Root">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="document_root" name="document_root" class="form-control" value="<mt:var name="document_root" escape>">
+    <p class="text-muted mb-2 mt-1">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Please specify if the document root of the management screen and the document root of website are different.">
+    </p>
+  </div>
+</div>
+
+<div class="row form-group mt-1 mb-3">
+  <div class="col-lg-2">
+    <label for="timezone">
+      <mt:trans phrase="Timezone">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:property name="timezone" setvar="system_timezone">
+    <select id="timezone" class="form-control custom-select watch-changed" name="timezone">
+    <mt:loop name="timezones">
+      <mt:if name="__first__">
+        <option value="">
+          <mt:trans phrase="Unspecified">
+        </option>
+      </mt:if>
+        <option <mt:unless name="timezone"><mt:if name="system_timezone" eq="$__value__"> selected </mt:if></mt:unless><mt:if name="timezone" eq="$__value__"> selected </mt:if> value="<mt:var name="__value__" escape>"><mt:trans phrase="$__key__" escape></option>
+    </mt:loop>
+    </select>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="extra_path">
+      <mt:trans phrase="Upload Path">
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <input type="text" id="extra_path" name="extra_path" class="form-control" value="<mt:var name="extra_path" escape>">
+  </div>
+  <div class="col-lg-8 input-group mt-2">
+    <label class="custom-control custom-checkbox">
+    <input id="asset_publish" class="custom-control-input"
+     type="checkbox" name="asset_publish" value="1" <mt:if name="asset_publish">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Output the File"></span>
+    </label>
+  </div>
+</div>
+
+<mt:property name="use_comment" setvar="use_comment">
+<mt:if name="use_comment">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="show_path">
+      <mt:trans phrase="Comments">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input id="accept_comment" class="custom-control-input"
+     type="checkbox" name="accept_comment" value="1" <mt:if name="accept_comment">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Accept Comment"></span>
+    </label>
+    <label class="custom-control custom-checkbox <mt:unless name="accept_comment">hidden</mt:unless>" id="anonymous_comment">
+    <input class="custom-control-input"
+     type="checkbox" name="anonymous_comment" value="1" <mt:if name="anonymous_comment">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Accept Anonymous Comment"></span>
+    </label>
+    <label class="custom-control custom-checkbox <mt:unless name="accept_comment">hidden</mt:unless>" id="comment_thanks">
+    <input class="custom-control-input"
+     type="checkbox" name="comment_thanks" value="1" <mt:if name="comment_thanks">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Thanks email"></span>
+    </label>
+    <span <mt:unless name="accept_comment">class="hidden"</mt:unless>" id="comment_status"><mt:trans phrase="Status"> &nbsp; : &nbsp;
+    <select class="form-control custom-select short" name="comment_status">
+      <option value="1" <mt:if name="comment_status" eq="1">selected</mt:if>><mt:trans phrase="Disabled"></option>
+      <option value="2" <mt:if name="comment_status" eq="2">selected</mt:if>><mt:trans phrase="Enabled"></option>
+    </select>
+    </span>
+  </div>
+</div>
+<script>
+$('#accept_comment').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#anonymous_comment').css('display', 'inline');
+        $('#comment_thanks').css('display', 'inline');
+        $('#comment_status').css('display', 'inline');
+        $('#anonymous_comment').show();
+        $('#comment_thanks').show();
+        $('#comment_status').show();
+    } else {
+        $('#anonymous_comment').hide();
+        $('#comment_thanks').hide();
+        $('#comment_status').hide();
+    }
+});
+</script>
+</mt:if>
+<mt:property name="app_version" setvar="app_version">
+<mt:if name="app_version" ge="3">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="enable_api">
+      <mt:trans phrase="API">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="enable_api" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="enable_api" class="custom-control-input watch-changed"
+     type="checkbox" name="enable_api" value="1" <mt:if name="enable_api">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Enable API" escape></span>
+    </label>
+  </div>
+</div>
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="show_path">
+      <mt:trans phrase="Show Path Field">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input id="show_path" class="custom-control-input"
+     type="checkbox" name="show_path_entry" value="1" <mt:if name="show_path_entry">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Entry"></span>
+    </label>
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input"
+     type="checkbox" name="show_path_page" value="1" <mt:if name="show_path_page">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Page"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="language">
+      <mt:trans phrase="Language">
+    </label>
+  </div>
+  <div class="col-lg-3">
+    <mt:loop name="languages">
+    <mt:if name="__first__">
+    <select class="form-control custom-select short" id="language" name="language">
+    </mt:if>
+      <option value="<mt:var name="__value__">" <mt:if name="language" eq="$__value__">selected</mt:if>><mt:var name="__value__" escape translate></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+    </mt:loop>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="barcolor">
+      <mt:trans phrase="Bar Color">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="color" id="barcolor" name="barcolor" class="watch-changed form-control color-picker" value="<mt:if name="barcolor"><mt:var name="barcolor" escape><mt:else>#000000</mt:if>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="bartextcolor">
+      <mt:trans phrase="Bar TextColor">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="color" id="bartextcolor" name="bartextcolor" class="watch-changed form-control color-picker" value="<mt:if name="bartextcolor"><mt:var name="bartextcolor" escape><mt:else>#ffffff</mt:if>">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-12">
+  <button type="submit" class="btn btn-primary" id="__save"><mt:trans phrase="Save"></button>
+  </div>
+</div>
+</form>
+<mt:property name="reset_url_method" setvar="reset_url_method">
+<mt:if name="reset_url_method" eq="rename">
+<script>
+$('#__save').click(function(){
+    if ( $('#site_path').val() != '<mt:var name="site_path" escape>' ) {
+        if(! confirm('<mt:trans phrase="Changing the site path will move all current files to the new file path. Are you sure you want to save your settings?">') ) {
+            return false;
+        }
+    }
+    return true;
+});
+</script>
+</mt:if>
+<mt:include file="include/footer.tmpl">

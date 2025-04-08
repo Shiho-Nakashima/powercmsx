@@ -1,0 +1,36 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 input-group input-group-lg">
+    <input id="<mt:var name="__col_name__">" type="text" class="form-control watch-changed" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      aria-label="<mt:var name="label" escape>" <mt:if name="readonly">readonly</mt:if>>
+  <mt:if name="axe_permission">
+    <div class="input-group-addon" style="border: 1px solid <mt:var name="user_control_border" escape>;border-left:none">
+    <a class="pl-1 pr-1" data-toggle="tooltip" data-placement="left" href="<mt:var name="axe_url">" title="<mt:var name="axe_title">" target="_blank">
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:var name="axe_title"></span>
+    </a>
+    </div>
+  </mt:if>
+  
+  <mt:if name="axe_tmpl_permission">
+    <div class="input-group-addon" style="border: 1px solid <mt:var name="user_control_border" escape>;border-left:none">
+    <a class="pl-1 pr-1" data-toggle="tooltip" data-placement="left" href="<mt:var name="axe_tmpl_url">" title="<mt:var name="axe_tmpl_title">" target="_blank">
+      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:var name="axe_tmpl_title"></span>
+    </a>
+    </div>
+  </mt:if>
+    
+    <div class="input-group-addon" style="border: 1px solid <mt:var name="user_control_border" escape>;border-left:none">
+    <a class="pl-1 pr-1" data-toggle="tooltip" data-placement="left" href="<mt:var name="value" escape>" target="_blank" title="<mt:trans phrase="View">">
+      <i class="fa fa-external-link" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="View"></span>
+    </a>
+    </div>
+  </div>
+</div>

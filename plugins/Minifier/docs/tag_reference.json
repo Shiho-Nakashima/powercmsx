@@ -1,0 +1,11 @@
+{
+    "jsminifier" : {
+        "description" : "Minifying JavaScript code."
+    },
+    "cssminifier" : {
+        "description" : "Minifying CSS code."
+    },
+    "htmlminifier" : {
+        "description" : "Minifying HTML code."
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "label"       : "RebuildRelations",
+    "id"          : "rebuildrelations",
+    "component"   : "RebuildRelations",
+    "version"     : "1.4",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Add rebuild triggers for related objects.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "config_settings": {
+        "rebuildrelations_clear_cache": false
+    },
+    "settings"    : {
+        "rebuildrelations_models" : "",
+        "rebuildrelations_to_models" : ""
+    },
+    "hooks": {
+        "rebuildrelations_post_init": {
+            "post_init" : {
+                "component" : "RebuildRelations",
+                "priority"  : 1,
+                "method"    : "rebuildrelations_post_init"
+            }
+        },
+        "rebuildrelations_post_run": {
+            "post_run" : {
+                "component" : "RebuildRelations",
+                "priority"  : 1,
+                "method"    : "rebuildrelations_post_run"
+            }
+        }
+    }
+}

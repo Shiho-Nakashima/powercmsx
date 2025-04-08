@@ -1,0 +1,68 @@
+<mt:if name="workspace_id">
+<div class="row form-group">
+  <div class="col-lg-12">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_watermark_use_system_setting" class="custom-control-input"
+     type="checkbox" name="setting_watermark_use_system_setting" value="1" <mt:if name="setting_watermark_use_system_setting"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use System Setting" component="Watermark"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_watermark_use_system_setting').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide();
+    } else {
+        $('#individual-setting-container').show();
+    }
+});
+</script>
+</mt:if>
+<div class="<mt:if name="setting_watermark_use_system_setting">hidden</mt:if>" id="individual-setting-container">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_watermark_default_pos">
+      <mt:trans phrase="Default Position" component="Watermark">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="setting_watermark_default_pos" value="" <mt:unless name="setting_watermark_default_pos"> checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="None"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="setting_watermark_default_pos" value="top-left" <mt:if name="setting_watermark_default_pos" eq="top-left"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Top-Left" component="Watermark"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="setting_watermark_default_pos" value="top-right" <mt:if name="setting_watermark_default_pos" eq="top-right"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Top-Right" component="Watermark"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="setting_watermark_default_pos" value="bottom-left" <mt:if name="setting_watermark_default_pos" eq="bottom-left"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Bottom-Left" component="Watermark"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="setting_watermark_default_pos" value="bottom-right" <mt:if name="setting_watermark_default_pos" eq="bottom-right"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Bottom-Right" component="Watermark"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_watermark_watermark_dir">
+      <mt:trans phrase="Images Directory" component="Watermark">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_watermark_watermark_dir" name="setting_watermark_watermark_dir" class="form-control" value="<mt:var name="setting_watermark_watermark_dir" escape>">
+  </div>
+</div>
+</div>

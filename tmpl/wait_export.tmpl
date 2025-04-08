@@ -1,0 +1,59 @@
+<mt:setvarblock name="html_head" append="1">
+<style>
+#progressbar {
+  margin: 20em 2em;
+  font-size: 0.3em;
+  height: 4px;
+  border:1px solid #ccc;
+  border-radius: 0.5em;
+  background-image: repeating-linear-gradient( 50deg, #f6f6f6, #f6f6f6 20px, #ddd 20px, #ddd 40px );
+  background-size: 5000%;
+  animation: animatedBackground 400s linear infinite;
+}
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: -100% 0; }
+}
+</style>
+</mt:setvarblock>
+<mt:include file="include/popup_header.tmpl">
+<mt:if name="workspace_id">
+<mt:var name="workspace_name" setvar="scope_name">
+<mt:setvarblock name="scope_link">
+<a target="_blank" href="<mt:var name="workspace_url">" class="link-in-alert"><mt:var name="workspace_name" escape="single"></a>
+</mt:setvarblock>
+<mt:else>
+<mt:var name="appname" setvar="scope_name">
+<mt:var name="site_url" setvar="website_url">
+<mt:setvarblock name="scope_link">
+<a target="_blank" href="<mt:var name="site_url">" class="link-in-alert"><mt:var name="appname" escape="single"></a>
+</mt:setvarblock>
+</mt:if>
+<script src="assets/js/pace.min.js"></script>
+<link href="assets/css/pace.css" rel="stylesheet">
+<form action="<mt:var name="script_uri">" method="POST" id="wait_export">
+<input type="hidden" name="__mode" value="wait_export">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="model" value="<mt:var name="model" escape>">
+<input type="hidden" name="return_args" value="<mt:var name="return_args" escape="url">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" name="session_id" value="<mt:var name="request.session_id" escape>">
+<input type="hidden" name="apply_actions" value="<mt:var name="apply_actions" escape>">
+<input type="hidden" name="ready_to_export" value="<mt:var name="ready_to_export">">
+</form>
+<div id="progressbar" class="mt-10"></div>
+<mt:unless name="ready_to_export">
+<script>
+setTimeout(function(){
+    $('#wait_export').submit();
+} , 3000);
+</script>
+<mt:else>
+<script>
+    $('#wait_export').submit();
+    setTimeout(function(){
+        window.location.href = '<mt:var name="script_uri">?<mt:var name="return_args">';
+    } , <mt:var name="wait_time">);
+</script>
+</mt:unless>
+<mt:include file="include/popup_footer.tmpl">

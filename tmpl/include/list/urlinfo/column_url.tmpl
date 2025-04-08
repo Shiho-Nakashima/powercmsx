@@ -1,0 +1,41 @@
+<mt:ifusercan action="edit" model="$this_model" id="$id"><a <mt:if name="request.dialog_view">target="_blank"</mt:if> href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="this_model" escape>&amp;id=<mt:var name="id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:if name="model" eq="workspace">&amp;workspace_id=<mt:objectvar name="id"></mt:if><mt:if name="request.revision_select">&amp;edit_revision=1</mt:if>"></mt:ifusercan>
+  <mt:unless name="$_name">
+  <mt:setvarblock name="$_name">(<mt:trans phrase="null">)</mt:setvarblock>
+  </mt:unless>
+  <mt:if name="request.target" eq="urls">
+    <mt:var name="_model_primary" escape>
+  <mt:else>
+    <mt:var name="$_name" escape>
+  </mt:if>
+<mt:ifusercan action="edit" model="$this_model" id="$id"></a></mt:ifusercan>
+<mt:if name="_has_mapping">
+  <mt:if name="permalink">
+  &nbsp; 
+  <a href="<mt:var name="permalink">" target="_blank">
+  <i class="fa fa-external-link" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="View"></span>
+  </a>
+  </mt:if>
+</mt:if>
+  <a class="btn toggle-infobox hidden" title="<mt:var name="$_name">"
+    id="toggle_<mt:var name="id">" href="javascript:void(0);">
+    <i id="toggle_icn_<mt:var name="id">" class="fa fa-caret-down toggle-icn" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Toggle"></span>
+  </a>
+  <div id="infobox_<mt:var name="id">" class="hidden info-box"></div>
+&nbsp;
+  <mt:var name="$_name" setvar="__permalink">
+  <mt:if name="_link_url">
+    <mt:var name="__permalink" replace="'$_site_url','$_link_url'" setvar="__permalink">
+  </mt:if>
+  <a data-toggle="tooltip" data-placement="top" href="<mt:if name="_show_both"><mt:var name="$_name"><mt:else><mt:var name="__permalink"></mt:if>" title="<mt:trans phrase="View">" target="_blank">
+    <i class="fa fa-external-link" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="View"></span>
+  </a>
+<mt:if name="_show_both">
+  &nbsp;
+  <a data-toggle="tooltip" data-placement="top" style="position:absolute;margin-top:-1px" href="<mt:var name="__permalink">" title="<mt:trans phrase="View Published">" target="_blank">
+    <i class="fa fa-globe" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="View"></span>
+  </a>
+</mt:if>

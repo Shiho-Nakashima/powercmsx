@@ -1,0 +1,32 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:var name="label" escape />
+  </div>
+  <div class="col-lg-10">
+    <div id="<mt:var name="__col_name__">_app"></div>
+    <mt:var name="_hint">
+  </div>
+  <textarea style="display: none;" readonly id="_saved_<mt:var name="__col_name__">"><mt:var name="value"></textarea>
+</div>
+<script>
+window.componentBlocksSettings = {};
+window.componentBlocksSettings.models = {<mt:objectloop model="table" sort_by="order">
+  '<mt:var name="name" escape>': '<mt:trans phrase="$label" escape />',</mt:objectloop>
+};
+</script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/vue/vue.global<mt:var name="component_blocks_vue_suffix" escape />.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/vue-i18n/vue-i18n.global<mt:var name="component_blocks_vue_suffix" escape />.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/tinymce-vue/tinymce-vue.min.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/sortablejs/Sortable.min.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/vue.draggable.next/vuedraggable.umd.min.js"></script>
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/component_blocks_service.js"></script>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="block-property-symbols">
+  <g id="grip_vertical" width="16" height="16" fill="currentColor" class="bi bi-grip-vertical" viewBox="0 0 16 16">
+    <path d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+  </g>
+  <g id="trash" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+  </g>
+</svg>
+<mt:include file="field_definition.tmpl" />

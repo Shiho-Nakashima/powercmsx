@@ -1,0 +1,17 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_multiplenotifications_enabled">
+      <mt:trans phrase="MultipleNotifications Enabled" component="MultipleNotifications">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_multiplenotifications_enabled" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_multiplenotifications_enabled" class="custom-control-input"
+     type="checkbox" <mt:if name="setting_multiplenotifications_enabled">checked</mt:if> name="setting_multiplenotifications_enabled" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Enabled" component="MultipleNotifications"></span>
+    </label>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<mt:for merge_linefeeds="1">
+<mt:trans phrase="%1$s %2$s you are responsible for have been applied to master by user %3$s and the responsible user has changed." params="'$count_objects','$object_label_plural','$by_user'">
+
+<mt:trans phrase="(List of %s)" params="$object_label_plural">
+<mt:var name="list_url">
+
+<mt:loop name="object_loop" trim_space="2">
+<mt:if name="__first__">--------------------------------------------------------------------<mt:else>-------------------------------------------------------------------</mt:if>
+
+<mt:var name="object_name"> (ID: <mt:var name="object_id">)
+<mt:if name="object_permalink"><mt:var name="object_permalink"></mt:if>
+<mt:if name="__last__">
+--------------------------------------------------------------------</mt:if>
+</mt:loop>
+
+<mt:include file="mail_footer.tmpl">
+</mt:for>

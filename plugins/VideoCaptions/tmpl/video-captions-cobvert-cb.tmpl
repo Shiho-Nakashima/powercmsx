@@ -1,0 +1,19 @@
+<label class="custom-control custom-checkbox ml-2 <mt:if name="request.dialog_view"> mt-3</mt:if>">
+<input class="custom-control-input watch-changed mt-3" type="checkbox" name="create-hls" id="create-hls" value="1">
+    <span class="custom-control-indicator" style="<mt:if name="user_stickey_buttons"><mt:if name="request.dialog_view">margin-top:-4px<mt:else>margin-top:0.7rem</mt:if><mt:else>margin-top:0.7rem</mt:if>"></span>
+    <span class="custom-control-description">
+      <mt:trans phrase="Clone &amp; Convert to HLS at Save Object" component="VideoCaptions">
+    </span>
+</label>
+<script>
+$('.__save').click(function(e){
+    if($('#create-hls').prop('checked')) {
+        if (! confirm( '<mt:trans phrase="Are you sure you want to clone this object &amp; convert to HLS?" component="VideoCaptions">' ) ) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+    }
+});
+</script>

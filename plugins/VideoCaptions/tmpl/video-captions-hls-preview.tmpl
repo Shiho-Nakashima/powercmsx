@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="<mt:var name="language">">
+  <head>
+    <meta charset="utf-8">
+    <title><mt:var name="file_label" escape></title>
+    <mt:videojsscript link>
+  </head>
+  <body>
+    <mt:if name="class" eq="video">
+      <mt:embedvideo controls="always" script basename="$basename">
+    <mt:else>
+      <mt:embedaudio controls="always" script basename="$basename">
+    </mt:if>
+  </body>
+</html>

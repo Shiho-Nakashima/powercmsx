@@ -1,0 +1,26 @@
+{
+    "label": "QuickEdit",
+    "id": "quickedit",
+    "component": "QuickEdit",
+    "description": "Provides a Bookmarklet for a quick link from the public page to the Edit Profile screen.",
+    "version": "1.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "methods": {
+        "go_to_edit_screen": {
+            "component": "QuickEdit",
+            "method": "go_to_edit_screen"
+        }
+    },
+    "callbacks": {
+        "quickedit_template_source_dashboard": {
+            "dashboard" : {
+                "template_source" : {
+                    "component" : "QuickEdit",
+                    "priority"  : 10,
+                    "method" : "insert_quickedit_error"
+                }
+            }
+        }
+    }
+}

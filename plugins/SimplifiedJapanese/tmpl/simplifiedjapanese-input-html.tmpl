@@ -1,0 +1,59 @@
+<button type="button" style="padding-top:3px" id="_insert-ruby-textarea" class="btn btn-sm btn-secondary editor-btn" title="<mt:trans phrase="Put on Furigana" component="SimplifiedJapanese">"><img src="<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/ruby.png" width="16" height="16" alt="<mt:trans phrase="Put on Furigana" component="SimplifiedJapanese">"></button>
+<script>
+$('#_insert-ruby-textarea').click(function(){
+  var target = document.getElementById('<mt:var name="__col_name__">');
+  var pos = getAreaRange(target);
+  var val = target.value;
+  var range = val.slice(pos.start, pos.end);
+  var beforeNode = val.slice(0, pos.start);
+  var afterNode  = val.slice(pos.end);
+  var insertNode;
+  url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_get_phonetic&<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+  var data = {
+      text: range,
+      magic_token : '<mt:var name="magic_token">'
+  };
+  $.ajax({
+      url: url,
+      type: 'POST',
+      data:JSON.stringify(data),
+      contentType: 'application/json',
+      dataType: 'json',
+      timeout: 10000,
+      success: function( responce ){
+          if ( responce.status == 200 ) {
+              _insert_ruby_textarea( responce.result );
+          } else {
+              _insert_ruby_textarea( '' );
+          }
+      },
+      error: function(){
+          _insert_ruby_textarea( '' );
+      }
+  });
+});
+var _insert_ruby_textarea = function( ruby ) {
+    var target = document.getElementById('<mt:var name="__col_name__">');
+    var pos = getAreaRange(target);
+    var val = target.value;
+    var range = val.slice(pos.start, pos.end);
+    var beforeNode = val.slice(0, pos.start);
+    var afterNode  = val.slice(pos.end);
+    var insertNode;
+    ruby = prompt( range, ruby );
+    if ( ruby === null ) {
+        return;
+    }
+    <mt:if name="simplifiedjapanese_add_rt_style">
+      <mt:setvarblock name="rt_tag"><rt style="font-size:0.5em"></mt:setvarblock>
+    <mt:else>
+      <mt:setvarblock name="rt_tag"><rt></mt:setvarblock>
+    </mt:if>
+    <mt:if name="simplifiedjapanese_add_rp">
+    insertNode = '<ruby>' + range + '<rp> (</rp><mt:var name="rt_tag">' + ruby + '</rt><rp>) </rp></ruby>';
+    <mt:else>
+    insertNode = '<ruby>' + range + '<mt:var name="rt_tag">' + ruby + '</rt></ruby>';
+    </mt:if>
+    target.value = beforeNode + insertNode + afterNode;
+}
+</script>

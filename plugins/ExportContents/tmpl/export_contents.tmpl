@@ -1,0 +1,17 @@
+<mt:trans phrase="Export Contents" component="ExportContents" setvar="page_title">
+<mt:include file="include/header.tmpl">
+
+<form action="<mt:var name="script_uri">" method="POST" id="export-form">
+<input type="hidden" name="__mode" value="export_contents">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<button type="submit" id="export_contents" class="btn btn-primary mb-5 mt-5"><mt:trans phrase="Export Contents" component="ExportContents"></button>
+</form>
+<script>
+$('#export_contents').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to export all contents?" component="ExportContents">' ) ) {
+        return false;
+    }
+});
+</script>
+<mt:include file="include/footer.tmpl">

@@ -1,0 +1,71 @@
+<?php $this->get_cache=array (
+  'label' => 'TinyMCE',
+  'id' => 'tinymce',
+  'component' => 'TinyMCE',
+  'version' => '2.0',
+  'author' => 'Alfasado Inc.',
+  'author_link' => 'https://alfasado.net/',
+  'doc_link' => 'https://powercmsx.jp/about/richtext.html',
+  'description' => 'Provides customization for WYSIWYG HTML Editor.',
+  'cfg_template' => 'cfg_template.tmpl',
+  'cfg_system' => 1,
+  'cfg_space' => 1,
+  'config_settings' => 
+  array (
+    'tinymce_insert_empty_html' => true,
+  ),
+  'settings' => 
+  array (
+    'tinymce_use_system_settings' => false,
+    'tinymce_toolbar' => 'undo redo insert styleselect bold italic alignleft aligncenter alignright alignjustify bullist numlist pt-dl blockquote template fullscreen link image pt-float-image pt-file pt-image pastetext pt-partial-html',
+    'tinymce_plugins' => 'template advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code<mt:if name="tinymce_version" lt="6"> print paste</mt:if>',
+    'tinymce_content_css' => '<mt:var name="prototype_path">assets/css/editor.css',
+    'tinymce_menubar' => 'edit insert view format table tools',
+    'tinymce_convert_urls' => 0,
+    'tinymce_use_cdn' => '',
+    'tinymce_relative_urls' => 'false',
+    'tinymce_document_base_url' => '',
+    'tinymce_paste_from_excel' => true,
+    'tinymce_style_all_table' => false,
+    'tinymce_equalize_cell_width' => false,
+    'tinymce_table_resize_bars' => true,
+    'tinymce_table_border' => '0',
+    'tinymce_paste_table_class' => '',
+    'tinymce_paste_as_text' => 0,
+    'tinymce_element_format' => 'html',
+    'tinymce_use_mobile' => 0,
+    'tinymce_advanced_settings' => '',
+    'tinymce_advanced_setup' => '',
+  ),
+  'tags' => 
+  array (
+    'conditional' => 
+    array (
+      'ifeditormobile' => 
+      array (
+        'component' => 'TinyMCE',
+        'method' => 'hdlr_if_editormobile',
+      ),
+    ),
+  ),
+  'methods' => 
+  array (
+    'tinymce_insert_boilerplate' => 
+    array (
+      'component' => 'TinyMCE',
+      'method' => 'tinymce_insert_boilerplate',
+    ),
+  ),
+  'hooks' => 
+  array (
+    'tinymce_post_init' => 
+    array (
+      'post_init' => 
+      array (
+        'component' => 'TinyMCE',
+        'priority' => 1,
+        'method' => 'post_init',
+      ),
+    ),
+  ),
+);

@@ -1,0 +1,120 @@
+<script>
+$('#class').change(function(){
+    if ( $(this).val() == 'Mail' ) {
+        $('#subject-wrapper').show();
+    } else {
+        $('#subject-wrapper').hide();
+    }
+});
+</script>
+<mt:setvar name="__can_rebuild_this_template" value="0">
+<mt:var name="request.id" escape setvar="template_id">
+<mt:unless name="request._duplicate">
+<mt:setvar name="mapping_out" value="0">
+<mt:objectloop model="urlmapping" template_id="$template_id" sort_by="order" sort_order="ascend">
+<mt:if name="__first__">
+<mt:setvar name="mapping_out" value="1">
+<div class="row form-group">
+<div class="col-lg-2 input-group-lg">
+<mt:trans phrase="Used in">
+<mt:if name="request.id">
+<a target="_blank" href="<mt:var name="script_uri">?__mode=view&_type=edit&_model=urlmapping<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;template_id=<mt:var name="request.id" escape>">
+  <i class="fa fa-plus-circle" aria-hidden="true"> <mt:trans phrase="Add"></i>
+</a>
+</mt:if>
+</div>
+<div class="col-lg-10 input-group-lg">
+<table class="table table-sm table-bordered">
+<thead class="thead-default">
+<tr>
+<th><mt:trans phrase="URL Map"></th>
+<th><mt:trans phrase="Archive Type"></th>
+<th><mt:trans phrase="Container"></th>
+<th style="width:25%"><mt:trans phrase="WorkSpace"></th>
+</tr>
+</thead>
+</mt:if>
+<tr>
+<td>
+<a target="_blank" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=urlmapping&amp;id=<mt:var name="id"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>">
+<mt:var name="name" escape>
+</a>
+</td>
+<td>
+<mt:trans phrase="$model" language="default" setvar="map_model">
+<mt:if name="map_model" eq="View"><mt:setvar name="__can_rebuild_this_template" value="1"><mt:trans phrase="Index"><mt:else><mt:trans phrase="$map_model"></mt:if>
+&nbsp; <a target="_blank" href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=urlinfo<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;_filter=urlinfo&amp;_filter_value_urlmapping_id[]=<mt:var name="name" escape="url">&amp;_filter_cond_urlmapping_id[]=eq">
+( <mt:trans phrase="List of %s" params="URL"> <i class="fa fa-external-link-square" aria-hidden="true"></i> )
+</a>
+</td>
+<td>
+<mt:trans phrase="$container" language="default" setvar="map_container">
+<mt:trans phrase="$map_container">
+</td>
+<td>
+<mt:getobjectname id="$workspace_id" type="reference:workspace:name" escape>
+</td>
+</tr>
+<mt:if name="__last__">
+</table>
+</div>
+</div>
+</mt:if>
+</mt:objectloop>
+</mt:unless>
+<mt:loop name="_include_modules">
+<mt:if name="__first__">
+<div class="row form-group">
+<div class="col-lg-2 input-group-lg">
+<mt:trans phrase="Include Modules">
+</div>
+<div class="col-lg-10 input-group-lg">
+<table class="table table-sm table-bordered">
+<thead class="thead-default">
+<tr>
+<th><mt:trans phrase="Name"></th>
+<th style="width:25%"><mt:trans phrase="WorkSpace"></th>
+</tr>
+</thead>
+</mt:if>
+<tr>
+<td>
+<a target="_blank" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=template&amp;id=<mt:var name="template_id"><mt:if name="template_workspace_id">&amp;workspace_id=<mt:var name="template_workspace_id"></mt:if>">
+<mt:var name="template_name" escape>
+</a>
+</td>
+<td>
+<mt:getobjectname id="$template_workspace_id" type="reference:workspace:name" escape>
+</td>
+</tr>
+<mt:if name="__last__">
+</table>
+</div>
+</div>
+</mt:if>
+</mt:loop>
+<mt:unless name="mapping_out">
+<mt:if name="request.id">
+<div class="row form-group hidden" id="add_urlmapping">
+<div class="col-lg-2 input-group-lg">
+<mt:trans phrase="Used in">
+<a target="_blank" href="<mt:var name="script_uri">?__mode=view&_type=edit&_model=urlmapping<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;template_id=<mt:var name="request.id" escape>">
+  <i class="fa fa-plus-circle" aria-hidden="true"> <mt:trans phrase="Add"></i>
+</a>
+</div>
+<div class="col-lg-10 input-group-lg">
+</div>
+</div>
+<script>
+if ( $('#class').val() == 'Archive' ) {
+    $('#add_urlmapping').show();
+}
+</script>
+</mt:if>
+</mt:unless>
+<mt:if name="mapping_out">
+<mt:property name="can_rebuild_in_view" setvar="can_rebuild_in_view">
+<mt:if name="can_rebuild_in_view">
+<mt:setvar name="__can_rebuild_this_template" value="1">
+</mt:if>
+</mt:if>

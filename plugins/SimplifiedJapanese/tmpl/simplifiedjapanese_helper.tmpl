@@ -1,0 +1,852 @@
+<mt:setvarblock name="html_head" append="1">
+<mt:if name="canvas_webfont">
+  <mt:if name="canvas_font_face" eq="RocknRoll One">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+  <mt:elseif name="canvas_font_face" eq="BIZ UDPMincho">
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&display=swap" rel="stylesheet">
+  <mt:else>
+    <link href="https://fonts.googleapis.com/css2?family=<mt:var name="canvas_font_face" replace="' ','+'">:wght@<mt:var name="canvas_font_weight">&display=swap" rel="stylesheet">
+  </mt:if>
+</mt:if>
+  <style>
+    #slider_num { position: absolute; font-size:70%; <mt:unless name="is_internet_explorer">margin-left: -3px;<mt:else>margin-left: 4px;</mt:unless> color: #444 }
+    #slider_num_10 { position: absolute; font-size:60%; <mt:unless name="is_internet_explorer">margin-left: -6px;<mt:else>margin-left: 2px;</mt:unless> color: #444 }
+    .ui-slider-handle { text-align: center }
+    @media ( max-width: 560px ) {
+      .action-btn {
+        width: 100% !important;
+        margin-left: 0px;
+        font-size: 97%;
+      }
+      #header-checkboxes > label { margin-bottom:-5px !important }
+    }
+    @media ( max-width: 1150px ) {
+      #break_ctrl { margin-right: 0px !important }
+      #summarize_ctrl { margin-left: 20px !important }
+    }
+    @media ( max-width: 768px ) {
+      #header-checkboxes { width:100% !important; margin-left: 12px !important; }
+      #header-checkboxes label{ margin-right: 0px !important }
+      #put_on_furigana-wrapper{ margin-left: 4px !important }
+      .action-btn { font-size: 98% }
+      #slider { margin-top: 5px !important }
+      #summarize_ctrl { margin-left: 8px !important }
+    }
+    .ez_changed {color:#a00 !important}
+    .L1{ background-color: #055; color: white; font-weight: bold; padding: 4px; }
+    .L2{ background-color: #330; color: white; font-weight: bold; padding: 4px; }
+    .L2orL3{ background-color: #774; color: white; font-weight: bold; padding: 4px; }
+    .L0{ background-color: black; color: white; font-weight:bold; padding: 4px; bold; }
+    .BQ{ background-color: #FFFF6A; color: black; padding: 4px; }
+    .Chinese{ background-color: #FFCCFF; color: black; padding: 4px; }
+    #to_canvas_area{
+      position:fixed; left:-99999px; top:0px;
+      font-size:450%; width:2400px; line-height: <mt:if name="canvas_webfont">2.5em<mt:else>2.2em</mt:if>;
+      padding:35px 48px <mt:if name="text_format" eq="richtext">0px<mt:else>35px</mt:if> 65px;
+      border: 10px solid <mt:var name="canvas_bgcolor" escape>;
+      <mt:if name="canvas_forecolor">color: <mt:var name="canvas_forecolor" escape>;</mt:if>
+      <mt:if name="canvas_bgcolor">background-color: <mt:var name="canvas_bgcolor" escape>;</mt:if>
+      <mt:if name="canvas_font">font-family: <mt:var name="canvas_font" escape>;</mt:if>
+    }
+    .rounded > h1{
+      width: 100% !important;
+    }
+    .rounded img{
+      max-width: 100% !important;
+      height: auto;
+    }
+    #to_canvas_area > h1{
+      width: 100% !important;
+    }
+<mt:if name="is_internet_explorer">
+    #to_canvas_area ruby {
+      position: relative;
+    }
+    #to_canvas_area rt {
+      display:block;
+      position: absolute;
+      top: -1em !important;
+      left: 0;
+      right: 0;
+      margin: auto;
+      font-size: 0.45em;
+      letter-spacing: -2px;
+      text-align:center;
+      white-space : nowrap;
+    }
+<mt:else>
+  <mt:unless name="canvas_webfont">
+    rt { transform: translateY(-.3em)!important; }
+  </mt:unless>
+</mt:if>
+    #to_canvas_area { font-family: '<mt:var name="canvas_font_face" escape>', <mt:var name="canvas_font" escape>;}
+    .rounded, .card-body { font-family: '<mt:var name="canvas_font_face" escape>', <mt:var name="canvas_font" escape>;}
+    .rounded {
+        <mt:if name="canvas_forecolor">color: <mt:var name="canvas_forecolor" escape>;</mt:if>
+        <mt:if name="canvas_bgcolor">background-color: <mt:var name="canvas_bgcolor" escape>;</mt:if>
+    }
+<mt:if name="canvas_font_face" match="/^BIZ\sUD/">
+    rt { transform: translateY(-0.5em)!important;margin-bottom: .33rem }
+</mt:if>
+    .rounded > h1, .rounded > h2, .rounded > h3,
+    .rounded > h4, .rounded > h5, .rounded > h6 {
+      padding-top: 12px;
+      padding-bottom: 3px;
+      line-height: 2.3em;;
+    }
+    #to_canvas_area > h1, #to_canvas_area > h2, #to_canvas_area > h3,
+    #to_canvas_area > h4, #to_canvas_area > h5, #to_canvas_area > h6 {
+      padding-top: 30px;
+      padding-bottom: 0px;
+      line-height: 2.8em;;
+      margin-bottom: 50px;
+    }
+    h4 { font-size: 1em }
+    h5 { font-size: .83em }
+    h6 { font-size: .75em }
+  </style>
+</mt:setvarblock>
+<mt:unless name="page_title">
+<mt:trans phrase="Simplified Japanese" component="SimplifiedJapanese" setvar="page_title">
+</mt:unless>
+<mt:if name="request.dialog_view">
+<mt:include file="include/dialog_header.tmpl">
+<mt:else>
+<mt:include file="include/header.tmpl">
+</mt:if>
+<mt:if name="request.dialog_view">
+<button style="position:absolute; top: 10px; right: 14px;" type="button" class="dialog-cancel-btn close" data-dismiss="modal" aria-label="<mt:trans phrase="Close">">
+  <span aria-hidden="true">&times;</span>
+</button>
+</mt:if>
+<mt:ignore>
+<button style="position:absolute; top: 0px; right: 14px;" type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#modal" data-href="<mt:var name="script_uri">?__mode=simplifiedjapanese_settings">
+<i class="fa fa-cog" aria-hidden="true"></i>
+</button>
+</mt:ignore>
+<div id="__loader-bg" style="background-color:rgba(255,255,255,0.8);">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<div class="alert alert-success mb-5 hidden" id="tmp-save-alert" role="alert" tabindex="0">
+  <button type="button" class="close" aria-label="<mt:trans phrase="Close">" onclick="$('#tmp-save-alert').hide();">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <mt:trans phrase="Your data was saved successfully." component="SimplifiedJapanese">
+</div>
+<div class="alert alert-success mb-5 hidden" id="tmp-delete-alert" role="alert" tabindex="0">
+  <button type="button" class="close" aria-label="<mt:trans phrase="Close">" onclick="$('#tmp-delete-alert').hide();">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <mt:trans phrase="Your data was successfully deleted." component="SimplifiedJapanese">
+</div>
+<mt:loop name="errors">
+<mt:if name="__first__"><div class="alert alert-warning" role="alert"><ul class="mb-0 ml-0 pl-3"></mt:if>
+<li><mt:var name="__value__" escape></li>
+<mt:if name="__last__"></ul></div></mt:if>
+</mt:loop>
+<script src="<mt:var name="prototype_path">assets/js/jquery.cookie.js"></script>
+<script src="<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base"><mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/</mt:if>js/npo.src.js"></script>
+<script src="<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base"><mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/</mt:if>js/html2canvas.js"></script>
+<form action="<mt:var name="script_uri">" method="POST">
+<input type="hidden" name="simplifiedjapanese_tmp_save_number" id="simplifiedjapanese_tmp_save_number" value="<mt:var name="simplifiedjapanese_tmp_save_number" escape>">
+<input type="hidden" name="__mode" value="simplifiedjapanese_helper">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" id="simplifiedjapanese_agreement" name="simplifiedjapanese_agreement" value="">
+<input type="hidden" name="dialog_view" value="<mt:var name="request.dialog_view" escape>">
+<mt:if name="error"><div class="mt-4"></div></mt:if>
+<mt:pluginsetting component="SimplifiedJapanese" name="simplifiedjapanese_editor_only" workspace_id="$workspace_id" setvar="editor_only">
+<div class="row form-group" style="margin-bottom:3px; margin-top:-27px">
+  <div class="col-lg-8 form-inline" id="header-checkboxes">
+<mt:unless name="editor_only">
+    &nbsp;
+    <input type="hidden" name="put_on_furigana" value="0">
+    <label id="put_on_furigana-wrapper" class="custom-control custom-checkbox ml-3" style="margin-top:9px">
+    <input id="put_on_furigana" class="custom-control-input watch-changed"
+     type="checkbox" name="put_on_furigana" value="1" <mt:if name="request.put_on_furigana">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Put on Furigana" component="SimplifiedJapanese"></span>
+    </label>
+    <mt:if name="can_simplified">
+    <input type="hidden" name="simplified_japanese" value="0">
+    <label class="custom-control custom-checkbox ml-2" style="margin-top:9px">
+    <input id="simplified_japanese" class="custom-control-input watch-changed"
+     type="checkbox" name="simplified_japanese" value="1" <mt:if name="request.simplified_japanese">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Make Simplified Japanese" component="SimplifiedJapanese"></span>
+    </label>
+    </mt:if>
+    <input type="hidden" name="break_with_clauses" value="0">
+    <label class="custom-control custom-checkbox ml-2" style="margin-top:9px;" id="break_ctrl">
+    <input id="break_with_clauses" class="custom-control-input watch-changed"
+     type="checkbox" name="break_with_clauses" value="1" <mt:if name="request.break_with_clauses">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Break with Clauses" component="SimplifiedJapanese"></span>
+    </label>
+<mt:if name="enable_summarize">
+    <input type="hidden" name="summarize" value="0">
+    <label class="custom-control custom-checkbox ml-2" style="margin-top:9px;" id="summarize_ctrl">
+    <input id="summarize" class="custom-control-input watch-changed"
+     type="checkbox" name="summarize" value="1" <mt:if name="request.summarize">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Summarize" component="SimplifiedJapanese"></span>
+&nbsp; <div id="slider" class="ml-1" style="height:10px; width:90px; border: 1px solid gray"></div>
+<mt:pluginsetting component="SimplifiedJapanese" name="simplifiedjapanese_summarize_size" workspace_id="$workspace_id" escape setvar="summarize_size">
+<script>
+var show_alert = false;
+$("#slider").slider( {
+    min: 0,
+    max: 10,
+    step: 1,
+    value: <mt:if name="request.summarize"><mt:var name="request.summarize" escape><mt:else><mt:var name="summarize_size"></mt:if>,
+    orientation: 'horizontal',
+    slide: function( event, ui ) {
+        if ( $("#slider").slider('value') < 10 ) {
+            $('.ui-slider-handle').html('<span id="slider_num">'+$("#slider").slider('value')+'</span>');
+        } else {
+            $('.ui-slider-handle').html('<span id="slider_num_10">'+$("#slider").slider('value')+'</span>');
+        }
+    },
+    change:function(event, ui) {
+        if ( ui.value < 1 ) {
+            $("#slider").slider('value', 1);
+        }
+        if ( $("#slider").slider('value') < 11 ) {
+            if (! $('#summarize').prop( 'checked' ) ) {
+                $('#summarize').prop( 'checked', true );
+            }
+            if ( $("#slider").slider('value') < 10 ) {
+                $('.ui-slider-handle').html('<span id="slider_num">'+$("#slider").slider('value')+'</span>');
+            } else {
+                $('.ui-slider-handle').html('<span id="slider_num_10">'+$("#slider").slider('value')+'</span>');
+            }
+            $('#summarize').val($("#slider").slider('value'));
+            if (! show_alert ) {
+                alert( '<mt:trans phrase="When you run the summary, the HTML and formatting are removed." component="SimplifiedJapanese">' );
+            }
+            show_alert = true;
+        } else {
+            if ( $('#summarize').prop( 'checked' ) ) {
+                $('#summarize').prop( 'checked', false );
+            }
+            $('.ui-slider-handle').html('');
+            $('#summarize').val(1);
+        }
+    }
+} );
+<mt:if name="request.summarize" eq="10">
+$('.ui-slider-handle').html('<span id="slider_num_10"><mt:var name="request.summarize" escape></span>');
+$('#summarize').val(<mt:var name="request.summarize" escape>);
+show_alert = true;
+<mt:elseif name="request.summarize">
+$('.ui-slider-handle').html('<span id="slider_num"><mt:var name="request.summarize" escape></span>');
+show_alert = true;
+$('#summarize').val(<mt:var name="request.summarize" escape>);
+<mt:else>
+$('.ui-slider-handle').html('<span id="slider_num"><mt:var name="summarize_size"></span>');
+</mt:if>
+</script>
+    </label>
+</mt:if>
+</mt:unless>
+  </div>
+  <div class="col-lg-4">
+    <div class="text-format-box">
+    <span class="pull-right form-inline">
+    <label for="text_format-select"><span class="text-format-label"><mt:trans phrase="Format"> : </span></label>
+    <select id="text_format-select" name="text_format" class="custom-select form-control form-control-sm very-short">
+      <option value="none"><mt:trans phrase="None"></option>
+      <option value="convert_breaks" <mt:if name="text_format" eq="convert_breaks">selected</mt:if>><mt:trans phrase="Convert Line Breaks"></option>
+      <option value="richtext" <mt:if name="text_format" eq="richtext">selected</mt:if>><mt:trans phrase="RichText"></option>
+    </select>
+    </span>
+  </div>
+</div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-12">
+    <div id="editor-text-wrapper">
+    <textarea style="font-size:92%" area-label="<mt:trans phrase="Body">" id="text" rows="25"
+    class="form-control richtext watch-changed" name="text"><mt:if name="request.text"><mt:var name="request.text" escape><mt:else><mt:var name="simplifiedjapanese_tmp_save_text" escape></mt:if></textarea></div>
+  </div>
+</div>
+<div class="text-center<mt:unless name="request.simplified_japanese"> mb-5</mt:unless>" style="margin-top:-15px;">
+<mt:unless name="editor_only">
+  <button id="execute-furigana" type="submit" class="action-btn mt-3 text-center btn btn-primary"><i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Execute" component="SimplifiedJapanese"></button>
+</mt:unless>
+  <button id="original-image-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-image" aria-hidden="true"></i> <mt:trans phrase="Download Image" component="SimplifiedJapanese"></button>
+<mt:if name="pdf_on_server">
+  <button id="original-pdf-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <mt:trans phrase="Download PDF" component="SimplifiedJapanese"></button>
+</mt:if>
+<mt:if name="word_on_server">
+  <button id="original-word-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-file-word-o" aria-hidden="true"></i> <mt:trans phrase="Download Word" component="SimplifiedJapanese"></button>
+</mt:if>
+<mt:if name="mp3_on_server">
+  <button id="original-mp3-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-file-audio-o" aria-hidden="true"></i> <mt:trans phrase="Download MP3" component="SimplifiedJapanese"></button>
+</mt:if>
+</div>
+</form>
+<mt:if name="converted">
+<div class="row form-group">
+  <div class="col-lg-12">
+    <div id="converted-text-wrapper">
+  <mt:if name="request.simplified_japanese">
+  <h2 class="mb-2 ml-1 mt-4" style="font-size:120%"><mt:trans phrase="From Original Text" component="SimplifiedJapanese"><mt:if name="request.summarize"> (<mt:trans phrase="Summarized" component="SimplifiedJapanese">)</mt:if></h2>
+  </mt:if>
+    <div id="text-furigana" class="rounded<mt:unless name="request.simplified_japanese"> mt-3</mt:unless>" style="padding:20px 15px <mt:if name="text_format" eq="richtext">0px<mt:else>10px</mt:if> 15px;border: 1px solid gray;<mt:unless name="is_internet_explorer">font-size:100%;line-height:2.3em;</mt:unless><mt:if name="text_format" eq="richtext">;padding-bottom:0px</mt:if>;<mt:var name="canvas_custom_style">"><mt:var name="text_converted"><div style="clear:both;height:0;font-size:0"></div></div>
+    <div style="text-align:center" class="mt-3">
+      <button id="html-wrapper-btn" class="action-btn mb-3 btn btn-secondary" data-toggle="modal" data-target="#html-wrapper" type="button"><i class="fa fa-code" aria-hidden="true"></i> <mt:trans phrase="Show HTML" component="SimplifiedJapanese"></button>
+      <button id="furigana-image-btn" class="action-btn mb-3 btn btn-secondary" type="button"><i class="fa fa-image" aria-hidden="true"></i> <mt:trans phrase="Download Image" component="SimplifiedJapanese"></button>
+    <mt:if name="pdf_on_server">
+      <button id="furigana-pdf-btn" class="action-btn mb-3 btn btn-secondary" type="button"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <mt:trans phrase="Download PDF" component="SimplifiedJapanese"></button>
+    </mt:if>
+    <mt:if name="word_on_server">
+      <button id="furigana-word-btn" class="action-btn mb-3 btn btn-secondary" type="button"><i class="fa fa-file-word-o" aria-hidden="true"></i> <mt:trans phrase="Download Word" component="SimplifiedJapanese"></button>
+    </mt:if>
+    </div>
+  <mt:if name="request.simplified_japanese">
+  <h2 class="mb-2 ml-1" style="font-size:120%"><mt:trans phrase="Paraphrasing Suggestions" component="SimplifiedJapanese"><mt:if name="request.summarize"> (<mt:trans phrase="Summarized" component="SimplifiedJapanese">)</mt:if></h2>
+    <div id="text-simplified" class="rounded" style="padding:20px 15px <mt:if name="text_format" eq="richtext">0px<mt:else>10px</mt:if> 15px;border: 1px solid gray;<mt:unless name="is_internet_explorer">font-size:100%;line-height:2.3em;</mt:unless><mt:if name="text_format" eq="richtext">;padding-bottom:0px</mt:if>;<mt:var name="canvas_custom_style">"><mt:var name="text_simplified"><div style="clear:both;height:0;font-size:0"></div></div>
+    <div style="text-align:center">
+      <button class="action-btn mt-3 btn btn-secondary" data-toggle="modal" data-target="#detail-wrapper" type="button"><i class="fa fa-eye" aria-hidden="true"></i> <mt:trans phrase="Show Detail" component="SimplifiedJapanese"></button>
+      <button id="simplified-wrapper-btn" class="action-btn mt-3 btn btn-secondary" data-toggle="modal" data-target="#simplified-wrapper" type="button"><i class="fa fa-code" aria-hidden="true"></i> <mt:trans phrase="Show HTML" component="SimplifiedJapanese"></button>
+      <button id="simplified-image-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-image" aria-hidden="true"></i> <mt:trans phrase="Download Image" component="SimplifiedJapanese"></button>
+    <mt:if name="pdf_on_server">
+      <button id="simplified-pdf-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <mt:trans phrase="Download PDF" component="SimplifiedJapanese"></button>
+    </mt:if>
+    <mt:if name="word_on_server">
+      <button id="simplified-word-btn" class="action-btn mt-3 btn btn-secondary" type="button"><i class="fa fa-file-word-o" aria-hidden="true"></i> <mt:trans phrase="Download Word" component="SimplifiedJapanese"></button>
+    </mt:if>
+    </div>
+  </mt:if>
+  <div id="html-wrapper" tabindex="-1" role="dialog" class="hidden modal fade col-lg-12 mt-4"
+    aria-hidden="true" style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+    <div class="modal-dialog modal-lg" role="document" style="overflow-y: auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" style="font-size:120%"><mt:trans phrase="HTML" component="SimplifiedJapanese"> (<mt:trans phrase="From Original Text" component="SimplifiedJapanese">)</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <form action="<mt:var name="script_uri">" method="POST">
+      <input type="hidden" name="__mode" value="simplifiedjapanese_helper">
+      <input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+      <input type="hidden" name="_type" value="export">
+        <div class="modal-body">
+          <input type="hidden" name="text_original" value="<mt:var name="request.text" strip_tags escape>">
+          <textarea style="font-size:95%" area-label="<mt:trans phrase="Converted Text" component="SimplifiedJapanese">" id="text_converted" rows="10"
+            class="form-control watch-changed mt-3" name="text_converted"><mt:var name="text_converted" escape></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="apply-text_converted" class="btn btn-secondary" data-dismiss="modal"><mt:trans phrase="Apply Correct Text" component="SimplifiedJapanese"></button>
+          <button type="submit" class="btn btn-info"><i class="fa fa-download" aria-hidden="true"></i> <mt:trans phrase="Export"></button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"><mt:trans phrase="Close"></button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+<mt:if name="request.simplified_japanese">
+  <div id="simplified-wrapper" tabindex="-1" role="dialog" class="hidden modal fade col-lg-12 mt-4"
+    aria-hidden="true" style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+    <div class="modal-dialog modal-lg" role="document" style="overflow-y: auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" style="font-size:120%"><mt:trans phrase="HTML" component="SimplifiedJapanese"> (<mt:trans phrase="Simplified Japanese" component="SimplifiedJapanese">)</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <form action="<mt:var name="script_uri">" method="POST">
+      <input type="hidden" name="__mode" value="simplifiedjapanese_helper">
+      <input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+      <input type="hidden" name="_type" value="export">
+        <div class="modal-body">
+          <input type="hidden" name="text_original" value="<mt:var name="request.text" strip_tags escape>">
+          <textarea style="font-size:95%" area-label="<mt:trans phrase="Converted Text" component="SimplifiedJapanese">" id="simplified_converted" rows="10"
+            class="form-control watch-changed mt-3" name="text_converted"><mt:var name="text_simplified" escape></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="apply-text_simplified" class="btn btn-secondary" data-dismiss="modal"><mt:trans phrase="Apply Correct Text" component="SimplifiedJapanese"></button>
+          <button type="submit" class="btn btn-info"><i class="fa fa-download" aria-hidden="true"></i> <mt:trans phrase="Export"></button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"><mt:trans phrase="Close"></button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</mt:if>
+</div>
+<mt:if name="request.simplified_japanese">
+  <div id="detail-wrapper" tabindex="-1" role="dialog" class="hidden modal fade col-lg-12 mt-4"
+    aria-hidden="true" style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+    <div class="modal-dialog modal-lg" role="document" style="overflow-y: auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" style="font-size:120%"><mt:trans phrase="Transration Result" component="SimplifiedJapanese"></h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card" style="padding:15px;border: 1px solid gray !important">
+            <div class="card-body">
+              <mt:ignore>
+              <div><mt:var name="original" trim nl2br></div>
+              <hr>
+              </mt:ignore>
+              <div><mt:var name="difficulty1" trim nl2br></div>
+            </div>
+          </div>
+          <div class="text-center" style="font-size:150%;margin-top:-10px" role="presentation">
+          <i class="fa fa-caret-down" aria-hidden="true"></i>
+          </div>
+          <h3 style="font-size:110%;font-weight:bold !important" class="text-center"><mt:trans phrase="Paraphrasing Suggestions for Simplified Japanese" component="SimplifiedJapanese"></h3>
+          <div class="card" style="padding:15px;border: 1px solid gray !important">
+            <div class="card-body">
+              <div style=""><mt:var name="changed" trim nl2br></div>
+              <hr>
+              <div><mt:var name="difficulty2" trim nl2br></div>
+            </div>
+          </div>
+          <div class="mt-3 mb-5 ml-1" style="font-size: 90%">
+            <mt:setvarblock name="text_red"><strong class="ez_changed"><mt:trans phrase="text highlighted in red" component="SimplifiedJapanese"></strong></mt:setvarblock>
+            <mt:setvarblock name="text_hilight"><strong class="L1"><mt:trans phrase="The highlighted section" component="SimplifiedJapanese"></strong></mt:setvarblock>
+            <i class="fa fa-question-circle-o" aria-hidden="true"></i> <mt:trans phrase="The %s bold was converted by the system." params="$text_red" component="SimplifiedJapanese"><br>
+            <i class="fa fa-question-circle-o" aria-hidden="true"></i> <mt:trans phrase="%s may be a difficult word." params="$text_hilight" component="SimplifiedJapanese">
+          </div>
+          <mt:loop name="mecab_parsed">
+          <mt:if name="__first__">
+          <h3 style="font-size:110%;font-weight:bold !important" class="text-center"><mt:trans phrase="Results of morphological analysis" component="SimplifiedJapanese"></h3>
+          <div class="card" style="padding:15px;border: 1px solid gray !important">
+            <div class="card-body">
+          </mt:if>
+          <div><mt:var name="__value__" escape></div>
+          <mt:if name="__last__">
+              </div>
+            </div>
+          </mt:if>
+          </mt:loop>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal"><mt:trans phrase="Close"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mt:if>
+</mt:if>
+<mt:if name="request.dialog_view">
+<button style="margin-left:0px" id="dialog-cancel-btn" class="dialog-cancel-btn mt-3 btn btn-secondary" type="button"><mt:trans phrase="Close"></button>
+</mt:if>
+<mt:include file="include/richtext.tmpl" user_text_format="1" model="entry">
+<div id="to_canvas_area"<mt:if name="canvas_custom_style"> style="<mt:var name="canvas_custom_style">"</mt:if>></div>
+<form action="<mt:var name="script_uri">" method="POST" id="imageBase64-form">
+<input type="hidden" name="__mode" id="export_mode" value="simplifiedjapanese_export_img">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" id="polly_agreement" name="polly_agreement" value="">
+<input id="imageBase64" type="hidden" value="" name="imageBase64">
+<input type="hidden" id="window_width" name="window_width" value="">
+<input type="hidden" id="target_id" name="target_id" value="">
+<input type="hidden" id="text_format" name="text_format" value="">
+</form>
+<mt:if name="is_internet_explorer">
+<br class="mb-5"><br class="mb-5">
+</mt:if>
+<script>
+var editContentChanged = false;
+var maxTemporaryData = <mt:if name="max_temporary_data">true<mt:else>false</mt:if>;
+$('#apply-text_converted').click(function() {
+    $('#text-furigana').html( $('#text_converted').val() );
+});
+$('#apply-text_simplified').click(function() {
+    $('#text-simplified').html( $('#simplified_converted').val() );
+});
+$('#original-image-btn').click(function() {
+    $('#__loader-bg').show();
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        tinymce.EditorManager.remove();
+    }
+    $('#text_format').val( $('#text_format-select').val() );
+    $('#to_canvas_area').html( $('#text').val() );
+    html2image( 'to_canvas_area' );
+    $('#text_format').val('');
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        editorInit();
+    }
+    $('#__loader-bg').hide();
+});
+$('#original-pdf-btn').click(function() {
+    $('#__loader-bg').show();
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        tinymce.EditorManager.remove();
+    }
+    $('#text_format').val( $('#text_format-select').val() );
+    $('#to_canvas_area').html( $('#text').val() );
+    html2pdf( 'to_canvas_area' );
+    $('#text_format').val('');
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        editorInit();
+    }
+    $('#__loader-bg').hide();
+});
+$('#original-word-btn').click(function() {
+    if (! confirm_word() ) {
+        return false;
+    }
+    $('#__loader-bg').show();
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        tinymce.EditorManager.remove();
+    }
+    $('#text_format').val( $('#text_format-select').val() );
+    $('#to_canvas_area').html( $('#text').val() );
+    html2word( 'to_canvas_area' );
+    $('#text_format').val('');
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        editorInit();
+    }
+    $('#__loader-bg').hide();
+});
+$('#original-mp3-btn').click(function() {
+    $('#__loader-bg').show();
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        tinymce.EditorManager.remove();
+    }
+    $('#text_format').val( $('#text_format-select').val() );
+    $('#to_canvas_area').html( $('#text').val() );
+    html2mp3( 'to_canvas_area' );
+    $('#text_format').val('');
+    if ( $('#text_format-select').val() == 'richtext' ) {
+        editorInit();
+    }
+    $('#__loader-bg').hide();
+});
+$('#furigana-image-btn').click(function() {
+    html2image( 'text-furigana' );
+});
+$('#simplified-image-btn').click(function() {
+    html2image( 'text-simplified' );
+});
+$('#furigana-pdf-btn').click(function() {
+    html2pdf( 'text-furigana' );
+});
+$('#simplified-pdf-btn').click(function() {
+    html2pdf( 'text-simplified' );
+});
+$('#furigana-word-btn').click(function() {
+    if (! confirm_word() ) {
+        return false;
+    }
+    html2word( 'text-furigana' );
+});
+$('#simplified-word-btn').click(function() {
+    if (! confirm_word() ) {
+        return false;
+    }
+    html2word( 'text-simplified' );
+});
+function confirm_word () {
+    if ( $.cookie( 'pt-editor-confirm_word-<mt:var name="workspace_id" cast_to="int">') ) {
+        return true;
+    }
+    if (! confirm( '<mt:trans phrase="When exporting to Word, formatting other than paragraphs, line breaks, and furigana is lost (images, etc.)." component="SimplifiedJapanese">' ) ) {
+        return false;
+    }
+    $.cookie( 'pt-editor-confirm_word-<mt:var name="workspace_id" cast_to="int">', true, { path: '/' } );
+    return true;
+}
+function html2pdf ( elementId ) {
+    $('#__loader-bg').show();
+    $('#target_id').val( elementId );
+    var html = $('#' + elementId ).html();
+    // <br style="clear:both;height:0">
+    html = html.replace( /<div[^>]*><\/div>$/, '' );
+    var windowWidth = $(window).width();
+    $('#window_width').val( windowWidth );
+    $('#to_canvas_area').html( html );
+    $('#imageBase64').val( $('#to_canvas_area').html() );
+    $('#export_mode').val( 'simplifiedjapanese_export_pdf' );
+    $('#imageBase64-form').submit();
+    $('#__loader-bg').hide();
+}
+function html2word ( elementId ) {
+    $('#__loader-bg').show();
+    $('#target_id').val( elementId );
+    var html = $('#' + elementId ).html();
+    // <br style="clear:both;height:0">
+    html = html.replace( /<div[^>]*><\/div>$/, '' );
+    var windowWidth = $(window).width();
+    $('#window_width').val( windowWidth );
+    $('#to_canvas_area').html( html );
+    $('#imageBase64').val( $('#to_canvas_area').html() );
+    $('#export_mode').val( 'simplifiedjapanese_export_word' );
+    $('#imageBase64-form').submit();
+    $('#__loader-bg').hide();
+}
+function html2mp3 ( elementId ) {
+    if (! $('#polly_agreement').val() ) {
+        <mt:if tag="property" name="confirm_web_service" eq="1">
+        if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="SimplifiedJapanese">' ) ) {
+            return;
+        }
+        <mt:elseif tag="property" name="confirm_web_service" eq="2">
+        <mt:getcookie name="pt-sj-polly-agreement" setvar="pt_sj_polly_agreement">
+        <mt:unless name="pt_sj_polly_agreement">
+        if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="SimplifiedJapanese">' ) ) {
+            return;
+        }
+        </mt:unless>
+        </mt:if>
+    }
+    $('#polly_agreement').val(1);
+    $('#__loader-bg').show();
+    $('#target_id').val( elementId );
+    var html = $('#' + elementId ).html();
+    html = html.replace( /<div[^>]*><\/div>$/, '' );
+    var windowWidth = $(window).width();
+    $('#window_width').val( windowWidth );
+    $('#to_canvas_area').html( html );
+    $('#imageBase64').val( $('#to_canvas_area').html() );
+    $('#export_mode').val( 'simplifiedjapanese_export_mp3' );
+    $('#imageBase64-form').submit();
+    $('#__loader-bg').hide();
+}
+<mt:if name="image_on_server">
+function html2image ( elementId ) {
+    $('#__loader-bg').show();
+    $('#target_id').val( elementId );
+    var html = $('#' + elementId ).html();
+    // <br style="clear:both;height:0">
+    html = html.replace( /<div[^>]*><\/div>$/, '' );
+    var windowWidth = $(window).width();
+    $('#window_width').val( windowWidth );
+    $('#to_canvas_area').html( html );
+    $('#to_canvas_area img').each(function(){
+        $w = $(this).prop('width');
+        $h = $(this).prop('height');
+        if ( $w && $h ) {
+            $(this).prop( 'width', $w * 3.5 );
+            $(this).prop( 'height', $h * 3.5 );
+        }
+    });
+    $('#imageBase64').val( $('#to_canvas_area').html() );
+    $('#export_mode').val( 'simplifiedjapanese_export_img' );
+    $('#imageBase64-form').submit();
+    $('#__loader-bg').hide();
+}
+<mt:else>
+function html2image ( elementId ) {
+    $('#__loader-bg').show();
+    $('#target_id').val( elementId );
+    var scrollPosition = $(window).scrollTop();
+    $(window).scrollTop(0);
+    var html = $('#' + elementId ).html();
+    // <br style="clear:both;height:0">
+    html = html.replace( /<div[^>]*><\/div>$/, '' );
+    $('#to_canvas_area').html( html );
+    $('#to_canvas_area img').each(function(){
+        $w = $(this).prop('width');
+        $h = $(this).prop('height');
+        // post_max_size
+        if ( $w && $h ) {
+            $(this).prop( 'width', $w * 3.3 );
+            $(this).prop( 'height', $h * 3.3 );
+        }
+    });
+    var vArea = document.getElementById( 'to_canvas_area' );
+    var windowWidth = $(window).width();
+    $('#to_canvas_area').css('width', windowWidth * 4.18 );
+    html2canvas( vArea ).then( function( canvas ){
+        $(window).scrollTop(scrollPosition);
+        $('#__loader-bg').hide();
+        $('#export_mode').val( 'simplifiedjapanese_export_img' );
+        canvas.style.display = 'none';
+        document.body.appendChild( canvas );
+        var context = canvas.getContext('2d');
+        var data_base64 = canvas.toDataURL( 'img/png' );
+        var input = document.getElementById( 'imageBase64' );
+        var data_base64 = data_base64.replace( /^data:image\/png;base64,/, '' );
+        input.value = data_base64;
+        $('#imageBase64-form').submit();
+    }).catch(function(err){
+        $('#__loader-bg').hide();
+        alert(err);
+    });
+}
+<mt:ignore>
+function html2image ( elementId ) {
+    $('#to_canvas_area').html( $('#' + elementId ).html() );
+    html2canvas(document.querySelector("#to_canvas_area"),{
+        scrollX: 0,
+        scrollY: 0
+    }).then(canvas => {
+        canvas.style.display = 'none';
+        document.body.appendChild(canvas);
+        var data_base64 = canvas.toDataURL( 'img/png' );
+        var input = document.getElementById( 'imageBase64' );
+        var data_base64 = data_base64.replace( /^data:image\/png;base64,/, '' );
+        input.value = data_base64;
+        $('#imageBase64-form').submit();
+    });
+}
+</mt:ignore>
+</mt:if>
+<mt:if name="request.dialog_view">
+<mt:ignore>
+$(window).on('beforeunload', function(e){
+    var message = '<mt:trans phrase="Are you sure you want to reload this dialog?" component="SimplifiedJapanese">';
+    e.returnValue = message;
+    return message;
+});
+</mt:ignore>
+$(document).keydown( evt_keydown );
+function evt_keydown( e ) {
+    if ( e.keyCode == 27 ) {
+        close_dialog();
+    }
+}
+$('.dialog-cancel-btn').click(function() {
+    close_dialog();
+    return false;
+});
+function close_dialog () {
+    $(window).off('beforeunload');
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+}
+</mt:if>
+$('#html-wrapper-btn').click(function() {
+    window.setTimeout( HTMLSelect, 600 );
+});
+function HTMLSelect () {
+    $('#text_converted').select();
+}
+$('#simplified-wrapper-btn').click(function() {
+    window.setTimeout( SimplifiedSelect, 600 );
+});
+function HTMLSelect () {
+    $('#text_converted').select();
+}
+function SimplifiedSelect () {
+    $('#simplified_converted').select();
+}
+var editorMode = $.cookie( 'pt-furigana-helper-text_format-<mt:var name="workspace_id" cast_to="int">' );
+$('#text_format-select').change(function(){
+    if ( $(this).val() == 'richtext' ) {
+        editorInit();
+    } else {
+        tinymce.EditorManager.remove();
+    }
+    $.cookie( 'pt-furigana-helper-text_format-<mt:var name="workspace_id" cast_to="int">', $(this).val(), { path: '/' } );
+    editorMode = $(this).val();
+});
+if ( editorMode == 'richtext' ) {
+   editorInit();
+   $('#text_format-select').val( 'richtext' );
+}
+<mt:if name="text_format" eq="richtext">
+editorInit();
+<mt:else>
+tinymce.EditorManager.remove();
+</mt:if>
+$('#put_on_furigana').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $.cookie( 'pt-furigana-helper-put_on_furigana-<mt:var name="workspace_id" cast_to="int">', 1, { path: '/' } );
+    } else {
+        $.cookie( 'pt-furigana-helper-put_on_furigana-<mt:var name="workspace_id" cast_to="int">', -1, { path: '/' } );
+    }
+    execute_btn_label();
+});
+var put_on_furigana = $.cookie( 'pt-furigana-helper-put_on_furigana-<mt:var name="workspace_id" cast_to="int">' );
+if ( put_on_furigana == -1 ) {
+    $('#put_on_furigana').prop( 'checked', false );
+}
+$('#break_with_clauses').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $.cookie( 'pt-furigana-helper-break_with_clauses-<mt:var name="workspace_id" cast_to="int">', 1, { path: '/' } );
+    } else {
+        $.cookie( 'pt-furigana-helper-break_with_clauses-<mt:var name="workspace_id" cast_to="int">', -1, { path: '/' } );
+    }
+    execute_btn_label();
+});
+var break_with_clauses = $.cookie( 'pt-furigana-helper-break_with_clauses-<mt:var name="workspace_id" cast_to="int">' );
+if ( break_with_clauses == -1 ) {
+    $('#break_with_clauses').prop( 'checked', false );
+} else if ( break_with_clauses == 1 ) {
+    $('#break_with_clauses').prop( 'checked', true );
+}
+<mt:if name="can_simplified">
+var simplified_japanese = $.cookie( 'pt-furigana-helper-simplified_japanese-<mt:var name="workspace_id" cast_to="int">' );
+if ( simplified_japanese != -1 ) {
+    $('#simplified_japanese').prop( 'checked', true );
+}
+$('#simplified_japanese').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $.cookie( 'pt-furigana-helper-simplified_japanese-<mt:var name="workspace_id" cast_to="int">', 1, { path: '/' } );
+    } else {
+        $.cookie( 'pt-furigana-helper-simplified_japanese-<mt:var name="workspace_id" cast_to="int">', -1, { path: '/' } );
+    }
+    execute_btn_label();
+});
+</mt:if>
+<mt:unless name="editor_only">
+execute_btn_label();
+function execute_btn_label () {
+    <mt:if name="can_simplified">if ( $('#simplified_japanese').prop( 'checked' ) ) {
+        $('#execute-furigana').html( '<i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Make Simplified Japanese" component="SimplifiedJapanese">' );
+        $('#execute-furigana').show();
+    } else </mt:if>if ( $('#put_on_furigana').prop( 'checked' ) ) {
+        $('#execute-furigana').html( '<i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Put on Furigana" component="SimplifiedJapanese">' );
+        $('#execute-furigana').show();
+    } else if ( $('#break_with_clauses').prop( 'checked' ) ) {
+        $('#execute-furigana').html( '<i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Break with Clauses" component="SimplifiedJapanese">' );
+        $('#execute-furigana').show();
+    } else if ( $('#summarize').prop( 'checked' ) ) {
+        $('#execute-furigana').html( '<i class="fa fa-refresh" aria-hidden="true"></i> <mt:trans phrase="Summarize" component="SimplifiedJapanese">' );
+        $('#execute-furigana').show();
+    } else {
+        $('#execute-furigana').hide();
+    }
+}
+$('#execute-furigana').click(function(){
+    <mt:if tag="property" name="confirm_web_service" eq="1">
+    if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to 伝えるウェブ?" component="SimplifiedJapanese">' ) ) {
+        return;
+    }
+    <mt:elseif tag="property" name="confirm_web_service" eq="2">
+    <mt:getcookie name="pt-sj-agreement" setvar="pt_sj_agreement">
+    <mt:unless name="pt_sj_agreement">
+    if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to 伝えるウェブ?" component="SimplifiedJapanese">' ) ) {
+        return;
+    }
+    </mt:unless>
+    $('#simplifiedjapanese_agreement').val(1);
+    </mt:if>
+    $('#__loader-bg').show();
+    $(window).off('beforeunload');
+});
+</mt:unless>
+window.onload = function(){
+    $('#__loader-bg').hide("fast");
+}
+</script>
+<mt:var name="add_footer">
+<mt:var name="add_edit_action_bar">
+<mt:if name="request.dialog_view">
+<div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" data-keyboard="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+      <iframe id="modal-iframe" name="dialog-modal" style="width:100%;height:100%;"></iframe>
+    </div>
+  </div>
+</div>
+<mt:include file="include/dialog_footer.tmpl">
+<mt:else>
+<mt:include file="include/footer.tmpl">
+</mt:if>

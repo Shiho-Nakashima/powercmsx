@@ -1,0 +1,32 @@
+<mt:block trim_space="3">
+  <mt:isset name="_ogp_images">
+  <mt:else>
+    <mt:setvarblock name="_ogp_images" key="default"><mt:var name="theme_static">media/images/ogp-default.png</mt:setvarblock>
+    <mt:assets class="image" tag="@ogp_image">
+      <mt:assettags>
+        <mt:tagname setvar="_tag_name_original">
+        <mt:var name="_tag_name_original" regex_replace="'/^@ogp_image_/ui',''" setvar="_tag_name">
+        <mt:if name="_tag_name" ne="$_tag_name_original">
+          <mt:assetfileurl setvar="_ogp_image_url">
+          <mt:setvar name="_ogp_images" key="$_tag_name" value="$_ogp_image_url">
+          <mt:unset name="_ogp_image_url">
+        </mt:if>
+        <mt:unset name="_tag_name_original">
+        <mt:unset name="_tag_name">
+      </mt:assettags>
+    </mt:assets>
+  </mt:isset>
+  <mt:if name="ogp_image_key">
+    <mt:var name="ogp_image_key" lower_case setvar="ogp_image_key">
+    <mt:var name="_ogp_images" key="$ogp_image_key" setvar="_">
+    <mt:if name="_">
+      <mt:var name="_">
+    <mt:else>
+      <mt:var name="_ogp_images" key="default">
+    </mt:if>
+    <mt:unset name="_">
+    <mt:unset name="ogp_image_key">
+  <mt:else>
+    <mt:var name="_ogp_images" key="default">
+  </mt:if>
+</mt:block>

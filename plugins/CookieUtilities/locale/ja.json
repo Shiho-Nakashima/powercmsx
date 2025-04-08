@@ -1,0 +1,25 @@
+{
+    "Provides template tags that handle HTTP Cookie. Only available for dynamic publishing." : "HTTP Cookie を活用するためのテンプレート・タグを提供します。ダイナミック・パブリッシングでのみ利用可能です。",
+    "Evaluate a block when the specified cookie is set." : "指定したクッキーに値がある時、ブロックを評価します。",
+    "The name of the cookie." : "クッキー名",
+    "The value of the cookie." : "クッキーの値",
+    "The path on the server in which the cookie will be available on(default value is '/')."
+        : "サーバー上でのクッキーを有効とするパス(初期値は'/')",
+    "The time the cookie expires(default value is '86400' *the value of environment variable 'sess_timeout')."
+        : "クッキーの有効期限秒(初期値は'86400' *環境変数'sess_timeout'の値)",
+    "When specified the cookie will be made accessible only through the HTTP protocol(The cookie won't be accessible by JavaScript)."
+        : "セットしたクッキーの値には HTTPを通してのみアクセスできるようになります(JapaScript等からはアクセスできません)。",
+    "Clear the all cookies." : "すべてのクッキーを削除します。",
+    "Clear the cookie." : "指定したクッキーを削除します。",
+    "Get the cookie's value." : "指定した名前のクッキーを取得します。",
+    "Get the server environment(Superglobals)." : "指定した名前のサーバー環境変数(スーパーグローバル変数の値)を取得します。",
+    "The name of the environment." : "取得する変数名",
+    "'SERVER', 'COOKIE', 'ENV', 'REQUEST', 'POST', 'GET' or 'SESSION'." : "'SERVER', 'COOKIE', 'ENV', 'REQUEST', 'POST', 'GET' または 'SESSION'",
+    "Set the value of get cookie to variable(default value is 'cookie_val')." : "指定した変数に取得したクッキーの値をセットする(初期値は'cookie_val')",
+    "Tag attributes for comparison of mt:if tag can be used." : "mt:ifタグの比較用のタグ属性を利用可能",
+    "Reload the page after clear the cookie." : "クッキーをクリアした後でページをリロードする",
+    "Reload the page after clear the cookies." : "クッキーをクリアした後でページをリロードする",
+    "Reload the page after setting the cookie.": "クッキーをセットした後でページをリロードする",
+    "Set the cookie value. When using https access, the secure flag is automatically assigned."
+        : "クッキーに値をセットします。httpsでのアクセス時、セキュアフラグは自動的に付与されます。"
+}

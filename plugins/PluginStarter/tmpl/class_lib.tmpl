@@ -1,0 +1,14 @@
+<mt:phpstart>
+
+class PT<mt:var name="name"> extends Prototype {
+
+    function __construct ( $options = [] ) {
+        $this->id = '<mt:var name="name">';
+        parent::__construct( $options );
+    }
+
+    function run () {
+        $app = $this;
+    }
+
+}

@@ -1,0 +1,58 @@
+.block-property .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.block-property .handle {
+  position: relative;
+  top: 35px;
+  left: -5px;
+}
+
+.block-property label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.block-property .btn {
+  margin: 1.375rem 10px 0;
+}
+
+.block-property-symbols {
+  display: none;
+}
+
+#fields-wrapper,
+#repeat_fields-wrapper {
+  margin-top: 30px;
+}
+
+#use_multi_block-wrapper,
+#template-wrapper,
+#enable_model-wrapper {
+  margin-top: 40px;
+}
+
+#fields-wrapper .hint-block,
+#repeat_fields-wrapper .hint-block {
+  margin-top: -0.5em;
+}
+
+#fields-wrapper dialog,
+#repeat_fields-wrapper dialog {
+  padding: 0;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 960px;
+  border-width: 0;
+}
+
+#fields-wrapper dialog::backdrop,
+#repeat_fields-wrapper dialog::backdrop {
+  background-color: rgba(0,0,0,.5);
+}
+
+#modal.block-preview .modal-dialog {
+  max-width: 1280px;
+}

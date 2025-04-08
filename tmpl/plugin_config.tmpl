@@ -1,0 +1,68 @@
+<mt:if name="config_saved">
+<mt:unless name="develop">
+<mt:setvar name="config_close" value="1">
+</mt:unless>
+</mt:if>
+<mt:if name="config_close">
+<script>
+window.parent.disp_header_alert("<mt:trans phrase="Plugin %s's settings has been saved." params="$plugin_label">");
+window.parent.$('#modal').modal('hide');
+window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>
+<mt:elseif name="config_reset">
+<script>
+window.parent.disp_header_alert("<mt:trans phrase="Plugin %s's settings has been reset." params="$plugin_label">");
+window.parent.$('#modal').modal('hide');
+window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>
+<mt:else>
+<mt:setvar name="full_title" value="1">
+<mt:include file="include/dialog_header.tmpl">
+<mt:if name="config_saved">
+  <div id="alert-saved" class="alert alert-success" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="Your changes have been saved.">
+  </div>
+<script>
+$('#alert-saved').focus();
+</script>
+</mt:if>
+<form action="<mt:var name="script_uri">" method="POST">
+  <mt:var name="cfg_header">
+<input type="hidden" name="__mode" value="manage_plugins">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" name="plugin_id" value="<mt:var name="request.plugin_id" escape>">
+<input type="hidden" name="save_config" value="1">
+<input type="hidden" name="edit_settings" value="1">
+<input type="hidden" id="reset_config" name="reset_config" value="">
+<mt:var name="cfg_tmpl">
+<div id="plugin-action-buttons" <mt:if name="user_stickey_buttons">class="plugin-action-buttons form-group edit-action-bar pl-2" style="margin-left:-15px;margin-right:-15px<mt:if name="debug_mode"> margin-bottom: 100px;</mt:if>"<mt:else>class="plugin-action-buttons form-group" <mt:if name="debug_mode">style="margin-bottom: 100px;"</mt:if></mt:if>>
+  <button id="dialog-cancel-btn" class="btn btn-secondary" type="submit"><mt:trans phrase="Cancel"></button>
+  <button id="dialog-save-btn" class="btn btn-primary" type="submit"><mt:trans phrase="Save"></button>
+  <button id="dialog-reset-btn" class="btn btn-secondary btn-sm" type="submit"><mt:trans phrase="Reset"></button>
+</div>
+  <mt:var name="cfg_footer">
+</form>
+<script>
+$('#dialog-reset-btn').click(function(){
+    if ( !confirm('<mt:trans phrase="This operation cannot be undone. Are you sure you want to continue?">') ) {
+        return false;
+    }
+    $('#reset_config').val(1);
+});
+$('#dialog-cancel-btn').click(function(){
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    return false;
+});
+$(document).keydown(evnt_keydown);
+function evnt_keydown(e) {
+    if ( e.keyCode == 27 ) {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    }
+}
+</script>
+<mt:include file="include/dialog_footer.tmpl">
+</mt:if>

@@ -1,0 +1,63 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <details<mt:if name="value"> open<mt:setvar name="template_text_exist" value="1" /></mt:if>>
+      <summary><mt:trans phrase="Write a template (Advanced setting)" comopnent="ComponentBlocks"></summary>
+  <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+<textarea id="<mt:var name="__col_name__">" rows="<mt:if name="options"><mt:var name="options" escape><mt:else>5</mt:if>"
+ class="form-control watch-changed" name="<mt:var name="__col_name__">"
+ <mt:if name="readonly">readonly</mt:if>>
+<mt:var name="value"></textarea>
+      <button type="button" id="component_blocks_default_template" class="btn btn-light btn-sm ml-0 mt-2"><mt:trans phrase="Default Template" component="ComponentBlocks"></button>
+      <button type="button" id="preview_component_blocks" class="btn btn-light btn-sm mt-2"><mt:trans phrase="Preview"></button>
+    </details>
+    <mt:var name="_hint">
+    <script>
+      (($) => {
+        const template = document.getElementById('template');
+        const defaultTemplateButton = document.getElementById('component_blocks_default_template');
+        defaultTemplateButton.addEventListener('click', () => {
+          const formData = new FormData();
+          formData.append('fields_definition', document.getElementById('fields').textContent);
+          formData.append('repeat_fields_definition', document.getElementById('repeat_fields').textContent);
+          const request = new Request('<mt:var name="script_uri" />?__mode=component_blocks_default_template', {
+            method: 'POST',
+            body: formData,
+          });
+          fetch(request)
+            .then((response) => response.text())
+            .then((text) => {
+              templateTextarea.setValue(text);
+            });
+        });
+
+        let modalIFrame;
+        document.addEventListener('DOMContentLoaded', () => {
+          modalIFrame = document.getElementById('modal-iframe');
+        });
+
+        const previewButton = document.getElementById('preview_component_blocks');
+        previewButton.addEventListener('click', () => {
+          const form = document.createElement('form');
+          const template = document.createElement('input');
+          template.setAttribute('name', 'template');
+          template.setAttribute('type', 'hidden');
+          template.value = templateTextarea.getValue();
+          form.appendChild(template);
+          form.setAttribute('action', '<mt:var name="script_uri" />?__mode=preview_component_blocks&workspace_id=<mt:var name="workspace_id" escape />');
+          form.setAttribute('method', 'post');
+
+          const body = modalIFrame.contentWindow.document.querySelector('body');
+          body.appendChild(form);
+          form.submit();
+          $('#modal').modal('show').addClass('block-preview');
+        });
+      })(jQuery);
+    </script>
+  </div>
+</div>

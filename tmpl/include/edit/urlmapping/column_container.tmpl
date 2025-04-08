@@ -1,0 +1,65 @@
+<mt:setvar name="no_disp" value="urlmapping,workspace,phrase,table,template,field,fieldtype,remote_ip,boilerplate,user_dic,displayoption,attachmentfile">
+<mt:var name="no_disp" split="," setvar="no_disp">
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="name" escape>">
+    <mt:var name="label" escape="1">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select id="container-selector" class="form-control custom-select short" name="<mt:var name="__col_name__">">
+    <mt:if name="workspace_id">
+      <mt:setvarblock name="table_option">'display_space','1'</mt:setvarblock>
+    <mt:else>
+      <mt:setvarblock name="table_option">'display','1'</mt:setvarblock>
+    </mt:if>
+    <mt:objectloop model="table" sort_by="order" options="$table_option">
+    <mt:if name="__first__">
+      <option value="">
+        <mt:trans phrase="Unspecified">
+      </option>
+    </mt:if>
+    <mt:if name="menu_type" ne="3">
+    <mt:if name="menu_type" ne="4">
+    <mt:if name="menu_type" ne="5">
+    <mt:ifinarray array="no_disp" value="$name">
+    <mt:else>
+      <option <mt:if name="__col_value__" eq="$name">selected</mt:if> value="<mt:var name="name">"><mt:trans phrase="$label" escape></option>
+    </mt:ifinarray>
+    </mt:if>
+    </mt:if>
+    </mt:if>
+    </mt:objectloop>
+    </select>
+  <div class="" id="container_scope-wrapper">
+    <input type="hidden" name="container_scope" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="container_scope" class="custom-control-input"
+      <mt:if name="object_container_scope">checked<mt:else><mt:unless name="request.id">checked</mt:unless></mt:if>
+      type="checkbox" name="container_scope" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Contains only the same scope."></span>
+    </label>
+  </div>
+<script>
+$('#container-selector').change(function(){
+    toggleContainerOption(200);
+});
+</script>
+  <div class="<mt:if name="workspace_id"> mt-3</mt:if>" id="skip_empty-wrapper">
+    <input type="hidden" name="skip_empty" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="skip_empty" class="custom-control-input"
+      <mt:if name="object_skip_empty">checked</mt:if>
+      type="checkbox" name="skip_empty" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Output only if contains target object."></span>
+    </label>
+  </div>
+<script>
+</script>
+  </div>
+</div>

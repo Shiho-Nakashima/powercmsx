@@ -1,0 +1,20 @@
+<mt:setvarblock name="html_head" append="1">
+  <style>
+  nav {
+    display: none !important;
+  }
+  </style>
+</mt:setvarblock>
+<mt:trans phrase="Nu Html Checker" component="NuHtmlChecker" setvar="page_title">
+<mt:include file="include/header.tmpl">
+<div id="__loader-bg">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<form enctype="multipart/form-data" id="validator-form" action="<mt:var name="url">" method="POST">
+<input type="hidden" name="showsource" value="yes">
+<input type="hidden" name="content" value="<mt:var name="html" escape>">
+</form>
+<script>
+  $('#validator-form').submit();
+</script>
+<mt:include file="include/footer.tmpl">

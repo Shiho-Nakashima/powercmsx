@@ -1,0 +1,209 @@
+<mt:setvarblock name="exclude_columns">form_id,template_id,parent_id,user_id,attachmentfile_id,fieldtype_id,questiontype_id</mt:setvarblock>
+<mt:var name="exclude_columns" split="," setvar="_exclude_columns">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_rebuildrelations_models">
+      <b><mt:trans phrase="Reference Model" component="RebuildRelations"></b>
+    </label>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_rebuildrelations_models" escape split="," setvar="rebuildrelations_target">
+<mt:setvarblock name="exclude_models">workspace,table,workflow,boilerplate,plugin_skeleton,template,urlmapping,permission,field,fieldtype,remote_ip,role,comment,question,questiontype,contact,phrase,displayoption,urlinfo</mt:setvarblock>
+<mt:var name="exclude_models" split="," setvar="_exclude_models">
+<mt:setvar name="from_models" value="">
+<mt:var name="from_models" split="," setvar="from_models">
+<mt:countgroupby model="column" count="table_id" group="'type','table_id'">
+  <mt:if name="count_group_by_type" eq="relation">
+    <mt:if name="count_group_by_options" ne="__any__">
+      <mt:getobjectlabel model="table" id="$count_group_by_table_id" setvar="model_name">
+      <mt:if name="model_name">
+      <mt:ifinarray array="_exclude_models" value="$model_name">
+      <mt:else>
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed rebuildrelations_target_model"
+          <mt:ifinarray array="rebuildrelations_target" value="$model_name">checked</mt:ifinarray>
+          type="checkbox" name="rebuildrelations_target_model" value="<mt:var name="model_name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">
+          <mt:setvar name="from_models" value="$model_name" function="push">
+          <mt:trans phrase="$model_name" language="default" translate></span>
+        </label>
+      </mt:ifinarray>
+      </mt:if>
+    </mt:if>
+  </mt:if>
+</mt:countgroupby>
+<mt:countgroupby model="column" count="edit" group="'type','options','edit','table_id','name'">
+  <mt:if name="count_group_by_type" eq="int">
+    <mt:setvar name="show_model" value="0">
+    <mt:var name="count_group_by_edit" setvar="edit_prop">
+    <mt:if name="edit_prop" like="relation:">
+      <mt:setvar name="show_model" value="1">
+    <mt:elseif name="edit_prop" like="refarence:">
+      <mt:setvar name="show_model" value="1">
+    </mt:if>
+    <mt:if name="show_model">
+      <mt:ifinarray array="_exclude_columns" value="$count_group_by_name">
+      <mt:else>
+      <mt:var name="count_group_by_edit" split=":" setvar="edit_props">
+      <mt:var name="edit_props[1]" setvar="model_name">
+        <mt:objectloop model="table" id="$count_group_by_table_id" limit="1">
+        <mt:var name="label" setvar="model_name">
+        <mt:var name="name" setvar="this_model">
+        </mt:objectloop>
+        <mt:ifinarray array="from_models" value="$this_model">
+        <mt:else>
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed rebuildrelations_target_model"
+            <mt:ifinarray array="rebuildrelations_target" value="$this_model">checked</mt:ifinarray>
+            type="checkbox" name="rebuildrelations_target_model" value="<mt:var name="this_model">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:setvar name="from_models" value="$this_model" function="push">
+            <mt:trans phrase="$model_name" language="default" translate></span>
+          </label>
+        </mt:ifinarray>
+      </mt:ifinarray>
+    </mt:if>
+  </mt:if>
+</mt:countgroupby>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no reference model." component="RebuildRelations"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_rebuildrelations_models" name="setting_rebuildrelations_models" class="form-control" value="<mt:var name="setting_rebuildrelations_models" escape>">
+<script>
+$('.rebuildrelations_target_model').change(function(){
+    var all_models = $('#setting_rebuildrelations_models').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_rebuildrelations_models').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_rebuildrelations_models').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<hr>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_rebuildrelations_to_models">
+      <b><mt:trans phrase="Related Models" component="RebuildRelations"></b>
+    </label>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_rebuildrelations_to_models" escape split="," setvar="rebuildrelations_to_target">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+<mt:setvarblock name="exclude_models">workspace,attachmentfile,table,workflow,boilerplate,plugin_skeleton,template,urlmapping,permission,field,fieldtype,remote_ip,role,comment,question,questiontype,contact,phrase,displayoption,urlinfo</mt:setvarblock>
+<mt:var name="exclude_models" split="," setvar="_exclude_models">
+<mt:setvar name="to_models" value="">
+<mt:var name="to_models" split="," setvar="to_models">
+<mt:countgroupby model="column" count="options" group="'type','options'">
+  <mt:if name="count_group_by_type" eq="relation">
+    <mt:if name="count_group_by_options" ne="__any__">
+      <mt:ifinarray array="_exclude_models" value="$count_group_by_options">
+      <mt:else>
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed rebuildrelations_target_to_model"
+          <mt:ifinarray array="rebuildrelations_to_target" value="$count_group_by_options">checked</mt:ifinarray>
+          type="checkbox" name="rebuildrelations_target_model" value="<mt:var name="count_group_by_options">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="count_group_by_options" setvar="model_name">
+          <mt:setvar name="to_models" value="$model_name" function="push">
+          <mt:trans phrase="$model_name" language="default" translate></span>
+        </label>
+      </mt:ifinarray>
+    </mt:if>
+  </mt:if>
+</mt:countgroupby>
+<mt:countgroupby model="column" count="edit" group="'type','options','edit','table_id','name'">
+  <mt:if name="count_group_by_type" eq="int">
+    <mt:setvar name="show_model" value="0">
+    <mt:var name="count_group_by_edit" setvar="edit_prop">
+    <mt:if name="edit_prop" like="relation:">
+      <mt:setvar name="show_model" value="1">
+    <mt:elseif name="edit_prop" like="refarence:">
+      <mt:setvar name="show_model" value="1">
+    </mt:if>
+    <mt:if name="show_model">
+      <mt:ifinarray array="_exclude_columns" value="$count_group_by_name">
+      <mt:else>
+      <mt:var name="count_group_by_edit" split=":" setvar="edit_props">
+      <mt:var name="edit_props[1]" setvar="model_name">
+        <mt:ifinarray array="to_models" value="$model_name">
+        <mt:else>
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed rebuildrelations_target_to_model"
+            <mt:ifinarray array="rebuildrelations_to_target" value="$model_name">checked</mt:ifinarray>
+            type="checkbox" name="rebuildrelations_target_model" value="<mt:var name="model_name">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:setvar name="to_models" value="$model_name" function="push">
+            <mt:trans phrase="$model_name" language="default" translate></span>
+          </label>
+        </mt:ifinarray>
+      </mt:ifinarray>
+    </mt:if>
+  </mt:if>
+</mt:countgroupby>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no related model." component="RebuildRelations"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_rebuildrelations_to_models" name="setting_rebuildrelations_to_models" class="form-control" value="<mt:var name="setting_rebuildrelations_to_models" escape>">
+<script>
+$('.rebuildrelations_target_to_model').change(function(){
+    var all_models = $('#setting_rebuildrelations_to_models').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_rebuildrelations_to_models').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_rebuildrelations_to_models').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<hr>
+<p class="text-muted hint-block" id="bannedwords_hint">
+  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Hint"></span>
+  <mt:trans phrase="Do not specify triggers for models that have already been specified for container and rebuild trigger settings." component="RebuildRelations">
+</p>

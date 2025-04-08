@@ -1,0 +1,20 @@
+<mt:property name="linked_file" setvar="_use_linked_file">
+<mt:if name="_use_linked_file">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="<mt:var name="__col_name__">" type="text" class="short form-control watch-changed <mt:var name="ctrl_class">" name="<mt:var name="__col_name__">" value="<mt:var name="value">">
+  <p class="text-muted hint-block mb-0">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Starting with '%s' will link to the files in the current theme directory."params="%t">
+  </p>
+  </div>
+</div>
+<mt:else>
+<!--Do not display-->
+</mt:if>

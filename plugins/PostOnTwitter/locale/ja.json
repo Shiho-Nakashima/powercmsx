@@ -1,0 +1,165 @@
+{
+    "Provides the ability to post to 𝕏 from PowerCMS X."
+        : "PowerCMS X から 𝕏 へ投稿する機能を提供します。",
+
+    "Conditional tag provided by the 'PostOnTwitter' plugin.<br>Blocks are rated when Posts in the PostOnTwitter plugin settings are enabled."
+        : "'PostOnTwitter'プラグインにより提供される条件タグです。<br>PostOnTwitter プラグイン設定のポストが有効になっている場合にブロックが評価されます。",
+    "workpace's ID (If omitted, the ID of the workspace in the current context)."
+        : "スペースの'id' (省略時は現在のコンテキストのワークスペースID)",
+    "Conditional tag provided by the 'PostOnTwitter' plugin.<br>Evaluate the block if the model specified in the model attribute is the Post target model of the PostOnTwitter plugin."
+        : "'PostOnTwitter'プラグインにより提供される条件タグです。<br>model 属性に指定したモデルが PostOnTwitter プラグインのポスト対象モデルの場合にブロックが評価されます。",
+    "Model name to be checked."
+        : "対象モデル名",
+
+    "Register a 𝕏 App"
+        : "𝕏 アプリの登録",
+    "Click to register PostToTwitter"
+        : "クリックして PostToTwitter を登録してください",
+    "Enter the following URL in the Callback URLs field."
+        : "Callback URLs 欄には以下の URL を入力してください。",
+    "Select 'Read and write' for 'Access permission' in the 'Permissions' tab of the setting screen."
+        : "設定画面内「Permissions」タブの「Access permission」では「Read and write」を選択してください。",
+    "𝕏 App Settings"
+        : "𝕏 アプリに関する設定",
+    "Please copy and paste from the Twitter app details screen"
+        : "𝕏 アプリの詳細画面からコピー＆ペーストしてください",
+    "Must be include https://"
+        : "https:// を含む形式である必要があります",
+    "If you don't have special reason, plase use default setting."
+        : "特別な理由がない限りデフォルトの内容を使用してください",
+    "Base Settings"
+        : "共通設定",
+    "Common settings available for the system and each space"
+        : "システムや各スペースで利用できる共通の設定",
+    "* For system objects, it is necessary to set 'System Scope Settings' separately"
+        : "* システムオブジェクトに対しては別途「システムスコープ設定」を設定する必要があります",
+    "Settings for system belonging objects"
+        : "システム所属オブジェクトに対する設定",
+    "Settings for space belonging objects"
+        : "スペース所属オブジェクトに対する設定",
+    "Setting up a 𝕏 account"
+        : "𝕏 アカウント設定",
+    "Post usage settings"
+        : "投稿の設定",
+    "Consumer API keys are required to link Twitter accounts."
+        : "𝕏 アカウントを連係するには Consumer API keys が必用です。",
+    "Please enter Consumer API keys and save the plugin settings once."
+        : "Consumer API keys を入力して一度保存してください。",
+    "Please set Consumer API keys in your system's PostOnTwitter plugin settings."
+        : "システムの PostOnTwitter プラグイン設定で Consumer API keys を設定してください。",
+    "A Base setting 𝕏 account has not been set up."
+        : "共通設定の 𝕏 アカウントが設定されていません。",
+    "Click to get an Access Token"
+        : "クリックして Access Token を取得してください",
+    "When you get an Access Token, the token information is saved in the database."
+        : "Access Token を取得した時点でデータベースにトークン情報が保存されます",
+    "Account Name"
+        : "アカウント名",
+    "Information when linking accounts"
+        : "アカウント連携した際の情報です",
+    "When an access token is obtained, the value is automatically set"
+        : "アクセストークンを取得すると、自動的に値が設定されます",
+    "Do not change unless there is a special reason"
+        : "特別な理由がない限り変更しないでください",
+    "Enter manually"
+        :  "手動で入力する",
+    "Unlink to a 𝕏 account."
+        : "連係を解除する",
+    "The access token is deleted."
+        : "アクセストークンが削除されます。",
+    "Test post to 𝕏"
+        : "テスト投稿",
+    "Click to post a test"
+        : "クリックするとテスト投稿します",
+    "The test post was successful."
+        : "テスト投稿に成功しました。",
+    "The test post failed."
+        : "テスト投稿に失敗しました。",
+    "Posr usage settings"
+        : "ポスト機能の利用設定",
+    "Enabled"
+        : "有効",
+    "Disabled"
+        : "無効",
+    "Can switch being enabled per space"
+        : "スペース毎に有効/無効を切り替えることができます",
+    "Post settings"
+        : "ポスト設定",
+    "Target Models"
+        : "対象モデル",
+    "There is no target model"
+        : "対象となるモデルがありません",
+    "Models with preferred archives are eligible"
+        : "優先アーカイブが存在するモデルが対象となります",
+    "Models with preferred archives in the system are eligible"
+        : "システムに優先アーカイブが存在するモデルが対象となります",
+    "Models with preferred archives in the space are eligible"
+        : "スペースに優先アーカイブが存在するモデルが対象となります",
+    "Post view"
+        : "ポストビュー",
+    "Template tags are available."
+        : "テンプレート・タグが利用可能です",
+    "Settings for system"
+        : "システムスコープ設定",
+    "Settings for space"
+        : "スペース別設定",
+    "Link the 𝕏 account"
+        : "𝕏 アカウントとの連携",
+    "Use base settings"
+        : "共通設定を利用する",
+    "Configure settings for system scope"
+        : "システム用の設定を行う",
+    "Configure settings for space scope"
+        : "スペース用の設定を行う",
+    "Use link url"
+        :"リンクURLを使用する",
+    "The URL in the post will be based on the link URL."
+        : "ポスト内のURLがリンクURLベースになります",
+
+    "Link to a 𝕏 account"
+        : "𝕏 アカウント連係",
+    "plugin"
+        : "プラグイン",
+    "Permission denied."
+        : "権限がありません。",
+    "Invalid request."
+        : "不正なリクエストです。",
+    "An error occurred."
+        : "エラーが発生しました。",
+    "API Key is not set."
+        : "APIキーが設定されていません。",
+    "Post is empty"
+        : "ポストする内容がありません。",
+    "Could not get access token."
+        : "アクセストークンを取得出来ませんでした。",
+    "Successful acquisition of access token."
+        : "アクセストークンの取得に成功しました。",
+    "(Saved the token in the database .)"
+        : "（データベースにトークンを保存しました。）",
+    "Please close this window and continue the settings."
+        : "このウィンドウを閉じて設定を続けてください。",
+    "Not linked to a 𝕏 account."
+        : "𝕏 アカウントが連携されていません。",
+    "'%s (ID: %s)' has been posted to 𝕏."
+        : "「%s（ID: %s）」を 𝕏 へ投稿しました。",
+    "Posting to 𝕏 failed."
+        : "𝕏 への投稿に失敗しました。",
+
+    "System"
+        : "システム",
+    "Setting up a 𝕏 account for %s"
+        : "%s の 𝕏 アカウント設定",
+    "Save Changes"
+        : "変更を保存",
+    "Your changes have been saved."
+        : "変更を保存しました。",
+
+    "Post"
+        : "ポスト",
+    "Post on 𝕏 when published"
+        : "公開時に 𝕏 へ投稿する",
+    "Tweeted on %s"
+        : "%s にツイートしました",
+    "Already posted on 𝕏"
+        : "既に 𝕏 へ投稿済みです"
+}

@@ -1,0 +1,39 @@
+{
+    "Convert absolute path to relative path."
+        : "URLや絶対パスをファイルを起点とした相対パスに変換します。",
+    "Convert the URL to a relative path." : "URL を相対パスに変換します。",
+    "'relative_path' (convert to relative path), 'root_relative_path' (convert to root relative path), default refers to plugin settings"
+        : "'relative_path' (相対パスに変換), 'root_relative_path' (ルート相対パスに変換), 省略時はプラグイン設定値を参照します",
+    "Abs2Rel Enabled" : "Abs2Rel を有効化",
+    "Static Contents" : "静的コンテンツ",
+    "Dynamic Contents" : "動的コンテンツ",
+    "Can switch being enabled per Workspace."
+        : "ワークスペース毎に有効/無効を切り替えることができます。",
+    "Use system settings" : "システム設定を利用する",
+    "Path conversion type" : "パス変換の種類",
+    "Relative Path" : "相対パス",
+    "Root Relative Path" : "ルート相対パス",
+    "The root relative path is a path starting with /."
+        : "ルート相対パスとは / から始まるパスです。",
+    "Directory index file name" : "補完するファイル名",
+    "Complements the specified value if the targeted URL ends with /."
+        : "対象となった URL が / で終わる場合に指定した値を補完します。",
+    "Exclusion setting" : "除外設定",
+    "File extension" : "ファイルの拡張子",
+    "Process the file output with the specified extension."
+        : "指定した拡張子で出力されるファイルに対して処理を行います。",
+    "You can specify multiple items separated by commas."
+        : "カンマ区切りによる複数指定が可能です。",
+    "Directries" : "ディレクトリ",
+    "Do not process files that are output to the specified directory."
+        : "指定したディレクトリに出力されるファイルに対しては処理を行いません。",
+    "It is possible to specify multiple lines by line feed."
+        : "改行区切りによる複数指定が可能です。",
+    "Link URL" : "リンク URL",
+    "Ignore BASE element" : "BASE要素を変換しない",
+    "Ignore SCRIPT elements" : "SCRIPT要素内を無視する",
+    "Ignore HTML comments" : "HTMLコメント内を無視する",
+    "Does not process the link URL to the backward matching file."
+        : "後方一致するファイルへのリンク URL に対しては処理を行いません。",
+    "tahakashi.shinji" : "高橋 真司"
+}

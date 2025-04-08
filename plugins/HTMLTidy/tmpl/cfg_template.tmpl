@@ -1,0 +1,189 @@
+<mt:if name="workspace_id">
+<div class="row form-group mb-1">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_htmltidy_use_system_setting" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input individual-setting"
+        id="setting_htmltidy_use_system_setting" name="setting_htmltidy_use_system_setting" value="1"
+        <mt:if name="setting_htmltidy_use_system_setting">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Use System Settings" component="HTMLTidy"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_htmltidy_use_system_setting').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide();
+    } else {
+        $('#individual-setting-container').show();
+    }
+});
+</script>
+</mt:if>
+<div id="individual-setting-container">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_htmltidy_exclude_petterns">
+      <mt:trans phrase="Exclude Petterns" component="HTMLTidy">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea rows="5" id="setting_htmltidy_exclude_petterns" name="setting_htmltidy_exclude_petterns" class="form-control"><mt:var name="setting_htmltidy_exclude_petterns" escape></textarea>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_htmltidy_replace_petterns">
+      <mt:trans phrase="Replace Petterns" component="HTMLTidy">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea rows="5" id="setting_htmltidy_replace_petterns" name="setting_htmltidy_replace_petterns" class="form-control"><mt:var name="setting_htmltidy_replace_petterns" escape></textarea>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_htmltidy_body_pettern">
+      <mt:trans phrase="Body Pettern" component="HTMLTidy">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_htmltidy_body_pettern" name="setting_htmltidy_body_pettern" class="form-control" value="<mt:var name="setting_htmltidy_body_pettern" escape>">
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Specify the start string and end string to be processed. Example: &lt;main&gt;,&lt;/main&gt;" component="HTMLTidy">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_htmltidy_exclude_string">
+      <mt:trans phrase="Exception String" component="HTMLTidy">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_htmltidy_exclude_string" name="setting_htmltidy_exclude_string" class="form-control" value="<mt:var name="setting_htmltidy_exclude_string" escape>">
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Excludes HTML documents that contain the specified character string." component="HTMLTidy">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="htmltidy_archive_types">
+      <mt:trans phrase="Archive Types" component="HTMLTidy">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+<mt:var name="setting_htmltidy_archive_types" split="," setvar="htmltidy_archive_types">
+<mt:if name="workspace_id">
+<mt:countgroupby include_draft="1" model="urlinfo" count="archive_type" group="archive_type" sort_by="count" sort_order="descend" workspace_ids="$workspace_id">
+  <mt:setvar name="models_output" value="1">
+  <mt:if name="count_group_by_archive_type">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="htmltidy_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="htmltidy_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+  </mt:if>
+</mt:countgroupby>
+<mt:countgroupby include_draft="1"mime_type="text/html" class="file" model="urlinfo" count="model" group="model" sort_by="count" sort_order="descend" workspace_ids="$workspace_id">
+  <mt:setvar name="models_output" value="1">
+  <mt:if name="count_group_by_model">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="htmltidy_archive_types" value="$count_group_by_model">checked</mt:ifinarray>
+      type="checkbox" name="htmltidy_target_model" value="<mt:var name="count_group_by_model">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="$count_group_by_model" language="default" translate></span>
+    </label>
+  </mt:if>
+</mt:countgroupby>
+<mt:else>
+<mt:countgroupby include_draft="1" model="urlinfo" count="archive_type" group="archive_type" sort_by="count" sort_order="descend" workspace_ids="all">
+  <mt:setvar name="models_output" value="1">
+  <mt:if name="count_group_by_archive_type">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="htmltidy_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="htmltidy_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+  </mt:if>
+</mt:countgroupby>
+<mt:countgroupby include_draft="1"mime_type="text/html" class="file" model="urlinfo" count="model" group="model" sort_by="count" sort_order="descend" workspace_ids="all">
+  <mt:setvar name="models_output" value="1">
+  <mt:if name="count_group_by_model">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="htmltidy_archive_types" value="$count_group_by_model">checked</mt:ifinarray>
+      type="checkbox" name="htmltidy_target_model" value="<mt:var name="count_group_by_model">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="$count_group_by_model" language="default" translate></span>
+    </label>
+  </mt:if>
+</mt:countgroupby>
+</mt:if>
+  <mt:unless name="models_output">
+    <mt:setvar name="count_group_by_archive_type" value="entry">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="htmltidy_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="htmltidy_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+    <mt:setvar name="count_group_by_archive_type" value="page">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed group_by_archive_type"
+      <mt:ifinarray array="htmltidy_archive_types" value="$count_group_by_archive_type">checked</mt:ifinarray>
+      type="checkbox" name="htmltidy_target_model" value="<mt:var name="count_group_by_archive_type">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="$count_group_by_archive_type" language="default" translate></span>
+    </label>
+  </mt:unless>
+  </div>
+</div>
+<input type="hidden" id="setting_htmltidy_archive_types" name="setting_htmltidy_archive_types" class="form-control" value="<mt:var name="setting_htmltidy_archive_types" escape>">
+<script>
+$('.group_by_archive_type').change(function(){
+    var archive_types = $('#setting_htmltidy_archive_types').val();
+    var this_type = $(this).val();
+    archive_types = archive_types.split(',');
+    var result = $.inArray( this_type, archive_types );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            archive_types.push( this_type );
+            $('#setting_htmltidy_archive_types').val(archive_types.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            archive_types.splice(result, 1); 
+            $('#setting_htmltidy_archive_types').val(archive_types.join(','));
+        }
+    }
+});
+</script>
+</div>
+<mt:if name="workspace_id">
+<mt:if name="setting_htmltidy_use_system_setting">
+<script>
+    $('#individual-setting-container').hide();
+</script>
+</mt:if>
+</mt:if>

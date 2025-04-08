@@ -1,0 +1,11 @@
+{
+    "csspreprocessor": {
+        "description": "Compiling preprocessor code to CSS.",
+        "set_loop_vars": false,
+        "attributes": {
+            "type" : "One of 'Sass',' SCSS',' Less',' Stylus'.",
+            "compress" : "Minifying CSS code.",
+            "minify" : "Alias for 'compress'."
+        }
+    }
+}

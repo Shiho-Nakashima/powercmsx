@@ -1,0 +1,64 @@
+{
+    "label"       : "AppProperties",
+    "id"          : "appproperties",
+    "component"   : "AppProperties",
+    "version"     : "1.1",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Manage the properties of PowerCMS X.",
+    "config_settings": {
+        "appproperties_allow_override": false
+    },
+    "hooks": {
+        "appproperties_start_app": {
+            "start_app" : {
+                "component" : "AppProperties",
+                "priority"  : 1,
+                "method"    : "start_app"
+            }
+        }
+    },
+    "list_actions": {
+        "action_app_property_export": {
+            "app_property": {
+                "action_app_property_export": {
+                    "name": "action_app_property_export",
+                    "label": "CSV Export",
+                    "component": "AppProperties",
+                    "method": "action_app_property_export",
+                    "input": 0,
+                    "order": 10
+                }
+            }
+        }
+    },
+    "callbacks": {
+        "appproperties_pre_save_app_property": {
+            "app_property" : {
+                "pre_save" : {
+                    "component" : "AppProperties",
+                    "priority"  : 10,
+                    "method" : "pre_save_app_property"
+                }
+            }
+        },
+        "appproperties_pre_save_table": {
+            "table" : {
+                "pre_save" : {
+                    "component" : "AppProperties",
+                    "priority"  : 10,
+                    "method" : "pre_save_table"
+                }
+            }
+        },
+        "appproperties_post_delete_app_property": {
+            "app_property" : {
+                "post_delete" : {
+                    "component" : "AppProperties",
+                    "priority"  : 10,
+                    "method" : "post_delete_app_property"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "label"       : "CookieUtilities",
+    "id"          : "cookieutilities",
+    "component"   : "CookieUtilities",
+    "version"     : "1.0",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Provides template tags that handle HTTP Cookie. Only available for dynamic publishing.",
+    "tags": {
+        "conditional": {
+            "ifcookie" : {
+                "component" : "CookieUtilities",
+                "method" : "hdlr_ifcookie"
+            }
+        },
+        "function": {
+            "getcookie" : {
+                "component" : "CookieUtilities",
+                "method" : "hdlr_getcookie"
+            },
+            "getenv" : {
+                "component" : "CookieUtilities",
+                "method" : "hdlr_getenv"
+            },
+            "setcookie" : {
+                "component" : "CookieUtilities",
+                "method" : "hdlr_setcookie"
+            },
+            "clearcookie" : {
+                "component" : "CookieUtilities",
+                "method" : "hdlr_clearcookie"
+            },
+            "clearallcookies" : {
+                "component" : "CookieUtilities",
+                "method" : "hdlr_clearallcookies"
+            }
+        }
+    }
+}

@@ -1,0 +1,250 @@
+<style>
+#machinetranslator_translate{ cursor: pointer }
+#machinetranslator_settings{ cursor: pointer }
+#machinetranslator_settings-wrapper > a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 0px !important;;
+    margin: 0px !important;
+    display: block;
+    transform: translate(-50%,-50%);
+}
+#machinetranslator_settings-wrapper #machinetranslator_settings {
+    padding: 0px !important;
+}
+#machinetranslator_settings-wrapper #machinetranslator_settings::before {
+    line-height: 1.0;
+}
+</style>
+<div id="machinetranslator_translate-wrapper"
+  style="width:40px;height:40px;
+  position:fixed;z-index:10000000100;
+  <mt:ifuseragent wants="mobile">top:130px;<mt:else>bottom:3px;</mt:ifuseragent>right:2px;
+  border-radius:30px;text-align:center;padding:0;background:#0067B7;box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);" class="hidden">
+<a id="machinetranslator_translate" data-toggle="tooltip" data-placement="left" title="<mt:var name="mt-language-from">→<mt:var name="mt-language-to">">
+<img id="machinetranslator-btn" src="<mt:if name="machinetranslator_assets_base"><mt:var name="machinetranslator_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/MachineTranslator/assets/img</mt:if>/translator_btn_r.png?v=1" alt="<mt:trans phrase="Translate" component="MachineTranslator">"
+width="20" height="20" style="position:absolute;top:10px;left:10px;">
+</a>
+</div>
+<div id="machinetranslator_settings-wrapper"
+  style="width:40px;height:40px;
+  position:fixed;z-index:1000000099;
+  <mt:ifuseragent wants="mobile">bottom:13px;<mt:else>bottom:3px;</mt:ifuseragent>right:2px;
+  border-radius:30px;text-align:center;padding:0px;background:#fff;font-size:110%;box-shadow: 0 10px 25px 0 rgba(0, 0, 0, .5);">
+<a aria-label="<mt:trans phrase="Translate Settings" component="MachineTranslator">" class="btn dialog-chooser" data-toggle="modal" data-target="#modal" style="background-color: transparent;margin-top:-5px;"
+data-href="<mt:var name="script_uri">?__mode=machinetranslator_settings<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;dialog_view=1">
+<div id="machinetranslator_settings" class="fa fa-globe fa-lg" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="<mt:var name="mt-language-from">→<mt:var name="mt-language-to">"></div>
+</a>
+</div>
+<script>
+var machinetranslator_target = null;
+var machinetranslator_is_select = null;
+var machinetranslator_tag_id = null;
+var machinetranslator_is_composing = false;
+$(function(){
+  setTimeout( idle_getForcus, 2000 );
+  $(":input").focus(function(){
+    if ($(this).is('input') && $(this).attr('type') == 'text' && !$(this).attr('disabled') && !$(this).attr('readonly') ) {
+        machinetranslator_is_select = true;
+        machinetranslator_target = $(this);
+        machinetranslator_tag_id = $(this).attr('id');
+        machinetranslator_is_composing = false;
+        setInterval( idle_getAreaRange, 1000 );
+    } else if ($(this).is('textarea')) {
+        machinetranslator_is_select = true;
+        machinetranslator_target = $(this);
+        machinetranslator_tag_id = $(this).attr('id');
+        machinetranslator_is_composing = false;
+        setInterval( idle_getAreaRange, 1000 );
+    } else {
+        machinetranslator_is_select = false;
+        machinetranslator_target = null;
+        machinetranslator_tag_id = null;
+        machinetranslator_is_composing = false;
+        $('#machinetranslator_translate-wrapper').hide( 200 );
+        clearInterval( idle_getAreaRange );
+    }
+  });
+  $(":input").blur(function(){
+      machinetranslator_is_select = false;
+      setTimeout( reset_machinetranslator, 1000 );
+  });
+});
+$('#machinetranslator_translate').mouseover(function(){
+    $('#machinetranslator_translate-wrapper').css( 'background', '#0046a6' );
+});
+$('#machinetranslator_translate').mouseout(function(){
+    $('#machinetranslator_translate-wrapper').css( 'background', '#0067B7' );
+});
+var _mt_target;
+var _mt_pos;
+var _mt_val;
+var _mt_beforeNode;
+var _mt_afterNode;
+$('#machinetranslator_translate').click(function(){
+    if (! machinetranslator_target && machinetranslator_tag_id ) {
+        machinetranslator_target = document.getElementById( machinetranslator_tag_id );
+    }
+    if ( machinetranslator_target ) {
+        var html;
+        _mt_target = document.getElementById( machinetranslator_tag_id );
+        if (! _mt_target ) {
+            return;
+        }
+        machinetranslator_target.focus();
+        _mt_pos = _getAreaRange(_mt_target);
+        _mt_val = _mt_target.value;
+        _mt_type = 'form_control';
+        html = _mt_val.slice(_mt_pos.start, _mt_pos.end);
+        _mt_beforeNode = _mt_val.slice(0, _mt_pos.start);
+        _mt_afterNode  = _mt_val.slice(_mt_pos.end);
+        if ( _mt_val.indexOf('<') != -1 && _mt_val.indexOf('>') != -1 ) {
+            var _openTag = _mt_beforeNode.lastIndexOf( '<' );
+            var _endTag = _mt_beforeNode.lastIndexOf( '>' );
+            if ( _openTag < _endTag ) {
+                _mt_type = 'insert_editor';
+            }
+        }
+        machinetranslator_is_select = true;
+        url = '<mt:var name="script_uri">?__mode=machinetranslator_translate&_type=' + _mt_type + '<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+        if (! html ) {
+            alert( '<mt:trans phrase="No text selected." component="MachineTranslator">' );
+            return;
+        }
+        if ( html.length > 1000 ) {
+            $('#__loader-bg').show();
+        }
+        $('#machinetranslator_translate-wrapper').css( 'background', '#0067B7' );
+        $('#machinetranslator_translate-wrapper').css( <mt:ifuseragent wants="mobile">'top', '131px'<mt:else>'bottom', '2px'</mt:ifuseragent> );
+        $('#machinetranslator_translate-wrapper').css( 'right', '1px' );
+        let from_to = $('#machinetranslator_settings').attr('title');
+        from_to = from_to.split('→');
+        let agreement = 0;
+        if ( from_to[1] == 'jp-yn' ) {
+            <mt:if tag="property" name="confirm_web_service" eq="1">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to 伝えるウェブ?" component="MachineTranslator">' ) ) {
+                return;
+            }
+            <mt:elseif tag="property" name="confirm_web_service" eq="2">
+            <mt:getcookie name="pt-mt-agreement" setvar="pt_mt_agreement">
+            <mt:unless name="pt_mt_agreement">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to 伝えるウェブ?" component="MachineTranslator">' ) ) {
+                return;
+            }
+            </mt:unless>
+            agreement = 1;
+            </mt:if>
+        } else {
+            <mt:if tag="property" name="confirm_web_service" eq="1">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to Microsoft Translator?" component="MachineTranslator">' ) ) {
+                return;
+            }
+            <mt:elseif tag="property" name="confirm_web_service" eq="2">
+            <mt:getcookie name="pt-mt-agreement" setvar="pt_mt_agreement">
+            <mt:unless name="pt_mt_agreement">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to Microsoft Translator?" component="MachineTranslator">' ) ) {
+                return;
+            }
+            </mt:unless>
+            agreement = 1;
+            </mt:if>
+        }
+        var data = {
+            text: html,
+            magic_token: '<mt:var name="magic_token">',
+            agreement: agreement
+        };
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:JSON.stringify(data),
+            contentType: 'application/json',
+            dataType: 'json',
+            timeout: 10000,
+            success: function( responce ){
+                if ( responce.message ) {
+                    alert( responce.message );
+                    $('#__loader-bg').hide();
+                    $('#machinetranslator_translate-wrapper').css( <mt:ifuseragent wants="mobile">'top', '130px'<mt:else>'bottom', '3px'</mt:ifuseragent> );
+                    $('#machinetranslator_translate-wrapper').css( 'right', '2px' );
+                } else {
+                    var insertNode = responce.result;
+                    _mt_target.value = _mt_beforeNode + insertNode + _mt_afterNode;
+                    _mt_target.focus();
+                    _mt_target.setSelectionRange(_mt_beforeNode.length, _mt_beforeNode.length + insertNode.length );
+                    $('#__loader-bg').hide();
+                    $('#machinetranslator_translate-wrapper').css( <mt:ifuseragent wants="mobile">'top', '130px'<mt:else>'bottom', '3px'</mt:ifuseragent> );
+                    $('#machinetranslator_translate-wrapper').css( 'right', '2px' );
+                }
+            },
+            error: function(){
+                $('#__loader-bg').hide();
+                $('#machinetranslator_translate-wrapper').css( <mt:ifuseragent wants="mobile">'top', '130px'<mt:else>'bottom', '3px'</mt:ifuseragent> );
+                $('#machinetranslator_translate-wrapper').css( 'right', '2px' );
+                alert( '<mt:trans phrase="An error occurred while translate content." component="MachineTranslator">' );
+            }
+        });
+    }
+});
+var reset_machinetranslator = function() {
+    if (! machinetranslator_is_select ) {
+        machinetranslator_target = null;
+        machinetranslator_tag_id = null;
+        $('#machinetranslator_translate-wrapper').hide( 200 );
+    }
+}
+var idle_getAreaRange = function() {
+    if (! machinetranslator_is_select ) {
+        machinetranslator_target = null;
+        machinetranslator_tag_id = null;
+        $('#machinetranslator_translate-wrapper').hide( 200 );
+    } else {
+        if ( machinetranslator_tag_id ) {
+            _mt_target = document.getElementById( machinetranslator_tag_id );
+            _mt_pos = _getAreaRange(_mt_target);
+            if ( _mt_pos.start == _mt_pos.end ) {
+                $('#machinetranslator_translate-wrapper').hide( 200 );
+            } else {
+                if (! machinetranslator_is_composing ) {
+                    $('#machinetranslator_translate-wrapper').show( 200 );
+                } else {
+                    $('#machinetranslator_translate-wrapper').hide( 200 );
+                }
+            }
+        }
+    }
+}
+var idle_getForcus = function() {
+    machinetranslator_target = document.activeElement;
+}
+document.body.addEventListener( 'click', function (e) {
+    machinetranslator_is_composing = false;
+});
+window.addEventListener('DOMContentLoaded', function(){
+    window.addEventListener("keydown", function(e){
+        if( e.isComposing ) {
+            machinetranslator_is_composing = true;
+        } else {
+            machinetranslator_is_composing = false;
+        }
+    });
+});
+function _getAreaRange ( obj ) {
+  var pos = new Object();
+  if (__isIE) {
+    obj.focus();
+    var range = document.selection.createRange();
+    var clone = range.duplicate();
+    clone.moveToElementText(obj);
+    clone.setEndPoint( 'EndToEnd', range );
+    pos.start = clone.text.length - range.text.length;
+    pos.end   = clone.text.length - range.text.length + range.text.length;
+  } else if(window.getSelection()) {
+    pos.start = obj.selectionStart;
+    pos.end   = obj.selectionEnd;
+  }
+  return pos;
+}
+var __isIE = (navigator.appName.toLowerCase().indexOf('internet explorer') + 1 ? 1 : 0 );
+</script>

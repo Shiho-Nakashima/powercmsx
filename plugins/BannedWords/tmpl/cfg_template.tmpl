@@ -1,0 +1,745 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_models">
+      <mt:trans phrase="Target Models" component="BannedWords">
+    </label>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_bannedwords_models" escape split="," setvar="bannedwords_target">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+  <mt:setvarblock name="exclude_models">table,workflow,boilerplate,template,urlmapping,workspace,permission,field,fieldtype,remote_ip,role,comment,question,questiontype,contact,form,phrase,group,menu,displayoption,user,member</mt:setvarblock>
+  <mt:var name="exclude_models" split="," setvar="_exclude_models">
+    <mt:tables type="$menu_type">
+      <mt:ifinarray array="_exclude_models" value="$name">
+      <mt:else>
+      <mt:if name="menu_type" ne="3">
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed bannedwords_target_model"
+          <mt:ifinarray array="bannedwords_target" value="$name">checked</mt:ifinarray>
+          type="checkbox" name="bannedwords_target_model" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="label" translate></span>
+        </label>
+      </mt:if>
+      </mt:ifinarray>
+    </mt:tables>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="BannedWords"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_bannedwords_models" name="setting_bannedwords_models" class="form-control" value="<mt:var name="setting_bannedwords_models" escape>">
+<script>
+$('.bannedwords_target_model').change(function(){
+    var all_models = $('#setting_bannedwords_models').val();
+    var this_model = $(this).val();
+    all_models = all_models.split(',');
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_bannedwords_models').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_bannedwords_models').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_rules">
+      <mt:trans phrase="Settings">
+    </label>
+  </div>
+  <div class="col-lg-10<mt:if name="request.workspace_id"> mt-2</mt:if>">
+    <mt:if name="request.workspace_id">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_inheritance" value="0" <mt:unless name="setting_bannedwords_inheritance">checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Do not inherit system settings"component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_inheritance" value="1" <mt:if name="setting_bannedwords_inheritance">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Inherit system settings" component="BannedWords"></span>
+    </label>
+    </mt:if>
+  </div>
+</div>
+<div id="setting_bannedwords">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_only_editor">
+      <mt:trans phrase="Check Target" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_only_editor" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_only_editor">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_only_editor" id="setting_bannedwords_only_editor" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Enable only RichText Editor check" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_editor_select">
+      <mt:trans phrase="Applying Proofread" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_editor_select" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_editor_select">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_editor_select" id="setting_bannedwords_editor_select" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Allows you to select what to edit in the editor" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+
+<div id="bannedwords_force-wrapper"<mt:if name="setting_bannedwords_only_editor"> class="hidden"</mt:if>>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_force">
+      <mt:trans phrase="Force" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_force" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_force">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_force" id="setting_bannedwords_force" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Do not allow saving of objects that contain prohibited words" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_rules">
+      <mt:trans phrase="Rules" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10<mt:if name="request.workspace_id"> mt-2</mt:if>">
+    <textarea class="form-control" rows="6" id="setting_bannedwords_rules" name="setting_bannedwords_rules"><mt:var name="setting_bannedwords_rules" escape></textarea>
+    <div class="text-muted hint-block" id="bannedwords_hint">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="One word per line." component="BannedWords"> <mt:trans phrase="To replace, enter a replacement string separated by comma." component="BannedWords">
+    </div>
+  </div>
+</div>
+<div id="other-rules">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_non_common">
+      <mt:trans phrase="Excludes" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_bannedwords_exclude_quote" name="setting_bannedwords_exclude_quote" class="form-control " value="<mt:var name="setting_bannedwords_exclude_quote" escape>">
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Specify the tag names to be excluded by separating them with commas." component="BannedWords">
+    </div>
+    <input type="hidden" name="setting_bannedwords_exclude_cite" value="0">
+    <label class="custom-control custom-checkbox mt-2 mb-0">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_exclude_cite">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_exclude_cite" id="setting_bannedwords_exclude_cite" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Ignore text within quotes" component="BannedWords"></span>
+    </label>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Ignore text within'%s'." params="(),「」,〈〉,『』,“”,【】,＜＞,《》,«»,[],『』" component="BannedWords">
+    </div>
+  </div>
+</div>
+<mt:ifcomponent component="SimplifiedJapanese">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_non_common">
+      <mt:trans phrase="Jōyōkanji" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_non_common" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_non_common">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_non_common" id="setting_bannedwords_convert_non_common" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Replaces non-Jōyōkanji to Hiragana" component="BannedWords"></span>
+    </label>
+    <select aria-label="<mt:trans phrase="Kanji Level" component="BannedWords">" class="form-control custom-select<mt:unless name="setting_bannedwords_convert_non_common"> hidden</mt:unless>" name="setting_bannedwords_convert_kanji_level" id="setting_bannedwords_convert_kanji_level">
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="0">selected</mt:if> value="0"><mt:trans phrase="Unspecified"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="1">selected</mt:if> value="1"><mt:trans phrase="1st grade elementary school student" component="BannedWords"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="2">selected</mt:if> value="2"><mt:trans phrase="2nd grade elementary school student" component="BannedWords"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="3">selected</mt:if> value="3"><mt:trans phrase="3rd grade elementary school student" component="BannedWords"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="4">selected</mt:if> value="4"><mt:trans phrase="4th grade elementary school student" component="BannedWords"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="5">selected</mt:if> value="5"><mt:trans phrase="5th grade elementary school student" component="BannedWords"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="6">selected</mt:if> value="6"><mt:trans phrase="6th grade elementary school student" component="BannedWords"></option>
+      <option <mt:if name="setting_bannedwords_convert_kanji_level" eq="7">selected</mt:if> value="7"><mt:trans phrase="Junior high schooler student" component="BannedWords"></option>
+    </select>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Proper nouns are ignored." component="BannedWords">
+    </div>
+  </div>
+</div>
+<script>
+$('#setting_bannedwords_convert_non_common').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#setting_bannedwords_convert_kanji_level').show(100);
+    } else {
+        $('#setting_bannedwords_convert_kanji_level').hide(100);
+    }
+});
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_variante">
+      <mt:trans phrase="Variant Characters" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_variante" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_variante">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_variante" id="setting_bannedwords_convert_variante" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Normalize Variant Characters" component="BannedWords"></span>
+    </label>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Proper nouns are ignored." component="BannedWords">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_kana_end">
+      <mt:trans phrase="Declensional Kana Ending" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_kana_end" value="0" <mt:unless name="setting_bannedwords_convert_kana_end">checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Do not Convert" component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="setting_bannedwords_convert_kana_end"
+         name="setting_bannedwords_convert_kana_end" value="1" <mt:if name="setting_bannedwords_convert_kana_end" eq="1">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Correct omission of Declensional Kana Ending for compound nouns in official document notation(186 words)" component="BannedWords"></span>
+      </span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_kana_end" value="2" <mt:if name="setting_bannedwords_convert_kana_end" eq="2">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Omit the okurigana of compound nouns(186 words)" component="BannedWords"></span>
+      </span>
+    </label>
+    <mt:property name="bannedwords_kana_dic_path" setvar="bannedwords_kana_dic_path">
+    <mt:if name="bannedwords_kana_dic_path">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_kana_end" value="3" <mt:if name="setting_bannedwords_convert_kana_end" eq="3">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Use Custom Dictionary" component="BannedWords"></span>
+      </span>
+    </label>
+    </mt:if>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Proper nouns are ignored." component="BannedWords">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_sentence_end">
+      <mt:trans phrase="Sentence End" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_sentence_end" value="0" <mt:unless name="setting_bannedwords_convert_sentence_end">checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Do not Convert" component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="setting_bannedwords_convert_sentence_end"
+         name="setting_bannedwords_convert_sentence_end" value="2" <mt:if name="setting_bannedwords_convert_sentence_end" eq="2">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Unify the Endings of Sentences in normal form" component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_sentence_end" value="1" <mt:if name="setting_bannedwords_convert_sentence_end" eq="1">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Unify the Endings of Sentences in honorific form" component="BannedWords"></span>
+    </label>
+  <span id="allow_end_nominal-wrapper"<mt:if name="setting_bannedwords_convert_sentence_end" ne="1"> class="hidden"</mt:if>>
+    <input type="hidden" name="setting_bannedwords_allow_end_nominal" value="0">
+    <label class="custom-control custom-checkbox mt-2 mb-0">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_allow_end_nominal">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_allow_end_nominal" id="setting_bannedwords_allow_end_nominal" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Allow text that ends in a Nominal" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_ambiguous" value="0">
+    <label class="custom-control custom-checkbox mt-2 mb-0">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_ambiguous">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_ambiguous" id="setting_bannedwords_ambiguous" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Rephrase'〜ましょう・でしょう' at the end of a sentence" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_maybe" value="0">
+    <label class="custom-control custom-checkbox mt-2 mb-0">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_maybe">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_maybe" id="setting_bannedwords_convert_maybe" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Rephrase'〜かもしれない・かもしれません' at the end of a sentence" component="BannedWords"></span>
+    </label>
+  </span>
+  <span id="remove_final_particle-wrapper"<mt:if name="setting_bannedwords_convert_sentence_end" ne="1"> class="hidden"</mt:if>>
+    <input type="hidden" name="setting_bannedwords_remove_final_particle" value="0">
+    <label class="custom-control custom-checkbox mt-2 mb-0">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_remove_final_particle">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_remove_final_particle" id="setting_bannedwords_remove_final_particle" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Remove Final Particle'ね','さ','よ','ぜ','な'" component="BannedWords"></span>
+    </label>
+  </span>
+<script>
+$('input[name=setting_bannedwords_convert_sentence_end]').change(function(){
+    if ( $('input[name=setting_bannedwords_convert_sentence_end]:checked').val() == 1 ) {
+        $('#allow_end_nominal-wrapper').show(100);
+    } else {
+        $('#allow_end_nominal-wrapper').hide(100);
+    }
+    if ( $('input[name=setting_bannedwords_convert_sentence_end]:checked').val() == 0 ) {
+        $('#remove_final_particle-wrapper').hide(100);
+    } else {
+        $('#remove_final_particle-wrapper').show(100);
+    }
+});
+</script>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_conjunction">
+      <mt:trans phrase="Convert to Hiragana" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_conjunction" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_conjunction">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_conjunction" id="setting_bannedwords_convert_conjunction" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert Conjunctions into Hiragana" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_adverb" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_adverb">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_adverb" id="setting_bannedwords_convert_adverb" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert (Some) Adverb into Hiragana" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_suffixes" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_suffixes">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_suffixes" id="setting_bannedwords_convert_suffixes" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert Suffixes, Particles or Auxiliary Verbs into Hiragana" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_go_on" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_go_on">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_go_on" id="setting_bannedwords_convert_go_on" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert Prefix「御」, Particles or Auxiliary Verbs into Hiragana" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_ty_long_sound">
+      <mt:trans phrase="-ty handling" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         id = "setting_bannedwords_ty_long_sound"
+         name="setting_bannedwords_ty_long_sound" value="0" <mt:unless name="setting_bannedwords_ty_long_sound">checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Do nothing"component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_ty_long_sound" value="1" <mt:if name="setting_bannedwords_ty_long_sound" eq="1">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Unify to「ティ」" component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_ty_long_sound" value="2" <mt:if name="setting_bannedwords_ty_long_sound" eq="2">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Unify to「ティー」" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_notation_check">
+      <mt:trans phrase="Spelling Wobble" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_notation_check" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_notation_check">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_notation_check" id="setting_bannedwords_notation_check" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Fix Spelling Wobble" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_ra_nuki">
+      <mt:trans phrase="Words without 'ら', Words extra 'さ'" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_ra_nuki" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_ra_nuki">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_ra_nuki" id="setting_bannedwords_convert_ra_nuki" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Fix words without 'ら'" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_sa_ire" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_sa_ire">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_sa_ire" id="setting_bannedwords_convert_sa_ire" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Fix words extra 'さ'" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_remove_adverb">
+      <mt:trans phrase="Adverb" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_remove_adverb" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_remove_adverb">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_remove_adverb" id="setting_bannedwords_remove_adverb" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Remove non-final Adverb" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_possible_verbs">
+      <mt:trans phrase="Possible Verbs" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_possible_verbs" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_possible_verbs">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_possible_verbs" id="setting_bannedwords_convert_possible_verbs" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert Possible Verbs to 基本形+ことができる" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+</mt:ifcomponent>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_normalize">
+      <mt:trans phrase="Normalize">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_normalize" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_normalize">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_normalize" id="setting_bannedwords_convert_normalize" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Replaces the character to be normalized" component="BannedWords"></span>
+    </label>
+    <div>
+    <label for="setting_bannedwords_not_normalize" class="bannedwords_not_normalize<mt:unless name="setting_bannedwords_convert_normalize"> hidden</mt:unless>">
+    <mt:trans phrase="Characters to Exclude" component="BannedWords">
+    </label>
+    <input type="text" id="setting_bannedwords_not_normalize" name="setting_bannedwords_not_normalize" class="form-control bannedwords_not_normalize<mt:unless name="setting_bannedwords_convert_normalize"> hidden</mt:unless>" value="<mt:var name="setting_bannedwords_not_normalize" escape>">
+    </div>
+  </div>
+</div>
+<script>
+$('#setting_bannedwords_convert_normalize').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('.bannedwords_not_normalize').show();
+    } else {
+        $('.bannedwords_not_normalize').hide();
+    }
+});
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_kana">
+      <mt:trans phrase="Katakana" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_kana" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_kana">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_kana" id="setting_bannedwords_convert_kana" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert 'han-kaku kata-kana' to 'zen-kaku kata-kana'" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_alphabet">
+      <mt:trans phrase="Alphabets" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_alphabet" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_alphabet">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_alphabet" id="setting_bannedwords_convert_alphabet" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert 'zen-kaku' alphabets to 'han-kaku'" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_number">
+      <mt:trans phrase="Numbers" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_number" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_number">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_number" id="setting_bannedwords_convert_number" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert 'zen-kaku' numbers to 'han-kaku'" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_number">
+      <mt:trans phrase="Wareki" component="BannedWords">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_wareki" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_wareki">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_wareki" id="setting_bannedwords_convert_wareki" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert 'Wareki' to 'Christian Era'" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_date">
+      <mt:trans phrase="DateTime">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_bannedwords_convert_date" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_date">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_date" id="setting_bannedwords_convert_date" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert a date in Y/m/d format to Y年m月d日 format" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_time" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_time">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_time" id="setting_bannedwords_convert_time" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert a time in H:i:s format to H時i分s秒 format" component="BannedWords"></span>
+    </label>
+    <input type="hidden" name="setting_bannedwords_convert_twelve_hour" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_convert_twelve_hour">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_convert_twelve_hour" id="setting_bannedwords_convert_twelve_hour" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Convert a hour to  twelve hour format" component="BannedWords"></span>
+    </label>
+  </div>
+</div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_bannedwords_convert_diff">
+      <mt:trans phrase="Proofread" component="BannedWords">(diff)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <div>
+    <input type="hidden" name="setting_bannedwords_diff_selected" value="0">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      <mt:if name="setting_bannedwords_diff_selected">checked</mt:if>
+      type="checkbox" name="setting_bannedwords_diff_selected" id="setting_bannedwords_diff_selected" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Check selection only" component="BannedWords"></span>
+    </label>
+    </div>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_diff" value="0" <mt:unless name="setting_bannedwords_convert_diff">checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Display as is" component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_diff" value="1" <mt:if name="setting_bannedwords_convert_diff" eq="1">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Strip tags" component="BannedWords"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_bannedwords_convert_diff" value="2" <mt:if name="setting_bannedwords_convert_diff" eq="2">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Line feed &lt;br&gt; tags" component="BannedWords"></span>
+    </label>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The line numbers are shifted, but the difference is easier to see." component="BannedWords">
+    </div>
+  </div>
+</div>
+</div>
+<script>
+$('#setting_bannedwords_only_editor').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#bannedwords_force-wrapper').hide();
+    } else {
+        $('#bannedwords_force-wrapper').show();
+    }
+});
+</script>
+<mt:if name="request.workspace_id">
+<script>
+<mt:if name="setting_bannedwords_inheritance">
+$('#setting_bannedwords').hide();
+</mt:if>
+$('input[name=setting_bannedwords_inheritance]').change(function(){
+    if ( $(this).val() == 1 ) {
+        $('#setting_bannedwords').hide( 100 );
+    } else {
+        $('#setting_bannedwords').show( 100 );
+    }
+});
+</script>
+</mt:if>

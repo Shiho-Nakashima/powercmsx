@@ -1,0 +1,54 @@
+<mt:ignore>
+  Call in EntryCategory context
+</mt:ignore>
+
+<mt:setvar name="entries_limit" value="4">
+
+<mt:if name="call_from_async_parts">
+  <mt:setvar name="async_parts_enabled" value="0">
+  <mt:var name="entries_limit" increment setvar="entries_limit">
+  <mt:setvar name="entries_data_id" value="1">
+</mt:if>
+
+<mt:unless name="async_parts_enabled">
+  <mt:if name="exclude_entry_id">
+    <mt:sethashvars name="conditions">
+      id=ne,<mt:var name="exclude_entry_id">
+    </mt:sethashvars>
+  </mt:if>
+  <mt:categoryid setvar="category_id">
+  <mt:categorylabel language="$language" setvar="category_label">
+  <mt:setvar name="categoy_entries_html" value="">
+  <mt:setcontext context="category" container="entry" id="$category_id">
+    <mt:include module="(Media) List of Entries" entries_limit="$entries_limit" entries_data_id="$entries_data_id" entries_image="1" entries_columns="2" entries_conditions="$conditions" setvar="categoy_entries_html">
+  </mt:setcontext>
+  <mt:if name="categoy_entries_html" match="\S">
+    <div class="container new-section">
+      <h2 class="section-heading mt-4"><mt:var name="category_label" escape="single"></h2>
+      <div class="text-right mt-0 mb-0"><a href="<mt:categorypermalink>" class="text-primary show-list"><mt:trans language="$language" phrase="%s list of %s" params="'$translated_phrase__entries','$category_label'" escape="single"></a></div>
+      <mt:var name="categoy_entries_html">
+    </div>
+  </mt:if>
+<mt:else>
+  <mt:categoryid setvar="category_id">
+  <div id="__latest_entries_by_category_<mt:var name="category_id">__" hidden></div>
+  <mt:setvarblock name="additional_script" append="1">
+    <script>
+      $(function () {
+        const $needle = $( '#__latest_entries_by_category_<mt:var name="category_id">__' );
+        const url = '<mt:var name="website_url_relative">parts/latest_entries/<mt:var name="category_id">.html';
+        $.get( { url: url, data: { <mt:if name="language" ne="$website_language">_language: "<mt:var name="language" escape="js">"</mt:if> }, dataType: "html" } ).done(function ( html ) {
+          const $html = $( html );
+          <mt:if name="exclude_entry_id">
+            $html.find( '.item[data-item-id="<mt:var name="exclude_entry_id" escape="js">"]' ).remove();
+          </mt:if>
+          $html.find( '.item' ).slice( <mt:var name="entries_limit"> ).remove();
+          $html.insertAfter( $needle );
+        }).always( function () {
+          $needle.remove();
+        });
+      });
+    </script>
+  </mt:setvarblock>
+</mt:unless>
+<mt:unset name="exclude_entry_id">

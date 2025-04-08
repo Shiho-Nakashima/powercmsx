@@ -1,0 +1,69 @@
+<mt:if name="request.id"><mt:setvarblock name="side_bar">
+<mt:var name="_object__id" value="">
+<mt:var name="_object__list" value="">
+<mt:var name="request.id" setvar="object_id">
+<mt:objectloop model="relation" to_obj="$model" to_id="$object_id">
+  <mt:objectloop model="$from_obj" ids="$from_id" limit="1" include_draft="1" cols="id,workspace_id">
+    <mt:setvarblock name="object_and_id"><mt:var name="from_obj">__<mt:var name="from_id"></mt:setvarblock>
+    <mt:ifinarray array="_object__id" value="$object_and_id">
+    <mt:else>
+    <mt:setvarblock name="_object__id" function="push"><mt:var name="from_obj">__<mt:var name="from_id"></mt:setvarblock>
+    <mt:setvarblock name="_object__list" function="push">
+      <li class="ml-2 pl-0 mr-0">
+      <mt:var name="workspace_id" cast_to="int" setvar="appears_id">
+      <mt:ifusercan action="edit" model="$from_obj" id="$from_id" workspace_id="$appears_id">
+        <a href="<mt:var name="script_uri">?__mode=view&_type=edit&_model=<mt:var name="from_obj">&amp;id=<mt:var name="from_id"><mt:if name="appears_id">&amp;workspace_id=<mt:var name="appears_id"></mt:if>">
+      </mt:ifusercan>
+        <mt:getobjectlabel id="$from_id" model="$from_obj" remove_html> (<mt:trans phrase="$from_obj">)
+      <mt:ifusercan action="edit" model="$from_obj" id="$from_id" workspace_id="$appears_id">
+        </a>
+      </mt:ifusercan>
+      </li>
+    </mt:setvarblock>
+    </mt:ifinarray>
+  </mt:objectloop>
+</mt:objectloop>
+<mt:objectloop model="column" type="int" disp_edit="relation" rel_model="attachmentfile" cols="name,table_id">
+<mt:sethashvars name="_conditions">
+<mt:var name="name">=eq,<mt:var name="request.id">
+</mt:sethashvars>
+  <mt:objectloop model="table" id="$table_id" limit="1" cols="name">
+  <mt:var name="name" setvar="_model">
+  <mt:objectloop model="$name" include_draft="1" conditions="$_conditions" cols="id,workspace_id">
+    <mt:setvarblock name="object_and_id"><mt:var name="_model">__<mt:var name="id"></mt:setvarblock>
+    <mt:ifinarray array="_object__id" value="$object_and_id">
+    <mt:else>
+    <mt:setvarblock name="_object__id" function="push"><mt:var name="_model">__<mt:var name="id"></mt:setvarblock>
+    <mt:setvarblock name="_object__list" function="push">
+      <li class="ml-2 pl-0 mr-0">
+      <mt:var name="workspace_id" cast_to="int" setvar="appears_id">
+      <mt:ifusercan action="edit" model="$model" id="$object_id" workspace_id="$appears_id">
+        <a href="<mt:var name="script_uri">?__mode=view&_type=edit&_model=<mt:var name="_model">&amp;id=<mt:var name="id"><mt:if name="appears_id">&amp;workspace_id=<mt:var name="appears_id"></mt:if>">
+      </mt:ifusercan>
+        <mt:getobjectlabel id="$id" model="$_model" remove_html> (<mt:trans phrase="$_model">)
+      <mt:ifusercan action="edit" model="$_model" id="$id" workspace_id="$appears_id">
+        </a>
+      </mt:ifusercan>
+      </li>
+    </mt:setvarblock>
+    </mt:ifinarray>
+    </mt:objectloop>
+  </mt:objectloop>
+</mt:objectloop>
+<mt:if name="_object__list">
+<mt:loop name="_object__list">
+  <mt:if name="__first__">
+  <div class="card dashboard-widget" style="position: relative; left: 0px; top: 0px;">
+    <h2 class="card-header"><mt:trans phrase="Appears in..."></h2>
+    <div class="card-block">
+    <ul class="ml-0 pl-0 pr-0 mr-0">
+  </mt:if>
+  <mt:var name="__value__">
+  <mt:if name="__last__">
+    </ul>
+    </div>
+  </div>
+  </mt:if>
+</mt:loop>
+</mt:if>
+</mt:setvarblock><mt:if name="_object__list"><mt:var name="side_bar"></mt:if></mt:if>

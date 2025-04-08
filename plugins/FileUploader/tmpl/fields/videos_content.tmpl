@@ -1,0 +1,60 @@
+    <mt:setvar name="selected_file" value="0">
+    <mt:loop name="field.upload_files">
+      <mt:if name="__value__">
+        <mt:objectloop cols="id,label,workspace_id" model="upload_file" id="$__value__" limit="1" include_draft="1" include_workspaces="all">
+        <mt:setvar name="selected_file" value="1">
+        </mt:objectloop>
+      </mt:if>
+    </mt:loop>
+    <ul id="upload_files-<mt:var name="field_uniqueid">" class="relation-list ui-sortable">
+      <li<mt:if name="selected_file"> style="display: none;"</mt:if> class="badge badge-default badge-relation" id="upload_files-<mt:var name="field_uniqueid">-none" tabindex="0"><span><mt:trans phrase="(None selected)">&nbsp;</span></li>
+      <li style="margin-right: 4px;" class="hidden badge badge-default badge-relation badge-draggable" id="upload_files-<mt:var name="field_uniqueid">-tmpl" tabindex="0">
+        <div class="assets-child-thumb" data-model="upload_file" data-href="<mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_type=edit&amp;view=file&amp;_model=upload_file&amp;id="></div>
+        <span><mt:trans phrase="Default"></span>
+        <button type="button" class="_upload_files-<mt:var name="field_uniqueid">-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">" data-toggle="modal" data-target="#modal" data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=upload_file&amp;id=__value__&amp;workspace_id=<mt:var name="workspace_id">&amp;dialog_view=1&amp;target=upload_files-<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;direct_edit=1&amp;_field_name=<mt:var name="field_uniqueid">_upload_files<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">">
+          <i class="fa fa-pencil"></i>
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="upload_files-<mt:var name="field_uniqueid">"><span aria-hidden="true">&times;</span></button>
+        <input type="hidden" class="insert-file-id" name="<mt:var name="field_uniqueid">_upload_files[]" value="">
+      </li>
+    <mt:loop name="field.upload_files">
+    <mt:if name="__value__">
+      <mt:objectloop cols="id,label,workspace_id" model="upload_file" id="$__value__" limit="1" include_draft="1" include_workspaces="all">
+      <li class="upload_files-<mt:var name="field_uniqueid">-child badge badge-default badge-relation badge-draggable ui-sortable-handle" tabindex="0" style="cursor: move;">
+        <div class="assets-child-thumb" data-model="upload_file" data-id="<mt:var name="id">" style="background-image:url('<mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_type=edit&amp;view=file&amp;_model=upload_file&amp;id=<mt:var name="id">')"></div>
+        <span id="_upload_files-<mt:var name="field_uniqueid">_name_<mt:var name="id">">
+          <mt:var name="label" escape>
+        </span>
+        <input type="hidden" class="insert-file-id" name="upload_files[]" value="<mt:var name="id">">
+        
+        <button type="button" class="<mt:ifusercan action="edit" model="upload_file" id="$id" workspace_id="$workspace_id"><mt:else>hidden</mt:ifusercan> _upload_files-<mt:var name="field_uniqueid">-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">" data-toggle="modal" data-target="#modal" data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=upload_file&amp;id=<mt:var name="id">&workspace_id=<mt:var name="workspace_id">&amp;dialog_view=1&amp;target=upload_files-<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;direct_edit=1&amp;_field_name=<mt:var name="field_uniqueid">_upload_files<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">">
+          <i class="fa fa-pencil"></i>
+        </button>
+        
+        <button type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="upload_files-<mt:var name="field_uniqueid">">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+      </mt:objectloop>
+    </mt:if>
+    </mt:loop>
+    </ul>
+    <button type="button" id="add_upload_files-<mt:var name="field_uniqueid">" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal" data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=upload_file&amp;workspace_id=<mt:var name="workspace_id">&amp;dialog_view=1&amp;target=upload_files-<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;_field_name=<mt:var name="field_uniqueid">_upload_files&amp;_filter=upload_file&amp;select_system_filters=filter_class_video&amp;_system_filters_option=video<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select..."></button>
+    <mt:ifusercan model="upload_file" action="create" workspace_id="$workspace_id">
+    <button title="<mt:trans phrase="New...">" type="button" class="ml-0 btn btn-info btn-sm" aria-label="<mt:trans phrase="New...">" data-toggle="modal" data-target="#modal" data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=upload_file&amp;workspace_id=<mt:var name="workspace_id">&amp;dialog_view=1&amp;target=upload_files-<mt:var name="field_uniqueid">&amp;from_obj=<mt:var name="_model">&amp;get_col=label&amp;select_add=1&amp;direct_edit=1&amp;&amp;_field_name=<mt:var name="field_uniqueid">_upload_files<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;ref_model=<mt:var name="model">"><i class="fa fa-plus-circle"></i></button>
+    </mt:ifusercan>
+<script>
+$(function(){
+    $('#upload_files-<mt:var name="field_uniqueid">').sortable ({
+    });
+    $('#upload_files-<mt:var name="field_uniqueid">').ksortable();
+});
+$('#edit-form-main').submit(function(){
+    $('#field-wrapper-<mt:var name="field_uniqueid">').find('input,select,textarea').each(function () {
+        if (! $(this).val() ) {
+            $(this).remove();
+        }
+    });
+    return true;
+});
+</script>

@@ -1,0 +1,73 @@
+  <mt:var name="permalink" setvar="__permalink">
+  <mt:if name="request.workspace_id">
+    <mt:if name="workspace_link_url">
+      <mt:var name="__permalink" replace="'$workspace_site_url','$workspace_link_url'" setvar="__permalink">
+    </mt:if>
+  <mt:else>
+    <mt:if name="link_url">
+      <mt:var name="__permalink" replace="'$site_url','$link_url'" setvar="__permalink">
+    </mt:if>
+  </mt:if>
+  <mt:if name="permalink">
+  <div class="input-group copy-url copy-url-permalink">
+  <input type="text" class="form-control form-control-sm clipboard-url" id="__permalink-clipboard"
+  value="<mt:var name="__permalink">" readonly>
+  <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#__permalink-clipboard"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+  <button id="_view-permalink" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></button>
+<mt:if name="_show_both">
+    <button id="_view-published" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View Published">" type="button" class="input-group-addon"><i class="fa fa-globe" aria-hidden="true" aria-label="<mt:trans phrase="View Published">"></i></button>
+</mt:if>
+  </div>
+  <input type="hidden" name="__permalink" id="__permalink" value="<mt:if name="_show_both"><mt:var name="permalink"><mt:else><mt:var name="__permalink"></mt:if>">
+<mt:if name="_show_both">
+  <input type="hidden" name="__permalink_published" id="__permalink_published" value="<mt:var name="__permalink">">
+</mt:if>
+  <script>
+  <mt:if name="request.saved">
+  $('#__permalink-clipboard').css( 'color', 'gray' );
+  $('#__permalink-clipboard').val( '<mt:trans phrase="Getting permalink...">' );
+  var __permalink_success = false;
+  var get_current_permalink = function(){
+      setTimeout( get_permalink_error, 2000 );
+      $.post("<mt:var name="script_uri">", {
+          '__mode' : 'get_current_permalink',
+          '_model' : '<mt:var name="model" escape>',
+          'id'     : <mt:var name="object_id">,
+          'workspace_id' : '<mt:var name="workspace_id" cast_to="int">',
+          'magic_token': '<mt:var name="magic_token">'
+      },
+      function ( data ) {
+          if( data.permalink ) {
+              __permalink_success = true;
+              $('#__permalink-clipboard').css( 'color', '#555555' );
+              $('#__permalink-clipboard').val( data.view_link );
+              <mt:unless name="_show_both">
+              if ( data.view_link ) {
+                  $('#__permalink').val( data.view_link );
+              }
+              </mt:unless>
+          } else {
+              $('#__permalink-clipboard').css( 'color', '#555555' );
+          }
+      },
+      "json"
+      );
+  }
+  var get_permalink_error = function(){
+      if ( __permalink_success == false ) {
+          $('#__permalink-clipboard').val( '<mt:var name="permalink">' );
+          $('#__permalink-clipboard').css( 'color', '#555555' );
+      } 
+  }
+  setTimeout( get_current_permalink, 2500 );
+  </mt:if>
+  $('#_view-permalink').click(function(){
+      var permalink = $('#__permalink').val();
+      window.open( permalink, '_blank');
+  });
+  $('#_view-published').click(function(){
+      var permalink = $('#__permalink_published').val();
+      window.open( permalink, '_blank');
+  });
+  </script>
+  </mt:if>

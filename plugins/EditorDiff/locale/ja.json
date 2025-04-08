@@ -1,0 +1,13 @@
+{
+    "Adds a 'Show Diff' button to the rich text editor.": "リッチテキストエディタに「差分を表示」ボタンを追加します。",
+    "Outputs the contents of the previous revision when it exists.": "直前のリビジョンが存在する時内容を出力します。",
+    "Show Diff": "差分を表示",
+    "An error occurred while get diff.": "差分の取得中にエラーが発生しました。",
+    "No revisions to diff were found.": "差分対象のリビジョンが見つかりませんでした。",
+    "No content in editor.": "エディタにコンテンツがありません。",
+    "No diff found.": "差分はありません。",
+    "Diff from the Master": "マスタとの差分を表示",
+    "Diff from the latest Revision": "直前のリビジョンとの差分を表示",
+    "Difference with Master(ID:%s)": "マスタ(ID:%s)との差分を表示",
+    "Difference with latest Revision(ID:%s)": "直前のリビジョン(ID:%s)との差分を表示"
+}

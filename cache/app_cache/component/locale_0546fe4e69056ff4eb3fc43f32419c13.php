@@ -1,0 +1,14 @@
+<?php $this->get_cache=array (
+  'Execute configured cleanup and repair operations on parsed markup.' => 'パースされたマークアップに設定に基づく誤りの修正を行います。',
+  'The plugin HTMLTidy cannot be enabled because Tidy extension is missing.' => 'PHP拡張「Tidy」がインストールされていないためプラグイン HTMLTidyを有効化できませんでした。',
+  'Exclude Petterns' => '除外パターン',
+  'Replace Petterns' => '置換パターン',
+  'Excludes HTML documents that contain the specified character string.' => '指定した文字列を含むHTML文書を処理対象外にします。',
+  'Specify the start string and end string to be processed. Example: &lt;main&gt;,&lt;/main&gt;' => '処理する対象の開始文字列、終了文字列を指定します。例 : &lt;main&gt;,&lt;/main&gt;',
+  'Partially reflects repairs by the HTMLTidy plugin.' => 'HTMLTidyプラグインの修正を部分的に適用します。',
+  'The \'tidy_css_to_head\' setting is not reflected, but if you specify \'2\' for the attribute value, a style tag will be added in the head when publishing.' => '環境変数「tidy_css_to_head」の設定値は反映されませんが、属性値に「2」を指定すると、パブリッシュ時に head内に styleタグを追加します。',
+  'Body Pettern' => '本文開始,終了',
+  'Exception String' => '例外文字列',
+  'Archive Types' => 'アーカイブタイプ',
+  'Use System Settings' => 'システム設定を利用',
+);

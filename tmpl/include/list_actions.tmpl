@@ -1,0 +1,188 @@
+<mt:setvar name="has_actions" value="0">
+<mt:setvar name="actions_count" value="0">
+<mt:setvarblock name="list_actions_options-dd">
+<mt:loop name="list_actions">
+<mt:setvar name="actions_count" value="$__counter__">
+<mt:if name="input_options">
+<mt:loop name="input_options">
+<mt:if name="__first__"><select name="" class="_action_input-options-<mt:var name="name"> custom-select hidden form-control-sm very-short list-actions-options"></mt:if>
+<option value="<mt:var name="value">" data-hint="<mt:var name="hint" translate>" data-modal="<mt:var name="modal" escape>"><mt:trans phrase="$label" component="$component_name"></option>
+<mt:if name="__last__"></select></mt:if>
+</mt:loop>
+</mt:if>
+<mt:setvar name="input_options" value="">
+</mt:loop>
+</mt:setvarblock>
+<mt:loop name="list_actions">
+<mt:if name="__first__">
+<select aria-label="<mt:trans phrase="Action...">" name="action_name" data-pos="<mt:if name="disp_action_bar">bottom</mt:if>" class="select-action form-control custom-select form-control-sm very-short">
+  <mt:setvar name="has_actions" value="1">
+  <option value=""><mt:trans phrase="Action..."></option>
+</mt:if>
+  <option value="<mt:var name="name">" data-hint="<mt:var name="hint" translate>" data-allow_empty="<mt:var name="allow_empty">" data-modal="<mt:var name="modal" escape>" class="<mt:if name="input" eq="1">with-input<mt:else><mt:var name="input"></mt:if>"><mt:var name="label" escape></option>
+  <mt:setvar name="hint" value="">
+<mt:if name="__last__">
+</select>
+<mt:trans phrase="UTF8,UTF8(without ID),Shift_JIS,Shift_JIS(without ID)" split="," setvar="export_loop">
+<mt:loop name="export_loop">
+<mt:if name="__first__">
+<select aria-label="<mt:trans phrase="Export Type">" name="itemset_export_select" class="custom-select itemset_export_options hidden form-control-sm very-short action-export-select">
+</mt:if>
+  <option value="<mt:var name="__counter__">"><mt:trans phrase="$__value__"></option>
+<mt:if name="__last__">
+</select>
+</mt:if>
+</mt:loop>
+<mt:if name="status_published" eq="4">
+<mt:loop name="status_loop">
+<mt:if name="__first__">
+<select aria-label="<mt:trans phrase="Status">" name="itemset_status_select" class="custom-select hidden form-control-sm very-short action-status-select">
+</mt:if>
+<mt:if name="__index__" le="$list_max_status">
+<mt:if name="__value__">
+  <option value="<mt:var name="__index__">" <mt:if name="_default_status" eq="$__index__">selected</mt:if>><mt:trans phrase="$__value__"></option>
+</mt:if>
+</mt:if>
+<mt:if name="__last__">
+</select>
+</mt:if>
+</mt:loop><mt:else>
+<mt:loop name="status_loop">
+<mt:if name="__first__">
+<select aria-label="<mt:trans phrase="Status">" name="itemset_status_select" class="custom-select hidden form-control-sm very-short action-status-select">
+</mt:if>
+<mt:if name="__counter__" le="$list_max_status">
+  <option value="<mt:var name="__counter__">" <mt:if name="_default_status" eq="$__counter__">selected</mt:if>><mt:trans phrase="$__value__"></option>
+</mt:if>
+<mt:if name="__last__">
+</select>
+</mt:if>
+</mt:loop></mt:if>
+<mt:unless name="disp_action_bar">
+<input aria-label="<mt:trans phrase="Input Text">" id="action-input-box" data-pos="top" name="itemset_action_input" class="short-padding itemset-action-input hidden form-control-sm" type="text">
+<input aria-label="<mt:trans phrase="Input Date and Time">" id="action-datetime-box" data-pos="top" name="" class="short-padding itemset-datetime-input hidden form-control-sm" type="datetime-local">
+<mt:else>
+<input aria-label="<mt:trans phrase="Input Text">" id="action-input-box-bottom" name="itemset_action_input" class="short-padding itemset-action-input hidden form-control-sm" type="text">
+<input aria-label="<mt:trans phrase="Input Date and Time">" id="action-datetime-box-bottom" name="" class="short-padding itemset-datetime-input hidden form-control-sm" type="datetime-local">
+</mt:unless>
+<mt:var name="list_actions_options-dd">
+<button class="__action list-action-btn btn btn-secondary action-button btn-sm" type="submit"><mt:trans phrase="Go"></button>
+</mt:if>
+</mt:loop>
+<mt:unless name="disp_action_bar">
+<script>
+var action_export_select = false;
+var action_status_select = false;
+var need_action_input = false;
+var need_datetime_input = false;
+last_action_hint = '';
+$(function(){
+    $('.select-action').change(function(){
+        var action_hint = $('[name=action_name] option:selected').attr('data-hint');
+        if ( action_hint ) {
+            if ( action_hint != last_action_hint ) {
+                alert( action_hint );
+            }
+        }
+        last_action_hint = action_hint;
+        $('.list-actions-options').hide();
+        $('.action-export-select').hide();
+        $('.itemset-datetime-input').hide();
+        $('.list-actions-options').each(function(){
+            $(this).attr( 'name', '' );
+        });
+        if ( $(this).val() ) {
+          $('.__action').removeClass('btn-secondary');
+          $('.__action').addClass('btn-primary');
+        } else {
+          $('.__action').removeClass('btn-primary');
+          $('.__action').addClass('btn-secondary');
+        }
+        $('.select-action').val($(this).val());
+        if ( $(this).val() == 'set_status' ) {
+            $('.action-status-select').addClass('form-control');
+            $('.action-status-select').show();
+            action_status_select = true;
+            action_export_select = false;
+        } else if ( $(this).val() == 'export_objects' ) {
+            $('.action-export-select').addClass('form-control');
+            $('.action-export-select').show();
+            $('.action-status-select').hide();
+            action_export_select = true;
+            action_status_select = false;
+        } else {
+            $('.action-status-select').hide();
+            action_status_select = false;
+            action_export_select = false;
+        }
+        var opt_class = $('[name=action_name] option:selected').attr('class');
+        if ( opt_class == 'with-input' ) {
+            var dd_class = '._action_input-options-' + $(this).val();
+            if( $(dd_class).length ){
+                $('.itemset-action-input').attr( 'name', '' );
+                $('.itemset-action-input').hide();
+                $(dd_class).show();
+                $(dd_class).css( 'display', 'inline' );
+                $(dd_class).attr( 'name', 'itemset_action_input' );
+                return;
+            }
+            $('.itemset-action-input').val('');
+            $('.itemset-action-input').addClass('form-control');
+            $('.itemset-action-input').show();
+            $('.itemset-action-input').attr( 'name', 'itemset_action_input' );
+            if ( $(this).attr('data-pos') ) {
+                $('#action-input-box-bottom').focus();
+            } else {
+                $('#action-input-box').focus();
+            }
+            var allow_empty = $('[name=action_name] option:selected').attr('data-allow_empty');
+            if (! allow_empty ) {
+                need_action_input = true;
+            } else {
+                need_action_input = false;
+            }
+            need_datetime_input = false;
+        } else if ( opt_class == 'datetime-local' ) {
+            $('.itemset-datetime-input').val('');
+            $('.itemset-action-input').hide();
+            $('.itemset-datetime-input').addClass('form-control');
+            $('.itemset-datetime-input').show();
+            $('.itemset-datetime-input').attr( 'name', 'itemset_action_input' );
+            if ( $(this).attr('data-pos') ) {
+                $('#action-datetime-box-bottom').focus();
+            } else {
+                $('#action-datetime-box').focus();
+            }
+            need_action_input = false;
+            need_datetime_input = true;
+        } else {
+            $('.itemset-action-input').hide();
+            $('.itemset-datetime-input').hide();
+            need_action_input = false;
+            need_datetime_input = false;
+        }
+    });
+    $('.itemset-action-input').change(function(){
+        $('.itemset-action-input').val($(this).val());
+    });
+    $('.itemset-datetime-input').change(function(){
+        $('.itemset-datetime-input').val($(this).val());
+    });
+    $('.action-status-select').change(function(){
+        $('.action-status-select').val($(this).val());
+    });
+    $('.action-export-select').change(function(){
+        $('.action-export-select').val($(this).val());
+    });
+    $('.list-actions-options').change(function(){
+        let classes = $(this).attr('class').split( /\s+/ );
+        for ( let clsss of classes ) {
+            if ( clsss.indexOf('_action_input-options-') === 0 ) {
+                $('.'+clsss).val($(this).val());
+                break;
+            }
+        }
+    });
+});
+</script>
+</mt:unless>

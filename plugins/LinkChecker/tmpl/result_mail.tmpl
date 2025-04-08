@@ -1,0 +1,10 @@
+<mt:for merge_linefeeds="1"><mt:trans phrase="'%s' broken link check was performed." params="$app_name" component="LinkChecker">
+<mt:trans phrase="It checked the links on %s pages." params="$check_pages" component="LinkChecker"><mt:if name="total_error"><mt:trans phrase="%1$s broken links found in %2$s page(s)." params="'$broken_links','$total_error'" component="LinkChecker"><mt:else><mt:trans phrase="Found no broken links." component="LinkChecker"></mt:if>
+<mt:loop name="results">
+- <mt:var name="__key__">
+<mt:isarray name="__value__"><mt:count name="__value__" setvar="errors_count"><mt:loop name="__value__"><mt:if name="__first__">  <mt:trans phrase="%s broken links found" params="$errors_count" component="LinkChecker">:
+</mt:if>  <mt:trans phrase="'%s' does not exist." params="$__value__" component="LinkChecker">
+</mt:loop><mt:else>    <mt:if name="__value__" eq="OK"><mt:trans phrase="Found no broken links." component="LinkChecker"><mt:elseif name="__value__" eq="ERROR"><mt:trans phrase="Parse failed while checking the HTML." component="LinkChecker"><mt:elseif name="__value__" eq="404ERROR"><mt:trans phrase="Could not get page." component="LinkChecker"></mt:if>
+</mt:isarray>
+</mt:loop>
+</mt:for>

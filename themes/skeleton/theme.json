@@ -1,0 +1,55 @@
+{
+    "label"        : "Skeleton",
+    "id"           : "skeleton",
+    "version"      : "1.0",
+    "thumbnail"    : "theme.png",
+    "author"       : "Alfasado Inc.",
+    "author_link"  : "https://alfasado.net/",
+    "description"  : "Minimal theme with dynamic publishing settings and index.html.",
+    "publish_theme": true,
+    "views": {
+        "709c05cd-52cb-4f25-9f88-612bb6d33c2f": {
+            "name": "(Skeleton) Top Page",
+            "subject": "",
+            "status": "2",
+            "class": "Archive",
+            "basename": "skeleton_main_page",
+            "urlmappings": [
+                {
+                    "name": "(Skeleton) Top Page",
+                    "model": "template",
+                    "mapping": "index.html",
+                    "publish_file": "1"
+                }
+            ]
+        },
+        "f7479d7e-2891-476a-8444-a75cbf758a91": {
+            "name": "(Skeleton) .htaccess",
+            "status": "2",
+            "class": "Archive",
+            "basename": "skeleton_htaccess",
+            "urlmappings": [
+                {
+                    "name": "(Skeleton) .htaccess",
+                    "model": "template",
+                    "mapping": ".htaccess",
+                    "publish_file": "1"
+                }
+            ]
+        },
+        "dd92ab42-8704-45c6-ac78-2c4f65e52345": {
+            "name": "(Skeleton) Bootstrapper",
+            "status": "2",
+            "class": "Archive",
+            "basename": "skeleton_bootstrapper",
+            "urlmappings": [
+                {
+                    "name": "(Skeleton) Bootstrapper",
+                    "model": "template",
+                    "mapping": "pt-view.php",
+                    "publish_file": "1"
+                }
+            ]
+        }
+    }
+}

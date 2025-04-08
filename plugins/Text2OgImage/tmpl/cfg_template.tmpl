@@ -1,0 +1,288 @@
+<mt:setvar name="use_system_settings" value="0">
+<mt:if name="workspace_id">
+  <mt:if name="setting_text2ogimage_use_system_setting">
+    <mt:setvar name="use_system_settings" value="1">
+  </mt:if>
+  <div class="row form-group mb-1">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_text2ogimage_use_system_setting" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_text2ogimage_use_system_setting" name="setting_text2ogimage_use_system_setting" value="1"
+          <mt:if name="setting_text2ogimage_use_system_setting">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use system settings" component="Text2OgImage"></span>
+      </label>
+    </div>
+  </div>
+<script>
+$('#setting_text2ogimage_use_system_setting').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide();
+    } else {
+        $('#individual-setting-container').show();
+    }
+});
+</script>
+</mt:if>
+<div id="individual-setting-container"<mt:if name="use_system_settings"> style="display:none;"</mt:if>>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_bg_image_path">
+      <mt:trans phrase="Background Image Path" component="Text2OgImage">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_text2ogimage_bg_image_path" name="setting_text2ogimage_bg_image_path" class="form-control" value="<mt:var name="setting_text2ogimage_bg_image_path" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_padding_left">
+      <mt:trans phrase="Quality" component="Text2OgImage"> (%)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_text2ogimage_quality" name="setting_text2ogimage_quality" class="form-control num very-short" value="<mt:var name="setting_text2ogimage_quality" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_basename">
+      <mt:trans phrase="Basename">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_text2ogimage_basename" name="setting_text2ogimage_basename" class="form-control" value="<mt:var name="setting_text2ogimage_basename" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_font_color">
+      <mt:trans phrase="Font Color" component="Text2OgImage">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input style="width:100% !important" type="color" id="setting_text2ogimage_font_color" name="setting_text2ogimage_font_color" class="form-control color-picker" value="<mt:var name="setting_text2ogimage_font_color" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_mask_color">
+      <mt:trans phrase="Mask Color" component="Text2OgImage">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input style="width:100% !important" type="color" id="setting_text2ogimage_mask_color" name="setting_text2ogimage_mask_color" class="form-control color-picker" value="<mt:var name="setting_text2ogimage_mask_color" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_ruby_color">
+      <mt:trans phrase="Ruby Color" component="Text2OgImage">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input style="width:100% !important" type="color" id="setting_text2ogimage_ruby_color" name="setting_text2ogimage_ruby_color" class="form-control color-picker" value="<mt:var name="setting_text2ogimage_ruby_color" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_canvas_font">
+      <mt:trans phrase="Font" component="Text2OgImage">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:property name="text2ogimage_fonts" split="," setvar="text2ogimage_fonts">
+    <select class="form-control custom-select short" style="width:160px !important" id="setting_text2ogimage_canvas_font" name="setting_text2ogimage_canvas_font">
+      <option value="sans-serif" <mt:if name="setting_text2ogimage_canvas_font" eq="sans-serif">selected</mt:if>>sans-serif</option>
+      <option value="serif" <mt:if name="setting_text2ogimage_canvas_font" eq="serif">selected</mt:if>>serif</option>
+    </select>
+  <mt:loop name="text2ogimage_fonts">
+    <mt:if name="__first__">
+    <select style="width:190px !important" class="form-control custom-select short" id="setting_text2ogimage_canvas_font_face" name="setting_text2ogimage_canvas_font_face">
+      <option value="" <mt:if name="setting_text2ogimage_canvas_font_face" eq="">selected</mt:if>><mt:trans phrase="Unspecified"></option>
+    </mt:if>
+      <option value="<mt:var name="__value__" escape>" <mt:if name="setting_text2ogimage_canvas_font_face" eq="$__value__">selected</mt:if>><mt:var name="__value__" escape></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+  </mt:loop>
+    <select style="width:100px !important" class="form-control custom-select short" id="setting_text2ogimage_canvas_font_weight" name="setting_text2ogimage_canvas_font_weight">
+      <option id="weight_100" class="font-weight" value="100" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="100">selected</mt:if>>100</option>
+      <option id="weight_200" class="font-weight" value="200" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="200">selected</mt:if>>200</option>
+      <option id="weight_300" class="font-weight" value="300" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="300">selected</mt:if>>300</option>
+      <option id="weight_400" class="font-weight" value="400" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="400">selected</mt:if>>400</option>
+      <option id="weight_500" class="font-weight" value="500" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="500">selected</mt:if>>500</option>
+      <option id="weight_600" class="font-weight" value="600" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="600">selected</mt:if>>600</option>
+      <option id="weight_700" class="font-weight" value="700" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="700">selected</mt:if>>700</option>
+      <option id="weight_800" class="font-weight" value="800" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="800">selected</mt:if>>800</option>
+      <option id="weight_900" class="font-weight" value="900" <mt:if name="setting_text2ogimage_canvas_font_weight" eq="900">selected</mt:if>>900</option>
+    </select>
+    &nbsp;
+    <label class="custom-control custom-checkbox" style="display:inline">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_text2ogimage_canvas_webfont" name="setting_text2ogimage_canvas_webfont" value="1"
+        <mt:if name="setting_text2ogimage_canvas_webfont">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Use Google Fonts" component="Text2OgImage"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_text2ogimage_canvas_font_face').change(function(){
+    let font = $(this).val();
+<mt:setvarblock name="text2ogimage_canvas_font_face">
+    $('.font-weight').show();
+    $('#setting_text2ogimage_canvas_font_weight').show();
+    if ( font == 'Noto Sans JP' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#weight_800').hide();
+        $('#setting_text2ogimage_canvas_font_weight').val('700');
+    } else if ( font == 'M PLUS Rounded 1c' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#setting_text2ogimage_canvas_font_weight').val('700');
+    } else if ( font == 'BIZ UDPGothic' ) {
+        $('.font-weight').hide();
+        $('#weight_400').show();
+        $('#weight_700').show();
+        $('#setting_text2ogimage_canvas_font_weight').val('700');
+    } else if ( font == 'BIZ UDPMincho' ) {
+        $('#setting_text2ogimage_canvas_font_weight').hide();
+    } else if ( font == 'Zen Maru Gothic' ) {
+        $('#weight_100').hide();
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#weight_800').hide();
+        $('#setting_text2ogimage_canvas_font_weight').val('700');
+    } else if ( font == 'Noto Serif JP' ) {
+        $('#weight_100').hide();
+        $('#weight_800').hide();
+        $('#setting_text2ogimage_canvas_font_weight').val('700');
+    } else if ( font == 'Kaisei Opti' ) {
+        $('.font-weight').hide();
+        $('#weight_400').show();
+        $('#weight_500').show();
+        $('#weight_700').show();
+        $('#setting_text2ogimage_canvas_font_weight').val('700');
+    } else if ( font == 'RocknRoll One' ) {
+        $('#setting_text2ogimage_canvas_font_weight').hide();
+    }
+</mt:setvarblock>
+    <mt:var name="text2ogimage_canvas_font_face">
+});
+let font = $('#setting_text2ogimage_canvas_font_face').val();
+<mt:var name="text2ogimage_canvas_font_face">
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_padding_left">
+      <mt:trans phrase="padding-left" component="Text2OgImage"> (%)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_text2ogimage_padding_left" name="setting_text2ogimage_padding_left" class="form-control num very-short" value="<mt:var name="setting_text2ogimage_padding_left" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_padding_right">
+      <mt:trans phrase="padding-right" component="Text2OgImage"> (%)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_text2ogimage_padding_right" name="setting_text2ogimage_padding_right" class="form-control num very-short" value="<mt:var name="setting_text2ogimage_padding_right" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_padding_top">
+      <mt:trans phrase="padding-top" component="Text2OgImage"> (%)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_text2ogimage_padding_top" name="setting_text2ogimage_padding_top" class="form-control num very-short" value="<mt:var name="setting_text2ogimage_padding_top" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_padding_bottom">
+      <mt:trans phrase="padding-bottom" component="Text2OgImage"> (%)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_text2ogimage_padding_bottom" name="setting_text2ogimage_padding_bottom" class="form-control num very-short" value="<mt:var name="setting_text2ogimage_padding_bottom" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_font_size">
+      <mt:trans phrase="font-size" component="Text2OgImage"> (%)
+    </label>
+
+    <input type="hidden" name="setting_text2ogimage_auto_fontsize" value="0">
+    <label class="custom-control custom-checkbox short">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_text2ogimage_auto_fontsize" name="setting_text2ogimage_auto_fontsize" value="1"
+        <mt:if name="setting_text2ogimage_auto_fontsize">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Auto Size" component="Text2OgImage"></span>
+    </label>
+
+  </div>
+  <div class="col-lg-10">
+    <input type="number" style="width:120px !important" id="setting_text2ogimage_font_size" name="setting_text2ogimage_font_size" class="form-control num very-short<mt:if name="setting_text2ogimage_auto_fontsize"> hidden</mt:if>" value="<mt:var name="setting_text2ogimage_font_size" escape>">
+    <label class="<mt:if name="setting_text2ogimage_auto_fontsize"><mt:else>hidden</mt:if>" id="coefficient-wrapper">
+    <input type="number" style="width:120px !important; display:inline !important;" id="setting_text2ogimage_coefficient" name="setting_text2ogimage_coefficient" class="form-control num very-short" value="<mt:var name="setting_text2ogimage_coefficient" escape>">
+    &nbsp;<mt:trans phrase="Coefficient" component="Text2OgImage"> 
+    </label>
+<script>
+$('#setting_text2ogimage_auto_fontsize').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#coefficient-wrapper').show();
+        $('#setting_text2ogimage_font_size').hide();
+    } else {
+        $('#coefficient-wrapper').hide();
+        $('#setting_text2ogimage_font_size').show();
+    }
+});
+</script>
+  
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_text_align">
+      <mt:trans phrase="text-align" component="Text2OgImage">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_text2ogimage_text_align" name="setting_text2ogimage_text_align">
+      <option value="left" <mt:if name="setting_text2ogimage_text_align" eq="left">selected</mt:if>>left</option>
+      <option value="center" <mt:if name="setting_text2ogimage_text_align" eq="center">selected</mt:if>>center</option>
+      <option value="right" <mt:if name="setting_text2ogimage_text_align" eq="right">selected</mt:if>>right</option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_text2ogimage_extension">
+      <mt:trans phrase="Extension">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_text2ogimage_extension" name="setting_text2ogimage_extension">
+      <option value="png" <mt:if name="setting_text2ogimage_extension" eq="png">selected</mt:if>>png</option>
+    <mt:if name="webp_support">
+      <option value="webp" <mt:if name="setting_text2ogimage_extension" eq="webp">selected</mt:if>>webp</option>
+    </mt:if>
+      <option value="jpeg" <mt:if name="setting_text2ogimage_extension" eq="jpeg">selected</mt:if>>jpeg</option>
+    </select>
+  </div>
+</div>
+</div>

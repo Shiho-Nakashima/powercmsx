@@ -1,0 +1,853 @@
+<mt:ignore>Flags: is_api_setuped</mt:ignore>
+<mt:setvar name="is_api_setuped" value="0">
+<mt:setvars>
+  consumer_api_key=<mt:pluginsetting component="PostOnTwitter" workspace_id="0" name="api_key">
+  consumer_api_secret=<mt:pluginsetting component="PostOnTwitter" workspace_id="0" name="api_secret_key">
+</mt:setvars>
+<mt:if name="consumer_api_key"><mt:if name="consumer_api_secret">
+  <mt:setvar name="is_consumer_api_setuped" value="1">
+</mt:if></mt:if>
+
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="𝕏 App Settings" component="PostOnTwitter"></h2>
+  <div class="card-block">
+    <mt:unless name="workspace_id">
+      <h3 class="card-title mb-2"><mt:trans phrase="Register a 𝕏 App" component="PostOnTwitter"></h3>
+      <p class="card-text">
+        <a href="https://𝕏.com/apps/new" target="_blank">
+          <mt:trans phrase="Click to register PostTo𝕏" component="PostOnTwitter">
+          <i class="fa fa-external-link" aria-hidden="true"></i>
+        </a>
+      </p>
+      <p class="card-text mb-2"><mt:trans phrase="Select 'Read and write' for 'Access permission' in the 'Permissions' tab of the setting screen." component="PostOnTwitter"></p>
+      <p class="card-text mb-2"><mt:trans phrase="Enter the following URL in the Callback URLs field." component="PostOnTwitter"></p>
+      <p class="card-text mb-4"><input type="text" class="form-control" value="<mt:var name="script_uri" escape>" readonly></p>
+      <h3 class="card-title mb-2"><mt:trans phrase="Consumer API keys" component="PostOnTwitter"></h3>
+      <div class="container-fluid">
+        <mt:setvar name="prop_name" value="setting_api_key">
+        <div class="row form-group mb-1">
+          <div class="col-lg-2">
+            <label for="<mt:var name="prop_name">">
+              <mt:trans phrase="API key" component="PostOnTwitter">
+            </label>
+          </div>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>">
+            <p class="text-muted hint-block">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Please copy and paste from the 𝕏 app details screen" component="PostOnTwitter">
+            </p>
+          </div>
+        <!-- /.form-group --></div>
+        <mt:setvar name="prop_name" value="setting_api_secret_key">
+        <div class="row form-group mb-1">
+          <div class="col-lg-2">
+            <label for="<mt:var name="prop_name">">
+              <mt:trans phrase="API secret key" component="PostOnTwitter">
+            </label>
+          </div>
+          <div class="col-lg-10">
+            <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>">
+            <p class="text-muted hint-block">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Please copy and paste from the 𝕏 app details screen" component="PostOnTwitter">
+            </p>
+          </div>
+        <!-- /.form-group --></div>
+      <!-- /.container-fluid --></div>
+      <h3 class="card-title mb-4"><mt:trans phrase="Callback" component="PostOnTwitter"></h3>
+    </mt:unless>
+    <div class="container-fluid">
+      <mt:setvar name="prop_name" value="setting_callback_url">
+      <div class="row form-group mb-1">
+        <div class="col-lg-2">
+          <label for="<mt:var name="prop_name">">
+            <mt:trans phrase="Callback URL" component="PostOnTwitter">
+          </label>
+        </div>
+        <div class="col-lg-10">
+          <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:if name="$prop_name"><mt:var name="$prop_name" escape><mt:else><mt:var name="script_uri" escape>?__mode=twitter_oauth_callback&workspace_id=<mt:var name="workspace_id" default="0" escape></mt:if>">
+          <p class="text-muted hint-block mb-0">
+            <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="Hint"></span>
+            <mt:trans phrase="Must be include https://" component="PostOnTwitter">
+          </p>
+          <p class="text-muted hint-block mt-0 mb-0">
+            <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="Hint"></span>
+            <mt:trans phrase="If you don't have special reason, plase use default setting." component="PostOnTwitter">
+          </p>
+        </div>
+      <!-- /.form-group --></div>
+    <!-- /.container-fluid --></div>
+  <!-- /.card-block --></div>
+<!-- /.card --></fieldset>
+
+<mt:unless name="workspace_id">
+  <hr class="my-4">
+  <h1 class="pb-0"><mt:trans phrase="Base Settings" component="PostOnTwitter"></h1>
+  <p class="mb-1"><mt:trans phrase="Common settings available for the system and each space" component="PostOnTwitter"></p>
+  <p class="mb-4"><mt:trans phrase="* For system objects, it is necessary to set 'System Scope Settings' separately" component="PostOnTwitter"></p>
+
+  <fieldset class="card mb-4">
+    <h2 class="card-header"><mt:trans phrase="Base Settings" component="PostOnTwitter">: <mt:trans phrase="Setting up a 𝕏 account" component="PostOnTwitter"></h2>
+    <div class="card-block">
+      <mt:unless name="is_consumer_api_setuped">
+        <p class="card-text alert alert-info m-0" role="alert">
+          <mt:trans phrase="Consumer API keys are required to link 𝕏 accounts." component="PostOnTwitter"><br>
+          <mt:trans phrase="Please enter Consumer API keys and save the plugin settings once." component="PostOnTwitter">
+        </p>
+      </mt:unless>
+      <div class="m-0<mt:unless name="is_consumer_api_setuped"> hidden</mt:unless>">
+        <p class="card-text mb-1">
+          <button type="button" id="js-base_𝕏_authorization" class="btn btn-primary ml-0">
+            <mt:trans phrase="Click to get an Access Token" component="PostOnTwitter">
+          </button>
+        </p>
+        <p class="text-muted hint-block mt-0 mb-4">
+          <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Hint"></span>
+          <mt:trans phrase="When you get an Access Token, the token information is saved in the database." component="PostOnTwitter">
+        </p>
+        <script>
+          ;(function(){
+            const url = '<mt:var name="script_uri" escape>?__mode=twitter_authorization&base=1';
+            document.querySelector('#js-base_𝕏_authorization').addEventListener('click', function(){
+              const window𝕏 = window.open(url, '𝕏Authorization', 'width=400,height=300');
+              window𝕏.focus()
+            });
+          })();
+        </script>
+        <h3 class="card-title mb-4"><mt:trans phrase="Access token & access token secret" component="PostOnTwitter"></h3>
+        <div class="container-fluid">
+          <mt:setvar name="prop_name" value="setting_base_account_name">
+          <div class="row form-group">
+            <div class="col-lg-2">
+              <label for="<mt:var name="prop_name">">
+                <mt:trans phrase="Account Name" component="PostOnTwitter">
+              </label>
+            </div>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>" readonly>
+              <p class="card-text text-muted hint-block mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="When an access token is obtained, the value is automatically set" component="PostOnTwitter">
+                <button type="button" class="btn btn-secondary btn-sm ml-3 align-baseline js-allow-editing"
+                        data-target-selector="#<mt:var name="prop_name">">
+                  <span class="small"><mt:trans phrase="Enter manually" component="PostOnTwitter"></span>
+                </button>
+              </p>
+              <p class="text-muted hint-block m-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="Information when linking accounts" component="PostOnTwitter">
+              </p>
+            </div>
+            <script>
+              $(function(){
+                // Set a dummy inputs for space
+                const $base_account_name  = $('[name="<mt:var name="prop_name">"]');
+                const $dummy_account_name = $('[name="dummy_account_name"]');
+                const $message_area       = $('.dummy_account_name--message');
+                const $input_area         = $('.dummy_account_name--input');
+                $base_account_name.on('change', function(){
+                  if (!$(this).val() || $(this).val() === '') {
+                    $input_area.stop().fadeOut(180, function(){
+                      $message_area.stop().fadeIn(400);
+                    });
+                  } else {
+                    $message_area.stop().fadeOut(180, function(){
+                      $input_area.stop().fadeIn(400);
+                    });
+                  }
+                  $dummy_account_name.val($(this).val());
+                });
+              });
+            </script>
+          <!-- /.form-group --></div>
+          <mt:setvar name="prop_name" value="setting_base_access_token">
+          <div class="row form-group">
+            <div class="col-lg-2">
+              <label for="<mt:var name="prop_name">">
+                <mt:trans phrase="Access token" component="PostOnTwitter">
+              </label>
+            </div>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>" readonly>
+              <p class="card-text text-muted hint-block mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="When an access token is obtained, the value is automatically set" component="PostOnTwitter">
+                <button type="button" class="btn btn-secondary btn-sm ml-3 align-baseline js-allow-editing"
+                        data-target-selector="#<mt:var name="prop_name">">
+                  <span class="small"><mt:trans phrase="Enter manually" component="PostOnTwitter"></span>
+                </button>
+              </p>
+            </div>
+          <!-- /.form-group --></div>
+          <mt:setvar name="prop_name" value="setting_base_access_token_secret">
+          <div class="row form-group mb-3">
+            <div class="col-lg-2">
+              <label for="<mt:var name="prop_name">">
+                <mt:trans phrase="Access token secret" component="PostOnTwitter">
+              </label>
+            </div>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>" readonly>
+              <p class="card-text text-muted hint-block mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="When an access token is obtained, the value is automatically set" component="PostOnTwitter">
+                <button type="button" class="btn btn-secondary btn-sm ml-3 align-baseline js-allow-editing"
+                        data-target-selector="#<mt:var name="prop_name">">
+                  <span class="small"><mt:trans phrase="Enter manually" component="PostOnTwitter"></span>
+                </button>
+              </p>
+            </div>
+          <!-- /.form-group --></div>
+          <div class="row form-group mb-0">
+            <div class="col">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="unlink_base_𝕏_account" value="1">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description"><mt:trans phrase="Unlink to a 𝕏 account." component="PostOnTwitter"></span>
+              </label>
+              <p class="text-muted hint-block mt-0 mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="The access token is deleted." component="PostOnTwitter">
+              </p>
+            </div>
+          <!-- /.form-group --></div>
+        <!-- /.container-fluid --></div>
+      </div>
+    <!-- /.card-block --></div>
+  <!-- /.card --></fieldset>
+
+  <fieldset class="card mb-4">
+    <h2 class="card-header"><mt:trans phrase="Base Settings" component="PostOnTwitter">: <mt:trans phrase="Post settings" component="PostOnTwitter"></h2>
+    <div class="card-block">
+      <div class="container-fluid">
+
+        <mt:setvar name="prop_name" value="setting_base_target_models">
+        <div class="row form-group">
+          <div class="col-lg-2">
+            <label for="<mt:var name="prop_name">">
+              <mt:trans phrase="Target Models" component="PostOnTwitter">
+            </label>
+          </div>
+          <div class="col-lg-10">
+            <mt:var name="$prop_name" escape split="," setvar="selected_models">
+            <input type="hidden" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>">
+            <mt:setvar name="loop_item_exists" value="0">
+            <mt:loop name="candidate_models_all">
+              <mt:if name="__first__">
+                <mt:setvar name="loop_item_exists" value="1">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input watch-changed js-all-switch" data-target-selector='[name="<mt:var name="prop_name">_item"]'>
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="All"></span>
+                </label><br>
+              </mt:if>
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" name="<mt:var name="prop_name">_item" value="<mt:var name="name">" class="custom-control-input watch-changed"
+                       <mt:ifinarray array="selected_models" value="$name"> checked</mt:ifinarray>>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">
+                  <mt:trans phrase="$label" language="default" translate>
+                </span>
+              </label>
+            </mt:loop>
+            <mt:unless name="loop_item_exists">
+              <p class="card-text alert alert-info" role="alert">
+                <mt:trans phrase="There is no target model" component="PostOnTwitter">
+              </p>
+            </mt:unless>
+            <p class="text-muted hint-block mt-0 mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Models with preferred archives are eligible" component="PostOnTwitter">
+            </p>
+          </div>
+          <script>
+            $(function(){
+              const $input  = $('input[name="<mt:var name="prop_name">"]');
+              const $models = $('input[name="<mt:var name="prop_name">_item"]');
+              const $form   = $input.parents('form');
+              $form.on('submit', function(){
+                const target_models = [];
+                $models.filter(':checked').each(function(){
+                  target_models.push($(this).val());
+                });
+                $input.val(target_models.join(','));
+              });
+              // Set a dummy inputs for space
+              const $dummy_models = $('input[name="dummy_target_models_item"]');
+              console.log($dummy_models);
+              $models.on('change', function(){
+                //const is_checked = $(this).is(':checked');
+                $dummy_models.filter('[value="' + $(this).val() + '"]').prop('checked', $(this).is(':checked'))
+                console.log($dummy_models.filter('[value="' + $(this).val() + '"]'));
+              });
+            });
+          </script>
+        <!-- /.form-group --></div>
+
+        <mt:setvar name="prop_name" value="setting_base_tweet_template">
+        <div class="row form-group mb-0">
+          <div class="col-lg-2">
+            <label for="<mt:var name="prop_name">">
+              <mt:trans phrase="Post view" component="PostOnTwitter">
+            </label>
+          </div>
+          <div class="col-lg-10">
+            <textarea class="form-control" rows="3" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">"><mt:var name="$prop_name" escape></textarea>
+            <p class="text-muted hint-block mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Template tags are available." component="PostOnTwitter">
+            </p>
+          </div>
+          <script>
+            $(function(){
+              // Set a dummy inputs for space
+              const $base_tempate  = $('[name="<mt:var name="prop_name">"]');
+              const $dummy_tempate = $('[name="dummy_tweet_template"]');
+              $base_tempate.on('change', function(){
+                $dummy_tempate.val($(this).val());
+              });
+            });
+          </script>
+        <!-- /.form-group --></div>
+
+      <!-- /.container-fluid --></div>
+    <!-- /.card-block --></div>
+  <!-- /.card --></fieldset>
+</mt:unless>
+
+<hr class="my-4">
+
+<mt:unless name="workspace_id">
+  <h1 class="pb-0"><mt:trans phrase="Settings for system" component="PostOnTwitter"></h1>
+  <p class="mb-4"><mt:trans phrase="Settings for system belonging objects" component="PostOnTwitter"></p>
+<mt:else>
+  <h1 class="pb-0"><mt:trans phrase="Settings for space" component="PostOnTwitter"></h1>
+  <p class="mb-4"><mt:trans phrase="Settings for space belonging objects" component="PostOnTwitter"></p>
+</mt:unless>
+
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="Post usage settings" component="PostOnTwitter"></h2>
+  <div class="card-block">
+    <mt:setvar name="prop_name" value="setting_enabled">
+    <div class="card-text">
+      <label class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input plugin-target-setting"
+               id="<mt:var name="prop_name">-1" name="<mt:var name="prop_name">"
+               value="1" <mt:if name="$prop_name" eq="1"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Enabled" component="PostOnTwitter"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input plugin-target-setting"
+               id="<mt:var name="prop_name">-0" name="<mt:var name="prop_name">"
+               value="0" <mt:unless name="$prop_name"> checked</mt:unless>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Disabled" component="PostOnTwitter"></span>
+      </label>
+      <p class="text-muted hint-block mb-0">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Can switch being enabled per space" component="PostOnTwitter">
+      </p>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="Setting up a 𝕏 account" component="PostOnTwitter"></h2>
+  <div class="card-block">
+    <mt:unless name="is_consumer_api_setuped">
+      <p class="card-text alert alert-info m-0" role="alert">
+        <mt:trans phrase="Consumer API keys are required to link 𝕏 accounts." component="PostOnTwitter"><br>
+        <mt:unless name="workspace_id">
+          <mt:trans phrase="Please enter Consumer API keys and save the plugin settings once." component="PostOnTwitter">
+        <mt:else>
+          <mt:trans phrase="Please set Consumer API keys in your system's PostOnTwitter plugin settings." component="PostOnTwitter">
+        </mt:unless>
+      </p>
+    </mt:unless>
+    <div class="m-0<mt:unless name="is_consumer_api_setuped"> hidden</mt:unless>">
+      <mt:setvar name="prop_name" value="setting_use_base_access_token">
+      <div class="card-text">
+        <label class="custom-control custom-radio">
+          <input type="radio" class="custom-control-input js-scope-setting-switch"
+                 name="<mt:var name="prop_name">" id="<mt:var name="prop_name">-1"
+                 value="1" <mt:if name="$prop_name" eq="1"> checked</mt:if>
+                 data-show-selector=".base-setting--token"
+                 data-hide-selector=".scope-per-setting--token">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Use base settings" component="PostOnTwitter"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input type="radio" class="custom-control-input js-scope-setting-switch"
+                 name="<mt:var name="prop_name">" id="<mt:var name="prop_name">-0"
+                 value="0" <mt:if name="$prop_name" eq="0"> checked</mt:if>
+                 data-show-selector=".scope-per-setting--token"
+                 data-hide-selector=".base-setting--token">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">
+            <mt:unless name="workspace_id">
+              <mt:trans phrase="Configure settings for system scope" component="PostOnTwitter">
+            <mt:else>
+              <mt:trans phrase="Configure settings for space scope" component="PostOnTwitter">
+            </mt:unless>
+          </span>
+        </label>
+      </div>
+      <div class="base-setting base-setting--token mt-3 mb-0<mt:unless name="$prop_name"> hidden</mt:unless>">
+        <div class="row form-group">
+          <div class="col-lg-2">
+            <mt:trans phrase="Account Name" component="PostOnTwitter">
+          </div>
+          <div class="col-lg-10">
+            <mt:if name="workspace_id">
+              <mt:pluginsetting component="PostOnTwitter" name="base_account_name" workspace_id="0" setvar="dummy_account_name">
+            <mt:else>
+              <mt:var name="setting_base_account_name" setvar="dummy_account_name">
+            </mt:if>
+            <p class="dummy_account_name--message card-text alert alert-info m-0<mt:if name="dummy_account_name"> hidden</mt:if>" role="alert">
+              <mt:trans phrase="A Base setting 𝕏 account has not been set up." component="PostOnTwitter"><br>
+            </p>
+            <div class="dummy_account_name--input<mt:unless name="dummy_account_name"> hidden</mt:unless>">
+              <input type="text" class="form-control" id="dummy_account_name" name="dummy_account_name" value="<mt:var name="dummy_account_name" escape>" readonly>
+              <p class="text-muted hint-block m-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="Information when linking accounts" component="PostOnTwitter">
+              </p>
+            </div>
+          </div>
+        <!-- /.form-group --></div>
+      <!-- /.scope-per-setting --></div>
+      <div class="scope-per-setting scope-per-setting--token mt-3 mb-0<mt:if name="$prop_name"> hidden</mt:if>">
+        <p class="card-text mb-1">
+          <button type="button" id="js-𝕏_authorization" class="btn btn-primary ml-0">
+            <mt:trans phrase="Click to get an Access Token" component="PostOnTwitter">
+          </button>
+        </p>
+        <p class="text-muted hint-block mt-0 mb-4">
+          <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Hint"></span>
+          <mt:trans phrase="When you get an Access Token, the token information is saved in the database." component="PostOnTwitter">
+        </p>
+        <script>
+          ;(function(){
+            const url = '<mt:var name="script_uri" escape>?__mode=twitter_authorization&workspace_id=<mt:var name="workspace_id" default="0" escape>';
+            document.querySelector('#js-𝕏_authorization').addEventListener('click', function(){
+              const window𝕏 = window.open(url, '𝕏Authorization', 'width=400,height=300');
+              window𝕏.focus()
+            });
+          })();
+        </script>
+        <h3 class="card-title mb-4"><mt:trans phrase="Access token & access token secret" component="PostOnTwitter"></h3>
+        <div class="container-fluid">
+          <mt:setvar name="prop_name" value="setting_account_name">
+          <div class="row form-group">
+            <div class="col-lg-2">
+              <label for="<mt:var name="prop_name">">
+                <mt:trans phrase="Account Name" component="PostOnTwitter">
+              </label>
+            </div>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>" readonly>
+              <p class="card-text text-muted hint-block mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="When an access token is obtained, the value is automatically set" component="PostOnTwitter">
+                <button type="button" class="btn btn-secondary btn-sm ml-3 align-baseline js-allow-editing"
+                        data-target-selector="#<mt:var name="prop_name">">
+                  <span class="small"><mt:trans phrase="Enter manually" component="PostOnTwitter"></span>
+                </button>
+              </p>
+              <p class="text-muted hint-block m-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="Information when linking accounts" component="PostOnTwitter">
+              </p>
+            </div>
+          <!-- /.form-group --></div>
+          <mt:setvar name="prop_name" value="setting_access_token">
+          <div class="row form-group">
+            <div class="col-lg-2">
+              <label for="<mt:var name="prop_name">">
+                <mt:trans phrase="Access token" component="PostOnTwitter">
+              </label>
+            </div>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>" readonly>
+              <p class="card-text text-muted hint-block mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="When an access token is obtained, the value is automatically set" component="PostOnTwitter">
+                <button type="button" class="btn btn-secondary btn-sm ml-3 align-baseline js-allow-editing"
+                        data-target-selector="#<mt:var name="prop_name">">
+                  <span class="small"><mt:trans phrase="Enter manually" component="PostOnTwitter"></span>
+                </button>
+              </p>
+            </div>
+          <!-- /.form-group --></div>
+          <mt:setvar name="prop_name" value="setting_access_token_secret">
+          <div class="row form-group mb-3">
+            <div class="col-lg-2">
+              <label for="<mt:var name="prop_name">">
+                <mt:trans phrase="Access token secret" component="PostOnTwitter">
+              </label>
+            </div>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>" readonly>
+              <p class="card-text text-muted hint-block mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="When an access token is obtained, the value is automatically set" component="PostOnTwitter">
+                <button type="button" class="btn btn-secondary btn-sm ml-3 align-baseline js-allow-editing"
+                        data-target-selector="#<mt:var name="prop_name">">
+                  <span class="small"><mt:trans phrase="Enter manually" component="PostOnTwitter"></span>
+                </button>
+              </p>
+            </div>
+            <script>
+              $('.js-allow-editing').on('click.allow-editing', function(){
+                $(this).addClass('invisible').off('click.allow-editing');
+                const selector = $(this).attr('data-target-selector');
+                $(selector).prop('readonly', '');
+              });
+            </script>
+          <!-- /.form-group --></div>
+          <div class="row form-group mb-0">
+            <div class="col">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="unlink_𝕏_account" value="1">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description"><mt:trans phrase="Unlink to a 𝕏 account." component="PostOnTwitter"></span>
+              </label>
+              <p class="text-muted hint-block mt-0 mb-0">
+                <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                <span class="sr-only"><mt:trans phrase="Hint"></span>
+                <mt:trans phrase="The access token is deleted." component="PostOnTwitter">
+              </p>
+            </div>
+          <!-- /.form-group --></div>
+        <!-- /.container-fluid --></div>
+      <!-- /.scope-per-setting --></div>
+    </div>
+  <!-- /.card-block --></div>
+<!-- /.card --></fieldset>
+
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="Post settings" component="PostOnTwitter"></h2>
+  <div class="card-block">
+    <div class="container-fluid">
+
+      <div class="row form-group">
+        <div class="col-lg-2">
+          <label for="setting_target_models">
+            <mt:trans phrase="Target Models" component="PostOnTwitter">
+          </label>
+        </div>
+        <div class="col-lg-10">
+          <mt:setvar name="prop_name" value="setting_use_base_target_models">
+          <div class="card-text">
+            <label class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input js-scope-setting-switch"
+                     name="<mt:var name="prop_name">" id="<mt:var name="prop_name">-1"
+                     value="1" <mt:if name="$prop_name" eq="1"> checked</mt:if>
+                     data-show-selector=".base-setting--models"
+                     data-hide-selector=".scope-per-setting--models">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Use base settings" component="PostOnTwitter"></span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input js-scope-setting-switch"
+                     name="<mt:var name="prop_name">" id="<mt:var name="prop_name">-0"
+                     value="0" <mt:if name="$prop_name" eq="0"> checked</mt:if>
+                     data-show-selector=".scope-per-setting--models"
+                     data-hide-selector=".base-setting--models">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">
+                <mt:unless name="workspace_id">
+                  <mt:trans phrase="Configure settings for system scope" component="PostOnTwitter">
+                <mt:else>
+                  <mt:trans phrase="Configure settings for space scope" component="PostOnTwitter">
+                </mt:unless>
+              </span>
+            </label>
+          </div>
+          <div class="base-setting base-setting--models mt-2 mb-4<mt:unless name="$prop_name"> hidden</mt:unless>">
+            <mt:if name="workspace_id">
+              <mt:pluginsetting component="PostOnTwitter" name="base_target_models" workspace_id="0" escape split="," setvar="selected_base_models">
+            <mt:else>
+              <mt:var name="setting_base_target_models" escape split="," setvar="selected_base_models">
+            </mt:if>
+            <mt:setvar name="loop_item_exists" value="0">
+            <mt:loop name="candidate_models_space">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" name="dummy_target_models_item" value="<mt:var name="name">" class="custom-control-input watch-changed"
+                       <mt:ifinarray array="selected_base_models" value="$name"> checked<mt:setvar name="loop_item_exists" value="1"></mt:ifinarray> disabled>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">
+                  <mt:trans phrase="$label" language="default" translate>
+                </span>
+              </label>
+            </mt:loop>
+            <mt:unless name="loop_item_exists">
+              <p class="card-text alert alert-info" role="alert">
+                <mt:trans phrase="There is no target model" component="PostOnTwitter">
+              </p>
+            </mt:unless>
+            <p class="text-muted hint-block mt-0 mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:unless name="workspace_id">
+                <mt:trans phrase="Models with preferred archives in the system are eligible" component="PostOnTwitter">
+              <mt:else>
+                <mt:trans phrase="Models with preferred archives in the space are eligible" component="PostOnTwitter">
+              </mt:unless>
+            </p>
+          <!-- /.scope-per-setting --></div>
+          <div class="scope-per-setting scope-per-setting--models mt-2 mb-4<mt:if name="$prop_name"> hidden</mt:if>">
+            <mt:setvar name="prop_name" value="setting_target_models">
+            <mt:var name="$prop_name" escape split="," setvar="selected_models">
+            <input type="hidden" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>">
+            <mt:setvar name="loop_item_exists" value="0">
+            <mt:loop name="candidate_models_space">
+              <mt:if name="__first__">
+                <mt:setvar name="loop_item_exists" value="1">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox"class="custom-control-input watch-changed js-all-switch" data-target-selector='[name="<mt:var name="prop_name">_item"]'>
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="All"></span>
+                </label><br>
+              </mt:if>
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" name="<mt:var name="prop_name">_item" value="<mt:var name="name">" class="custom-control-input watch-changed"
+                       <mt:ifinarray array="selected_models" value="$name"> checked</mt:ifinarray>>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">
+                  <mt:trans phrase="$label" language="default" translate>
+                </span>
+              </label>
+            </mt:loop>
+            <mt:unless name="loop_item_exists">
+              <p class="card-text alert alert-info" role="alert">
+                <mt:trans phrase="There is no target model" component="PostOnTwitter">
+              </p>
+            </mt:unless>
+            <p class="text-muted hint-block mt-0 mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:unless name="workspace_id">
+                <mt:trans phrase="Models with preferred archives in the system are eligible" component="PostOnTwitter">
+              <mt:else>
+                <mt:trans phrase="Models with preferred archives in the space are eligible" component="PostOnTwitter">
+              </mt:unless>
+            </p>
+          <!-- /.scope-per-setting --></div>
+        </div>
+        <script>
+          $(function(){
+            const $input  = $('input[name="<mt:var name="prop_name">"]');
+            const $models = $('input[name="<mt:var name="prop_name">_item"]');
+            const $form   = $input.parents('form');
+            $form.on('submit', function(){
+              const target_models = [];
+              $models.filter(':checked').each(function(){
+                target_models.push($(this).val());
+              });
+              $input.val(target_models.join(','));
+            });
+          });
+        </script>
+      <!-- /.form-group --></div>
+
+      <div class="row form-group">
+        <div class="col-lg-2">
+          <label for="setting_tweet_template">
+            <mt:trans phrase="Post view" component="PostOnTwitter">
+          </label>
+        </div>
+        <div class="col-lg-10 mb-4">
+          <mt:setvar name="prop_name" value="setting_use_base_tweet_template">
+          <div class="card-text">
+            <label class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input js-scope-setting-switch"
+                     name="<mt:var name="prop_name">" id="<mt:var name="prop_name">-1"
+                     value="1" <mt:if name="$prop_name" eq="1"> checked</mt:if>
+                     data-show-selector=".base-setting--template"
+                     data-hide-selector=".scope-per-setting--template">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Use base settings" component="PostOnTwitter"></span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input js-scope-setting-switch"
+                     name="<mt:var name="prop_name">" id="<mt:var name="prop_name">-0"
+                     value="0" <mt:if name="$prop_name" eq="0"> checked</mt:if>
+                     data-show-selector=".scope-per-setting--template"
+                     data-hide-selector=".base-setting--template">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">
+                <mt:unless name="workspace_id">
+                  <mt:trans phrase="Configure settings for system scope" component="PostOnTwitter">
+                <mt:else>
+                  <mt:trans phrase="Configure settings for space scope" component="PostOnTwitter">
+                </mt:unless>
+              </span>
+            </label>
+          </div>
+          <div class="base-setting base-setting--template mt-2 mb-0<mt:unless name="$prop_name"> hidden</mt:unless>">
+            <mt:if name="workspace_id">
+              <mt:pluginsetting component="PostOnTwitter" name="base_tweet_template" workspace_id="0" setvar="dummy_tweet_template">
+            <mt:else>
+              <mt:var name="setting_base_tweet_template" setvar="dummy_tweet_template">
+            </mt:if>
+            <textarea class="form-control" rows="3" id="dummy_tweet_template" name="dummy_tweet_template" disabled><mt:var name="dummy_tweet_template" escape></textarea>
+          <!-- /.scope-per-setting --></div>
+          <div class="scope-per-setting scope-per-setting--template mt-2 mb-0<mt:if name="$prop_name"> hidden</mt:if>">
+            <mt:setvar name="prop_name" value="setting_tweet_template">
+            <textarea class="form-control" rows="3" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">"><mt:var name="$prop_name" escape></textarea>
+            <p class="text-muted hint-block mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Template tags are available." component="PostOnTwitter">
+            </p>
+          <!-- /.scope-per-setting --></div>
+        </div>
+      <!-- /.form-group --></div>
+
+      <div class="row form-group mb-0">
+        <div class="col-lg-12">
+          <mt:setvar name="prop_name" value="setting_use_link_url">
+          <label class="custom-control custom-checkbox">
+            <input type="checkbox"class="custom-control-input watch-changed" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name"> checked</mt:if>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"><mt:trans phrase="Use link url" component="PostOnTwitter"></span>
+          </label>
+          <p class="text-muted hint-block mt-0 mb-0">
+            <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="Hint"></span>
+            <mt:trans phrase="The URL in the post will be based on the link URL." component="PostOnTwitter">
+          </p>
+        </div>
+      <!-- /.form-group --></div>
+
+    <!-- /.container-fluid --></div>
+  <!-- /.card-block --></div>
+<!-- /.card --></fieldset>
+
+<mt:ignore>
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="Test post to 𝕏" component="PostOnTwitter"></h2>
+  <div class="card-block">
+    <p class="card-text mb-0">
+      <button type="button" id="js-𝕏_post_test" class="btn btn-primary ml-0">
+        <mt:trans phrase="Click to post a test" component="PostOnTwitter">
+      </button>
+    </p>
+    <div class="modal fade" id="modal--𝕏_post_test" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle"><mt:trans phrase="Test post to 𝕏" component="PostOnTwitter"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      ;(function(){
+        const modal = document.querySelector('#modal--𝕏_post_test');
+        const url = '<mt:var name="script_uri" escape>?__mode=twitter_post_test&workspace_id=<mt:var name="workspace_id" default="0" escape>';
+        document.querySelector('#js-𝕏_post_test').addEventListener('click', function(){
+          const jqXHR = $.ajax(url, {
+            dataType: 'json',
+            cache: false
+          });
+          jqXHR.done(function(data, textStatus, jqXHR){
+            const message = '<mt:trans phrase="The test post was successful." component="PostOnTwitter">';
+            modal.querySelector('.modal-body').innerHTML = message;
+            $(modal).modal('show');
+          });
+          jqXHR.fail(function(jqXHR, textStatus, errorThrown){
+            let message = '<mt:trans phrase="The test post failed." component="PostOnTwitter">';
+            if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+              message += '<br>' + jqXHR.responseJSON.message;
+            }
+            modal.querySelector('.modal-body').innerHTML = message;
+            $(modal).modal('show');
+          });
+        });
+      })();
+    </script>
+  <!-- /.card-block --></div>
+<!-- /.card --></fieldset>
+</mt:ignore>
+
+<script>
+  ;(function(){
+    // readonly input to editable
+    $('.js-allow-editing').on('click.allow-editing', function(){
+      $(this).addClass('invisible').off('click.allow-editing');
+      const selector = $(this).attr('data-target-selector');
+      $(selector).prop('readonly', '');
+    });
+
+    // Operate all checkboxes with the same name
+    $('.js-all-switch').each(function(){
+      const $switch   = $(this);
+      const $checkbox = $($switch.attr('data-target-selector'));
+      if ($checkbox.not(':checked').length === 0) {
+        $switch.prop('checked', true);
+      }
+      $checkbox.on('change', function(){
+        const checked = $checkbox.not(':checked').length === 0 ? true : false;
+        $switch.prop('checked', checked);
+      });
+      $switch.on('change', function(){
+        const checked = $(this).prop('checked') ? true : false;
+        $checkbox.prop('checked', checked);
+      });
+    });
+
+    // Scope per setting block
+    $('.js-scope-setting-switch:radio').each(function(){
+      const hide_selector = $(this).attr('data-hide-selector');
+      const $hide_target  = hide_selector ? $(hide_selector) : null;
+      const show_selector = $(this).attr('data-show-selector');
+      const $show_target  = show_selector ? $(show_selector) : null;
+      $(this).on('change', function(){
+        const deferred = $.Deferred();
+        const promise  = deferred.promise();
+        if ($hide_target) {
+          $hide_target.stop().fadeOut(180, function(){
+            deferred.resolve();
+          });
+        } else {
+          deferred.resolve();
+        }
+        if ($show_target) {
+          promise.done(function(){
+            $show_target.stop().fadeIn(400);
+          });
+        }
+      });
+    });
+  })();
+</script>

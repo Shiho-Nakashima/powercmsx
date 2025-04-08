@@ -1,0 +1,1068 @@
+/**
+ * PTVideoCaptionsクラス
+ */
+class PTVideoCaptions {
+    /**
+     * コンストラクタ
+     */
+    constructor() {
+        // プレイヤー
+        this.videoDuration = null;
+        this.player = null;
+        this.playerDialog = null;
+        this.videoPlayer = null;
+        this.videoPlayerDialog = null;
+        this.playbackPosition = null;
+        this.playbackPositionDialog = null;
+
+        // キャプション
+        this.canBakeCaption = '<mt:var name="can_bake_captions">';
+        this.editIndex = null;
+        this.cardPanels = document.querySelector('#card-panels');
+        this.videoCaptions = document.querySelector('#video-captions');
+        this.captionData = [];
+        this.captionDataTSV = this.videoCaptions ? this.videoCaptions.value : null;
+
+        // ダイアログ
+        this.isPreview = false;
+        this.isPlayed = false;
+        this.timeRegex = /^\d{2}:\d{2}:\d{2}\.\d{1}$/;
+        this.msRegex   = /^\d{2}:\d{2}\.\d{1}$/;
+        this.tabStringRegex = /[^\t]+\t+[^\t]+\t+[^\t]+/;
+        this.dialogTitle = document.querySelector('#dialog-page-title');
+        this.captionPreview = document.querySelector('#caption-preview');
+        this.captionStartTime = document.querySelector('#video_caption_start');
+        this.captionEndTime = document.querySelector('#video_caption_end');
+        this.setStartButton = document.querySelector('#set_caption_start');
+        this.setEndButton = document.querySelector('#set_caption_end');
+        this.captionText = document.querySelector('#video_caption_text');
+        this.furiganaButton = document.querySelector('#add_furigana');
+        this.cancelButton = document.querySelector('#vc-dialog-cancel-btn');
+        this.previewButton = document.querySelector('#dialog-preview-btn');
+        this.saveButton = document.querySelector('#dialog-save-btn');
+        this.displayPoisitionWrapper = document.getElementById('display_position-wrapper');
+        this.textColorWrapper = document.getElementById('text_color-wrapper');
+        this.textProcessingWrapper = document.getElementById('text_processing-wrapper');
+        this.chapterWrapper = document.getElementById('chapter-wrapper');
+
+        // バリデーション
+        this.isValid = true;
+        this.errors = [];
+        this.error = document.querySelector('#caption-error');
+        this.validationElems = document.querySelectorAll('input[data-validation="true"]');
+
+        // API
+        this.magicToken = '<mt:var name="magic_token">';
+        this.subTitleAPIUrl = '<mt:var name="script_uri">?__mode=video_caption_add_subtitles&id=<mt:var name="object_id"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+        this.previewVttAPIUrl = '<mt:var name="script_uri">?__mode=video_caption_preview_vtt&id=<mt:var name="object_id"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+        this.captionTempSaveAPIUrl = '<mt:var name="script_uri">?__mode=video_caption_temp_save_text&id=<mt:var name="object_id"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+        this.rubyAPIUrl = '<mt:var name="script_uri">?__mode=simplifiedjapanese_get_phonetic<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+
+        // プラグイン設定の初期値
+        this.defaultPosition = '<mt:pluginsetting name="video_captions_default_pos" component="VideoCaptions" workspace_id="$workspace_id">';
+        this.defaultColor = '<mt:pluginsetting name="video_captions_default_color" component="VideoCaptions" workspace_id="$workspace_id">';
+        this.defaultRuby = '<mt:pluginsetting name="video_captions_default_ruby" component="VideoCaptions" workspace_id="$workspace_id">';
+    }
+
+    /**
+     * APIに非同期でデータPOST
+     * 
+     * @param {string} apiUrl APIのURL
+     * @param {object} data POSTするJSON
+     * @returns {Promise<Response>} レスポンス
+     */
+    async postData(apiUrl, data = {}) {
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+        const response = await fetch(apiUrl, {
+            method: 'post',
+            cache: 'no-cache',
+            headers: headers,
+            body: JSON.stringify(data)
+        });
+        return response;
+    }
+
+    /**
+     * videoと再生時間表示のhtmlを取得
+     * VTT更新時に一旦removeして挿入しなおしているため必要
+     */
+    setVideoPlayer() {
+        this.videoPlayer = document.querySelector('#video-player_html5_api');
+        this.playbackPosition = this.videoPlayer.parentNode.querySelector('.vjs-duration-display');
+    }
+    setVideoPlayerDialog() {
+        this.videoPlayerDialog = document.querySelector('#video-player-dialog_html5_api');
+        this.playbackPositionDialog = this.videoPlayerDialog.parentNode.querySelector('.vjs-duration-display');
+    }
+
+    /**
+     * 秒数からhh:mm:ss.uに変換
+     *
+     * @param {number} time 変換前の秒数
+     * @returns {string} timeから変換した時間
+     */
+    time2date(time) {
+        if (this.isMsDate(time)) {
+            return '00:' + time;
+        }
+        let h = (Math.floor(time % (24 * 60 * 60) / (60 * 60)) + '').padStart(2, '0');
+        let m = (Math.floor(time % (24 * 60 * 60) % (60 * 60) / 60) + '').padStart(2, '0');
+        let s = time % (24 * 60 * 60) % (60 * 60) % 60;
+        if (s < 10) {
+            s = s.toFixed(1);
+            s = '0' + s;
+        } else {
+            s = s.toFixed(1);
+        }
+        return `${h}:${m}:${s}`;
+        // return `${m}:${s}`;
+    }
+    /**
+     * hh:mm:ss.uから秒数に変換
+     *
+     * @param {string} date 変換前の時間
+     * @returns {number} dateから変換した秒数
+     */
+    date2time(date) {
+        return date.split(':').reverse().reduce((prev, cur, idx) => {
+            return prev + cur * Math.pow(60, idx)
+        }, 0);
+    }
+
+    /**
+     * 再生時間表示イベント設定
+     * video再生と同期して表示する
+     * 
+     * @param {object} player 動画のHTMLElement
+     * @param {object} playback 再生時間のHTMLElement
+     */
+    setPlaybackTime(player, playback) {
+        // timeupdateの頻度を上げる
+        // Chromeにおいては最頻でも250msごとにしか呼ばれない(500msのときもある)
+        player.addEventListener('loadedmetadata', (event) => {
+            let time = player.currentTime;
+            const me = () => {
+                if (time !== player.currentTime) {
+                    time = player.currentTime;
+                    player.dispatchEvent(new CustomEvent('timeupdate'));
+                }
+                requestAnimationFrame(me);
+            };
+            requestAnimationFrame(me);
+        });
+        player.addEventListener('timeupdate', (event) => {
+            playback.textContent = this.time2date(player.currentTime);
+            this.getDuration();
+            this.checkPreview();
+        });
+    }
+
+    /**
+     * タブ区切り形式のキャプションを配列に変換
+     * 
+     * @param {string} data タブ区切り形式のキャプション文字列
+     * @returns {array} result キャプションの配列
+     */
+    tab2json(data) {
+        const result = [];
+        if (this.tabStringRegex.test(data)) {
+            const captions = data.split('\n');
+            captions.forEach((caption) => {
+                caption = caption.split('\t');
+                if (caption.length >= 3) {
+                    if (!this.isDate(caption[0])) {
+                        caption[0] = this.time2date(caption[0]);
+                    }
+                    if (!this.isDate(caption[1])) {
+                        caption[1] = this.time2date(caption[1]);
+                    }
+                    result.push(caption);
+                }
+            });
+        }
+        if (result.length) {
+            this.videoCaptions.value = this.json2tab(result);
+        }
+        return result;
+    }
+    /**
+     * キャプションの配列をタブ区切り形式の文字列に変換
+     * 
+     * @param {array} captions キャプションの配列
+     * @returns {string} result タブ区切り形式のキャプション文字列
+     */
+     json2tab(captions) {
+        const result = [];
+        captions.forEach((caption) => {
+            caption = caption.join('\t');
+            result.push(caption);
+        });
+        return result.join('\n');
+    }
+    /**
+     * キャプション配列を開始時間順でソート
+     */
+     sortCaptionData() {
+        if (!this.captionData.length) {
+            return;
+        }
+        this.captionData.sort((a, b) => {
+            const startA = this.isDate(a[0]) ? this.date2time(a[0]) : a[0];
+            const startB = this.isDate(b[0]) ? this.date2time(b[0]) : b[0];
+            return startA - startB;
+        });
+    }
+    
+    /**
+     * キャプションをカード形式で表示
+     * 
+     * @param {string} data タブ区切りのキャプション文字列
+     */
+    renderCardList(data) {
+        if (!data && this.videoCaptions && this.videoCaptions.value) {
+            data = this.videoCaptions.value;
+        }
+        if (!data) {
+            this.cardPanels.innerHTML = '';
+            return;
+        }
+        this.captionData = this.tab2json(data);
+
+        const cardTemplate = (caption, index) => {
+            const start = caption[0];
+            const end = caption[1];
+            const text = caption[2];
+            const position = (() => {
+                let result = {};
+                let number = caption[3] ? caption[3] : this.defaultPosition;
+                result.number = number;
+                if (number === '0') {
+                    if ( caption[6] == 0 ) {
+                        result.label = '<mt:trans phrase="Display Position" component="VideoCaptions"> : <mt:trans phrase="None">';
+                    } else {
+                        result.label = '<mt:trans phrase="Display Position" component="VideoCaptions"> : <mt:trans phrase="Chapter" component="VideoCaptions">';
+                    }
+                } else if (number === '1') {
+                    result.label = '<mt:trans phrase="Display Position" component="VideoCaptions"> : <mt:trans phrase="Bottom" component="VideoCaptions">';
+                } else if (number === '2') {
+                    result.label = '<mt:trans phrase="Display Position" component="VideoCaptions"> : <mt:trans phrase="Top" component="VideoCaptions">';
+                } else if (number === '3') {
+                    result.label = '<mt:trans phrase="Display Position" component="VideoCaptions"> : <mt:trans phrase="Title" component="VideoCaptions">';
+                } else {
+                    result.label = '<mt:trans phrase="Display Position" component="VideoCaptions"> : <mt:trans phrase="Bottom" component="VideoCaptions">';
+                    result.number = '1';
+                }
+                return result;
+            })(); 
+            const color = (() => {
+                let result = {};
+                let number = caption[4] ? caption[4] : this.defaultColor;
+                result.number = number;
+                if (number === '1') {
+                    result.label = 'white';
+                } else if (number === '2') {
+                    result.label = 'black';
+                } else {
+                    result.label = 'white';
+                    result.number = '1';
+                }
+                return result;
+            })();
+            const ruby = (() => {
+                let result = {};
+                let number = caption[5] ? caption[5] : this.defaultRuby;
+                result.number = number;
+                if (number === '0') {
+                    result.label = '<mt:trans phrase="None">';
+                } else if (number === '1') {
+                    result.label = '<mt:trans phrase="Auto Ruby" component="VideoCaptions">';
+                } else if (number === '2') {
+                    result.label = '<mt:trans phrase="Ruby and Word-Separate" component="VideoCaptions">';
+                } else if (number === '3') {
+                    result.label = '<mt:trans phrase="Word-Separate only" component="VideoCaptions">';
+                } else {
+                    result.label = '<mt:trans phrase="Auto Ruby" component="VideoCaptions">';
+                    result.number = '1';
+                }
+                return result;
+            })();
+            const isChapter = (() => {
+                let result = {};
+                let number = caption[6] ? caption[6] : 0;
+                result.number = number;
+                return result;
+            })();
+            return [
+                `<button type="button" class="btn card-panel ${color.label}" data-toggle="modal" data-target="#modal-fluid" data-index="${index}" data-start="${start}" data-end="${end}" data-caption="${text}" data-position="${position.number}" data-color="${color.number}" data-ruby="${ruby.number}" data-is-chapter="${isChapter.number}">`,
+                    `<span class="card-time">${start} 〜 ${end}</span>`,
+                    `<span class="card-caption">${text}</span>`,
+                    `<span class="card-position">${position.label}</span>`,
+                    `<a class="detach-caption btn btn-secondary btn-sm" aria-label="<mt:trans phrase="Detach">"><i class="fa fa-trash-o" aria-hidden="true"></i></a>`,
+                `</button>`
+            ].join('');
+        };
+        const cardHTML = [];
+        this.captionData.forEach((caption, index) => {
+            if (caption.length >= 3) {
+                cardHTML.push(cardTemplate(caption, index));
+            }
+        });
+        if (cardHTML.length) {
+            this.cardPanels.innerHTML = cardHTML.join('');
+        }
+        this.setEditEvent();
+    }
+    
+    /**
+     * ダイアログ編集のイベント設定
+     */
+    setEditEvent() {
+        // 新規
+        const addCaptions = document.querySelector('#add-video-captions');
+        addCaptions.addEventListener('click', (event) => {
+            this.videoPlayer.pause();
+            this.editIndex = null;
+            this.isPreview = false; 
+            this.captionPreview.innerHTML = '';
+            this.setEditData(document.body);
+            this.hideError();
+            event.preventDefault();
+        });
+
+        // 編集
+        const cards = this.cardPanels.querySelectorAll('.card-panel');
+        cards.forEach((card) => {
+            card.addEventListener('click', (event) => {
+                this.editIndex = card.getAttribute('data-index');
+                this.isPreview = false; 
+                this.captionPreview.innerHTML = '';
+                this.setEditData(card);
+                this.hideError();
+                event.preventDefault();
+            });
+        });
+
+        // 削除
+        const detach = this.cardPanels.querySelectorAll('.detach-caption');
+        detach.forEach((detach) => {
+            detach.addEventListener('click', (event) => {
+                if (!confirm('<mt:trans phrase="Are you sure you want to remove this caption?" component="VideoCaptions">')) {
+                    event.stopPropagation();
+                    return;
+                }
+                const parentCard = detach.parentNode;
+                const cardIndex = parentCard.getAttribute('data-index');
+                delete this.captionData[cardIndex];
+                parentCard.remove();
+                this.videoCaptions.value = this.json2tab(this.captionData);
+                this.tempSaveCaption(this.videoCaptions.value);
+                event.stopPropagation();
+            });
+        });
+    }
+
+    /**
+     * ダイアログの動画コントローラーを表示する
+     * 
+     * @param {object} card HTMLElement
+     */
+     showVideoController(card) {
+        if (this.isPlayed) {
+            return;
+        }
+        this.videoPlayerDialog.play();
+        setTimeout(() => {
+            const start = card.getAttribute('data-start') ? this.date2time(card.getAttribute('data-start')) : this.videoPlayer.currentTime;
+            this.videoPlayerDialog.currentTime = start;
+            this.videoPlayerDialog.pause();
+            this.isPlayed = true;
+        }, 100);
+    }
+    /**
+     * キャプション編集時にデータをセットする
+     * 
+     * @param {object} card カードのHTMLElement
+     */
+     setEditData(card) {
+        // 新規は全てnullが入る想定
+        const start = card.getAttribute('data-start');
+        const end = card.getAttribute('data-end');
+        const caption = card.getAttribute('data-caption');
+        const position = card.getAttribute('data-position');
+        const color = card.getAttribute('data-color');
+        const ruby = card.getAttribute('data-ruby');
+        const chapter = card.getAttribute('data-is-chapter');
+
+        // 動画コントローラーが非表示なら表示
+        this.showVideoController(card);
+
+        if (this.isPreview) {
+            const img = this.captionPreview.firstChild;
+            if ( img ) {
+                this.captionPreview.removeChild(img);
+            }
+        }
+
+        // 新規
+        if (!start) {
+            this.dialogTitle.textContent = '<mt:trans phrase="Make Caption" component="VideoCaptions">';
+            this.videoPlayerDialog.currentTime = this.videoPlayer.currentTime;
+        // 編集
+        } else {
+            this.dialogTitle.textContent = '<mt:trans phrase="Edit Caption" component="VideoCaptions">';
+            this.videoPlayerDialog.currentTime = this.date2time(start);
+        }
+
+        this.captionStartTime.value = start ? start : this.time2date(this.videoPlayer.currentTime);
+        this.captionEndTime.value = end ? end : '';
+        this.captionText.value = caption ? caption : '';
+
+        const setRadioChecked = (name, value) => {
+            const radio = document.querySelectorAll(`input[name="${name}"]`);
+            radio.forEach((input) => {
+                if (input.value === value) {
+                    input.checked = true;
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                } else {
+                    input.defaultChecked = false;
+                }
+            })
+        };
+        setRadioChecked('video_caption_position', position ? position : this.defaultPosition);
+        setRadioChecked('video_caption_color', color ? color : this.defaultColor);
+        setRadioChecked('video_caption_ruby', ruby ? ruby : this.defaultRuby);
+        setRadioChecked('video_caption_is_chapter', chapter ? chapter : '0');
+    }
+
+    /**
+     * プレビューの表示制御
+     * 動画の再生時間が表示時間内ならキャプションを表示する
+     */
+    checkPreview() {
+        if (!this.isPreview) {
+            return;
+        }
+        if (!this.isDateFormat(this.captionStartTime) || !this.isDateFormat(this.captionEndTime)) {
+            this.captionPreview.style.display = 'none';
+            return;
+        }
+        const start = this.date2time(this.captionStartTime.value);        const end = this.date2time(this.captionEndTime.value);
+        const current = this.videoPlayerDialog.currentTime.toFixed(1);
+        // console.log(`start:${start} end:${end} current:${current}`);
+        if (start <= current && current <= end) {
+            this.captionPreview.style.display = 'block';
+        } else {
+            this.captionPreview.style.display = 'none';
+        }
+    }
+
+    /**
+     * タブ区切りテキストへTSVペースト時のイベント設定
+     */
+    setTsvEvent() {
+        this.videoCaptions.addEventListener('keyup', (event) => {
+            this.captionDataTSV = this.videoCaptions.value;
+        });
+        this.videoCaptions.addEventListener('change', (event) => {
+            this.renderCardList();
+        });
+        this.videoCaptions.addEventListener('paste', (event) => {
+            let pasted = (event.clipboardData || window.clipboardData).getData('text');
+            if (this.isTabSeparated(pasted)) {
+                if (confirm('<mt:trans phrase="Are you sure you want to pasted data to be reflected in the caption (the caption being created will be discarded)?" component="VideoCaptions">')) {
+                    const result = [];
+                    const errors = [];
+                    const captions = pasted.split('\n');
+                    captions.forEach((caption) => {
+                        if (this.isTabSeparated(caption)) {
+                            const captionsValues = caption.split('\t');
+                            const start = captionsValues[0];
+                            const end = captionsValues[1];
+                            const message = captionsValues[2];
+                            const error = [];
+                            if (this.isDate(start) || this.isMsDate(start) || (this.isNumber(start) && this.isNumberGe(start, 0))) {} else {
+                                error.push(`<mt:trans phrase="Start time" component="VideoCaptions">「${start}」`);
+                            }
+                            if (this.isDate(end) || this.isMsDate(end) || (this.isNumber(end) && this.isNumberGe(end, 0))) {} else {
+                                error.push(`<mt:trans phrase="End time" component="VideoCaptions">「${end}」`);
+                            }
+                            if (error.length) {
+                                errors.push(error.join('') + '<mt:trans phrase="for incorrect formatting" component="VideoCaptions"><mt:trans phrase="Caption" component="VideoCaptions">「' + message + '」<mt:trans phrase="has been removed." component="VideoCaptions">');
+                            } else {
+                                result.push(caption);
+                            }
+                        }
+                    });
+                    if (errors.length) {
+                        alert(errors.join(''));
+                    }
+                    if (result.length) {
+                        const selection = window.getSelection();
+                        if (selection.rangeCount) {
+                            this.videoCaptions.value = this.videoCaptions.value.replace(selection.toString(), '');
+                        }
+                        setTimeout(() => {
+                            this.captionDataTSV = this.videoCaptions.value + '\n' +  result.join('\n');
+                            this.captionData = this.tab2json(this.captionDataTSV);
+                            this.sortCaptionData();
+                            this.videoCaptions.value = this.json2tab(this.captionData);
+                            this.renderCardList();
+                        }, 200);
+                    }
+                
+                } else {
+                    this.videoCaptions.value = this.captionDataTSV;
+                }
+                event.preventDefault();
+            }
+        });
+    }
+
+    /**
+     * 開始及び終了時間のイベント設定
+     */
+    setTimeEvent() {
+        // プレビュー表示制御
+        this.captionStartTime.addEventListener('keyup', () => {
+            this.checkPreview();
+        });
+        this.captionEndTime.addEventListener('keyup', () => {
+            this.checkPreview();
+        });
+
+        // 現在のvideo再生時間をセット
+        this.setStartButton.addEventListener('click', (event) => {
+            this.captionStartTime.value = this.time2date(this.videoPlayerDialog.currentTime);
+            this.checkPreview();
+            event.preventDefault();
+        });
+        this.setEndButton.addEventListener('click', (event) => {
+            this.captionEndTime.value = this.time2date(this.videoPlayerDialog.currentTime);
+            this.checkPreview();
+            event.preventDefault();
+        });
+    }
+
+    /**
+     * キャプションの選択範囲をrubyでマークアップ
+     * 
+     * @param {object} input キャプション入力項目
+     * @param {number} start 選択開始位置
+     * @param {number} end 選択終了位置
+     */
+    async insertRuby(input, start, end) {
+        if (!this.magicToken || !this.rubyAPIUrl) {
+            return;
+        }
+        const text = input.value;
+        const furigana = text.slice(start, end);
+        const data = {
+            text: furigana,
+            magic_token: this.magicToken
+        };
+        const response = await this.postData(this.rubyAPIUrl, data);
+        if (response.status === 200) {
+            const json = await response.json();
+            const ruby = prompt(furigana, json.result);
+            if ( ruby === null ) {
+                return;
+            }
+            const beforeNode = text.slice(0, start);
+            const afterNode  = text.slice(end);
+            const insertNode = `<ruby>${furigana}<rt>${ruby}</rt></ruby>`;
+            input.value = beforeNode + insertNode + afterNode;
+
+            // 手動ルビ設定時はテキスト処理をなしに変更
+            const rubyInput = document.querySelectorAll('input[name="video_caption_ruby"]');
+            rubyInput.forEach((input) => {
+                if (input.value === '0') {
+                    input.checked = 'checked';
+                }
+            });
+        }
+    }
+
+    /**
+     * ふりがなセットのイベント設定
+     */
+    setFuriganaEvent() {
+        if (!this.furiganaButton) {
+            return;
+        }
+        const showError = (message) => {
+            this.errors.push(message);
+            this.showError();
+            this.errors = [];
+        };
+        this.furiganaButton.addEventListener('click', (event) => {
+            if (!this.captionText.value) {
+                showError(this.furiganaButton.getAttribute('data-required-error'));
+                return;
+            }
+            const start = this.captionText.selectionStart;
+            const end = this.captionText.selectionEnd;
+            if (start === end) {
+                showError(this.furiganaButton.getAttribute('data-unselected-error'));
+                return;
+            } else {
+                this.hideError();
+                this.insertRuby(this.captionText, start, end);
+            }
+            event.preventDefault();
+        });
+    }
+
+    /**
+     * プレビュー/確定時のバリデーション
+     * 
+     * @returns {boolean} エラーがなければtrue
+     */
+    validation() {
+        this.errors = [];
+        this.isValid = true;
+        this.validationElems.forEach(input => {
+            // ToDo:
+            // ・isRequired
+            // ・isDateFormat
+            // ・isInDuration
+            // 内のattribute取得を分離する。
+            // また、isDateをisDateFormatに統合する。
+            if (!this.isRequired(input)) {
+                this.isValid = false;
+                this.errors.push(input.getAttribute('data-required-error'));
+            }
+            if (!this.isDateFormat(input)) {
+                this.isValid = false;
+                this.errors.push(input.getAttribute('data-format-error'));
+            }
+            if (!this.isInDuration(input)) {
+                this.isValid = false;
+                this.errors.push(input.getAttribute('data-duration-error'));
+            }
+        });
+        // 開始 < 終了時間のチェック
+        if (
+            this.captionStartTime.value && this.timeRegex.test(this.captionStartTime.value) &&
+            this.captionEndTime.value && this.timeRegex.test(this.captionEndTime.value)
+        ) {
+            const startTime = this.date2time(this.captionStartTime.value);
+            const endTime = this.date2time(this.captionEndTime.value);
+            if (startTime > endTime) {
+                this.isValid = false;
+                this.errors.push(this.captionStartTime.getAttribute('data-compare-error'));
+            }
+        }
+        return this.isValid;
+    }
+    /**
+     * 必須チェック
+     *
+     * @param {object} input チェックするHTMLElement
+     * @returns {boolean} 空でなければtrue
+     */
+    isRequired(input) {
+        let isValid = true;
+        if (input.getAttribute('data-required') && input.value === '') {
+            isValid = false;
+        }
+        return isValid;
+    }
+    /**
+     * 日付フォーマットチェック
+     *
+     * @param {object} input チェックするHTMLElement
+     * @returns {boolean} hh:mm:ss.uならtrue
+     */
+    isDateFormat(input) {
+        let isValid = true;
+        const format = input.getAttribute('data-format');
+        if (format && format === 'date' && input.value) {
+            if (!this.timeRegex.test(input.value)) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+    /**
+     * 引数の文字列がhh:mm:ss.uか確認
+     * 
+     * @param {string} date 
+     * @returns {boolean} hh:mm:ss.uならtrue
+     */
+     isDate(date) {
+        let isValid = true;
+        if (!this.timeRegex.test(date)) {
+            isValid = false;
+        }
+        return isValid;
+    }
+    /**
+     * 引数の文字列がmm:ss.uか確認
+     * 
+     * @param {string} date 
+     * @returns {boolean} mm:ss.uならtrue
+     */
+     isMsDate(date) {
+        let isValid = true;
+        if (!this.msRegex.test(date)) {
+            isValid = false;
+        }
+        return isValid;
+    }
+    /**
+     * 引数の文字列が数値か確認
+     * 
+     * @param {string} number 
+     * @returns {boolean} 数値ならtrue
+     */
+     isNumber(number) {
+        let isValid = true;
+        if (isNaN(number)) {
+            isValid = false;
+        }
+        return isValid;
+    }
+    /**
+     * 引数の文字列が指定した数値より大きいか確認
+     * 
+     * @param {string} number 
+     * @param {string} ge 
+     * @returns {boolean} ge以上の数字ならtrue
+     */
+    isNumberGe(number, ge) {
+        let isValid = true;
+        if (Number(number) < ge) {
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    /**
+     * タブ区切り文字列のチェック
+     * 
+     * @param {string} datea
+     * @returns {boolean} 値が3つ以上のタブ区切り文字ならtrue
+     */
+    isTabSeparated(data) {
+        let isValid = true;
+        if (!this.tabStringRegex.test(data)) {
+            isValid = false;
+        }
+        return isValid;
+    }
+    /**
+     * 動画時間内チェック
+     *
+     * @param {object} input チェックするHTMLElement
+     * @returns {boolean} 動画時間内ならtrue
+     */
+    isInDuration(input) {
+        let isValid = true;
+        const format = input.getAttribute('data-format');
+        if (format && format === 'date' && input.value) {
+            if (this.timeRegex.test(input.value)) {
+                const time = this.date2time(input.value);
+                if (time > this.videoDuration) {
+                    isValid = false;
+                }
+            }
+        }
+        return isValid;
+    }
+
+    /**
+     * 動画時間の取得
+     */
+    getDuration() {
+        if (this.videoDuration || !this.videoPlayer) {
+            return;
+        }
+        if (this.videoPlayer.duration) {
+            this.videoDuration = Number(this.videoPlayer.duration.toFixed(1));
+        }
+    }
+
+    /**
+     * 要素が画面内に表示されているか
+     * 
+     * @param {object} element チェックするHTMLElement
+     * @returns {boolean} isInView 画面内にあればtrue
+     */
+    elementInView(element) {
+        const rect = element.getBoundingClientRect();
+        const isInView = 0 < rect.top && rect.bottom < window.innerHeight;
+        return isInView;
+    }
+
+    /**
+     * エラー表示・非表示
+     */
+    showError() {
+        const html = [];
+        this.errors.forEach((error, index) => {
+            html.push([
+                '<div id="caption-error-' + index + '" class="alert alert-danger" role="alert" tabindex="0">',
+                    '<button onclick="document.querySelector(\'#caption-error-' + index + '\').remove();" type="button" class="close" aria-label="解除">',
+                        '<span aria-hidden="true">&times;</span>',
+                    '</button>',
+                    error,
+                '</div>'
+            ].join(''));
+        });
+        if (html.length) {
+            this.error.innerHTML = html.join('');
+            this.error.style.display = 'block';
+            if (!this.elementInView(this.error)) {
+                window.scroll({
+                    top: this.error.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
+    hideError() {
+        this.error.innerHTML = '';
+        this.error.style.display = 'none';
+    }
+
+    /**
+     * ダイアログで設定したキャプションデータを取得
+     * 
+     * @returns {array} caption キャプションデータの配列
+     */
+     getCaptionData() {
+        const position = document.querySelector('input[name="video_caption_position"]:checked').value;
+        const caption = [
+            this.captionStartTime.value,
+            this.captionEndTime.value,
+            this.captionText.value,
+            position,
+            document.querySelector('input[name="video_caption_color"]:checked').value,
+            document.querySelector('input[name="video_caption_ruby"]:checked').value,
+            this.chapterWrapper.querySelector('input:checked').value
+        ];
+        // console.log(caption);
+        return caption;
+    }
+
+    /**
+     * キャプション画像をAPIで取得して挿入
+     * 
+     * @param {array} caption タブ区切りのキャプションデータ
+     */
+    async getPreviewImage(caption) {
+        if (!this.magicToken || !this.subTitleAPIUrl) {
+            return;
+        }
+        this.buttonDisable();
+        const data = {
+            text: caption.join('\t'),
+            magic_token: this.magicToken,
+            request_an_image: true
+        };
+        // console.log(data);
+        const response = await this.postData(this.subTitleAPIUrl, data);
+        const json = await response.json();
+        // console.log(json);
+        if (json.data) {
+            this.isPreview = true;
+            this.buttonEnable();
+            const position = caption[3];
+            this.captionPreview.style.display = 'block';
+            this.captionPreview.innerHTML = `<img src="${json.data}">`;
+            this.captionPreview.className = `-pos${position}`;
+            if (position === '3') {
+                const img = this.captionPreview.querySelector('img');
+                img.addEventListener('load', () => {
+                    img.style.marginTop = '-' + (img.clientHeight / 2) + 'px';
+                });
+            }
+        } else {
+            if (json.message) {
+                alert(json.message);
+            }
+        }
+    }
+
+    /**
+     * プレビューVTTをAPIで取得
+     * 
+     * @param {array} caption タブ区切りのキャプションデータ
+     */
+     async getPreviewVTT(caption) {
+        if (!this.magicToken || !this.previewVttAPIUrl) {
+            return;
+        }
+        this.buttonDisable();
+        const data = {
+            text: caption.join('\t'),
+            individual: true,
+            magic_token: this.magicToken
+        };
+        // console.log(data);
+        const response = await this.postData(this.previewVttAPIUrl, data);
+        const json = await response.json();
+        // console.log(json);
+        if (json.preview_url) {
+            // this.isPreview = true;
+            this.buttonEnable();
+            window.vjsUtil.setVTT(this.playerDialog, json.preview_url);
+        } else {
+            if (json.message) {
+                alert(json.message);
+            }
+        }
+    }
+
+    /**
+     * キャプションをAPIで保存
+     * 
+     * @param {string} captions タブ区切りのキャプションデータ
+     * @returns {Promise<Response>} レスポンス
+     */
+     async tempSaveCaption(captions) {
+        editContentChanged = true;
+        const data = {
+            text: captions,
+            magic_token: this.magicToken
+        };
+        const response = await this.postData(this.captionTempSaveAPIUrl, data);
+        const json = await response.json();
+        // console.log(json);
+        return response;
+    }
+
+    /**
+     * プレビュー/確定ボタンの無効化
+     */
+    buttonDisable() {
+        this.previewButton.setAttribute('disabled', 'disabled');
+        this.saveButton.setAttribute('disabled', 'disabled');
+    }
+    /**
+     * プレビュー/確定ボタンの有効化
+     */
+     buttonEnable() {
+        this.previewButton.removeAttribute('disabled');
+        this.saveButton.removeAttribute('disabled');
+    }
+    /**
+     * ダイアログ非表示
+     */
+    hideModal() {
+        this.videoPlayerDialog.pause();
+        window.$('#modal-fluid').modal('hide');
+    }
+
+    /**
+     * ダイアログ下部ボタンのイベント設定
+     */
+    setDialogButtonEvent() {
+        // キャンセル
+        this.cancelButton.addEventListener('click', (event) => {
+            this.hideModal();
+            event.preventDefault();
+        });
+
+        // プレビュー
+        this.previewButton.addEventListener('click', (event) => {
+            if (this.validation()) {
+                this.hideError();
+                const caption = this.getCaptionData();
+
+                // 画像キャプション
+                if (this.canBakeCaption) {
+                    this.getPreviewImage(caption);
+                // VTT
+                } else {
+                    this.getPreviewVTT(caption);
+                }
+                
+            } else {
+                this.showError();
+            }
+            event.preventDefault();
+        });
+
+        // 確定
+        this.saveButton.addEventListener('click', (event) => {
+            if (this.validation()) {
+                this.hideError();
+                const caption = this.getCaptionData();
+
+                // 編集時
+                if (this.editIndex) {
+                    this.captionData[this.editIndex] = caption;
+                // 新規追加
+                } else {
+                    this.captionData.push(caption);
+                }
+
+                this.sortCaptionData();
+                this.videoCaptions.value = this.json2tab(this.captionData);
+                this.tempSaveCaption(this.videoCaptions.value);
+                this.hideModal();
+                this.renderCardList();
+                
+            } else {
+                this.showError();
+            }
+            event.preventDefault();
+        });
+    }
+
+    /**
+     * ダイアログ内のオプション選択時のイベント設定
+     */
+    setDialogOptionsChangeEvent() {
+        // 表示位置
+        this.displayPoisitionWrapper.addEventListener('change', (event) => {
+            if (event.target.tagName.toLowerCase() === 'input') {
+                if (parseInt(event.target.value) === 0) {
+                    this.textColorWrapper.style.display = 'none';
+                    this.textProcessingWrapper.style.display = 'none';
+                } else {
+                    this.textColorWrapper.style.display = 'flex';
+                    this.textProcessingWrapper.style.display = 'flex';
+                }
+            }
+        });
+
+        // チャプター
+        this.chapterWrapper.addEventListener('change', (event) => {
+            const displayPosition = this.displayPoisitionWrapper.querySelectorAll('input');
+            if (event.target.tagName.toLowerCase() === 'input') {
+                if (parseInt(event.target.value) === 0) {
+                    this.previewButton.disabled = false;
+                    displayPosition.forEach((input) => {
+                        if (parseInt(input.value) > 0) {
+                            input.disabled = false;
+                        }
+                    });
+                } else {
+                    this.previewButton.disabled = true;
+                    displayPosition.forEach((input) => {
+                        if (parseInt(input.value) > 0) {
+                            input.disabled = true;
+                        } else {
+                            input.checked = true;
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    init() {
+        this.getDuration();
+        this.renderCardList();
+        this.setTsvEvent();
+        this.setTimeEvent();
+        this.setFuriganaEvent();
+        this.setDialogButtonEvent();
+        this.setDialogOptionsChangeEvent();
+    }
+}

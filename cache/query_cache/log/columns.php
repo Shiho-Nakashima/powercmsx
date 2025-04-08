@@ -1,0 +1,15 @@
+<?php $this->get_cache=array (
+  0 => 'log_id',
+  1 => 'log_message',
+  2 => 'log_category',
+  3 => 'log_level',
+  4 => 'log_model',
+  5 => 'log_metadata',
+  6 => 'log_remote_ip',
+  7 => 'log_object_id',
+  8 => 'log_md5',
+  9 => 'log_created_on',
+  10 => 'log_modified_on',
+  11 => 'log_created_by',
+  12 => 'log_workspace_id',
+);

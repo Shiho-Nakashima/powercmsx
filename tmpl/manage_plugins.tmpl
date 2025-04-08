@@ -1,0 +1,390 @@
+<mt:setvarblock name="html_head">
+  <style>
+    .plugin-active { background-color: #eef !important; color: black !important }
+    .plugin-active td, .plugin-active th { border-top: 1px solid #bbb !important; border-bottom: 1px solid #bbb !important }
+    .plugin-inactive { color: #444 !important }
+  </style>
+</mt:setvarblock>
+<mt:include file="include/header.tmpl">
+<mt:if name="request.saved">
+<mt:if name="request.count">
+  <div id="saved-alert-message" class="alert alert-success" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:if name="request.action_type" eq="enable">
+      <mt:trans phrase="Plugin(s) enabled successfully.">
+    <mt:elseif name="request.action_type" eq="upgrade">
+      <mt:trans phrase="Plugin(s) upgrade successfully.">
+    <mt:else>
+      <mt:trans phrase="Plugin(s) disabled successfully.">
+    </mt:if>
+  </div>
+<script>
+$('#saved-alert-message').focus();
+</script>
+</mt:if>
+</mt:if>
+<mt:if name="upgrade_count">
+  <div class="alert alert-warning" id="alert-upgrade" tabindex="0">
+    <mt:if name="upgrade_count" eq="1">
+      <mt:trans phrase="There is one upgrade.">
+    <mt:else>
+      <mt:trans phrase="There are %s upgrades." params="$upgrade_count">
+    </mt:if>
+  </div>
+<script>
+$('#alert-upgrade').focus();
+</script>
+</mt:if>
+<mt:if name="scheme_upgrade">
+  <div class="alert alert-warning" id="alert-scheme-upgrade" tabindex="0">
+    <mt:if name="plugin_scheme_upgrade_count" eq="1">
+      <mt:trans phrase="There is one scheme upgrade.">
+    <mt:else>
+      <mt:trans phrase="There are %s schemes upgrade." params="$plugin_scheme_upgrade_count">
+    </mt:if>
+    <a href="<mt:var name="script_uri">?__mode=manage_scheme">( 
+    <mt:if name="plugin_scheme_upgrade_count" eq="1">
+    <mt:trans phrase="Upgrade Scheme">
+    <mt:else>
+    <mt:trans phrase="Upgrade Schemes">
+    </mt:if>
+    )</a>
+  </div>
+<script>
+$('#alert-scheme-upgrade').focus();
+</script>
+</mt:if>
+
+<div class="table-screen">
+<form action="<mt:var name="script_uri">" method="POST" id="update_plugin">
+<input type="hidden" name="__mode" value="manage_plugins">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="_type" value="" id="this_type">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+
+<mt:setvarblock name="table_header">
+  <tr>
+<mt:unless name="workspace_id">
+  <th class="all-selector cb-col">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="selector custom-control-input cb-all-select">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </th>
+</mt:unless>
+  <th><mt:trans phrase="Name"></th>
+  <th><mt:trans phrase="Excerpt"></th>
+  <th class="short-col"><mt:trans phrase="Version"></th>
+  <th><mt:trans phrase="Settings"></th>
+</tr>
+</mt:setvarblock>
+<mt:setvar name="plugin_output" value="0">
+<mt:unless name="workspace_id">
+<div class="form-group">
+  <button type="submit" class="enable-btn btn btn-primary"><mt:trans phrase="Enable"></button>
+  <button type="submit" class="disable-btn btn btn-secondary"><mt:trans phrase="Disable"></button>
+<mt:if name="upgrade_count">
+  <button type="submit" class="upgrade-btn btn btn-secondary"><mt:trans phrase="Upgrade"></button>
+</mt:if>
+</div>
+</mt:unless>
+<table class="table table-sm listing-table table-hover table-striped">
+<thead>
+  <mt:var name="table_header">
+</thead>
+<tbody id="list_body">
+<mt:loop name="plugins_loop" sort_by="key">
+  <mt:setvar name="plugin_visible" value="1">
+  <mt:var name="__value__" setvar="settings">
+  <mt:var name="settings[status]" setvar="plugin_status">
+  <mt:if name="workspace_id">
+    <mt:unless name="plugin_status">
+      <mt:setvar name="plugin_visible" value="0">
+    </mt:unless>
+  </mt:if>
+  <mt:if name="plugin_visible">
+    <mt:var name="settings[id]" setvar="plugin_id">
+    <mt:unless name="plugin_id">
+      <mt:var name="settings[component]" lower_case="1" setvar="plugin_id">
+    </mt:unless>
+    <mt:var name="settings[upgrade]" setvar="upgrade">
+    <mt:var name="settings[upgrade_scheme]" setvar="upgrade_scheme">
+    <tr id="line_<mt:var name="plugin_id" escape>" class="<mt:if name="upgrade">active-cell<mt:elseif name="upgrade_scheme">active-cell</mt:if><mt:if name="plugin_status">  plugin-active<mt:else>plugin-inactive</mt:if>">
+    <mt:setvar name="plugin_output" value="1">
+    <mt:unless name="workspace_id">
+    <th>
+      <label class="custom-control custom-checkbox">
+        <input id="box_<mt:var name="plugin_id" escape>" type="checkbox" class="custom-control-input" name="plugin_id[]" value="<mt:var name="plugin_id" escape>">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"></span>
+      </label>
+    </th>
+    </mt:unless>
+    <td>
+    <div>
+    <mt:var name="settings[label]" escape>
+    <mt:if name="plugin_status">
+    <i class="fa fa-check-square" aria-hidden="true"></i>
+    <span class="sr-only">(<mt:trans phrase="Enabled">)</span>
+    </mt:if>
+    </div>
+    <mt:unless name="workspace_id">
+    <div class="plugin-switch"><mt:if name="plugin_status">
+      <a id="inline-btn-<mt:var name="plugin_id" escape>" class="disable-link" href="javascript:void(0);"><mt:trans phrase="Disable this plugin"></a>
+    <mt:else>
+      <a id="inline-btn-<mt:var name="plugin_id" escape>" class="enable-link" href="javascript:void(0);"><mt:trans phrase="Enable this plugin"></a>
+    </mt:if>
+    </div>
+    </mt:unless>
+    </td>
+    <td>
+    <div><mt:var name="settings[description]" trans="$__key__"></div>
+    <div><mt:trans phrase="Creator"> : <mt:if name="$settings[author_link]">
+      <a target="_blank" href="<mt:var name="settings[author_link]" trans="$__key__">">
+      <i class="fa fa-external-link" aria-hidden="true"></i>
+    </mt:if>
+      <mt:var name="settings[author]" trans="$__key__">
+    <mt:if name="settings[author_link]">
+      </a>
+    </mt:if>
+    
+    <mt:if name="$settings[committer]">
+      &nbsp;
+      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Committer"></span>
+      <mt:var name="settings[committer]" trans="$__key__">
+    </mt:if>
+    <mt:if name="$settings[email]">
+      &nbsp;
+      <a href="mailto:<mt:var name="settings[email]">">
+      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Email"></span>
+      </a>
+    </mt:if>
+    <mt:if name="settings[doc_link]">
+      &nbsp;
+      <a target="_blank" href="<mt:var name="settings[doc_link]">" class="badge badge-default plugin-doc-link">
+      <i class="fa fa-external-link" aria-hidden="true"></i>
+      <mt:trans phrase="Document">
+      </a>
+    </mt:if>
+    <mt:if name="settings[document]">
+      &nbsp;
+      <a target="_blank" href="<mt:var name="script_uri">?__mode=view_plugin_doc&amp;plugin_id=<mt:var name="plugin_id"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>" class="badge badge-default plugin-doc-link">
+      <i class="fa fa-external-link" aria-hidden="true"></i>
+      <mt:var name="settings[document]" escape>
+      </a>
+    </mt:if>
+    </div>
+    </td>
+    <td>
+    <mt:var name="settings[version]" trans="$__key__">
+    <mt:if name="upgrade">
+    &nbsp; (<mt:trans phrase="Upgrade">)
+    </mt:if>
+    </td>
+    <td class="very-short">
+    <mt:if name="plugin_status">
+    <mt:if name="workspace_id">
+    <mt:var name="settings[cfg_space]" setvar="has_config">
+    <mt:else>
+    <mt:var name="settings[cfg_system]" setvar="has_config">
+    </mt:if>
+    <mt:if name="has_config">
+      <button type="button"
+      class="btn btn-secondary"
+      data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=manage_plugins<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;plugin_id=<mt:var name="plugin_id">&amp;edit_settings=1"><mt:trans phrase="Settings"></button>
+    </mt:if>
+    </mt:if>
+    </td>
+    </tr>
+  </mt:if>
+</mt:loop>
+<mt:if name="plugin_output">
+<tfoot>
+  <mt:var name="table_header">
+</tfoot>
+<mt:else>
+<tr>
+<td colspan="5">
+  <mt:if name="workspace_id">
+    <mt:trans phrase="There is no plugin that can be setting.">
+  <mt:else>
+    <mt:trans phrase="There is no plugin that can be use.">
+  </mt:if>
+</td>
+</tr>
+</mt:if>
+</table>
+<mt:unless name="workspace_id">
+<div <mt:if name="user_stickey_buttons">class="form-group edit-action-bar pl-2" style="margin-left:-15px;margin-right:-15px"<mt:else>class="form-group"</mt:if>>
+  <button type="submit" class="enable-btn btn btn-primary"><mt:trans phrase="Enable"></button>
+  <button type="submit" class="disable-btn btn btn-secondary"><mt:trans phrase="Disable"></button>
+<mt:if name="upgrade_count">
+  <button type="submit" class="upgrade-btn btn btn-secondary"><mt:trans phrase="Upgrade"></button>
+</mt:if>
+</div>
+</mt:unless>
+</form>
+</div>
+<div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+      <iframe></iframe>
+    </div>
+  </div>
+</div>
+<script>
+var in_link = false;
+var is_all  = false;
+$('input').mouseover(function() {
+    in_link = true;
+});
+$('input').mouseout(function() {
+    in_link = false;
+});
+$('button').mouseover(function() {
+    in_link = true;
+});
+$('button').mouseout(function() {
+    in_link = false;
+});
+$('a').mouseover(function() {
+    in_link = true;
+});
+$('a').mouseout(function() {
+    in_link = false;
+});
+$('#list_body tr').click(function() {
+    if ( in_link ) {
+        return true;
+    }    
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+    set_all_select();
+});
+function set_all_select () {
+    is_all = true;
+    $("input[name='plugin_id[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            return false;
+        }
+    });
+    $('.selector').prop('checked', is_all );
+}
+$("input[name='plugin_id[]']").change(function(){
+    set_all_select();
+});
+$('.selector').click(function(){
+    checked = $(this).prop('checked');
+    $("input[name='plugin_id[]']").each(function(){
+        $(this).prop('checked', checked);
+    });
+    $('.selector').prop('checked', checked);
+});
+var selected_item_count;
+function item_checked( count ) {
+    selected_item_count = 0;
+    var selected = false;
+    $("input[name='plugin_id[]']").each(function(){
+        if($(this).prop('checked') === true) {
+            selected = true;
+            if (! count ) {
+                return false;
+            }
+            selected_item_count++;
+        }
+    });
+    if ( count ) {
+        return selected_item_count;
+    }
+    return selected;
+}
+$('.enable-link').click(function(){
+    if(! confirm('<mt:trans phrase="Are you sure you want to enable this plugin?">') ) {
+        return false;
+    }
+    var plugin_name = $(this).prop('id');
+    plugin_name = plugin_name.replace( 'inline-btn-', '' );
+    $("input[name='plugin_id[]']").each(function(){
+        $(this).prop('checked', false );
+    });
+    $('#box_' + plugin_name ).prop('checked', true );
+    $('#this_type').val('enable');
+    $('#update_plugin').submit();
+    return false;
+});
+$('.disable-link').click(function(){
+    if(! confirm('<mt:trans phrase="Are you sure you want to disable this plugin?">') ) {
+        return false;
+    }
+    var plugin_name = $(this).prop('id');
+    plugin_name = plugin_name.replace( 'inline-btn-', '' );
+    $("input[name='plugin_id[]']").each(function(){
+        $(this).prop('checked', false );
+    });
+    $('#box_' + plugin_name ).prop('checked', true );
+    $('#this_type').val('disable');
+    $('#update_plugin').submit();
+    return false;
+});
+$('.enable-btn').click(function(){
+    if ( item_checked( true ) == 0 ) {
+        alert('<mt:trans phrase="You did not select any plugin.">');
+        return false;
+    }
+    if(! confirm('<mt:trans phrase="Are you sure you want to enable plugin(s)?">') ) {
+        return false;
+    }
+    $('#this_type').val('enable');
+});
+$('.disable-btn').click(function(){
+    if ( item_checked( true ) == 0 ) {
+        alert('<mt:trans phrase="You did not select any plugin.">');
+        return false;
+    }
+    if(! confirm('<mt:trans phrase="Are you sure you want to disable plugin(s)?">') ) {
+        return false;
+    }
+    $('#this_type').val('disable');
+});
+$('.upgrade-btn').click(function(){
+    if ( item_checked( true ) == 0 ) {
+        alert('<mt:trans phrase="You did not select any plugin.">');
+        return false;
+    }
+    if(! confirm('<mt:trans phrase="Are you sure you want to upgrade plugin(s)?">') ) {
+        return false;
+    }
+    $('#this_type').val('upgrade');
+});
+$(":checkbox").keypress(function(e) {
+    if ( e.keyCode == 13 ) {
+        if ( $(this).prop('checked') ) {
+            $(this).prop('checked', false);
+        } else {
+            $(this).prop('checked', true);
+        }
+        if ( $(this).hasClass('cb-all-select') ) {
+            checked = $(this).prop('checked');
+            $("input[name='plugin_id[]']").each(function(){
+                $(this).prop('checked', checked);
+            });
+            $('.selector').prop('checked', checked);
+        } else {
+            set_all_select();
+        }
+    }
+    return false;
+});
+</script>
+<mt:include file="include/footer.tmpl">

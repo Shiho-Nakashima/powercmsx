@@ -1,0 +1,43 @@
+<mt:includeblock module="(Media) Site Layout" without_contenner="1">
+  <mt:include module="(Media) Site Config">
+  <mt:setvar name="main_index" value="1">
+  <mt:trans language="$language" phrase="Entries" setvar="translated_phrase__entries">
+
+  <section class="new-section">
+    <div class="container">
+      <div class="section-head">
+        <h1 class="section-title align-center mb-0 display-2"><mt:var name="website_name" escape="single"></h1>
+        <p class="section-subtitle align-center mb-0 mt-2 display-7"><mt:websitedescription escape="single"></p>
+      </div>
+      <h2 class="section-heading mt-4"><mt:trans language="$language" phrase="New Arrivals %s" params="$translated_phrase__entries" escape="single"></h2>
+      <div class="text-right mt-0 mb-0"><a href="<mt:var name="website_url" escape="single">latest_entries.html" class="text-primary show-list"><mt:trans language="$language" phrase="New Arrivals %s List" params="$translated_phrase__entries" escape="single"></a></div>
+      <mt:include module="(Media) List of Entries" entries_limit="6" entries_columns="3" entries_category_badge="1" entries_image="1">
+    </div>
+  </section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+  <mt:categories cols="id,label" ignore_filter="1">
+    <mt:if tag="entriescount" ignore_archive_context="date_based">
+        <mt:categoryid setvar="category_id">
+        <mt:categorylabel language="$language" setvar="category_label">
+        <section class="new-section">
+          <h2 class="section-heading mb-2"><mt:var name="category_label" escape="single"></h2>
+          <div class="text-right mt-0 mb-0"><a href="<mt:categorypermalink>" class="text-primary show-list"><mt:trans language="$language" phrase="%s list of %s" params="'$translated_phrase__entries','$category_label'" escape="single"></a></div>
+          <mt:setcontext context="category" container="entry" id="$category_id">
+            <mt:include module="(Media) List of Entries" entries_limit="2">
+          </mt:setcontext>
+        </section>
+    </mt:if>
+  </mt:categories>
+      </div>
+      <div class="col-lg-4">
+        <mt:if name="ranking_enabled">
+          <mt:include module="(Media) Widget : Ranking">
+        </mt:if>
+        <mt:include module="(Media) Widget : Date Based Archives">
+        <mt:include module="(Media) Widget : Category Archives">
+      </div>
+    </div>
+  </div>
+</mt:includeblock>

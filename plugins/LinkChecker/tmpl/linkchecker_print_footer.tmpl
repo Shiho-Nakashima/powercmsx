@@ -1,0 +1,19 @@
+<h3 class="mt-4"><mt:trans phrase="Broken Link Check Result" component="LinkChecker"></h3>
+<mt:if name="all_msg">
+  <div id="__all_msg" style="margin-left:1px;margin-right:1px;" class="mb-4 alert alert-<mt:if name="total_error">danger<mt:else>success</mt:if>" tabindex="0">
+    <mt:var name="all_msg">
+  </div>
+</mt:if>
+<mt:loop name="errors">
+<mt:if name="__first__"><div class="alert alert-warning" role="alert"><ul class="mb-0 ml-0 pl-3"></mt:if>
+<li><mt:var name="__value__" escape></li>
+<mt:if name="__last__"></ul></div></mt:if>
+</mt:loop>
+<mt:loop name="result_loop">
+  <mt:var name="__value__">
+</mt:loop>
+<script>
+  $('#__all_msg').focus();
+  setTimeout( scrollBottom, 1000 );
+</script>
+<mt:include file="include/popup_footer.tmpl">

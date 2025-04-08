@@ -1,0 +1,45 @@
+<mt:setvar name="show_edit_link" value="0">
+<mt:ifusercan action="edit" model="$this_model" id="$id" workspace_id="$workspace_id">
+  <mt:setvar name="show_edit_link" value="1">
+<mt:elseif name="show_detail_link">
+  <mt:setvar name="show_edit_link" value="1">
+</mt:ifusercan>
+<mt:if name="request.dialog_view"><mt:if name="request.workflow_model">
+  <mt:setvar name="show_edit_link" value="0">
+</mt:if></mt:if>
+<mt:ifusercan action="list" model="$this_model" workspace_id="$workspace_id">
+  <mt:if name="show_edit_link">
+    <a id="edit-link-<mt:var name="id" escape>" <mt:unless name="request.workspace_select"><mt:else>target="_parent"</mt:unless> href="<mt:var name="script_uri">?__mode=<mt:unless name="request.workspace_select">view&amp;_type=edit&amp;_model=<mt:var name="this_model" escape>&amp;id=<mt:var name="id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:if name="_this_model" eq="workspace">&amp;workspace_id=<mt:var name="id" escape></mt:if><mt:if name="request.revision_select">&amp;edit_revision=1<mt:if name="request.dialog_view">&amp;rev_object_id=<mt:var name="request.rev_object_id" escape></mt:if></mt:if><mt:else>dashboard&amp;workspace_id=<mt:var name="id" escape></mt:unless><mt:if name="request.dialog_view">&amp;dialog_view=1<mt:if name="request.target">&amp;target=<mt:var name="request.target" escape>&amp;get_col=<mt:var name="request.get_col" escape><mt:if name="request.single_select">&amp;single_select=1</mt:if><mt:if name="request.selected_ids">&amp;selected_ids=<mt:var name="request.selected_ids" escape></mt:if><mt:if name="request.select_add">&amp;select_add=<mt:var name="request.select_add" escape></mt:if><mt:elseif name="request.insert_editor">&amp;select_system_filters=<mt:var name="request.select_system_filters" escape>&amp;_system_filters_option=<mt:var name="request._system_filters_option" escape>&amp;_filter=<mt:var name="request._filter" escape>&amp;insert_editor=<mt:var name="request.insert_editor" escape>&amp;insert=<mt:var name="request.insert" escape></mt:if></mt:if><mt:if name="request.any_model">&amp;any_model=1</mt:if>">
+  </mt:if>
+</mt:ifusercan>
+  <mt:if name="$_name" eq="">
+    null(id:<mt:var name="id">)
+  <mt:else>
+    <mt:var name="$_name" escape>
+  </mt:if>
+  <mt:if name="request.workspace_select">
+    </a>
+  <mt:else>
+    <mt:if name="show_edit_link">
+      </a>
+    </mt:if>
+  </mt:if>
+<mt:var name="$_name" escape setvar="__permalink">
+<mt:if name="__permalink">
+  &nbsp; &nbsp;
+  <mt:if name="_link_url">
+    <mt:var name="__permalink" replace="'$_site_url','$_link_url'" setvar="__permalink">
+  <mt:else>
+    <mt:var name="__permalink" setvar="__permalink">
+  </mt:if>
+  <a id="permalink_<mt:var name="id">" title="<mt:trans phrase="View">" href="<mt:var name="__permalink">" target="_blank">
+  <i class="fa fa-external-link" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="View"></span>
+  </a>
+</mt:if>
+<a class="btn toggle-infobox hidden"
+  id="toggle_<mt:var name="id">" href="javascript:void(0);">
+  <i id="toggle_icn_<mt:var name="id">" class="fa fa-caret-down toggle-icn" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Toggle"></span>
+</a>
+<div id="infobox_<mt:var name="id">" class="hidden info-box"></div>

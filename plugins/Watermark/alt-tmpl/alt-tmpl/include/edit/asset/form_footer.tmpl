@@ -1,0 +1,165 @@
+<mt:if name="object_id">
+<mt:objectvar model="asset" id="$object_id" name="class" setvar="object_class">
+<mt:if name="object_class" eq="image">
+  <mt:setvar name="can_watermark" value="1">
+</mt:if>
+<mt:if name="can_watermark">
+<style type="text/css">
+#progressbar-wm {
+  font-size: 0.3em;
+  width: 100%;
+  height: 8px;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  background-image: repeating-linear-gradient( 50deg, #f6f6f6, #f6f6f6 20px, #ddd 20px, #ddd 40px );
+  background-size: 5000%;
+  animation: animatedBackground 400s linear infinite;
+}
+#progressbar-progress-wm {
+  font-size: 0.3em;
+  width: 100%;
+  border-radius: 0.5em;
+  background-color: #ddd;
+}
+#progressbar-inner-wm {
+  height: 8px;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  width: 0;
+  background-color: #0dd;
+}
+</style>
+<div class="row mb-2" id="wartermark-wrapper">
+  <div class="col-lg-2">
+  <mt:trans phrase="Watermark" component="Watermark">
+  </div>
+  <div class="col-lg-10 text-center">
+    <div class="alert alert-success hidden text-left" id="fileUploadedAlertWM" role="alert" tabindex="0">
+      <button onclick="$('#fileUploadedAlertWM').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="Save the file to combine the watermark." component="Watermark">
+    </div>
+    <div class="wartermark-wrapper">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="watermark-pos" value="" <mt:unless name="watermark_default_pos"> checked</mt:unless>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="None"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="watermark-pos" value="top-left" <mt:if name="watermark_default_pos" eq="top-left"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Top-Left" component="Watermark"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="watermark-pos" value="top-right" <mt:if name="watermark_default_pos" eq="top-right"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Top-Right" component="Watermark"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="watermark-pos" value="bottom-left" <mt:if name="watermark_default_pos" eq="bottom-left"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Bottom-Left" component="Watermark"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="watermark-pos" value="bottom-right" <mt:if name="watermark_default_pos" eq="bottom-right"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Bottom-Right" component="Watermark"></span>
+    </label>
+    <button type="button" class="btn btn-info" id="combine-watermark"><mt:trans phrase="Combine the Watermark" component="Watermark"></button>
+    <div class="mt-2 mb-2">
+      <div id="progressbar-progress-wm" class="hidden"><div id="progressbar-inner-wm"></div></div>
+      <div id="progressbar-wm" class="hidden"></div>
+    </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" name="return_args" value="">
+<script>
+let insertNode = $('#file-magic').parent().parent().parent();
+$('#wartermark-wrapper').insertBefore( insertNode );
+var progressBarPercentWM = 0;
+var pregressBarProgressWM = null;
+const progressBarWM = () => {
+    progressBarPercentWM += 100;
+    if ( progressBarPercentWM > 100 ) {
+        $('#progressbar-progress-wm').hide();
+        $('#progressbar-wm').show();
+    } else {
+        $('#progressbar-inner-wm').css( 'width', progressBarPercentWM + '%' );
+    }
+}
+var moviePermalink = $('#clipboard-file').val();
+const watchPermalink = () => {
+    if ( $('#clipboard-file').val() != moviePermalink ) {
+        $('.wartermark-wrapper').hide();
+        $('#wartermark-wrapper').removeClass( 'mb-2' );
+        $('#fileUploadedAlertWM').show();
+        clearInterval( watchEventWM );
+    } else if ( $('#file-magic').val() ) {
+        $('.wartermark-wrapper').hide();
+        $('#wartermark-wrapper').removeClass( 'mb-2' );
+        $('#fileUploadedAlertWM').show();
+        clearInterval( watchEventWM );
+    }
+}
+var watchEventWM = setInterval( watchPermalink, 1000 );
+$('#combine-watermark').click(function(){
+    let value = $('input:radio[name="watermark-pos"]:checked').val();
+    let message = '<mt:trans phrase="This process may take a few minutes. Are you sure you want to continue?" component="Watermark">';
+    if (! value ) {
+        <mt:if name="watermark_backup">
+        message = '<mt:trans phrase="Remove the watermark. Are you sure you want to continue?" component="Watermark">';
+        <mt:else>
+        alert( '<mt:trans phrase="No position has been selected." component="Watermark">' );
+        return;
+        </mt:if>
+    }
+    if (! confirm( message ) ) {
+        return false;
+    }
+    $(this).attr('disabled', true);
+    if ( value ) {
+        $('#progressbar-progress-wm').show();
+        progressBarPercentWM = 0;
+        pregressBarProgressWM = setInterval( progressBarWM, 200 );
+    } else {
+        $('#progressbar-wm').show();
+    }
+    let url = '<mt:var name="script_uri">?__mode=watermark_asset<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    var data = {
+        position: value,
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function( responce ){
+            if ( responce.message ) {
+                clearInterval( pregressBarProgressWM );
+                $('#progressbar-progress-wm').hide();
+                $('#progressbar-wm').hide();
+                alert( responce.message );
+                $('#combine-watermark').attr('disabled', false);
+                // $('#__loader-bg').hide();
+            } else {
+                $('input[name="return_args"]').val('combine_watermark=1');
+                $('#edit-form-main').submit();
+            }
+        },
+        error: function(){
+            // $('#__loader-bg').hide();
+            clearInterval( pregressBarProgressWM );
+            $('#progressbar-progress-wm').hide();
+            $('#progressbar-wm').hide();
+            $('#combine-watermark').attr('disabled', false);
+            alert( '<mt:trans phrase="An error occurred while combine the watermark." component="Watermark">' );
+        }
+    });
+});
+</script>
+</mt:if>
+</mt:if>

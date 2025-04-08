@@ -1,0 +1,268 @@
+<mt:include file="include/header.tmpl">
+<mt:if name="request.cache_cleared">
+  <mt:var name="request.cache_ids" split="," setvar="cache_ids">
+  <mt:loop name="cache_ids">
+<mt:if name="__first__">
+  <div id="cleared-alert-message" class="alert alert-success" role="alert" tabindex="0">
+    <ul class="mb-0">
+</mt:if>
+      <mt:trans phrase="$__value__" setvar="cache_label" component="CacheManager">
+      <li><mt:trans phrase="The %s has been reset." params="$cache_label" component="CacheManager"></li>
+<mt:if name="__last__">
+    </ul>
+  </div>
+    <script>
+    $('#cleared-alert-message').focus();
+    </script>
+</mt:if>
+  </mt:loop>
+</mt:if>
+<mt:if name="cache_driver" eq="Memcached">
+  <mt:var name="can_flush" value="1">
+<mt:elseif name="cache_driver" eq="Redis">
+  <mt:var name="can_flush" value="1">
+</mt:if>
+<mt:loop name="cache_loop">
+<div class="table-screen">
+<mt:if name="__first__">
+<form action="<mt:var name="script_uri">" method="POST">
+<div class="form-group">
+  <button type="submit" class="apply-btn btn btn-primary"><mt:trans phrase="Reset"></button>
+</div>
+<input type="hidden" name="__mode" value="manage_cache">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="_type" value="clear_cache">
+<table class="table table-hover table-striped" style="border-bottom: 1px solid #ddd">
+<thead>
+<tr>
+  <th class="all-selector cb-col">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="selector custom-control-input cb-all-select">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </th>
+  <th><mt:trans phrase="Name"></th>
+  <th><mt:trans phrase="Path"></th>
+  <th class="text-right"><mt:trans phrase="Count" component="CacheManager"></th>
+</tr>
+</thead>
+<tbody id="list_body">
+<mt:if name="can_flush">
+<tr class="hidden" id="flush_cache-line">
+  <th class="cb-col">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" name="flush_cache" id="flush_cache"
+        value="1" class="custom-control-input"
+        aria-label="<mt:trans phrase="Invalidate all items in the %s caches" params="$cache_driver" component="CacheManager">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </th>
+  <td colspan="3">
+    <mt:trans phrase="Invalidate all items in the %s caches" params="$cache_driver" component="CacheManager">
+  </td>
+</tr>
+</mt:if>
+</mt:if>
+<mt:setvar name="print_cache" value="1">
+<tr id="line_<mt:var name="name" escape>">
+  <th class="cb-col">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" name="cache_id[]" id="box_<mt:var name="name" escape>"
+        value="<mt:var name="name" escape>" class="custom-control-input"
+        aria-label="<mt:trans phrase="Select or deselect %s in this row." params="$label" escape>">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </th>
+  <td>
+  <mt:var name="label" escape> ( <mt:if name="scope"><mt:trans phrase="$scope"><mt:else><mt:trans phrase="None"></mt:if> )
+  <div class="text-muted hint-block">
+    <mt:setvar name="__can_list__" value="0">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <span>
+      <mt:if name="name" eq="app_cache">
+        <mt:trans phrase="Application settings, database table schemas, translation phrases, etc." component="CacheManager">
+        <mt:setvar name="__can_list__" value="1">
+      <mt:elseif name="name" eq="compile_cache">
+        <mt:trans phrase="Result of compiling template tags described in the view into native PHP code." component="CacheManager">
+        <mt:setvar name="__can_list__" value="1">
+      <mt:elseif name="name" eq="query_cache">
+        <mt:trans phrase="Results of executing SQL queries to the database." component="CacheManager">
+        <mt:setvar name="__can_list__" value="1">
+      <mt:elseif name="name" eq="opcache">
+        <mt:trans phrase="Precompiled script bytecode in shared memory." component="CacheManager">
+      <mt:elseif name="name" eq="plugin_cache">
+        <mt:trans phrase="Data cached by the plugin." component="CacheManager">
+      <mt:elseif name="name" eq="build_cache">
+        <mt:trans phrase="View build results cached with include or cacheblock tags." component="CacheManager">
+      <mt:elseif name="name" eq="view_compiled">
+        <mt:trans phrase="Precompiled View." component="CacheManager">
+      <mt:elseif name="name" eq="urlmap_compiled">
+        <mt:trans phrase="Precompiled URL Map." component="CacheManager">
+      <mt:elseif name="name" eq="user_permissions">
+        <mt:trans phrase="Saved users permissions." component="CacheManager">
+      <mt:elseif name="name" eq="expired_sessions">
+        <mt:trans phrase="Expired session records on database." component="CacheManager">
+      <mt:elseif name="name" eq="api_cache">
+        <mt:trans phrase="JSON response data for RESTFulAPI." component="CacheManager">
+      </mt:if>
+    </span>
+  </div>
+  </td>
+  <td>
+  <mt:if name="can_list">
+  <mt:if name="__can_list__">
+    <a href="<mt:var name="script_uri">?__mode=cachemanager_manage_cache" target="_blank">
+  </mt:if>
+  </mt:if>
+  <mt:isarray array="path">
+    <mt:var name="path" join=", " escape>
+  <mt:else>
+    <mt:var name="path" escape></mt:isarray>
+  </mt:if>
+  <mt:if name="can_list">
+  <mt:if name="__can_list__">
+    <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+    <span class="sr-only"><mt:trans phrase="View List"></span>
+    </a>
+  </mt:if>
+  </mt:if>
+  </td>
+  <td class="text-right"><mt:var name="count" escape></td>
+</tr>
+<mt:if name="__last__">
+</tbody>
+</table>
+<div <mt:if name="user_stickey_buttons">class="form-group edit-action-bar pl-2" style="margin-left:-15px;margin-right:-15px;margin-top:1em"<mt:else>class="form-group" style="margin-top:1em"</mt:if>>
+  <button type="submit" class="apply-btn btn btn-primary"><mt:trans phrase="Reset"></button>
+</div>
+</form>
+</div>
+<script>
+var in_link = false;
+$('input').mouseover(function() {
+    in_link = true;
+});
+$('input').mouseout(function() {
+    in_link = false;
+});
+$('#list_body tr').click(function() {
+    if ( in_link ) {
+        return true;
+    }    
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+    set_all_select();
+});
+$('.selector').click(function(){
+    checked = $(this).prop('checked');
+    $("input[name='cache_id[]']").each(function(){
+        $(this).prop('checked', checked);
+    });
+    $('.selector').prop('checked', checked);
+    <mt:if name="can_flush">
+    cache_ids = $("input[name='cache_id[]']:checked").map(function(){
+      return $(this).val();
+    }).get();
+    if ((!$('#box_app_cache').length || cache_ids.indexOf( 'app_cache' ) !== -1 ) &&
+        (!$('#box_compile_cache').length || cache_ids.indexOf( 'compile_cache' ) !== -1 ) && 
+        (!$('#box_query_cache').length || cache_ids.indexOf( 'query_cache' ) !== -1 ) ) {
+        $('#flush_cache-line').show(100);
+    } else {
+        $('#flush_cache-line').hide(100);
+    }
+    </mt:if>
+});
+var selected_item_count;
+function item_checked( count ) {
+    selected_item_count = 0;
+    var selected = false;
+    $("input[name='cache_id[]']").each(function(){
+        if($(this).prop('checked') === true) {
+            selected = true;
+            if (! count ) {
+                return false;
+            }
+            selected_item_count++;
+        }
+    });
+    if ( count ) {
+        return selected_item_count;
+    }
+    return selected;
+}
+function set_all_select () {
+    is_all = true;
+    $("input[name='cache_id[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            return false;
+        }
+    });
+    $('.selector').prop('checked', is_all );
+    <mt:if name="can_flush">
+    cache_ids = $("input[name='cache_id[]']:checked").map(function(){
+      return $(this).val();
+    }).get();
+    if ((!$('#box_app_cache').length || cache_ids.indexOf( 'app_cache' ) !== -1 ) &&
+        (!$('#box_compile_cache').length || cache_ids.indexOf( 'compile_cache' ) !== -1 ) && 
+        (!$('#box_query_cache').length || cache_ids.indexOf( 'query_cache' ) !== -1 ) ) {
+        $('#flush_cache-line').show(100);
+    } else {
+        $('#flush_cache-line').hide(100);
+    }
+    </mt:if>
+}
+$("input[name='cache_id[]']").change(function(){
+    set_all_select();
+});
+$('.apply-btn').click(function() {
+    if (! item_checked() ) {
+        alert('<mt:trans phrase="The cache not selected." component="CacheManager">');
+        return false;
+    }
+    if(! confirm('<mt:trans phrase="Are you sure you want to reset selected cache?" component="CacheManager">') ) {
+        return false;
+    }
+});
+$(":checkbox").keypress(function(e) {
+    if ( e.keyCode == 13 ) {
+        if ( $(this).prop('checked') ) {
+            $(this).prop('checked', false);
+        } else {
+            $(this).prop('checked', true);
+        }
+        if ( $(this).hasClass('cb-all-select') ) {
+            checked = $(this).prop('checked');
+            $("input[name='cache_id[]']").each(function(){
+                $(this).prop('checked', checked);
+            });
+            $('.selector').prop('checked', checked);
+        } else {
+            set_all_select();
+        }
+    }
+    return false;
+});
+</script>
+</mt:if>
+</mt:loop>
+<mt:unless name="print_cache">
+  <div class="alert alert-info" role="alert" tabindex="0" id="cache-alert-message">
+    <mt:trans phrase="There is no cache setting." component="CacheManager">
+  </div>
+  <script>
+  $('#cache-alert-message').focus();
+  </script>
+</mt:unless>
+
+<mt:include file="include/footer.tmpl">

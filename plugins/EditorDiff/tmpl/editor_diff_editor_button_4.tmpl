@@ -1,0 +1,22 @@
+<mt:ifobjecthasrevision>
+        ed.addButton('pt-diff', {
+            image: '<mt:if name="editordiff_assets_base"><mt:var name="editordiff_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/EditorDiff/assets/img</mt:if>/editor_diff.webp',
+            tooltip: '<mt:trans phrase="Show Diff" component="EditorDiff">',
+            onclick: function (e) {
+                let editor = tinymce.activeEditor;
+                let html = editor.getContent();
+                if (! html ) {
+                    alert( '<mt:trans phrase="No content in editor." component="EditorDiff">' );
+                    return;
+                }
+                let add_param = '';
+                <mt:if name="request.edit_revision">
+                if ( e.shiftKey ) {
+                    add_param = '&_from_master=1';
+                }
+                </mt:if>
+                let url = '<mt:var name="script_uri">?__mode=editor_diff&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>&<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>&editor_id=' + editor.id + add_param;
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });
+</mt:ifobjecthasrevision>

@@ -1,0 +1,66 @@
+{
+    "rankedobjects": {
+        "description": "Loops out access-ranked objects(descending order).Set each object context in loop.",
+        "set_loop_vars": true,
+        "variables": {
+            "object_id" : "The ID of the object.",
+            "object_label" : "Primary column's value of the object.",
+            "object_url" : "The URL of the object.",
+            "object_count" : "Aggregated number.",
+            "object_model" : "Model name of the object.",
+            "object_table" : "Model label of the object."
+        },
+        "attributes": {
+            "period" : "Aggregation period(YmdHis or last[n]days or last[n]weeks or last[n]months or last[n]years).",
+            "period_end" : "Aggregation period end(YmdHis or last[n]days or last[n]weeks or last[n]months or last[n]years).(optional)",
+            "models" : "Model names(comma separated text or an array).",
+            "prefix" : "Prefix for template variable(default'object').",
+            "class" : "Class value of model 'activity'.If omitted, 'Page View' is specified.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "limit" : "A positive integer to limit results.",
+            "min_count" : "Output only those that have been accessed more than the specified number of times.",
+            "glue" : "When specified, the string will be placed in between each row.",
+            "include_workspaces" : "If object has column 'workspace_id', objects matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "If object has column 'workspace_id', objects excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "rankedkeywords": {
+        "description": "Loops out search keywords(descending order).",
+        "set_loop_vars": true,
+        "variables": {
+            "object_keyword" : "The Keyword(Aligned to lowercase).",
+            "object_count" : "Number of Searches."
+        },
+        "attributes": {
+            "period" : "Aggregation period(YmdHis or last[n]days or last[n]weeks or last[n]months or last[n]years).",
+            "period_end" : "Aggregation period end(YmdHis or last[n]days or last[n]weeks or last[n]months or last[n]years).(optional)",
+            "prefix" : "Prefix for template variable(default'object').",
+            "limit" : "A positive integer to limit results.",
+            "min_count" : "Output only those searched more than specified times.",
+            "min_length" : "Output only those with more than the specified number of characters.",
+            "glue" : "When specified, the string will be placed in between each row.",
+            "include_workspaces" : "If object has column 'workspace_id', objects matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "If object has column 'workspace_id', objects excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "activitymonths": {
+        "description": "Loop output the month in which the activity is saved.",
+        "attributes": {
+            "workspace_id" : "The 'id' of workspace.",
+            "var" : "Assigned to template variable to 'var'(default value is '__value__')."
+        }
+    },
+    "accesstracking": {
+        "description": "Record the activity. At the time of static output, JavaScript code is output.",
+        "attributes": {
+            "url" : "Output the URL of the tracking PHP program without generating JavaScript code.",
+            "relative" : "Converts a URL to a root relative path.",
+            "language" : "Specifies the language of the web page.",
+            "lang" : "Alias for 'language'."
+        }
+    }
+}

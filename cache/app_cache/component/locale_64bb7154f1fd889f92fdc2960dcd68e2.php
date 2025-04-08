@@ -1,0 +1,7 @@
+<?php $this->get_cache=array (
+  'Provides a Bookmarklet for a quick link from the public page to the Edit Profile screen.' => '公開ページから編集画面へのクイック編集リンク用ブックマークレットをプロフィールの編集画面に追加します。',
+  'Quick Edit' => 'クイック編集',
+  'Quick Edit(View)' => 'クイック編集(ビュー)',
+  'Please launch quick editing from the Bookmarklet.' => 'クイック編集はブックマークレットから呼び出してください。',
+  'Quick link for editing screen was not found.' => 'クイック編集リンクが見つかりませんでした。',
+);

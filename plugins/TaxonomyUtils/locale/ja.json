@@ -1,0 +1,21 @@
+{
+    "Provides various functions related to model Taxonomy.": "情報分類モデルの機能を拡張します。",
+    "Outputs the value if there is a related object.": "情報分類に関連づいているオブジェクトがある場合に値を出力します。",
+    "Outputs the number of related objects.": "情報分類に関連づいているオブジェクトの数を出力します。",
+    "Loop output objects related to the Taxonomy.": "情報分類に関連づいているオブジェクトをループ出力します。",
+    "Add Taxonomies": "情報分類を追加",
+    "Remove Taxonomies": "情報分類を削除",
+    "Filter by Taxonomy": "情報分類でフィルタ",
+    "Normalize": "正規化",
+    "The 'date' of object(Publish Date takes priority).": "オブジェクトの日付(公開日が優先)",
+    "Sort objects by value(Specify a column that exists in all models).": "指定のカラムでオブジェクトを並び替えする(すべてのモデルに存在するカラムを指定してください)",
+    "Column name for SELECT(Comma separated values or array, Specify a column that exists in all models).": "SELECT文の対象とするカラム名のカンマ区切りまたは配列(すべてのモデルに存在するカラムを指定してください)",
+    "Please Enter the Taxonomy Name.": "情報分類名を入力してください。",
+    "Filter by Taxonomy(Partial Match)": "情報分類でフィルタ(部分一致)",
+    "Please Enter the Taxonomy Name(Partial Match).": "情報分類名(部分一致)を入力してください。",
+    "Comma-separated text or array of model names. If omitted, all models are targeted.": "モデル名のカンマ区切りテキストまたは配列(省略時はすべてのモデルが対象)",
+    "If object has column 'status', Whether to include not published objects.": "オブジェクトが'status'カラムを持つ時、公開されていない下書きなどのオブジェクトを含む",
+    "Specify comma-separated text or array of model names(If omitted, all models are targeted) and Filter for those that have related objects."
+        : "カンマ区切りのテキストまたはモデル名の配列を指定して(省略した場合はすべてのモデルが対象)関連付けのあるもののみをフィルタする",
+    "If specify attribute value 'has_child', Whether to include not published objects.": "属性値「has_child」指定のある時、公開されていない下書きなどの関連オブジェクトを含む"
+}

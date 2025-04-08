@@ -1,0 +1,124 @@
+<mt:setvar name="page_title" value="">
+<mt:trans phrase="Password Recovery" setvar="html_title">
+<mt:setvarblock name="recover_link">
+<a href="<mt:var name="script_uri" relative>?__mode=start_recover"><mt:trans phrase="Password Reset"></a>
+</mt:setvarblock>
+<mt:setvarblock name="html_head" append="1">
+<style>
+body { background-color: #efefef; }
+#page-title { display: none; }
+#dialog-title { font-size: 120%; margin: -10px -15px 15px -15px;}
+.card-img-top { max-width: 15rem; }
+.card { margin:auto; width:60%; max-width: 640px; margin-top: 5rem; border-color: #ccc; border-radius: 10px; }
+.card-image-wrapper { border-radius: 10px 10px 0 0; }
+@media ( max-width: 991px ) {
+  .card-img-top { width: 37% !important; }
+  .card { width:70% !important; }
+}
+@media ( max-width: 769px ) {
+  .card-img-top { width: 40% !important; }
+  .card { width:88% !important; }
+}
+@media ( max-width: 576px ) {
+  .card { width:95% !important; }
+  .card-inner { padding: 1.5rem !important; }
+}
+@media ( max-height: 650px ) {
+  .card { margin-top: 1.5rem }
+}
+@media ( max-height: 500px ) {
+  .card { margin-top: -0.5rem }
+}
+#dialog-header-alert, #header-error-message {
+  margin: -10px 0px 20px 0px;
+}
+.footer-btns {
+  margin-left: 0px;
+}
+.footer-links {
+  margin-left: -5px;
+}
+</style>
+</mt:setvarblock>
+<mt:var name="error" setvar="error_msg">
+<mt:setvar name="error" value="">
+<mt:include file="include/dialog_header.tmpl">
+<div class="card">
+<div class="card-image-wrapper"><img class="card-img-top img-fluid" src="assets/brand/PowerCMSX.svg" alt="PowerCMS X"></div>
+<div class="col-md-12 form-group pt-5 pl-5 pr-5  card-inner">
+<h2 is="dialog-title"><mt:var name="html_title"></h2>
+<mt:if name="header_alert_message">
+  <div id="dialog-header-alert" class="alert alert-<mt:if name="header_alert_class"><mt:var name="header_alert_class"><mt:else>success</mt:if>" tabindex="0">
+    <mt:var name="header_alert_message">
+  </div>
+  <script>
+  $('#dialog-header-alert').focus();
+  </script>
+</mt:if>
+<mt:if name="error_msg">
+  <div class="alert alert-danger" id="header-error-message" tabindex="0" role="alert">
+    <mt:var name="error_msg" escape="1" nl2br="1">
+  </div>
+  <script>
+  $('#header-error-message').focus();
+  </script>
+</mt:if>
+<mt:unless name="recovered">
+<form action="<mt:var name="script_uri">" method="POST" >
+  <input type="hidden" name="__mode" value="recover_password">
+<mt:if name="request._type" eq="recover">
+  <mt:setvar name="request_type" value="recover">
+<mt:elseif name="request._type">
+  <mt:setvar name="request_type" value="recover">
+</mt:if>
+
+<mt:if name="request_type" eq="recover">
+
+<mt:unless name="reset_expired">
+  <input type="hidden" name="_type" value="new_password">
+  <input type="hidden" name="token" value="<mt:var name="request.token" escape>">
+
+<div class="form-group">
+  <label for="password">
+    <mt:trans phrase="New Password"> :
+  </label>
+  <div class="input-group">
+    <input type="password"  autocomplete="off" id="password" name="password" class="form-control" value="<mt:var name="password" escape>">
+  </div>
+</div>
+
+<div class="form-group mb-5">
+  <label for="password-verify">
+    <mt:trans phrase="Password (Confirm)"> :
+  </label>
+  <div class="input-group">
+    <input type="password" autocomplete="off" id="password-verify" name="password-verify" class="form-control" value="<mt:var name="password-verify" escape>">
+  </div>
+</div>
+</mt:unless>
+
+<mt:else>
+<div class="form-group mb-5">
+  <label for="name"><mt:trans phrase="Email"> :</label>
+  <input id="email" type="text" class="form-control" name="email" value="<mt:if name="request.email"><mt:var name="request.email" escape><mt:else><mt:var name="email"></mt:if>">
+</div>
+</mt:if>
+
+<div class="row form-group footer-btns">
+<mt:unless name="reset_expired">
+  <button type="submit" style="margin-left:-1px" class="btn btn-primary"><mt:trans phrase="Reset"></button>
+  <a href="<mt:var name="script_uri">?__mode=login" class="btn btn-secondary"><mt:trans phrase="Back"></a>
+<mt:else>
+  <a href="<mt:var name="script_uri">?__mode=start_recover" class="btn btn-secondary"><mt:trans phrase="Back"></a>
+</mt:unless>
+</div>
+</form>
+
+<mt:else>
+<div class="row form-group footer-links">
+  <a href="<mt:var name="script_uri">?__mode=login" class="btn btn-secondary"><mt:trans phrase="Back"></a>
+</div>
+</mt:unless>
+</div>
+</div>
+<mt:include file="include/dialog_footer.tmpl">

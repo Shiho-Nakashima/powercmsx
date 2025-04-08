@@ -1,0 +1,26 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:Var name="__col_name__" />">
+      <mt:Trans phrase="reCAPTCHA" component="reCAPTCHA" />
+      <mt:If name="not_null"><mt:Var name="field_required" /></mt:If>
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline row-more form-inline-left-margin">
+    <input type="hidden" name="<mt:Var name="__col_name__" />" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" name="<mt:var name="__col_name__">" id="<mt:Var name="__col_name__" />" class="custom-control-input watch-changed" value="1"<mt:if name="value"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:Trans phrase="Use reCAPTCHA" component="reCAPTCHA" /></span>
+    </label>
+  </div>
+</div>
+
+<mt:IfComponent component="reCAPTCHA">
+<mt:Else>
+  <script>
+  (() => {
+    const $reCAPTCHA = $('#use_recaptcha-wrapper');
+    $reCAPTCHA.css('display', 'none');
+  })();
+  </script>
+</mt:IfComponent>

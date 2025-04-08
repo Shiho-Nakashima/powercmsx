@@ -1,0 +1,192 @@
+<mt:if name="maintenance_setting">
+  <mt:include file="include/popup_header.tmpl">
+  <mt:if name="request.set_maintenance">
+  <div class="alert alert-success" tabindex="0">
+    <mt:trans phrase="Your changes have been saved.">
+  </div>
+  </mt:if>
+  <div class="alert alert-danger<mt:isadmin><mt:else> mt-3</mt:isadmin>" id="alert-maintenance" tabindex="0">
+    <mt:trans phrase="We are currently undergoing system maintenance.">
+    <mt:isadmin>
+    <mt:if name="active_processes">
+      <mt:if name="active_processes" eq="1">
+        (<mt:trans phrase="There are 1 running process.">)
+      <mt:else>
+        (<mt:trans phrase="There are %s running processes." params="$active_processes">)
+      </mt:if>
+    </mt:if>
+    </mt:isadmin>
+  </div>
+<mt:else>
+  <mt:include file="include/header.tmpl">
+  <mt:if name="request.unset_maintenance">
+  <div class="alert alert-success" tabindex="0">
+    <mt:trans phrase="Your changes have been saved.">
+  </div>
+  </mt:if>
+  <div class="alert alert-info" id="alert-maintenance" tabindex="0">
+    <mt:trans phrase="System maintenance is not set.">
+    <mt:if name="active_processes">
+      <mt:if name="active_processes" eq="1">
+        (<mt:trans phrase="There are 1 running process.">)
+      <mt:else>
+        (<mt:trans phrase="There are %s running processes." params="$active_processes">)
+      </mt:if>
+    </mt:if>
+  </div>
+</mt:if>
+<script>
+$('#alert-maintenance').focus();
+</script>
+<mt:isadmin>
+<mt:if name="request.delete_sessions">
+  <div class="alert alert-success" tabindex="0" id="alert-delete">
+    <mt:var name="delete_message">
+  </div>
+<script>
+$('#alert-delete').focus();
+</script>
+</mt:if>
+<form action="<mt:var name="script_uri">" method="POST" id="maintenance-setting-main">
+<input type="hidden" name="__mode" value="maintenance_setting">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<mt:if name="maintenance_setting">
+<input type="hidden" name="_type" value="unset_maintenance">
+<button type="submit" id="__save" class="btn btn-primary ml-0 mt-4">
+  <mt:trans phrase="Unset Maintenance Mode">
+</button>
+<mt:else>
+<input type="hidden" name="_type" value="set_maintenance">
+<button type="submit" id="__save" class="btn btn-danger ml-0 mt-3">
+  <mt:trans phrase="Set Maintenance Mode">
+</button>
+</mt:if>
+</form>
+<mt:if name="develop">
+<mt:trans phrase="Session"translate setvar="param">
+<mt:objectloop model="session" kind="PR" workspace_ids="all">
+<mt:if name="__first__">
+<form action="<mt:var name="script_uri">" method="POST" id="maintenance-setting-delete">
+<input type="hidden" name="__mode" value="maintenance_setting">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<table class="table mt-5">
+<tr>
+<th class="text-center" style="width:10px;">
+<label class="custom-control custom-checkbox">
+  <input type="checkbox" class="selector custom-control-input cb-all-select"
+    aria-label="<mt:trans phrase="Select all">">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description"></span>
+</label>
+</th>
+<th>ID</th>
+<th><mt:trans phrase="Method / Params"></th>
+<th><mt:trans phrase="Start Time"></th>
+</tr>
+<tbody id="list_body">
+</mt:if>
+<tr id="line_<mt:var name="__counter__">">
+<th style="width:10px;">
+<label class="custom-control custom-checkbox">
+  <input id="box_<mt:var name="__counter__">" type="checkbox" name="sessions[]"
+    value="<mt:var name="id">" class="custom-control-input cb-select-session"
+    aria-label="<mt:trans phrase="Select or deselect %s in this row." params="$param" escape>">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description"></span>
+</label>
+</th>
+<td><mt:var name="key"><mt:if name="value"> (<mt:var name="value">)</mt:if></td><td><mt:var name="text" escape><mt:if name="user_id"> ( <mt:objectloop model="user" limit="1" id="$user_id" cols="nickname"><mt:var name="nickname"> )</mt:objectloop></mt:if></td><td><mt:date unixtime="$start"></td>
+</tr>
+<mt:if name="__last__">
+</tbody>
+</table>
+<input type="hidden" name="_type" value="delete_sessions">
+<button type="submit" id="__delete" class="btn btn-warning ml-0 mt-2 pl-4 pr-4 mb-5">
+  <mt:trans phrase="Delete Session(s)">
+</button>
+</form>
+</mt:if>
+</mt:objectloop>
+</mt:if>
+<script>
+$('#list_body tr').click(function() {
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+    is_all = true;
+    $("input[name='sessions[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            $('.cb-all-select').prop('checked', false);
+            return false;
+        }
+    });
+    $('.cb-all-select').prop('checked', is_all );
+});
+$('.cb-all-select').change(function(){
+    $('.cb-select-session').prop('checked', $(this).prop('checked'));
+});
+$('.cb-select-session').change(function(){
+    is_all = true;
+    $("input[name='sessions[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            $('.cb-all-select').prop('checked', false);
+            return false;
+        }
+    });
+    $('.cb-all-select').prop('checked', is_all );
+});
+$('#__delete').click(function(){
+    let selected_items = 0;
+    let input_data = [];
+    $("input[name='sessions[]']").each(function(){
+        if ( $(this).prop('checked') == true ) {
+             selected_items++;
+             input_data.push( $(this).val() );
+        }
+    });
+    if (! selected_items ) {
+        alert( '<mt:trans phrase="You did not select any %s." params="$param">' );
+        return false;
+    }
+    let message;
+    if ( selected_items == 1 ) {
+        message = '<mt:trans phrase="Are you sure you want to remove _1 %s?" params="$param">';
+    } else {
+        <mt:trans phrase="Sessions" translate setvar="param">
+        message = '<mt:trans phrase="Are you sure you want to remove _1 %s?" params="$param">';
+    }
+    message = message.replace( '_1', selected_items );
+    if(! confirm( message ) ) {
+        return false;
+    }
+
+    $('#maintenance-setting-delete').submit();
+    return false;
+});
+$('#__save').click(function(){
+<mt:if name="maintenance_setting">
+    if (! confirm( '<mt:trans phrase="Exit maintenance mode. Are you sure you want to continue?">' ) ) {
+        return false;
+    }
+<mt:else>
+    if (! confirm( '<mt:trans phrase="This CMS will not be operational during maintenance. Are you sure you want to continue?">' ) ) {
+        return false;
+    }
+</mt:if>
+    $('#maintenance-setting-main').submit();
+    return false;
+});
+</script>
+</mt:isadmin>
+<mt:if name="maintenance_setting">
+  <mt:include file="include/popup_footer.tmpl">
+<mt:else>
+  <mt:include file="include/footer.tmpl">
+</mt:if>

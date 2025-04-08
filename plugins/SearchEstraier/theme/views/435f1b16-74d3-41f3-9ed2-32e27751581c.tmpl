@@ -1,0 +1,93 @@
+<mt:ignore>Move style elements into the head element.</mt:ignore>
+<style type="text/css">
+.recommend-list li:first-child { border-top: 1px solid #ccc; }
+.recommend-list_item { border-bottom: 1px solid #ccc; padding: 10px 10px 10px 0; }
+.recommend-list_item img { border: 1px solid #ccc; }
+.recommend-link{ display: block; overflow: hidden;  text-overflow: ellipsis; }
+.recommend-thumbnail{ min-width : 50px; margin-right: 10px; }
+.recommend-date{ color: #666; font-size: 90%; }
+</style>
+<div class="container-fluid" id="container-recommend">
+  <div class="row">
+    <div class="col-lg-12">
+      <div id="similar-list-wrapper" style="display:none;">
+        <h2 class="font-weight-normal"><small><mt:trans phrase="Related Pages" component="SearchEstraier"></small></h2>
+        <ul id="similar-list" class="list-unstyled ml-0 recommend-list">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div id="interest-list-wrapper" style="display:none">
+        <h2 class="font-weight-normal"><small><mt:trans phrase="Recommended for you" component="SearchEstraier"></small></h2>
+        <ul id="interest-list" class="list-unstyled ml-0 recommend-list">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+    let scroll_check = function(){
+        let target_id = '#container-recommend';
+        let offset = 500;
+        if((window.pageYOffset + window.innerHeight) > (document.querySelector(target_id).getBoundingClientRect().top + window.pageYOffset - offset)){
+            $.ajax({
+                url: '<mt:property name="path">plugins/SearchEstraier/app/pt-recommend-api.php?type=both&limit=4&url=<mt:var name="current_archive_url" escape="url">&workspace_id=<mt:websiteid>',
+                type: 'GET',
+                dataType: 'json',
+                timeout: 10000,
+                success: function( responce ){
+                    similar = responce.similar;
+                    append_recommend( similar, 'similar' );
+                    interest = responce.interest;
+                    append_recommend( interest, 'interest' );
+                },
+                error: function(){
+                    // error
+                }
+            });
+            document.removeEventListener('scroll', scroll_check);
+            return true;
+        }
+        return false;
+    }
+    if(!scroll_check()){
+        document.addEventListener('scroll', scroll_check);
+    }
+});
+function append_recommend( recommend, target ){
+    if ( recommend.length > 0 ) {
+        for(let k in recommend) {
+            var uri = recommend[k].uri;
+            var title = recommend[k].title;
+            title = title.replace( /<[^>]*?>/g, '' );
+            var thumbnail = recommend[k].thumbnail_square;
+            if (! thumbnail ) {
+                thumbnail = '<mt:var name="theme_static">website/images/no-image.png';
+            }
+            var cdate = recommend[k].cdate;
+            cdate = cdate.replace('T', ' ');
+            cdate = cdate.replace('Z', '');
+            cdate = cdate.replace( /:[0-9]{2}$/, '');
+            cdate = '<mt:trans phrase="Publish Date"> : ' + cdate;
+            var link = $('<a>', { text : title, href : uri, class : 'recommend-link' });
+            var flex_wrapper = $('<div>', { class : 'd-flex' } );
+            var litag = $('<li>', { class : 'recommend-list_item' });
+            var img = $('<img>', { src : thumbnail, alt: '', width: 50, height : 50 });
+            var thumb_wrapper = $('<div>', { class : 'recommend-thumbnail' } );
+            var link_wrapper = $('<div>', { class : 'recommend-link-wrapper' } );
+            var date_wrapper = $('<span>', { text : cdate, class : 'recommend-date' });
+            link_wrapper.append(link);
+            thumb_wrapper.append(img);
+            flex_wrapper.append(thumb_wrapper);
+            link_wrapper.append(date_wrapper);
+            flex_wrapper.append(link_wrapper);
+            litag.append(flex_wrapper);
+            $('#'+target+'-list').append(litag);
+        }
+        $('#'+target+'-list-wrapper').show();
+    }
+}
+</script>

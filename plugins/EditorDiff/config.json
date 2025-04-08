@@ -1,0 +1,38 @@
+{
+    "label": "EditorDiff",
+    "id": "editordiff",
+    "component": "EditorDiff",
+    "description": "Adds a 'Show Diff' button to the rich text editor.",
+    "version": "1.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net",
+    "doc_link": "https://powercmsx.jp/about/editor-diff.html",
+    "config_settings" : {
+        "editordiff_assets_base": ""
+    },
+    "methods": {
+        "editor_diff": {
+            "component": "EditorDiff",
+            "method": "editor_diff"
+        }
+    },
+    "tags": {
+        "conditional": {
+            "ifobjecthasrevision": {
+                "component": "EditorDiff",
+                "method": "hdlr_ifobjecthasrevision"
+            }
+        }
+    },
+    "callbacks": {
+        "editordiff_template_source_edit": {
+            "edit": {
+                "template_source": {
+                    "component": "EditorDiff",
+                    "priority": 12,
+                    "method": "insert_button"
+                }
+            }
+        }
+    }
+}

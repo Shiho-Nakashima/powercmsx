@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><mt:trans phrase="Translating the Page..." component="MachineTranslator"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  </head>
+  <body>
+  <div id="__loader-bg" style="text-align:center;padding-top:25%">
+    <img style="margin:auto" src="<mt:var name="loader_image">" alt="" width="45" height="45">
+  </div>
+<script>
+function getResult() {
+  var xhr = new XMLHttpRequest();
+  xhr.open( 'GET', '<mt:var name="loader_url">?session_id=<mt:var name="session_id">&this_url=<mt:var name="this_url" escape="url">&to=<mt:var name="to">' );
+  xhr.send(); 
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState === 4 && xhr.status === 200) {
+      const jsonObj = JSON.parse(xhr.responseText);
+      if ( jsonObj.translated == true ) {
+        location.reload();
+      }
+    }
+  }
+}
+<mt:property name="machinetranslator_loader_interval" setvar="interval">
+setInterval( getResult, <mt:if name="interval"><mt:var name="interval"><mt:else>1500</mt:if> );
+</script>
+  </body>
+</html>

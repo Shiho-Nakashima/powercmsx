@@ -1,0 +1,26 @@
+{
+    "mixedobjects": {
+        "description": "Merge objects from multiple models and output in a loop.",
+        "set_loop_vars": true,
+        "variables": {
+            "__model__" : "Model name of the object."
+        },
+        "attributes": {
+            "models" : "Model names(comma separated text or an array).",
+            "params" : "Hash array with model name as key and column name (comma separated text) as value.'models' or 'params' is required.",
+            "conditions" : "Hash array with model name as key and column name,condition,filter value (comma separated text) as value.",
+            "prefix" : "Prefix for template variable(default'object').",
+            "set_context" : "Set each object context in loop.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "offset" : "Starts N object from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "sort_by" : "Sort object by value.",
+            "sort_order" : "'ascend' or 'descend'.",
+            "glue" : "When specified, the string will be placed in between each row.",
+            "include_workspaces" : "If object has column 'workspace_id', objects matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "If object has column 'workspace_id', objects excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    }
+}

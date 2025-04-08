@@ -1,0 +1,18 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:trans phrase="Manual Verification" component="AxeRunner">
+    <mt:if name="not_null"><mt:isset name="default"><mt:else><mt:var name="field_required"></mt:isset></mt:if>
+  </div>
+  <div class="col-lg-10">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <input type="hidden" name="<mt:var name="__col_name__">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="__col_name__">" value="1" <mt:if name="value">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape></span>
+    </label>
+    <mt:var name="_hint">
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<mt:trans phrase="Processing Synthetic Subtitles..." component="VideoCaptions" setvar="page_title">
+<mt:include file="include/popup_header.tmpl">
+<mt:if name="workspace_id">
+<mt:var name="workspace_name" setvar="scope_name">
+<mt:setvarblock name="scope_link">
+<a target="_blank" href="<mt:var name="workspace_url">" class="link-in-alert"><mt:var name="workspace_name" escape="single"></a>
+</mt:setvarblock>
+<mt:else>
+<mt:var name="appname" setvar="scope_name">
+<mt:var name="site_url" setvar="website_url">
+<mt:setvarblock name="scope_link">
+<a target="_blank" href="<mt:var name="site_url">" class="link-in-alert"><mt:var name="appname" escape="single"></a>
+</mt:setvarblock>
+</mt:if>
+<script src="assets/js/pace.min.js"></script>
+<link href="assets/css/pace.css" rel="stylesheet">
+<form action="<mt:var name="script_uri">" method="POST" id="rebuild_next">
+<input type="hidden" name="__mode" value="video_caption_bake_processing">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="screen_id" value="<mt:var name="request.screen_id">">
+<input type="hidden" name="workspace_id" value="<mt:var name="request.workspace_id">">
+<input type="hidden" name="id" value="<mt:var name="request.id" escape>">
+<input type="hidden" name="counter" value="<mt:var name="counter">">
+</form>
+<p class="rebuilt_percent mt-2"><mt:if name="rebuilt_percent"><mt:var name="rebuilt_percent">%<mt:else> &nbsp; <img src="<mt:var name="prototype_path">assets/img/ajax-loader.gif" alt=""> &nbsp; </mt:if></p>
+<div class="pt-progress-bar">
+<div class="pt-progress-bar-inner" style="width: <mt:var name="rebuilt_percent">%"></div>
+</div>
+<script>
+setTimeout(function(){
+    $('#rebuild_next').submit();
+} , 8000);
+</script>
+<mt:include file="include/popup_footer.tmpl">

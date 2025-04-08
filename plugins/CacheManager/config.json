@@ -1,0 +1,31 @@
+{
+    "label"       : "CacheManager",
+    "id"          : "cachemanager",
+    "component"   : "CacheManager",
+    "version"     : "1.6",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "It provides clear cache interface for PowerCMS X.",
+    "menus": {
+        "manage_cache": {
+            "display_system" : 1,
+            "component"  : "CacheManager",
+            "permission" : "is_superuser",
+            "mode"       : "manage_cache",
+            "label"      : "Manage Cache",
+            "order"      : 2000
+        }
+    },
+    "methods": {
+        "manage_cache": {
+            "component"  : "CacheManager",
+            "permission" : "is_superuser",
+            "method"     : "manage_cache"
+        },
+        "cachemanager_manage_cache": {
+            "component"  : "CacheManager",
+            "permission" : "is_superuser",
+            "method"     : "cachemanager_manage_cache"
+        }
+    }
+}

@@ -1,0 +1,140 @@
+{
+    "label": "Redirect Mapping",
+    "plural": "Redirect Mappings",
+    "version": "1.05",
+    "primary": "condition",
+    "auditing": 1,
+    "order": 2510,
+    "menu_type": 2,
+    "max_revisions": 20,
+    "display_system": 1,
+    "display_space": 1,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "condition": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "redirect_url": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "type": {
+            "type": "string",
+            "size": 50,
+            "not_null": 1,
+            "default": "Relative URL"
+        },
+        "http_status": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1,
+            "default": "301"
+        },
+        "status": {
+            "type": "int",
+            "size": 11,
+            "default": "2"
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        },
+        "created_on": {
+            "type": "datetime"
+        },
+        "modified_on": {
+            "type": "datetime"
+        },
+        "created_by": {
+            "type": "int",
+            "size": 11
+        },
+        "modified_by": {
+            "type": "int",
+            "size": 11
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "condition": "condition",
+        "type": "type",
+        "status": "status",
+        "workspace_id": "workspace_id",
+        "created_on": "created_on",
+        "modified_on": "modified_on",
+        "created_by": "created_by",
+        "modified_by": "modified_by"
+    },
+    "has_status": 1,
+    "default_status": 2,
+    "options": {
+        "type": "Relative URL,URL,Regular Expressions",
+        "http_status": "301,302",
+        "status": "Disable,Enable"
+    },
+    "translate": [
+        "type"
+    ],
+    "sort_by": {
+        "id": "ascend"
+    },
+    "autoset": [
+        "workspace_id",
+        "created_on",
+        "modified_on",
+        "created_by",
+        "modified_by"
+    ],
+    "unchangeable": [
+        "workspace_id"
+    ],
+    "disp_edit": {
+        "type": "radio",
+        "http_status": "select",
+        "status": "select"
+    },
+    "edit_properties": {
+        "id": "hidden",
+        "condition": "primary",
+        "redirect_url": "text",
+        "type": "selection",
+        "http_status": "selection",
+        "status": "selection"
+    },
+    "list_properties": {
+        "id": "number",
+        "condition": "primary",
+        "redirect_url": "text",
+        "type": "text",
+        "http_status": "text_short",
+        "status": "number",
+        "workspace_id": "reference:workspace:name",
+        "modified_on": "datetime",
+        "modified_by": "reference:user:name"
+    },
+    "column_labels": {
+        "id": "ID",
+        "condition": "Condition",
+        "redirect_url": "Redirect URL",
+        "type": "Type",
+        "http_status": "HTTP Status",
+        "status": "Status",
+        "workspace_id": "WorkSpace",
+        "created_on": "Date Created",
+        "modified_on": "Date Modified",
+        "created_by": "Created By",
+        "modified_by": "Modified By"
+    },
+    "hide_edit_options": [
+        "status"
+    ]
+}

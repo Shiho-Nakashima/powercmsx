@@ -1,0 +1,214 @@
+<mt:unless trim_space="3">
+  <div class="text-right disp-option">
+    <button type="button" class="btn btn-outline-primary btn-sm disp-option-button" data-toggle="modal" data-target="#dispOptions">
+      <mt:trans phrase="Display Options">
+    </button>
+    <button data-toggle="modal" data-target="#dispOptions" class="hidden btn btn-secondary alt-disp-option-button btn-sm" type="button">
+    <i class="fa fa-television" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Display Options"></span>
+    </button>
+  </div>
+  <div class="modal fade" id="dispOptions" tabindex="-1" role="dialog" aria-labelledby="dispOptionsTitle" aria-hidden="true"
+    style="width:100% !important;overflow:auto !important;-webkit-overflow-scrolling:touch !important;">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="dispOptionsTitle"><mt:trans phrase="Display Options"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="<mt:trans phrase="Close">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      <form action="<mt:var name="script_uri">" method="POST">
+        <input type="hidden" name="__mode" value="display_options">
+        <input type="hidden" name="_model" value="<mt:var name="model">">
+        <input type="hidden" name="_type" value="list">
+        <input type="hidden" name="_reset" value="" id="_reset-disp-oprions">
+        <input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+      <mt:if name="workspace_id">
+        <input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+      </mt:if>
+      <mt:if name="request.workspace_select">
+        <input type="hidden" name="workspace_select" value="1">
+      </mt:if>
+      <mt:if name="request.dialog_view">
+        <input type="hidden" name="dialog_view" value="1">
+        <mt:if name="request.ref_model">
+        <input type="hidden" name="ref_model" value="<mt:var name="request.ref_model" escape>">
+        </mt:if>
+          <mt:if name="request.single_select">
+        <input type="hidden" name="single_select" value="1">
+          </mt:if>
+        <input type="hidden" name="target" value="<mt:var name="request.target" escape>">
+        <input type="hidden" name="get_col" value="<mt:var name="request.get_col" escape>">
+      <mt:if name="request.workflow_model">
+        <input type="hidden" name="workflow_model" value="<mt:var name="request.workflow_model" escape>">
+        <input type="hidden" name="workflow_type" value="<mt:var name="request.workflow_type" escape>">
+      </mt:if>
+      </mt:if>
+        <input type="hidden" name="return_args" value="<mt:var name="filter_cond" strip_linefeeds="1"><mt:var name="insert_cond" strip_linefeeds="1"><mt:var name="selected_ids_cond" strip_linefeeds="1">">
+        <div class="modal-body">
+          <div class="container-fluid">
+          <mt:unless name="cant_hide_in_list">
+          <mt:unless name="request.manage_revision">
+            <div class="row form-group">
+              <mt:loop name="disp_options">
+            <mt:if name="__first__">
+              <div class="col-md-2"><b><mt:trans phrase="Columns"></b></div>
+              <div class="col-md-10">
+            </mt:if>
+                <mt:setvar name="__display" value="1">
+                <mt:if name="workspace_id">
+                  <mt:if name="__key__" eq="workspace_id">
+                    <mt:setvar name="__display" value="0">
+                  </mt:if>
+                </mt:if>
+                <mt:if name="__display">
+                  <mt:var name="__value__[1]" setvar="_checked">
+                  <mt:var name="__value__[2]" setvar="_type">
+                <label class="custom-control custom-checkbox 
+                <mt:unless name="_can_hide_list_col"><mt:unless name="_checked"> hidden</mt:unless></mt:unless>
+                <mt:ifinarray name="hide_list_options" value="$__key__"> hidden</mt:ifinarray>">
+                  <mt:if name="_type" eq="primary"><input type="hidden" name="_d_<mt:var name="__key__" escape>" value="1"></mt:if>
+                  <input <mt:unless name="_can_hide_list_col">onclick="return false;"</mt:unless> <mt:if name="cant_hide_in_list"> disabled</mt:if><mt:if name="_type" eq="primary"> disabled</mt:if><mt:if name="_no_primary"><mt:if name="__counter__" eq="1"> disabled</mt:if></mt:if><mt:if name="_checked"> checked</mt:if> type="checkbox" class="custom-control-input disp-option-item" name="_d_<mt:var name="__key__" escape>" value="1">
+                  <span class="custom-control-indicator<mt:unless name="_can_hide_list_col"> disabled-cb</mt:unless>"></span>
+                  <span class="custom-control-description"> <mt:var name="__value__[0]"></span>
+                </label>
+                </mt:if>
+            <mt:if name="__last__">
+              </div>
+            </div>
+            </mt:if>
+            </mt:loop>
+          </mt:unless>
+          </mt:unless>
+            <div class="row form-group">
+              <div class="col-md-2"><label for="_per_page"><b><mt:trans phrase="Paging"></b></div>
+              <div class="col-md-10">
+                <input id="_per_page" step="1" list="per_page_complete" type="number" min="1" max="5000" class="form-control form-control-sm very-short control-inline" name="_per_page" value="<mt:var name="_per_page">">
+                <mt:trans phrase="Items per Page">
+              </div>
+            </div>
+            <mt:if name="search_options">
+            <div class="row form-group">
+              <div class="col-md-2"><b><mt:trans phrase="Search"></b></div>
+              <div class="col-md-10">
+                <mt:loop name="search_options">
+                  <label class="custom-control custom-checkbox">
+                    <mt:var name="__value__[1]" setvar="_checked">
+                    <input<mt:if name="_checked"> checked</mt:if> type="checkbox" class="custom-control-input" name="_s_<mt:var name="__key__" escape>" value="1">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"> <mt:var name="__value__[0]" setvar="search_col"><mt:trans phrase="$search_col"></span>
+                  </label>
+                </mt:loop>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-2"><b><mt:trans phrase="Search Type"></b></div>
+              <div class="col-md-5">
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" <mt:unless name="_search_type">checked</mt:unless><mt:if name="_search_type" eq="1">checked</mt:if> name="_user_search_type" value="1">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="Phrase"></span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" <mt:if name="_search_type" eq="2">checked</mt:if> name="_user_search_type" value="2">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="OR"></span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" <mt:if name="_search_type" eq="3">checked</mt:if> name="_user_search_type" value="3">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="AND"></span>
+                </label>
+              </div>
+              <div class="col-md-2"><b><mt:trans phrase="Keyword"></b></div>
+              <div class="col-md-3">
+                <input type="hidden" name="_user_keep_search" value="0">
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" <mt:if name="_user_keep_search">checked</mt:if> class="custom-control-input" name="_user_keep_search" value="1">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"> <mt:trans phrase="Keep Keyword"></span>
+                </label>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-md-2"><b><mt:trans phrase="Replace"></b></div>
+              <div class="col-md-10">
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" <mt:unless name="_replace_type">checked</mt:unless> name="_user_replace_type" value="0">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="Case Insensitive"></span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" <mt:if name="_replace_type" eq="1">checked</mt:if> name="_user_replace_type" value="1">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="Case Sensitive"></span>
+                </label>
+              </div>
+            </div>
+            </mt:if>
+            <div class="row form-group">
+              <mt:loop name="sort_options">
+              <mt:if name="__first__">
+              <div class="col-md-2"><b><mt:trans phrase="Sort"></b></div>
+              <div class="col-md-7">
+              </mt:if>
+                  <mt:var name="__value__[1]" setvar="_checked">
+                  <label class="custom-control custom-radio">
+                    <input class="custom-control-input" type="radio" <mt:if name="_checked">checked</mt:if> name="_user_sort_by" value="<mt:var name="__key__">">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"><mt:var name="__value__[0]"></span>
+                  </label>
+              <mt:if name="__last__">
+              </div>
+              <div class="col-md-3">
+                <select name="_user_sort_order" class="form-control custom-select">
+                  <mt:loop name="order_options">
+                  <mt:var name="__value__[1]" setvar="_checked">
+                  <option value="<mt:var name="__counter__">"<mt:if name="_checked"> selected</mt:if>><mt:var name="__value__[0]"></option>
+                  </mt:loop>
+                </select>
+              </div>
+              </mt:if>
+              </mt:loop>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id="reset-disp-option" class="btn btn-warning"><mt:trans phrase="Reset"></button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><mt:trans phrase="Cancel"></button>
+          <button type="submit" class="btn btn-primary"><mt:trans phrase="Save Changes"></button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+<mt:property name="list_max_cols" setvar="_list_max_cols">
+<mt:if name="request.dialog_view">
+<mt:property name="dialog_max_cols" setvar="_list_max_cols">
+</mt:if>
+<mt:if name="_list_max_cols">
+<script>
+$('#reset-disp-option').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to reset display options?">' ) ) {
+        return false;
+    }
+    $('#_reset-disp-oprions').val(1);
+});
+$('.disp-option-item').change(function(){
+    let checkdCnt = 0;
+    $('.disp-option-item').each(function() {
+        if ( $(this).prop( 'checked' ) ) {
+            checkdCnt++;
+        }
+    });
+    if ( <mt:var name="_list_max_cols"> < checkdCnt ) {
+      <mt:if name="request.dialog_view">
+        alert( '<mt:trans phrase="More than %s columns are not reflected in the dialog." params="$_list_max_cols">' );
+      <mt:else>
+        alert( '<mt:trans phrase="More than %s columns are not reflected in the display." params="$_list_max_cols">' );
+      </mt:if>
+    }
+});
+</script>
+</mt:if>
+</mt:unless>

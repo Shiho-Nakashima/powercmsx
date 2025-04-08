@@ -1,0 +1,69 @@
+<!doctype html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><mt:var name="page_title" escape></title>
+<base href="<mt:var name="base_html">">
+<mt:if name="canvas_webfont">
+  <mt:if name="canvas_font_face" eq="RocknRoll One">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+  <mt:elseif name="canvas_font_face" eq="BIZ UDPMincho">
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&display=swap" rel="stylesheet">
+  <mt:else>
+    <link href="https://fonts.googleapis.com/css2?family=<mt:var name="canvas_font_face" replace="' ','+'">:wght@<mt:var name="canvas_font_weight">&display=swap" rel="stylesheet">
+  </mt:if>
+</mt:if>
+<style>
+body {
+<mt:if name="export_type" eq="image">
+    font-size:450%;
+    line-height:3em;
+<mt:else>
+    font-size:85%;
+    margin: 0;
+    padding: 0;
+    margin-top: -23px !important;
+    margin-left: -35px !important;
+    margin-right: -35px !important;
+<mt:if name="canvas_webfont">
+    line-height:3.2em;
+<mt:else>
+    line-height:3em;
+</mt:if>
+</mt:if>
+    <mt:if name="canvas_forecolor">color: <mt:var name="canvas_forecolor" escape>;</mt:if>
+    <mt:if name="canvas_bgcolor">background-color: <mt:var name="canvas_bgcolor" escape>;</mt:if>
+    margin: 0px; margin-bottom: -10px;
+    padding:30px 60px <mt:if name="text_format" eq="richtext">0px<mt:else>10px</mt:if> <mt:if name="export_type" eq="image">100px<mt:else>80px</mt:if>;
+<mt:if name="canvas_webfont">
+    font-family: <mt:if name="canvas_font_face">"<mt:var name="canvas_font_face">",</mt:if><mt:var name="canvas_font" escape> !important;
+    font-weight: <mt:var name="canvas_font_weight"> !important;
+<mt:else>
+    font-family: <mt:var name="canvas_font" escape> !important;
+</mt:if>
+}
+rt{ position: relative; top: -0.5em }
+<mt:if name="export_type" eq="pdf">
+<mt:if name="canvas_webfont">
+h1, h2, h3, h4, h5, h6 { line-height:3em; 
+    <mt:if name="canvas_font_face" eq="Noto Sans JP">
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 500 !important;
+    </mt:if>
+    padding-top: 10px;
+}
+<mt:else>
+h1, h2, h3, h4, h5, h6 { line-height:2.8em; font-weight: bold !important; padding-top: 5px; }
+</mt:if>
+<mt:else>
+<mt:if name="canvas_webfont">
+h1, h2, h3, h4, h5, h6 { line-height:3em; font-weight: bold !important; padding-top: 1em; }
+<mt:else>
+h1, h2, h3, h4, h5, h6 { line-height:2.8em; font-weight: bold !important; padding-top: .8em; }
+</mt:if>
+</mt:if>
+img { max-width: 100% !important; height: auto; }
+h4 { font-size: 1em !important }
+h5 { font-size: .83em !important }
+h6 { font-size: .75em !important }
+</style>
+</head>
+<body <mt:if name="canvas_custom_style"> style="<mt:var name="canvas_custom_style">"</mt:if>><mt:var name="html">

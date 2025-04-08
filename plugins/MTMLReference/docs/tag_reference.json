@@ -1,0 +1,1387 @@
+{
+    "loop" : {
+        "description" : "Loop over the values in a hash or an array specify 'name' or 'from' attribute.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "name" : "A name of an array or hash.",
+            "from" : "Alias for 'name'.",
+            "key" : "The name of the variable that is the current key(default value is '__key__').",
+            "item" : "The name of the variable that is the current element(default value is '__value__').",
+            "unique" : "Removes duplicate values from an array.",
+            "shuffle" : "Shuffle an array.",
+            "offset" : "Starts N %2$s from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "sort_by" : "'key' or 'value'. Optional params 'numeric' and 'reverse'(An array or comma separated values).",
+            "glue" : "When specified, the string will be placed in between each row."
+        },
+        "variables" : {
+            "__key__" : "Hash's key(if specified 'key' attribute, stored in the specified variable instead of __key__).",
+            "__value__" : "Value of array(if specified 'item' attribute, stored in the specified variable instead of __value__)."
+        }
+    },
+    "ignore" : {
+        "description" : "Always produces an empty string(Template comment)."
+    },
+    "literal" : {
+        "description" : "Allow a block of data to be taken literally. Anything within this tags is not interpreted, but displayed as-is."
+    },
+    "dynamicmtml" : {
+        "description" : "Allow a block of data to be taken literally. Anything within this tags is not interpreted, but displayed as-is."
+    },
+    "foreach" : {
+        "description" : "Alias for 'loop'.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "name" : "A name of an array or hash.",
+            "from" : "Alias for 'name'.",
+            "key" : "The name of the variable that is the current key(default value is '__key__').",
+            "item" : "The name of the variable that is the current element(default value is '__value__').",
+            "unique" : "Removes duplicate values from an array.",
+            "sort_by" : "'key' or 'value'. Optional params 'numeric' and 'reverse'(An array or comma separated values).",
+            "sort_order" : "'ascend' or 'descend'.",
+            "glue" : "When specified, the string will be placed in between each row.",
+            "array as variable": "Loop while storing the array in a variable. The above attributes are not available."
+        }
+    },
+    "if" : {
+        "description" : "A conditional tag that is evaluated if the name attributes evaluate true. This tag can be used in combination with the 'elseif' and 'else' tags.",
+        "attributes" : {
+            "name" : "A Name for evaluate.",
+            "eq" : "Given value is equal to the variable.",
+            "ne" : "Given value is not equal to the variable.",
+            "not" : "Alias for 'ne'.",
+            "gt" : "Given value is greater than the variable.",
+            "lt" : "Given value is less than the variable.",
+            "ge" : "Given value is greater than or equal to the variable.",
+            "le" : "Given value is less than or equal to the variable.",
+            "vc" : "Compares two version number strings using 'version_compare' function.",
+            "like" : "Given value contains the variable.",
+            "match" : "Given value regular expressions.",
+            "tag" : "Given evaluate tag name.",
+            "(tag attributes)" : "When tag name specified, given tag attributes.",
+            "test" : "By expression result.",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable.",
+            "variable_name is defined": "Outputs the value when the value corresponding to the variable exists. The above attributes are not available.",
+            "variable_name is not defined": "Outputs the value when the value corresponding to the variable not exists. The above attributes are not available."
+        }
+    },
+    "unless" : {
+        "description" : "The logical opposite of the 'if' tag. All attributes supported by the 'if' tag are also supported.",
+        "attributes" : {
+            "name" : "A Name for evaluate.",
+            "eq" : "Given value is equal to the variable.",
+            "ne" : "Given value is not equal to the variable.",
+            "not" : "Alias for 'ne'.",
+            "gt" : "Given value is greater than the variable.",
+            "lt" : "Given value is less than the variable.",
+            "ge" : "Given value is greater than or equal to the variable.",
+            "le" : "Given value is less than or equal to the variable.",
+            "vc" : "Compares two version number strings using 'version_compare' function.",
+            "like" : "Given value contains the variable.",
+            "match" : "Given value regular expressions.",
+            "tag" : "Given evaluate tag name.",
+            "(tag attributes)" : "When tag name specified, given tag attributes.",
+            "test" : "By expression result.",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable.",
+            "variable_name is defined": "Outputs the value when the value corresponding to the variable not exists. The above attributes are not available.",
+            "variable_name is not defined": "Outputs the value when the value corresponding to the variable exists. The above attributes are not available."
+        }
+    },
+    "else" : {
+        "description" : "Used within If and Unless blocks to output the alternate case.",
+        "attributes" : {
+        }
+    },
+    "elseif" : {
+        "description" : "Used within If and Unless blocks to evaluated alternate condition. All attributes supported by the 'if' tag are also supported.",
+        "attributes" : {
+            "name" : "A Name for evaluate.",
+            "eq" : "Given value is equal to the variable.",
+            "ne" : "Given value is not equal to the variable.",
+            "not" : "Alias for 'ne'.",
+            "gt" : "Given value is greater than the variable.",
+            "lt" : "Given value is less than the variable.",
+            "ge" : "Given value is greater than or equal to the variable.",
+            "le" : "Given value is less than or equal to the variable.",
+            "vc" : "Compares two version number strings using 'version_compare' function.",
+            "like" : "Given value contains the variable.",
+            "match" : "Given value regular expressions.",
+            "tag" : "Given evaluate tag name.",
+            "(tag attributes)" : "When tag name specified, given tag attributes.",
+            "test" : "By expression result.",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable."
+        }
+    },
+    "ifgetvar" : {
+        "description" : "It simply branches on the presence or absence of the value of the variable specified in the name attribute, and it is faster than the if statement.",
+        "attributes" : {
+            "name" : "A Name for evaluate."
+        }
+    },
+    "elseifgetvar" : {
+        "description" : "Used within If block to evaluated alternate condition. Like the ifgetvar condition tag, It simply branches on the presence or absence of the value of the variable specified in the name attribute. It's faster than the elseif statement.",
+        "attributes" : {
+            "name" : "A Name for evaluate."
+        }
+    },
+    "ifinarray" : {
+        "description" : "Evaluate a block of code when a key with the specified hash exists.",
+        "attributes" : {
+            "array" : "The name of array.",
+            "name" : "Alias for 'array'.",
+            "value" : "The value in array."
+        }
+    },
+    "isarray" : {
+        "description" : "Evaluate a block of code when the variable with the specified name is an array or hash.",
+        "attributes" : {
+            "array" : "The name of array.",
+            "name" : "Alias for 'array'."
+        }
+    },
+    "isadmin" : {
+        "description" : "The contents are output when the user logged in to the management screen is an administrator.",
+        "attributes" : {
+            "workspace_id" : "When specified, the contents of the administrator or the WorkSpace administrator of the WorkSpace are output."
+        }
+    },
+    "isset" : {
+        "description" : "Evaluate a block of code when a template variable with the specified name has already been defined.",
+        "attributes" : {
+            "name" : "The name of variable."
+        }
+    },
+    "ifextensionloaded": {
+        "description" : "Find out whether an extension is loaded.",
+        "attributes" : {
+            "name" : "The extension name.",
+            "extension" : "Alias for 'name'."
+        }
+    },
+    "block" : {
+        "description" : "Execute the loop only once. If a name attribute is specified and the variable has a value, output it.",
+        "attributes" : {
+            "name" : "Set a output value to variable. Output empty string.",
+            "append" : "The block content will be be appended to the content of the parent template block.",
+            "prepend" : "The block content will be be prepended to the content of the parent template block.",
+            "(other attribute[s])" : "The other attributes be passed to the inside of block as custom attribute."
+        },
+        "variables" : {
+            "(other attribute[s])" : "The other attributes be passed to the inside of block as custom attribute."
+        }
+    },
+    "for" : {
+        "description" : "The block is repeatedly output during the specified value.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "from" : "The starting number for the loop(default value is 0).",
+            "to" : "The ending number for the loop(default value is 1).",
+            "start" : "Alias for 'from'.",
+            "end" : "Alias for 'to'.",
+            "loop" : "Alias for 'to'.",
+            "increment" : "The amount to increment the loop counter(default value is 1).",
+            "step" : "Alias for 'increment'.",
+            "var" : "Assigned to template variable to 'var'(default value is '__value__').",
+            "glue" : "When specified, the string will be placed in between each row.",
+            "variable in array" : "Loop while storing the array in a variable. The above attributes are not available."
+        },
+        "variables" : {
+            "__value__" : "Alias for '__value__'(if specified 'var' attribute, stored in the specified variable instead of __value__)."
+        }
+    },
+    "section" : {
+        "description" : "Alias for 'for'.",
+        "attributes" : {
+            "to" : "The ending number for the loop(default value is 1).",
+            "end" : "Alias for 'to'.",
+            "loop" : "Alias for 'to'.",
+            "from" : "The starting number for the loop(default value is 0).",
+            "start" : "Alias for 'from'.",
+            "increment" : "The amount to increment the loop counter(default value is 1).",
+            "step" : "Alias for 'increment'.",
+            "var" : "Assigned to template variable to 'var'(default value is '__value__').",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "sethashvar" : {
+        "description" : "A block tag that is used for creating a hash template variable.",
+        "attributes" : {
+            "name" : "A name of variable to assign.(Only numbers are not supported.)"
+        }
+    },
+    "sethashvars" : {
+        "description" : "Constructs a hash variable with attribute 'name' specified in the same format as 'setvars'.",
+        "attributes" : {
+            "name" : "A name of variable to assign.(Only numbers are not supported.)",
+            "scope": "'global' or 'local'(default value is 'global')."
+        }
+    },
+    "let" : {
+        "description" : "Sets the value to a local variable with the key of the specified attribute as the variable name.",
+        "attributes" : {
+            "(any)" : "The variable value."
+        }
+    },
+    "set" : {
+        "description" : "Sets the value to a variable with the key of the specified attribute as the variable name.",
+        "attributes" : {
+            "(any)" : "The variable value."
+        }
+    },
+    "setvars" : {
+        "description" : "Set variables collectively. The key and value delimiter is '='. Key and name attribute values ​​that are only numbers are not supported.",
+        "attributes" : {
+            "name" : "A name of variable to assign.(Only numbers are not supported.)",
+            "scope": "'global' or 'local'(default value is 'global')."
+        }
+    },
+    "assignvars" : {
+        "description" : "Alias for 'setvars'. Set variables collectively. The key and value delimiter is '='. Key and name attribute values ​​that are only numbers are not supported."
+    },
+    "setvarblock" : {
+        "description" : "A block tag used to set the value of a template variable. Note that you can also use the 'setvar' modifier to achieve the same result as it can be applied to any tag.",
+        "attributes" : {
+            "name" : "A name of variable to assign.(Only numbers are not supported.)",
+            "append" : "Append a value to the end of an existing variable.",
+            "prepend" : "Prepend a value to the end of an existing variable.",
+            "function" : "The name of the function to execute when setting an array('push' or 'unshift').",
+            "key" : "Specify the key name when storing the value in the specified hash key.",
+            "scope": "'global' or 'local'(default value is 'global').",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable."
+        }
+    },
+    "capture" : {
+        "description" : "Alias for 'setvarblock'. A block tag used to set the value of a template variable. Note that you can also use the 'setvar' modifier to achieve the same result as it can be applied to any tag.",
+        "attributes" : {
+            "name" : "A name of variable to assign.(Only numbers are not supported.)",
+            "append" : "Append a value to the end of an existing variable.",
+            "prepend" : "Prepend a value to the end of an existing variable.",
+            "function" : "The name of the function to execute when setting an array('push' or 'unshift').",
+            "key" : "Specify the key name when storing the value in the specified hash key."
+        }
+    },
+    "setvartemplate" : {
+        "description" : "Similar to the SetVarBlock tag, but does not evaluate the contents of the tag, but saves it for later evaluation, when the variable is requested. This allows you to create inline template modules that you can use over and over again.",
+        "attributes" : {
+            "name" : "A name of variable to assign.(Only numbers are not supported.)"
+        }
+    },
+    "speedmeter" : {
+        "description" : "Measure the time required to build the template and output it as an HTML comment.",
+        "attributes" : {
+            "name" : "A name for this block.",
+            "comment_type" : "'HTML', 'javascript' or 'php'(default value is 'HTML')."
+        }
+    },
+    "queries" : {
+        "description" : "Loop output the Query parameters($_GET).",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "var" : "Assigned to template variable to 'var'(default value is '__value__').",
+            "excludes" : "An array of keys to exclude.",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "localvars" : {
+        "description" : "Localize variables only inside the block.",
+        "attributes" : {
+            "scope": "'global' or 'local'(default value is both)."
+        }
+    },
+    "countgroupby" : {
+        "description" : "Counts the value of a specific column of the object. In the loop, the value is stored in the variable 'count_group_by_{column name}'.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "model" : "Model name to group.",
+            "group" : "An array of column names or a single column name specified in the group by clause.",
+            "count" : "Column name to count.",
+            "sort_by" : "'name' or 'count'.",
+            "sort_order" : "'ascend' or 'descend'.",
+            "offset" : "Starts N from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "grouploop" : {
+        "description" : "Loop output the object selected by 'Group' object. Inside the block, the context of that model is set.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "id" : "The 'id' of group.",
+            "name" : "The 'name' of group.",
+            "workspace_id" : "The 'id' of workspace.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "offset" : "Starts N from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "objectcols" : {
+        "description" : "Loop output information about the model column by specifying the model attribute.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "model" : "The model name."
+        }
+    },
+    "archivelist" : {
+        "description" : "Loop output representing a list of all the archive pages specify archive type('yearly', 'monthly', 'daily', 'fiscal year') and model.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "type" : "'yearly', 'fiscal-yearly', 'monthly' or 'daily'.",
+            "archive_type" : "Alias for 'type'.",
+            "container" : "Container model.",
+            "workspace_id" : "The 'id' of workspace.",
+            "sort_order" : "'ascend' or 'descend'.",
+            "limit" : "A positive integer to limit results."
+        }
+    },
+    "nextprev" : {
+        "description" : "Sets the context of %2$s object after the current '%1$s' object relative to the date.",
+        "attributes" : {
+            "cols" : "Column name for SELECT(Comma separated values).",
+            "sort_by" : "Column name to use before and after instead of date column."
+        }
+    },
+    "objectloop" : {
+        "description" : "Loop output '%s' objects.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "sort_by" : "Sort %s by value. When filtering by field value, Can also be specified as \"field:basename numeric\".",
+            "sort_order" : "'ascend' or 'descend'.",
+            "offset" : "Starts N %s from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "lastn" : "Display the last N objects. The acquisition order is based on published_on or the first date type column.",
+            "options" : "An array for $terms(First argument of load method).",
+            "(column name[s])" : "When filtering by value, the value of that column.",
+            "(relation name[s])" : "When filtering by related object's primary value, the primary column's value of that relation or Path/To/Label.",
+            "(field:basename[s])" : "When filtering by field value, the value of that field.",
+            "field_and_or" : "When filtering by field value, specify AND condition or OR condition.",
+            "author" : "If the object has column 'user_id' or 'created_by', filtering by user's name.",
+            "ignore_archive_context" : "Ignores the archive context and loads the object without filtering ('1' (all), 'date_based' or model name that specified in the context).",
+            "ids" : "Outputs %s matching the given ids(Comma separated values).",
+            "exclude_ids" : "Outputs %s not matching the given ids(Comma separated values).",
+            "unique" : "Filters out %s that have been previously published on the same page.",
+            "shuffle" : "When the sort_by attribute is not specified, Shuffle an objects.",
+            "ignore_filter" : "Disable filter by parameter in dynamic publishing.",
+            "cols" : "Column name for SELECT(Comma separated values).",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "objectcontext" : {
+        "description" : "Sets the context of the object and sets the column values in template variables.",
+        "attributes" : {
+            "model" : "Target model name. If 'model' and 'from' are omitted, the current context object will be used.",
+            "from" : "When the model has 'model' and 'object_id' columns, specify when getting the combined object.",
+            "id" : "Sets the context for the specified 'id' '%s'(If omitted, the current context object).",
+            "force" : "Force re-fetching even when the object is cached.",
+            "prefix" : "Sets the value to the specified character string + '_' + column name variable(default value is 'object')."
+        }
+        
+    },
+    "get_relatedobjs" : {
+        "description" : "Loop output '%3$s' objects related to the name '%2$s' of model '%1$s'.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "sort_by" : "Sort %2$s by column value.",
+            "sort_order" : "'ascend' or 'descend'.",
+            "offset" : "Starts N %2$s from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "cols" : "Column name for SELECT(Comma separated values).",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "relatedobjects" : {
+        "description" : "Loop output related objects from current context object.",
+        "set_loop_vars" : true,
+        "attributes" : {
+            "name" : "Column name of relation.",
+            "from" : "Relation source Model name(If omitted, the current context object).",
+            "to" : "Relation destination Model name('name' or 'to' is required).",
+            "sort_by" : "Sort %2$s by column value.",
+            "sort_order" : "'ascend' or 'descend'.",
+            "offset" : "Starts N %2$s from the start of the list. N is a positive integer.",
+            "limit" : "A positive integer to limit results.",
+            "cols" : "Column name for SELECT(Comma separated values).",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    },
+    "referencecontext" : {
+        "description" : "Loop output '%2$s' object related to the name '%3$s' of model '%1$s'.",
+        "attributes" : {
+            "id" : "Sets the context for the specified 'id' '%s'(If omitted, the current context object)."
+        }
+    },
+    "breadcrumbs" : {
+        "description" : "Output breadcrumbs. Loop with __key __, URL and __value __ set to the primary column value of the object.",
+        "set_loop_vars" : true,
+        "variables" : {
+            "__key__" : "URL of loop item.",
+            "__value__" : "Primary column value of loop object.",
+            "__breadcrumbs_url__" : "Alias for '__key__'.",
+            "__breadcrumbs_title__" : "Alias for '__value__'."
+        },
+        "attributes" : {
+            "container" : "Model name that is the container for the current object.",
+            "relation_name" : "Relation(column) name.",
+            "include_system" : "Include 'App Name' at the beginning of the loop.",
+            "exclude_workspace" : "Exclude 'Workepace Name' in the loop.",
+            "exclude_folders" : "If current object is 'Page', exclude Folder's label in the loop."
+        }
+    },
+    "cacheblock" : {
+        "description" : "Specify the cache_key attribute to cache the block build results.",
+        "attributes" : {
+            "cache_key" : "A unique cache key string.",
+            "workspace_id" : "Specify a 'workspace_id' to use a unique cache key for each workspace.",
+            "cache_ttl" : "Specify the cache expiration time in seconds for dynamic publishing.",
+            "dynamic_caching" : "Always cache blocks with cache_ttl as deadline.",
+            "triggers" : "Clear dynamic cache triggered by object update(An array or comma separated text. 'user','session','log','urlinfo' cannot be specified)."
+        }
+    },
+    "calendar" : {
+        "description" : "Representing a calendar month that lists a single calendar 'cell' in the calendar display. optional 'month' attribute that specifies the calendar month and year the tagset is to generate.",
+        "set_loop_vars" : true,
+        "variables" : {
+            "__total__" : "Count of cell.",
+            "__week__" : "An array from 'Sunday' ~ 'Saturday'.",
+            "__year__" : "The year.",
+            "__month__" : "The month(2 digits).",
+            "__date__" : "The day(1 or 2 digits).",
+            "__week_number__" : "An array from '0' ~ '6'.",
+            "__day_of_week__" : "Day of the week.",
+            "__timestamp__" : "Time stamp in YmdHis format.",
+            "__week_header__" : "First of week (on Sunday).",
+            "__week_footer__" : "Last of week (on Saturday).",
+            "__key__" : "Alias for '__week_number__'.",
+            "__value__" : "Alias for '__date__'."
+        },
+        "attributes" : {
+            "month" : "'this(default)' or timestamp(YmdHis)."
+        }
+    },
+    "customfieldvalues" : {
+        "description" : "When the field has 'Multiple' check specified, or when it has multiple values, the value is output in a loop. Tag attributes 'model' and 'basename' are required.",
+        "attributes" : {
+            "model" : "The model name.",
+            "basename" : "Column value of field 'basename'.",
+            "index" : "Output only the Specified number field."
+        }
+    },
+    "setcontext" : {
+        "description" : "Set the context for model, container or date.",
+        "attributes" : {
+            "context" : "Model name for set context.",
+            "container" : "The name of the model whose context object is the container.",
+            "archive_type" : "Model name of the archive type when setting the archive context.",
+            "archive_context" : "Alias for 'archive_type'.",
+            "timestamp" : "The start timestamp when set a date based context(YmdHis).",
+            "timestamp_end" : "The end timestamp when set a date based context(YmdHis).",
+            "workspace_id" : "The 'id' of workspace.",
+            "id" : "The 'id' of object for set context.",
+            "(primary column value)" : "Search context object by object name.",
+            "path" : "When context object has hierarchy, You can specify the path connected with '/' instead of the primary column value."
+        }
+    },
+    "referencedobjects" : {
+        "description" : "Loop output that the object associated with the current object by the relation.",
+        "attributes" : {
+            "model" : "The model name.",
+            "name" : "Relation(column) name.",
+            "column" : "Alias for 'name'.",
+            "relation_name" : "Alias for 'name'.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "sort_by" : "Sort objects by value.",
+            "sort_order" : "'ascend' or 'descend'."
+        }
+    },
+    "fieldloop" : {
+        "description" : "Loop output the field of the model to be edited on the admin screen.",
+        "attributes" : {
+            "model" : "The model name."
+        }
+    },
+    "nestableobjects" : {
+        "description" : "Specify parent_id attribute and loop output objects with hierarchy specification.",
+        "attributes" : {
+            "model" : "The model name.",
+            "parent_id" : "Column 'parent_id' of the objects.",
+            "workspace_id" : "The 'id' of workspace.",
+            "sort_by" : "Sort objects by value.",
+            "sort_order" : "'ascend' or 'descend'."
+        }
+    },
+    "workspacecontext" : {
+        "description" : "Specify the id or workspace_id attribute and set the workspace context.",
+        "attributes" : {
+            "id" : "The 'id' of workspace.",
+            "workspace_id" : "Alias for 'id'."
+        }
+    },
+    "menuitems" : {
+        "description" : "Loop output '%3$s' objects related to the name '%2$s' of model '%1$s'.",
+        "attributes" : {
+            "id" : "The Menu's 'id'.",
+            "name" : "Column 'name' of the Menu.",
+            "basename" : "Column 'basename' of the Menu.",
+            "global" : "When a value is specified, SELECT the system scope Menu.",
+            "workspace_id" : "The Menu's 'workspace_id'.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects."
+        }
+    },
+    "triggersection" : {
+        "description" : "Enclose the block in HTML comments to limit the rebuild scope of the rebuild trigger.",
+        "attributes" : {
+            "id" : "Unique name for this block(required).",
+            "model" : "Target model name(s)(Comma separated values, If omitted, all models are targeted)."
+        }
+    },
+    "archivenext" : {
+        "description" : "Creates a context to the 'next' date based archive relative to the current archive context. The counterpart to mt:archiveprevious."
+    },
+    "archiveprevious" : {
+        "description" : "Creates a context to the 'previous' date based archive relative to the current archive context. The counterpart to mt:archivenext."
+    },
+    "convert2linkurl" : {
+        "description" : "Replace HTML tag attribute in the block from Site URL to Link URL.",
+        "attributes" : {
+            "site_url" : "URL to replace from(If omitted, the Site URL of current context).",
+            "link_url" : "URL to replace to(If omitted, the Link URL of current context).",
+            "attributes" : "Attribute names to replace(Default:src,href and action).",
+            "extensions" : "File extensions to replace.",
+            "elements" : "Tag names to replace.",
+            "base_url" : "URL used to resolve relative path(If omitted, current archive's URL).",
+            "add_mtime" : "Using the specified value as a key, the modification date(UNIX timestamp) of the file is added as a parameter."
+        }
+    },
+    "iftagged" : {
+        "description" : "Evaluates a block of code when the current %s object is tagged.",
+        "attributes" : {
+            "name" : "Tag name.",
+            "tag" : "Alias for 'name'.",
+            "include_private" : "Include private tag(the Tag name start with '@')."
+        }
+    },
+    "ifmodelhasurlmapping"  : {
+        "description" : "Evaluates a block when there is a URL Map associated with the Model.",
+        "attributes" : {
+            "name" : "The model name.",
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "ifobjectexists" : {
+        "description" : "Evaluates a block of code when the specified object exists.",
+        "attributes" : {
+            "model" : "The model name.",
+            "column" : "Column name(default value is 'id').",
+            "value" : "Column value.",
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "ifusercan" : {
+        "description" : "Evaluates a block of code when the current user has the specified permission.",
+        "attributes" : {
+            "model" : "The model name.",
+            "action" : "Action name or 'any'.",
+            "id" : "Specify the 'id' when check permission for a specific object.",
+            "workspace_id" : "The 'id' of workspace or 'any'."
+        }
+    },
+    "ifuserrole" : {
+        "description" : "Evaluate a block of code when the current user is assigned the specified role.",
+        "attributes" : {
+            "role" : "The role name.",
+            "inherit" : "Evaluate a block when you have higher permission.",
+            "include_workspaces" : "The permission matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "The permission excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering permission by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "ifarchivetype" : {
+        "description" : "Evaluates a block of code when the archive type specified in the archive_type attribute exists.",
+        "attributes" : {
+            "archive_type" : "Archive type.",
+            "type" : "Alias for 'archive_type'."
+        }
+    },
+    "ifacceptcomment" : {
+        "description" : "Outputs the contents if the current context object accepts comments.",
+        "attributes" : {
+            "model" : "Model name(optional).",
+            "id" : "The 'id' of object(optional)."
+        }
+    },
+    "tablehascolumn" : {
+        "description" : "Evaluate a block of code when the specified column exists in the model(table).",
+        "attributes" : {
+            "model" : "The model name.",
+            "column" : "Column name."
+        }
+    },
+    "ifcomponent" : {
+        "description" : "Evaluates a block of code when Plug in with the name you specified in the component attribute is enabled.",
+        "attributes" : {
+            "component" : "Component(PHP class) name."
+        }
+    },
+    "ifformisopen": {
+        "description" : "Outputs the contents when the status of the form is not unpublic and the maximum number of contacts has not been reached.",
+        "attributes" : {
+            "id" : "The id of form(If omitted, the current form's context).",
+            "form_id" : "Alias for 'id'."
+        }
+    },
+    "ifuseragent" : {
+        "description" : "Determine the type of User Agent for dynamic publishing.",
+        "attributes" : {
+            "wants" : "'Mobile', 'Tablet', 'SmartPhone', 'FeaturePhone' or 'PC'.",
+            "(eq,ne...)" : "When the wants attribute is omitted, the comparison attribute of the mt: if tag can be specified for the User-Agent string."
+        }
+    },
+    "count" : {
+        "description" : "When the variable is an array, count the number.",
+        "attributes" : {
+            "name" : "The name of variable."
+        }
+    },
+    "date" : {
+        "description" : "Output the current timestamp.",
+        "attributes" : {
+            "format" : "Format the date.",
+            "format_name" : "Returns date formatted according to given format(for example'rfc822').",
+            "ts" : "The timestamp that formatted Ymdhis.",
+            "unixtime" : "Unix timestamp to specify instead of timestamp.",
+            "utc" : "Converts the date into UTC time.",
+            "relative" : "1=Supports display of one duration: moments ago; N minutes ago; N hours ago; N days ago. For older dates in the same year, the date is shown as the abbreviated month and day of the month (Jan 3). For older dates, the year is added to that (Jan 3 2021).<br>2=Supports display of up to two durations: less than 1 minute ago; N seconds, N minutes ago; N minutes ago; N hours, N minutes ago; N hours ago; N days, N hours ago; N days ago.<br>3=Supports display of two durations: N seconds ago; N seconds, N minutes ago; N minutes ago; N hours, N minutes ago; N hours ago; N days, N hours ago; N days ago.",
+            "language" : "If 'ja' is specified, 'D' and 'l' will be set to the day of the week written in Japanese."
+        }
+    },
+    "objectvar" : {
+        "description" : "Get the value by specifying the column of the object. This tag is for administration screens and will not return a value for users who are not logged in or user has not permission of an object. Specify the environment variable 'allow_objectvar' , return values even for everyone.",
+        "attributes" : {
+            "name" : "Column name or 'permalink'.",
+            "model" : "Model name(If omitted, the current context object).",
+            "id" : "The id of object(If omitted, the current context object)."
+        }
+    },
+    "assetthumbnailurl" : {
+        "description" : "When the file uploaded to the binary column of the object is an image, thumbnail url is output.",
+        "attributes" : {
+            "name" : "The name of object's column.",
+            "width" : "The width of the thumbnail to generate.",
+            "height" : "The height of the thumbnail to generate.",
+            "square" : "If set to 1 (one) then the thumbnail generated will be square.",
+            "scale" : "The percentage by which to reduce or increase the size of the current image.",
+            "max" : "Generates a thumbnail image with the long side set to the specified pixel.",
+            "extension" : "File extension for thumbnail output.",
+            "keep_aspect" : "When creating a thumbnail by specifying the width and height, cut off the protruding part to create a thumbnail that maintains the aspect ratio.",
+            "aspect" : "Specify with 'fit' or 'trim'. When set to 'fit', an image with margins and no trimming is created. when set to 'trim', an image with a fixed aspect ratio is created with no margins and trimmed(for example'16x9').",
+            "fit" : "Specify with 'square' or 'aspect'. An image with margins and no trimming is created. You can specify the background color of the margin by specifying HexColorCode(for example'#fcfcfc') in the attribute value. If omitted, it is transparent or white.",
+            "trim" : "Specify with 'aspect'. An image with a fixed aspect ratio is created with no margins and trimmed.",
+            "properties" : "Assigns the image properties (array) to the specified variable name."
+        }
+    },
+    "archivetitle" : {
+        "description" : "Publishes a title to the archive template for the current date based archive context. Or output the title of the current archive."
+    },
+    "archivedescription" : {
+        "description" : "Output the description of the current archive. The target column is specified as an array in the environment variable'description_cols'. The initial values are'description'and'excerpt'. If there is no value, the scope description is output."
+    },
+    "archiveogimage" : {
+        "description" : "Output the URL when the binary column or asset or attachment file of the current archive is an image. If there is no value, the URL of the space image is output."
+    },
+    "var" : {
+        "description" : "Output the variable.",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "value" : "The value for set.",
+            "append" : "Append a value to the end of an existing variable.",
+            "prepend" : "Prepend a value to the end of an existing variable.",
+            "function" : "The name of the function to execute when setting an array('push' or 'unshift').",
+            "key" : "Specify the key name when storing the value in the specified hash key.",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable."
+        }
+    },
+    "vardump" : {
+        "description" : "Display the variables by PHP var_dump function.",
+        "attributes" : {
+            "preformat" : "Output &lt;pre&gt; ~ &lt;/pre&gt;.",
+            "name" : "Specify the variable name.",
+            "key" : "When the variable name is specified, specify the key."
+        }
+    },
+    "trans" : {
+        "description" : "Translate the phrase.",
+        "attributes" : {
+            "phrase" : "The phrase for translate.",
+            "params" : "Variable or an array of variables.",
+            "component" : "Use specified plugin dictionary."
+        }
+    },
+    "setvar" : {
+        "description" : "Set the value of a template variable.",
+        "attributes" : {
+            "name" : "The name of variable.(Only numbers are not supported.)",
+            "value" : "The value for set.",
+            "append" : "Append a value to the end of an existing variable.",
+            "prepend" : "Prepend a value to the end of an existing variable.",
+            "function" : "The name of the function to execute when setting an array('push' or 'unshift').",
+            "key" : "Specify the key name when storing the value in the specified hash key.",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable.",
+            "scope": "'global' or 'local'(default value is 'global')."
+        }
+    },
+    "break" : {
+        "description" : "Ends execution of the current loop.",
+        "attributes" : {
+            "close" : "Specify the HTML closing tag."
+        }
+    },
+    "unset" : {
+        "description" : "Undefines the template variable specified by the name attribute.",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "scope": "'global' or 'local'(default value is 'global')."
+        }
+    },
+    "unsetvar" : {
+        "description" : "Undefines the template variable specified by the name attribute.",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "scope": "'global' or 'local'(default value is 'global')."
+        }
+    },
+    "math" : {
+        "description" : "Do math equations in the template.",
+        "attributes" : {
+            "eq" : "A formula(See https://www.smarty.net/docsv2/en/language.function.math.tpl)."
+        }
+    },
+    "hex2rgba" : {
+        "description" : "Convert color code specified in hex format to rbga format.",
+        "attributes" : {
+            "hex" : "Color code in hex format.",
+            "alpha" : "Transparency of color(default value is 0.5)"
+        }
+    },
+    "triggererror" : {
+        "description" : "Call trigger_error with the value specified in the message attribute as an argument.",
+        "attributes" : {
+            "message" : "The designated error message."
+        }
+    },
+    "archivelink" : {
+        "description" : "Publishes a link to the archive template for the current archive context."
+    },
+    "archivedate" : {
+        "description" : "The starting date of the archive in context." ,
+        "attributes" : {
+            "format" : "Format the date."
+        }
+    },
+    "canonicallink" : {
+        "description" : "Outputs the link element(rel=\"canonical\").",
+        "attributes" : {
+            "with_index" : "If the value is set, the returned URL will use the index file name (usually index.html)."
+        }
+    },
+    "canonicalurl" : {
+        "description" : "Output the URL of the current page.",
+        "attributes" : {
+            "with_index" : "If the value is set, the returned URL will use the index file name (usually index.html)."
+        }
+    },
+    "objecttojson" : {
+        "description" : "Output object converted JSON text.",
+        "attributes" : {
+            "model" : "Model name(If omitted, the current context object).",
+            "id" : "The id of object(If omitted, the current context object).",
+            "cols" : "The keys of JSON."
+        }
+    },
+    "objecttoresource" : {
+        "description" : "Returns object converted to an array.",
+        "attributes" : {
+            "model" : "Model name(If omitted, the current context object).",
+            "id" : "The id of object(If omitted, the current context object).",
+            "cols" : "The keys of array."
+        }
+    },
+    "arrayshuffle" : {
+        "description" : "Shuffle an array.",
+        "attributes" : {
+            "name" : "The name of variable."
+        }
+    },
+    "arrayrand" : {
+        "description" : "Pick one or more random values from an array.",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "num" : "Specifies how many entries should be picked.",
+            "limit" : "Alias for 'num'.",
+            "length" : "Alias for 'num'."
+        }
+    },
+    "arrayslice" : {
+        "description" : "Extract a slice of the array.",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "offset" : "Starts N %2$s from the start of the list. N is a positive integer.",
+            "length" : "A positive integer to number of items to acquire.",
+            "limit" : "Alias for 'length'."
+        }
+    },
+    "modelproperty" : {
+        "description" : "Output the Model's column value." ,
+        "attributes" : {
+            "name" : "The model name.",
+            "property" : "Column name of 'Model'."
+        }
+    },
+    "mtime" : {
+        "description" : "Output file or view(module)'s modified unix timestamp." ,
+        "attributes" : {
+            "file" : "The file path.",
+            "module" : "A name of view.",
+            "basename" : "A basename of view.",
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "objectcount" : {
+        "description" : "Output object count without current context." ,
+        "attributes" : {
+            "model" : "The model name.",
+            "include_workspaces" : "If object has column 'workspace_id', objects matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "If object has column 'workspace_id', objects excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "phpstart" : {
+        "description" : "Output '&lt;?php'."
+    },
+    "phpend" : {
+        "description" : "Output '?&gt;'."
+    },
+    "ml" : {
+        "description" : "The template tag specified by the tag modifier is output as an MT tag with the parameters specified by the params modifier attached.",
+        "attributes" : {
+            "tag" : "Tag name.",
+            "params" : "Tag attributes."
+        }
+    },
+    "pluginsetting" : {
+        "description" : "Output plugin's setting value.",
+        "attributes" : {
+            "component" : "The plugin's class name.",
+            "name" : "Setting name.",
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "property" : {
+        "description" : "Output PHP class's property.",
+        "attributes" : {
+            "component" : "The plugin's class name(default value is 'Prototype').",
+            "name" : "Property name.",
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "query" : {
+        "description" : "Output query string($_GET).",
+        "attributes" : {
+            "excludes" : "String or array for exclude parameter name.",
+            "values" : "Set keys to empty and return the result."
+        }
+    },
+    "asseturl" : {
+        "description" : "Produces a permalink for the uploaded asset."
+    },
+    "getchildrenids" : {
+        "description" : "When object has hierarchy, Recursively obtains the ids of all child objects and returns them as an array.",
+        "attributes" : {
+            "model" : "The model name.",
+            "id" : "The 'id' of object."
+        }
+    },
+    "gethashvar" : {
+        "description" : "Specify a variable name and key and output the value. If the hash is nested, multiple keys can be connected and specified.",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "key" : "The key of variable(string or array).",
+            "index" : "Alias for 'key'."
+        }
+    },
+    "getobjectlabel" : {
+        "description" : "Output the object primary column value.",
+        "attributes" : {
+            "model" : "The model name.",
+            "id" : "The 'id' of object(If omitted, the current context object).",
+            "column" : "Specify when you want to get the value of a specific column other than the primary column."
+        }
+    },
+    "getoption" : {
+        "description" : "Output the column value of table 'option'.",
+        "attributes" : {
+            "key" : "The 'key' column value of 'option'.",
+            "kind" : "The 'kind' column value of 'option'(default value is 'config')."
+        }
+    },
+    "fetch" : {
+        "description" : "Specify the URL(or Path) to get the content.",
+        "attributes" : {
+            "url" : "The URL for fetch.",
+            "path" : "The path of the file on the local disk. You must specify true for the environment variable 'allow_fileget'.",
+            "ua" : "User-Agent header strings.",
+            "to_encoding" : "The type of encoding that string is being converted to(default value is 'UTF-8').",
+            "method" : "HTTP request method(default value is 'GET').",
+            "content_type" : "Content-Type header strings.",
+            "access_token" : "access_token header strings.",
+            "headers" : "An array or string of other HTTP header strings.",
+            "content" : "HTTP request body(array or string)."
+        }
+    },
+    "unlink" : {
+        "description" : "Deletes file. You must specify true for the environment variable 'allow_unlink'.",
+        "attributes" : {
+            "path" : "Path to the file."
+        }
+    },
+    "fileput" : {
+        "description" : "Write data to a file. You must specify true for the environment variable 'allow_fileput'.",
+        "attributes" : {
+            "path" : "Path to the file.",
+            "contents" : "The data to write."
+        }
+    },
+    "include" : {
+        "description" : "Includes the contents of a template module or external file into the current template where is it used.",
+        "attributes" : {
+            "file" : "The file path.",
+            "module" : "A name of view.",
+            "basename" : "A basename of view.",
+            "workspace_id" : "The 'id' of workspace.",
+            "parent" : "Forces an Include of a template in the parent workspace(if workspace model has column 'parent_id') or system.",
+            "cache_key" : "A unique cache key string.",
+            "cache_ttl" : "Specify the cache expiration time in seconds for dynamic publishing.",
+            "triggers" : "Clear dynamic cache triggered by object update(An array or comma separated text. 'user','session','log','urlinfo' cannot be specified)."
+        }
+    },
+    "require" : {
+        "description" : "Includes the contents of a external file into the current template where is it used. The difference from the mt:include tag is that the php include tag always reads the current file.",
+        "attributes" : {
+            "file" : "The file path."
+        }
+    },
+    "includeblock" : {
+        "description" : "Set the content in the block to the template variable 'contents' and then call the mt:include tag.",
+        "attributes" : {
+            "file" : "The file path.",
+            "module" : "A name of view.",
+            "basename" : "A basename of view.",
+            "workspace_id" : "The 'id' of workspace.",
+            "parent" : "Forces an Include of a template in the parent workspace(if workspace model has column 'parent_id') or system.",
+            "cache_key" : "A unique cache key string.",
+            "cache_ttl" : "Specify the cache expiration time in seconds for dynamic publishing.",
+            "triggers" : "Clear dynamic cache triggered by object update(An array or comma separated text. 'user','session','log','urlinfo' cannot be specified)."
+        }
+    },
+    "extends" : {
+        "description" : "Inherit the included view as a parent template. This tag must be on the first line of the view.",
+        "attributes" : {
+            "file" : "The file path.",
+            "module" : "A name of view.",
+            "basename" : "A basename of view.",
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "get_objectpath" : {
+        "description" : "Get the path connecting the '%s' hierarchy with delimiter.",
+        "attributes" : {
+            "separator" : "Path delimiter(default value is '/').",
+            "delimiter" : "Alias for 'separator'.",
+            "column" : "Output value of column(default value is 'basename')."
+        }
+    },
+    "columnproperty" : {
+        "description" : "Output Model's column's property from database.",
+        "attributes" : {
+            "model" : "The model name.",
+            "name" : "The column name.",
+            "property" : "The column name of record from 'mt_column'."
+        }
+    },
+    "assetproperty": {
+        "description" : "Output information of upload file.",
+        "attributes" : {
+            "model" : "The model name.",
+            "name" : "The column name.",
+            "id" : "The id of object(If omitted, the current context object).",
+            "property" : "Property name('file_size', 'mime_type', 'extension', 'class', 'basename', 'file_name', 'image_width', 'image_height', 'uploaded', 'label' or 'user_id')."
+        }
+    },
+    "currenturlmappingvalue" : {
+        "description" : "Output information of current URLMappng.",
+        "attributes" : {
+            "column" : "The column name(default value is 'model')."
+        }
+    },
+    "customfieldcount" : {
+        "description" : "Output field count of current object.",
+        "attributes" : {
+            "model" : "The model name.",
+            "basename" : "The field's basename(If omitted, count all fields)."
+        }
+    },
+    "customfieldvalue" : {
+        "description" : "Output field value of current object.",
+        "attributes" : {
+            "model" : "The model name.",
+            "basename" : "The field's basename.",
+            "index" : "Whether to get the value of the 'n'th field when the value is an array."
+        }
+    },
+    "websitecopyright" : {
+        "description" : "Output 'Copyright' of current scope."
+    },
+    "websitedescription" : {
+        "description" : "Output 'Description' of current scope."
+    },
+    "websiteid" : {
+        "description" : "Output 'id' of current scope."
+    },
+    "websitelanguage" : {
+        "description" : "Output 'Language' of current scope."
+    },
+    "websitename" : {
+        "description" : "Output Workspace's name or App Name."
+    },
+    "websitepath" : {
+        "description" : "Output 'Site Path' of current scope."
+    },
+    "websitepublishtype" : {
+        "description" : "Output 'Publish Type' of current scope."
+    },
+    "websiteurl" : {
+        "description" : "Output 'Site URL' of current scope."
+    },
+    "getvar" : {
+        "description" : "Alias for 'var'. When it's confirmed that name is a literal, please specify this(faster).",
+        "attributes" : {
+            "name" : "The name of variable.",
+            "op" : "Allows the application of a number of mathematical operators to the value of the variable."
+        }
+    },
+    "constant" : {
+        "description" : "Return the value of the constant indicated by name.",
+        "attributes" : {
+            "name" : "The name of constant."
+        }
+    },
+    "modifier__archive_type" : {
+        "description" : "Translate archive type name(for management screen).",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_array_unique" : {
+        "description" : "If an array given, Removes duplicate values from an array.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier__eval" : {
+        "description" : "Build template text.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_add_slash" : {
+        "description" : "If the end of the text is not '/', add '/' to the end.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_array_pop" : {
+        "description" : "Pop the element off the end of array and returns the value of the last element of array.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_base64_encode" : {
+        "description" : "Encodes data with MIME base64.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_cast_to" : {
+        "description" : "Type Juggling.",
+        "attribute" : "'int', 'bool', 'float', 'double', 'real', 'string', 'array', 'object', 'unset' or 'null'."
+    },
+    "modifier_convert_breaks" : {
+        "description" : "Format the text.",
+        "attribute" : "'auto', 'markdown' or 'convert_breaks'. If 'auto' is specified, if the current object has a 'text_format' column, it will be formatted according to that value."
+    },
+    "modifier_count_chars" : {
+        "description" : "Get string length.",
+        "attribute" : "If omitted, the number of bytes is counted. If '1' is specified, the number of characters is counted."
+    },
+    "modifier_count_characters" : {
+        "description" : "Get string length.",
+        "attribute" : "If omitted, the number of bytes is counted. If '1' is specified, the number of characters is counted."
+    },
+    "modifier_decode_html" : {
+        "description" : "Convert HTML entities to their corresponding characters.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_unescape" : {
+        "description" : "Convert HTML entities to their corresponding characters.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_decrement" : {
+        "description" : "Decrement the value.",
+        "attribute" : "Number to decrease the value(default value is '1')."
+    },
+    "modifier_increment" : {
+        "description" : "Increment the value.",
+        "attribute" : "Number to increase the value(default value is '1')."
+    },
+    "modifier_default" : {
+        "description" : "Outputs alternative text when the value is empty.",
+        "attribute" : "Alternative text."
+    },
+    "modifier_encode_js" : {
+        "description" : "Encodes any special characters so that the string can be used safely as the value in JavaScript.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_encode_json" : {
+        "description" : "Escape the value so that it can be treated as JSON.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_encode_php" : {
+        "description" : "Encodes any special characters so that the string can be used safely as the value in PHP.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_encode_url" : {
+        "description" : "URL-encode according to RFC 3986.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_encode_html" : {
+        "description" : "Alias for 'escape=&quot;html&quot;'.",
+        "attribute" : "If you specify 'single', will not encode existing html entities."
+    },
+    "modifier_encode_xml" : {
+        "description" : "Encodes input into an XML-friendly format.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_epoch2str" : {
+        "description" : "Convert Unix timestamp to text like '1 mins ago'.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_escape" : {
+        "description" : "Encodes special characters.",
+        "attribute" : "'html', 'xml', 'js', 'json', 'json_unescaped_unicode', 'php', 'url', 'backslash' or 'single'. If you specify 'single', will not encode existing html entities. If omitted, Convert special characters to HTML entities."
+    },
+    "modifier_urldecode" : {
+        "description" : "Decodes URL-encoded string."
+    },
+    "modifier_format_size" : {
+        "description" : "The number is converted into notation such as data capacity '1MB'.",
+        "attribute" : "The optional number of decimal digits to round to."
+    },
+    "modifier_format_ts" : {
+        "description" : "Format a local time/date. The difference with the 'format' modifier does not have to be a date and time column.",
+        "attribute" : "The format of the outputted date string(for example'Y-m-d H:i:s')."
+    },
+    "modifier_from_json" : {
+        "description" : "Decodes a JSON string.",
+        "attribute" : "The name of variable for set."
+    },
+    "modifier_instr" : {
+        "description" : "Find the position of the first occurrence of a substring in a string(call strpos).",
+        "attribute" : "String for search."
+    },
+    "modifier_mb_instr" : {
+        "description" : "Find the position of the first occurrence of a substring in a string(call mb_strpos).",
+        "attribute" : "String for search."
+    },
+    "modifier_join" : {
+        "description" : "Join array elements with a string.",
+        "attribute" : "The glue string."
+    },
+    "modifier_language" : {
+        "description" : "Translate the phrase.",
+        "attribute" : "Language name(If omitted, use current user or website's language)."
+    },
+    "modifier_lower_case" : {
+        "description" : "Make a string lowercase.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_ltrim" : {
+        "description" : "Strip whitespace (or other characters) from the beginning of a string.",
+        "attribute" : "The characters you want to strip(If omitted, strip whitespace)."
+    },
+    "modifier_rtrim" : {
+        "description" : "Strip whitespace (or other characters) from the end of a string.",
+        "attribute" : "The characters you want to strip(If omitted, strip whitespace)."
+    },
+    "modifier_merge_linefeeds" : {
+        "description" : "Combine two or more consecutive blank lines into one blank line.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_nl2br" : {
+        "description" : "Inserts HTML line breaks before all newlines in a string.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_normalize" : {
+        "description" : "Normalizes the input provided and returns the normalized string.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_numify" : {
+        "description" : "Format a number with grouped thousands.",
+        "attribute" : "Decimals(Sets the number of decimal points)."
+    },
+    "modifier_preg_quote" : {
+        "description" : "Quote regular expression characters.",
+        "attribute" : "Delimiter(default value is '/')."
+    },
+    "modifier_regex_replace" : {
+        "description" : "Applies a regular expression operation on the input.",
+        "attribute" : "An array('$pattern','$replacement','$limit'). If the third argument is omitted, everything is replaced."
+    },
+    "modifier_relative" : {
+        "description" : "Converts a URL to a root relative path.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_remove_blank" : {
+        "description" : "Delete blank lines.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_remove_html" : {
+        "description" : "Removes any HTML markup from the input.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_replace" : {
+        "description" : "Replace all occurrences of the search string with the replacement string.",
+        "attribute" : "An array('$search','$replace')."
+    },
+    "modifier_sec2hms" : {
+        "description" : "Convert the number of seconds into a string like '1h 2min 30seconds'.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_setvar" : {
+        "description" : "Takes the content from the tag it is applied to and assigns it to the given variable name.",
+        "attribute" : "A name of variable to assign.(Only numbers are not supported.)"
+    },
+    "modifier_assign" : {
+        "description" : "Takes the content from the tag it is applied to and assigns it to the given variable name.",
+        "attribute" : "A name of variable to assign.(Only numbers are not supported.)"
+    },
+    "modifier_split" : {
+        "description" : "Split a string by a string.",
+        "attribute" : "Delimiter(The boundary string)."
+    },
+    "modifier_sprintf" : {
+        "description" : "Return a formatted string.",
+        "attribute" : "Format(See PHP sprintf document)."
+    },
+    "modifier_strip_linefeeds" : {
+        "description" : "It removes any linefeed characters from the input.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_strtotime" : {
+        "description" : "Parse about any English textual datetime description into a Unix timestamp.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_title_case" : {
+        "description" : "Uppercase the first character of each word in a string.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_to_json" : {
+        "description" : "Returns the JSON representation of a value.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_trans" : {
+        "description" : "Translate the phrase use locale of plug in.",
+        "attribute" : "Component name(PHP class name)."
+    },
+    "modifier_translate" : {
+        "description" : "Translate the phrase.",
+        "attribute" : "Parameter(s)."
+    },
+    "modifier_strip_tags" : {
+        "description" : "Strip HTML tags from a string."
+    },
+    "modifier_sanitize" : {
+        "description" : "Strip HTML tags from a string.",
+        "attribute" : "Specify the HTML tags you want to not delete in comma separated text. Specify '1' to strip all HTML."
+    },
+    "modifier_trim" : {
+        "description" : "Strip whitespace (or other characters) from the beginning and end of a string.",
+        "attribute" : "The characters you want to strip(If omitted, strip whitespace)."
+    },
+    "modifier_trim_space" : {
+        "description" : "Strip whitespace from the beginning and end of a string.",
+        "attribute" : "Specify '1' to trim the white space. If '2' is specified, newline characters are trimmed. If you specify '3', both will be."
+    },
+    "modifier_trim_to" : {
+        "description" : "Trims the input content to the requested length.",
+        "attribute" : "Number of characters to trim. Can take an argument in the form 'N+STRING' where 'N' is a number, '+' is the separator, and 'STRING' is a value to be appended to the trimmed text."
+    },
+    "modifier_truncate" : {
+        "description" : "Alias for 'trim_to'.",
+        "attribute" : "Number of characters to trim. Can take an argument in the form 'N+STRING' where 'N' is a number, '+' is the separator, and 'STRING' is a value to be appended to the trimmed text."
+    },
+    "modifier_upper_case" : {
+        "description" : "Make a string uppercase.",
+        "attribute" : "Can be omitted."
+    },
+    "modifier_wrap" : {
+        "description" : "Reformats the input, adding newline characters so the text 'wraps' at the length specified as the value.",
+        "attribute" : "Number of characters to wrap."
+    },
+    "modifier_zero_pad" : {
+        "description" : "Adds '0' to the left of the input to the length specified.",
+        "attribute" : "'0' number of characters to pad."
+    },
+    "modifier_offset_time" : {
+        "description" : "Converts a timestamp to a system timestamp when a time zone is specified for the workspace."
+    },
+    "modifier_convert2linkurl" : {
+        "description" : "Replace from Site URL to Link URL.",
+        "attribute" : "URL to replace to(If omitted, the Link URL of current context)."
+    },
+    "modifier_add_mtime" : {
+        "description" : "If specified in the URL, the time stamp of the file will be added to the parameter.",
+        "attribute" : "Parameter key(default value is 'ts')."
+    },
+    "modifier_basename" : {
+        "description" : "Returns trailing name component of path.",
+        "attribute" : "Specify 'no_suffix' to cut off suffix."
+    },
+    "modifier_encode_url_basename" : {
+        "description" : "URL-encodes the file name of the path and returns it.",
+        "attribute" : "If 'dirname' is specified, the directory name will be used instead of the file name, and if 'all' is specified, all directories and file names will be URL-encodes."
+    },
+    "modifier_decode_url_basename" : {
+        "description" : "URL-decodes the file name of the path and returns it.",
+        "attribute" : "If 'dirname' is specified, the directory name will be used instead of the file name, and if 'all' is specified, all directories and file names will be URL-decodes."
+    },
+    "modifier_date_modify" : {
+        "description" : "Alters the timestamp.",
+        "attribute" : "A date/time string(PHP's Supported Date and Time Formats)."
+    },
+    "modifier_let" : {
+        "description" : "Takes the content from the tag it is applied to and assigns it to the given local variable name.",
+        "attribute" : "A name of variable to assign.(Only numbers are not supported.)"
+    },
+    "modifier_set" : {
+        "description" : "Takes the content from the tag it is applied to and assigns it to the given variable name.",
+        "attribute" : "A name of variable to assign.(Only numbers are not supported.)"
+    },
+    "modifier_nowrap" : {
+        "description" : "Replace newlines with spaces.",
+        "attribute" : "If '2' is specified, newline characters are trimmed."
+    },
+    "modifier_url2link" : {
+        "description" : "Replace URLs with links.",
+        "attribute" : "Attribute value of 'a' tag (string or associative array or '_blank')."
+    },
+    "modifier_masking" : {
+        "description" : "Password masking to hide password characters.",
+        "attribute" : "Character to replace(default value is '*')."
+    },
+    "getcookie" : {
+        "description" : "Get the cookie's value.",
+        "attributes" : {
+            "name" : "The name of the cookie."
+        }
+    }
+}

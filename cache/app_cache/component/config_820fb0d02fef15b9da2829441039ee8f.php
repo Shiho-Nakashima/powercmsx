@@ -1,0 +1,204 @@
+<?php $this->get_cache=array (
+  'label' => 'SearchEstraier',
+  'id' => 'searchestraier',
+  'component' => 'SearchEstraier',
+  'version' => '2.0',
+  'author' => 'Alfasado Inc.',
+  'author_link' => 'https://alfasado.net/',
+  'description' => 'Provides in-site search function using Hyper Estraier.',
+  'cfg_template' => 'cfg_template.tmpl',
+  'cfg_system' => 1,
+  'cfg_space' => 1,
+  'settings' => 
+  array (
+    'searchestraier_data_dir' => '<mt:property name="support_dir">/search/index',
+    'searchestraier_archive_types' => 'entry,page',
+    'searchestraier_index_dinamic' => 0,
+    'searchestraier_cookie_by_scope' => 0,
+    'searchestraier_enabled' => 0,
+    'searchestraier_meta_index' => '',
+    'searchestraier_title_weight' => '0.0',
+    'searchestraier_doc_title' => 'auto',
+    'searchestraier_title_option' => '',
+    'searchestraier_extract' => 'auto',
+    'searchestraier_body_option' => '',
+    'searchestraier_notations' => '',
+    'searchestraier_make_thumbnail' => 1,
+    'searchestraier_thumbnail_width' => 300,
+  ),
+  'config_settings' => 
+  array (
+    'searchestraier_estcmd_path' => '/usr/local/bin/estcmd',
+    'searchestraier_mecab_path' => '/usr/local/bin/mecab',
+    'searchestraier_mecab_dic_path' => '/usr/local/lib/mecab/dic/ipadic',
+    'searchestraier_force_ngram' => false,
+    'searchestraier_force_mecab' => false,
+    'searchestraier_bannedwords_rules' => true,
+    'searchestraier_cookie_name' => 'pt-visitor',
+    'searchestraier_interests_cookie' => 'pt-visitor_interests',
+    'searchestraier_cookie_expires' => 365,
+    'searchestraier_draft_capacity' => 100000,
+    'searchestraier_thumb_minimum_area' => 1500,
+    'searchestraier_thumb_minimum_size' => 0,
+    'searchestraier_interest_expires' => 180,
+    'searchestraier_max_interest' => 10,
+    'searchestraier_cookie_path' => NULL,
+    'searchestraier_similar_weight' => 500,
+    'searchestraier_end_of_sentense' => '。',
+    'searchestraier_min_word_len' => 3,
+    'searchestraier_min_word_cnt' => 3,
+    'searchestraier_save_cookie' => true,
+    'searchestraier_use_queue' => false,
+    'searchestraier_word_multibyte_only' => true,
+    'searchestraier_punctuation_weight' => 10,
+    'searchestraier_content_threshold' => 100,
+    'searchestraier_re_index_at_rebuild' => false,
+    'searchestraier_auto_keywords' => false,
+    'searchestraier_skip_noindex' => false,
+    'searchestraier_definitely' => true,
+    'searchestraier_callback_compat' => false,
+    'searchestraier_mecab_userdic' => '',
+    'searchestraier_task_proc_per' => 10,
+    'searchestraier_task_proc' => 0,
+    'searchestraier_task_usleep' => 0,
+    'searchestraier_api_relative_url' => false,
+    'searchestraier_api_can_bot' => false,
+    'searchestraier_api_caching' => true,
+    'searchestraier_convert_utf8' => false,
+    'searchestraier_index_lt' => 32768,
+    'searchestraier_attr_index_path' => false,
+    'searchestraier_use_tmp' => false,
+    'searchestraier_sync_max_retry' => 50,
+    'searchestraier_sync_sleep' => 5,
+    'searchestraier_copy_sleep' => 0,
+    'searchestraier_use_reccomend' => true,
+    'searchestraier_consider_headings' => true,
+    'searchestraier_use_weight' => true,
+    'searchestraier_doc_weight' => 
+    array (
+      'html' => 1.0,
+      'htm' => 1.0,
+      'php' => 1.0,
+      'pdf' => 0.8,
+      'doc' => 0.7,
+      'xls' => 0.6,
+      'ppt' => 0.6,
+      'docx' => 0.6,
+      'xlsx' => 0.6,
+      'pptx' => 0.6,
+    ),
+    'searchestraier_model_weight' => 
+    array (
+    ),
+    'searchestraier_reccomend_inc' => '',
+    'searchestraier_idx_optimize' => true,
+    'searchestraier_idx_backup' => false,
+  ),
+  'methods' => 
+  array (
+    'searchestraier_debug' => 
+    array (
+      'component' => 'SearchEstraier',
+      'method' => 'searchestraier_debug',
+      'permission' => 'manage_plugins',
+    ),
+  ),
+  'config_overwrite' => 
+  array (
+    'publish_callbacks' => true,
+  ),
+  'hooks' => 
+  array (
+    'searchestraier_pre_run' => 
+    array (
+      'pre_run' => 
+      array (
+        'component' => 'SearchEstraier',
+        'priority' => 1,
+        'method' => 'searchestraier_pre_run',
+      ),
+    ),
+    'searchestraier_post_run' => 
+    array (
+      'post_run' => 
+      array (
+        'component' => 'SearchEstraier',
+        'priority' => 1,
+        'method' => 'searchestraier_post_run',
+      ),
+    ),
+  ),
+  'callbacks' => 
+  array (
+    'searchestraier_post_publish' => 
+    array (
+      'template' => 
+      array (
+        'post_publish' => 
+        array (
+          'component' => 'SearchEstraier',
+          'priority' => 1,
+          'method' => 'searchestraier_post_publish',
+        ),
+      ),
+    ),
+    'searchestraier_start_publish' => 
+    array (
+      'template' => 
+      array (
+        'start_publish' => 
+        array (
+          'component' => 'SearchEstraier',
+          'priority' => 1,
+          'method' => 'searchestraier_start_publish',
+        ),
+      ),
+    ),
+  ),
+  'tags' => 
+  array (
+    'block' => 
+    array (
+      'estraiersearch' => 
+      array (
+        'component' => 'SearchEstraier',
+        'method' => 'hdlr_estraier_search',
+      ),
+    ),
+    'function' => 
+    array (
+      'estraierjson' => 
+      array (
+        'component' => 'SearchEstraier',
+        'method' => 'hdlr_estraier_json',
+      ),
+    ),
+    'modifier' => 
+    array (
+      '_notations' => 
+      array (
+        'component' => 'SearchEstraier',
+        'method' => 'modifier_notations',
+      ),
+    ),
+  ),
+  'tasks' => 
+  array (
+    'searchestraier_update_idx' => 
+    array (
+      'label' => 'Rebuild Index for Hyper Estraier',
+      'component' => 'SearchEstraier',
+      'priority' => 100,
+      'method' => 'searchestraier_update_idx',
+      'frequency' => 86400,
+    ),
+    'searchestraier_remove_old_cache' => 
+    array (
+      'label' => 'Remove Old Cache for Search Estraier',
+      'component' => 'SearchEstraier',
+      'priority' => 100,
+      'method' => 'remove_old_cache',
+      'frequency' => 7200,
+    ),
+  ),
+);

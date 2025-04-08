@@ -1,0 +1,388 @@
+<mt:property name="image_paste_without_size" setvar="image_paste_without_size"><mt:property name="editor_paste_relative" setvar="editor_paste_relative">
+<mt:if name="request.do_insert">
+<mt:setvarblock name="html_tag">
+<mt:loop name="insert_loop"><mt:if name="editor_paste_relative"><mt:var name="url" relative setvar="_url"><mt:var name="permalink" relative setvar="_permalink"><mt:else><mt:var name="url" setvar="_url"><mt:var name="permalink" setvar="_permalink"></mt:if>
+<mt:if name="class" eq="image">
+<mt:if name="thumb_link"><a href="<mt:var name="_permalink">" target="_blank" rel="noopener"></mt:if><img alt="<mt:var name="label" escape>"
+<mt:if name="align" eq="right">
+ style="float: right; margin: 0 0 20px 20px;"
+<mt:elseif name="align" eq="left">
+ style="float: left; margin: 0 20px 20px 0;"
+<mt:elseif name="align" eq="center">
+ style="text-align: center; display: block; margin: 0 auto 20px;"
+</mt:if>
+ src="<mt:var name="_url" escape>"
+ <mt:unless name="image_paste_without_size"><mt:if name="width">width="<mt:var name="width" escape>"</mt:if>
+<mt:if name="height"> height="<mt:var name="height" escape>"</mt:if></mt:unless>><mt:if name="thumb_link"></a></mt:if>
+<mt:else>
+<a href="<mt:var name="_url" escape>"<mt:if name="target_blank"> target="_blank" rel="noopener"</mt:if>><mt:if name="label"><mt:var name="label" escape><mt:else><mt:var name="url" basename></mt:if> (<mt:var name="file_size" escape format_size="1">)</a>
+</mt:if>
+</mt:loop>
+</mt:setvarblock>
+<script>
+    let html = "<mt:var name="html_tag" strip_linefeeds="1" encode_js="1">";
+    let editor = window.parent.tinyMCE.activeEditor;
+    if ( editor ) {
+        editor.insertContent(html);
+    } else {
+        window.parent.surroundHTML('file', '<mt:var name="request.insert">', html );
+    }
+    let relAssets = window.parent.$('#assets');
+    if (! relAssets.length && window.parent.$('#asset_id').length ) {
+        <mt:if tag="property" name="attach_editor_asset_single">
+        let relAsset = window.parent.$('#asset_id');
+        let asset_id = window.parent.$('#asset_id').val();
+        if (! asset_id ) {
+            <mt:loop name="insert_loop">
+            <mt:if name="__first__">
+            window.parent.$('#asset_id').val( <mt:var name="id"> );
+            let col_value = '<mt:var name="label" escape>';
+            let obj_permalink = '<mt:var name="permalink">';
+            window.parent.$('#asset_id-label').html( col_value );
+            window.parent.$('#asset_id-img').attr('data-id','<mt:var name="id">').css('background-image','url(\'<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=asset&id=<mt:var name="id">\')');
+            window.parent.$('#asset_id-img').show();
+            window.parent.$('#asset_id-img').css('display', 'inline-block');
+            window.parent.$('#asset_id-img').removeClass('hidden');
+            window.parent.$('#asset_id-view-asset-link').attr('href', obj_permalink);
+            window.parent.$('#asset_id-view-asset-link').show();
+            window.parent.$('#asset_id-view-asset-link').css('display', 'inline-block');
+            window.parent.$('#asset_id-view-asset-link').removeClass('hidden');
+          <mt:if name="can_edit">
+            let dataHref = window.parent.$('#_asset_id-edit-defeult').attr('data-href');
+            dataHref = dataHref.replace( /&id=.*?&/, '&id=' + '<mt:var name="id">' + '&' );
+            window.parent.$('#_asset_id-edit-defeult').attr('data-href', dataHref);
+            window.parent.$('#_asset_id-edit-defeult').show();
+            window.parent.$('#_asset_id-edit-defeult').css('display', 'inline-block');
+            window.parent.$('#_asset_id-edit-defeult').removeClass('hidden');
+          <mt:else>
+            window.parent.$('#_asset_id-edit-defeult').hide();
+          </mt:if>
+            window.parent.$('#asset_id-close').show();
+            window.parent.$('#asset_id-close').removeClass('hidden');
+            </mt:if>
+            </mt:loop>
+        }
+        </mt:if>
+    } else if ( relAssets.length ) {
+        let selected_ids = [];
+        window.parent.$("input[name='assets[]']").each(function(index, element){
+            if ( element.value ) {
+                selected_ids.push(element.value);
+            }
+        });
+        let target_control = 'assets';
+        <mt:loop name="insert_loop">
+        if (selected_ids.indexOf("<mt:var name="id">") == -1){
+            window.parent.$('#'+target_control+'-none').hide();
+            let _li = window.parent.$('#'+target_control+'-tmpl');
+            let newli = _li.clone( true ).appendTo('#'+target_control );
+            newli.removeClass('hidden');
+            let col_value = '<mt:var name="label" escape>';
+            let obj_permalink = '<mt:var name="permalink">';
+            newli.children('.asset-download-btn').attr( 'href', obj_permalink );
+            let fInfo = obj_permalink.split('.');
+            let fileExtension = fInfo[fInfo.length-1].toLowerCase();
+            let extensionsInline = ['csv', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx'];
+            if (extensionsInline.indexOf(fileExtension) < 0){
+                newli.children('.asset-download-btn').attr('target', '_blank');
+                newli.children('.asset-download-btn').children('i').removeClass('fa-download');
+                newli.children('.asset-download-btn').children('i').addClass('fa-external-link-square');
+                newli.children('.asset-download-btn').attr('aria-label','<mt:trans phrase="View">');
+            }
+            newli.children('.insert-file-id').attr('value','<mt:var name="id">');
+            newli.children('.insert-file-name').attr('value',col_value);
+            newli.children('.insert-file-name').attr('id','_' + target_control + '_label_' + '<mt:var name="id">');
+            newli.children('span').attr('id', '_' + target_control + '_name_' + '<mt:var name="id">');
+          <mt:if name="can_edit">
+            newli.children('.label_edit_btn').attr('data-name','_' + target_control + '_label_' + '<mt:var name="id">');
+            newli.children('.label_edit_btn').attr('data-label', col_value );
+            let dataHref = newli.children('.relation-editor').attr('data-href');
+            dataHref = dataHref.replace( /&id=[^0-9]*&/, '&id=' + '<mt:var name="id">' + '&' );
+            newli.children('.relation-editor').attr('data-href', dataHref);
+          <mt:else>
+            newli.children('.label_edit_btn').hide();
+          </mt:if>
+            newli.children('span').html( col_value );
+            newli.removeAttr('id');
+            newli.addClass( target_control+'-child');
+            newli.children('.assets-child-thumb').attr('data-id','<mt:var name="id">').css('background-image','url(\'<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=asset&id=<mt:var name="id">\')');
+            newli.children('.assets-child-thumb').show();
+            newli.show();
+        }
+        </mt:loop>
+    }
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>
+<mt:else>
+<mt:setvar name="body_class" value="insert-asset">
+<mt:include file="include/dialog_header.tmpl">
+<form action="<mt:var name="script_uri">" method="POST" class="form-inline" id="insert-asset-form">
+<input type="hidden" name="__mode" value="insert_asset">
+<input type="hidden" name="insert" value="<mt:var name="request.insert" escape>">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="_system_filters_option" value="<mt:var name="request._system_filters_option" escape>">
+<input type="hidden" name="insert_editor" value="1">
+<input type="hidden" name="do_insert" value="1">
+<mt:setvar name="asset_count" value="0">
+<mt:objectloop model="asset">
+<mt:var name="__counter__" setvar="asset_count">
+</mt:objectloop>
+<mt:objectloop model="asset">
+<mt:var name="class" setvar="curr_class">
+<mt:if name="file_ext" eq="svg"><mt:setvar name="curr_class" value="image"></mt:if>
+<mt:if name="__first__"><table class="table">
+<thead>
+<tr><th class="insert-asset-selector-th"><mt:trans phrase="Insert"></th><th class="insert-asset-preview-th" style="min-width:100px"><mt:trans phrase="Preview"></th><th colspan="2"><mt:trans phrase="Metadata"></th></tr>
+</thead>
+<tbody id="list_body">
+</mt:if>
+<tr <mt:if name="asset_count" gt="1">tabindex="0"</mt:if>>
+  <td class="insert-asset-selector" style="vertical-align:top !important">
+  <mt:if name="asset_count" gt="1">
+    <span style="color:gray;" class="dragHandle"><i class="fa fa-bars" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Sort"></span>
+    </span>
+  </mt:if>
+    <label class="custom-control custom-checkbox" style="margin-top: 15px">
+      <input class="custom-control-input" type="checkbox" checked name="id[]" value="<mt:var name="id">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </td>
+  <td class="insert-asset-preview-wrapper">
+    <mt:if name="curr_class" eq="image">
+      <mt:if tag="asseturl">
+        <a href="<mt:asseturl>" target="_blank">
+      </mt:if>
+      <img id="image-preview-<mt:var name="id">" src="<mt:if name="file_ext" eq="svg"><mt:asseturl><mt:else><mt:assetthumbnail name="file" data_uri="1" type="default" square="1"></mt:if>" alt="<mt:trans phrase="Preview">" width="100" class="insert-asset-preview">
+      <mt:if tag="asseturl">
+        </a>
+      </mt:if>
+      <mt:if name="class" eq="image">
+      <div class="center-block" style="text-align:center">
+      <small class="text-muted"><mt:trans phrase="Width"> : <mt:var name="image_width">
+      <br><mt:trans phrase="Height"> : <mt:var name="image_height"></small>
+      </div>
+      </mt:if>
+    <mt:else>
+      <mt:if tag="asseturl">
+        <a href="<mt:asseturl>" target="_blank">
+      </mt:if>
+      <i class="fa-3x fa <mt:if name="class" eq="pdf">fa-file-pdf-o<mt:elseif name="class" eq="video">fa-file-video-o<mt:elseif name="class" eq="audio">fa-file-audio-o<mt:else>fa-file-o</mt:unless></mt:if>" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="$obj_class"></span>
+      <mt:if tag="asseturl">
+        </a>
+      </mt:if>
+    </mt:if>
+  </td>
+  <td>
+  <table class="table-inner insert-asset-innner">
+<tr>
+  <th class="form-inline insert-asset-label">
+  <mt:if name="curr_class" eq="image"><mt:trans phrase="Text Alternative"><mt:else><mt:trans phrase="Label"></mt:if>
+  &nbsp;
+    <label class="custom-control custom-checkbox" style="font-weight:normal;">
+      <input class="custom-control-input" type="checkbox" value="1" name="save-label-<mt:var name="id">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:trans phrase="Save as Asset Label">
+      </span>
+    </label>
+    <mt:if name="curr_class" ne="image">
+    &nbsp;
+    <label class="custom-control custom-checkbox hidden" style="font-weight:normal;">
+      <input class="custom-control-input" type="checkbox" value="1" name="target-blank-<mt:var name="id">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+        <mt:trans phrase="Open in new window">
+      </span>
+    </label>
+    </mt:if>
+  </th>
+</tr>
+<tr>
+  <td class="insert-asset-label">
+    <mt:property name="asset_label_col" setvar="asset_label_col">
+    <mt:unless name="asset_label_col">
+      <mt:setvar name="asset_label_col" value="label">
+    </mt:unless>
+    <input type="hidden" name="asset-label-col-<mt:var name="id">" value="<mt:var name="asset_label_col" escape>">
+    <input type="text" class="short-padding form-control form-control-sm insert-asset-content" value="<mt:var name="$asset_label_col" escape>" name="asset-label-<mt:var name="id">">
+  </td>
+</tr>
+<mt:if name="curr_class" eq="image">
+<tr>
+  <th class="form-inline insert-asset-label insert-image-top-margin">
+  <mt:trans phrase="Size">
+  &nbsp;
+    <label class="custom-control custom-checkbox" style="font-weight:normal;">
+      <input class="custom-control-input specify-thumb-width" id="thumb-width-<mt:var name="id">" type="checkbox" value="1" name="use-thumb-<mt:var name="id">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+        <mt:if name="file_ext" eq="svg"><mt:trans phrase="Specify size"><mt:else><mt:trans phrase="Use Thumbnail"></mt:if>
+      </span>
+    </label>
+    <label class="custom-control custom-checkbox hidden" id="thumb-link-<mt:var name="id">" style="font-weight:normal;display:none">
+      <input class="custom-control-input" type="checkbox" value="1" name="thumb-link-<mt:var name="id">">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+        <mt:trans phrase="Link to Original">
+      </span>
+    </label>
+    <input id="thumb-height-<mt:var name="id">" name="thumb-height-<mt:var name="id">" type="hidden" value="">
+  </th>
+<script>
+var imgHeight = $('#image-preview-<mt:var name="id">').height();
+$('#thumb-height-<mt:var name="id">').val( imgHeight );
+$('#thumb-width-<mt:var name="id">').change(function() {
+    if ( $(this).prop('checked') ) {
+        $('#thumb-link-<mt:var name="id">').show();
+    } else {
+        $('#thumb-link-<mt:var name="id">').hide();
+    }
+});
+</script>
+</tr>
+<tr class="thumb-width-<mt:var name="id"> hidden">
+  <td class="form-inline insert-image-size">
+    <label class="insert-asset-content" style="margin-left:4px !important"><mt:trans phrase="Width"> : &nbsp; <input type="number" class="short-padding num form-control form-control-sm very-short" value="<mt:assetproperty property="image_width">" name="thumb-width-<mt:var name="id">"> &nbsp; px</label>
+  </td>
+</tr>
+<tr>
+  <th class="insert-image-top-margin"><mt:trans phrase="Alignment"></th>
+</tr>
+<tr>
+  <td class="form-inline">
+  <label class="custom-control custom-radio" style="margin-left:4px !important">
+    <input class="custom-control-input" type="radio" name="insert-align-<mt:var name="id">" value="">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="None"></span>
+  </label>
+  <label class="custom-control custom-radio" style="margin-left:4px !important">
+    <input class="custom-control-input" type="radio" name="insert-align-<mt:var name="id">" value="left">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="Left"></span>
+  </label>
+  <label class="custom-control custom-radio" style="margin-left:4px !important">
+    <input class="custom-control-input" type="radio" name="insert-align-<mt:var name="id">" value="center">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="Center"></span>
+  </label>
+  <label class="custom-control custom-radio" style="margin-left:4px !important">
+    <input class="custom-control-input" type="radio" name="insert-align-<mt:var name="id">" value="right">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="Right"></span>
+  </label>
+</td>
+</tr>
+</mt:if>
+</table>
+  </td>
+</tr>
+<mt:if name="__last__">
+</tbody>
+<table>
+</mt:if>
+</mt:objectloop>
+  <button id="dialog-cancel-btn" class="btn btn-secondary" type="button"><mt:trans phrase="Cancel"></button>
+  <button id="dialog-selector-btn" class="btn btn-primary" type="button"><mt:trans phrase="Insert"></button>
+</form>
+<script>
+$('.specify-thumb-width').change(function() {
+    var cell_class = $(this).prop('id');
+    if ( $(this).prop('checked') ) {
+        $( '.' + cell_class ).show();
+    } else {
+        $( '.' + cell_class ).hide();
+    }
+});
+$(document).keydown(evnt_keydown);
+function evnt_keydown(e) {
+    if ( e.keyCode == 27 ) {
+        close_dialog();
+    }
+}
+$('#dialog-selector-btn').click(function() {
+    $('#insert-asset-form').submit();
+});
+$('#dialog-cancel-btn').click(function() {
+    close_dialog();
+    return false;
+});
+function close_dialog () {
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+}
+<mt:if name="asset_count" gt="1">
+$('#list_body tr .dragHandle').mouseover(function() {
+    $(this).css('cursor','move');
+});
+$('#list_body').sortable(
+{handle:'.dragHandle'}
+);
+jQuery.fn.extend({
+  ksortable: function(options) {
+    this.sortable(options);
+    $(this).children().attr('tabindex', 0).bind('keydown', function(event) {
+    if ( event.target && (/^(input|textarea|select|button)$/).test(event.target.tagName.toLowerCase() ) ) {
+        return;
+    }
+    // $('li', this).attr('tabindex', 0).bind('keydown', function(event) {
+        if(event.which == 37 || event.which == 38) { // left or up
+          $(this).insertBefore($(this).prev());
+        } 
+        if(event.which == 39 || event.which == 40) { // right or down
+          $(this).insertAfter($(this).next()); 
+        }     
+        if (event.which == 84 || event.which == 33) { // "t" or page-up
+          $(this).parent().prepend($(this));
+        } 
+        if (event.which == 66 || event.which == 34) { // "b" or page-down
+          $(this).parent().append($(this));
+        } 
+        if(event.which == 82) { // "r"
+          var p = $(this).parent();
+          p.children().each(function(){p.prepend($(this))})
+        } 
+        if(event.which == 83) { // "s"
+          var p = $(this).parent();
+          p.children().each(function(){
+            if(Math.random()<.5)
+              p.prepend($(this));
+            else
+              p.append($(this));
+          })
+        }
+        var keyNums = [33, 34, 37, 38, 39, 40, 66, 82, 83, 84];
+        var keyNum = event.which + 0;
+        if (keyNums.indexOf(keyNum) >= 0){
+          $(this).focus();
+        }
+    });
+  }
+});
+$("#list_body").ksortable();
+</mt:if>
+$(":checkbox").keypress(function(e) {
+    if ( e.keyCode == 13 ) {
+        if ( $(this).prop('checked') ) {
+            $(this).prop('checked', false);
+        } else {
+            $(this).prop('checked', true);
+        }
+        if ( $(this).hasClass('cb-all-select') ) {
+            checked = $(this).prop('checked');
+            $("input[name='model[]']").each(function(){
+                $(this).prop('checked', checked);
+            });
+            $('.selector').prop('checked', checked);
+        } else {
+            set_all_select();
+        }
+    }
+    return false;
+});
+</script>
+<mt:include file="include/dialog_footer.tmpl">
+</mt:if>

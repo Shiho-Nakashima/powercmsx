@@ -1,0 +1,30 @@
+<mt:includeblock module="(Media) Site Layout">
+  <mt:include module="(Media) Site Config">
+  <mt:pagetitle language="$language" setvar="archive_title">
+  <mt:if tag="pageexcerpt">
+    <mt:pageexcerpt setvar="page_description">
+  </mt:if>
+  <mt:if tag="pagekeywords">
+    <mt:pagekeywords setvar="page_keywords">
+  </mt:if>
+  <mt:pageassets class="image" limit="1">
+    <mt:assetfileurl setvar="ogp_image">
+  </mt:pageassets>
+
+  <main class="content-section">
+    <div class="section-head">
+      <h1 class="section-title align-center mb-4 display-5"><mt:var name="archive_title" escape="single"></h1>
+      <p class="section-info align-right mb-4">
+        <mt:pagedate format_ts="$datetime_format">
+      </p>
+    </div>
+    <div class="text content-block">
+      <mt:pagebody convert_breaks="auto">
+    </div>
+<mt:if tag="pagemore">
+    <div class="text content-block">
+      <mt:pagemore>
+    </div>
+</mt:if>
+  </main>
+</mt:includeblock>

@@ -1,0 +1,21 @@
+{
+    "label"       : "GetHierarchy",
+    "id"          : "gethierarchy",
+    "component"   : "GetHierarchy",
+    "version"     : "1.0",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Get objects with hierarchy as an array.",
+    "tags": {
+        "function": {
+            "gethierarchy" : {
+                "component" : "GetHierarchy",
+                "method" : "hdlr_gethierarchy"
+            },
+            "getmenustructure" : {
+                "component" : "GetHierarchy",
+                "method" : "hdlr_getmenustructure"
+            }
+        }
+    }
+}

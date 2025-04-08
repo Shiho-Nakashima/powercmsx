@@ -1,0 +1,20 @@
+<mt:setvar name="col_num" value="3">
+<mt:setvar name="col_width" value="4" note="12/3=4">
+<mt:pagewidgets class="col-lg-4">
+  <mt:if name="__index__" op="%" value="$col_num" eq="0">
+    <mt:setvar name="object_remaining" value="$__total__">
+    <mt:var name="object_remaining" op="-" value="$__index__">
+    <mt:if name="object_remaining" lt="$col_num">
+      <mt:setvar name="col_width" value="12">
+      <mt:var name="col_width" op="/" value="$object_remaining">
+    </mt:if>
+    <mt:setvar name="widget_class" value="col-lg-">
+    <mt:setvar name="widget_class" value="$col_width" append="1">
+    <mt:unless name="__first__"></div></mt:unless>
+    <div class="row mt-4 plain-style">
+  </mt:if>
+  <mt:include module="(Website) Main Page Widget" widget_class="$widget_class">
+  <mt:if name="__last__">
+    </div>
+  </mt:if>
+</mt:pagewidgets>

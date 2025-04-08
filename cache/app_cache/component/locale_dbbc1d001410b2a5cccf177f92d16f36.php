@@ -1,0 +1,5 @@
+<?php $this->get_cache=array (
+  'Collectively set URL Map\'s rebuild triggers from the Listing Screen.' => '一覧画面からURLマップの再構築トリガーを一括設定します。',
+  'Add Model\'s Triggers' => 'モデルのトリガー追加',
+  'Delete Model\'s Triggers' => 'モデルのトリガー削除',
+);

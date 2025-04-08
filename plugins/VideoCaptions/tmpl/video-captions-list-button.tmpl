@@ -1,0 +1,13 @@
+<script>
+$('#video-selector-btn-editor_insert').click(function(){
+    var selected = $('input[name=id]:checked').val();
+    selected = $( '<span/>' ).text(selected).html();
+    if (! selected ) {
+        alert('<mt:trans phrase="You did not select any %s." params="$label">');
+        return false;
+    }
+    let url = '<mt:var name="script_uri">?__mode=video_caption_insert_video<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&target=<mt:if name="request.insert"><mt:var name="request.insert" escape><mt:else><mt:var name="request.target" escape></mt:if>&insert=<mt:var name="request.insert" escape>&id=' + selected;
+    window.location.href = url;
+    return false;
+});
+</script>

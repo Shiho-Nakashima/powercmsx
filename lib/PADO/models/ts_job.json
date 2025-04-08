@@ -1,0 +1,134 @@
+{
+    "label": "Job",
+    "plural": "Jobs",
+    "primary": "name",
+    "version": "1.57",
+    "order": 480,
+    "menu_type": 3,
+    "display_space": 1,
+    "display_system": 1,
+    "has_status": 1,
+    "default_status": 2,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "name": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "label": {
+            "type": "string",
+            "size": 255
+        },
+        "component": {
+            "type": "string",
+            "size": 50
+        },
+        "class": {
+            "type": "string",
+            "size": 50
+        },
+        "is_running": {
+            "type": "tinyint",
+            "size": "4",
+            "default": "0"
+        },
+        "max_per_once": {
+            "type": "int",
+            "size": 11
+        },
+        "retry_interval": {
+            "type": "int",
+            "size": 11
+        },
+        "created_on": {
+            "type": "datetime"
+        },
+        "start_on": {
+            "type": "datetime"
+        },
+        "status": {
+            "type": "int",
+            "size": 11,
+            "default": "2"
+        },
+        "user_id": {
+            "type": "int",
+            "size": 11
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "name": "name",
+        "label": "label",
+        "class": "class",
+        "is_running": "is_running",
+        "created_on": "created_on",
+        "start_on": "start_on",
+        "status": "status",
+        "user_id": "user_id",
+        "workspace_id": "workspace_id"
+    },
+    "translate": [
+        "name",
+        "class"
+    ],
+    "sort_by": {
+        "id": "ascend"
+    },
+    "disp_edit": {
+        "status": "select",
+        "user_id": "reference"
+    },
+    "autoset": [
+        "workspace_id"
+    ],
+    "unchangeable": [
+        "workspace_id"
+    ],
+    "edit_properties": {
+        "id": "hidden",
+        "name": "primary",
+        "label": "text",
+        "component": "text",
+        "class": "text",
+        "is_running": "checkbox",
+        "max_per_once": "number",
+        "created_on": "datetime",
+        "start_on": "datetime",
+        "status": "selection",
+        "user_id": "reference:user:nickname"
+    },
+    "list_properties": {
+        "id": "number",
+        "name": "primary",
+        "label": "text",
+        "component": "text",
+        "class": "text",
+        "is_running": "checkbox",
+        "max_per_once": "number",
+        "created_on": "datetime",
+        "start_on": "datetime",
+        "status": "number",
+        "user_id": "reference:user:nickname",
+        "workspace_id": "reference:workspace:name"
+    },
+    "options": {
+        "status": "Disable,Enable",
+        "user_id": "user"
+    },
+    "hide_edit_options": [
+        "user_id",
+        "status"
+    ]
+}

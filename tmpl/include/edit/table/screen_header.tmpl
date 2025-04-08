@@ -1,0 +1,25 @@
+<mt:setvar name="blob_columns" value="0">
+<mt:var name="request.id" setvar="table_id">
+<mt:if name="table_id">
+<mt:objectloop model="column" sort_by="order" table_id="$table_id" cols="*">
+<mt:if name="type" eq="blob">
+<mt:if name="edit" eq="file">
+<mt:var name="blob_columns" increment setvar="blob_columns">
+</mt:if>
+</mt:if>
+</mt:objectloop>
+</mt:if>
+<mt:property name="max_blob_cols" setvar="max_blob_cols">
+<mt:unless name="max_blob_cols">
+<mt:setvar name="max_blob_cols" value="3">
+</mt:unless>
+<mt:if name="blob_columns" gt="$max_blob_cols">
+<div id="blob_columns-message" class="mt-3 alert alert-warning" tabindex="0">
+<mt:trans phrase="If there are more than %s blob/file type columns, performance may be affected."params="$max_blob_cols">
+<br>
+<mt:trans phrase="Consider replacing it with a column of assets / attachmentfiles type instead.">
+</div>
+<script>
+$('#blob_columns-message').focus();
+</script>
+</mt:if>

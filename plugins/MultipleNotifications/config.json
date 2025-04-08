@@ -1,0 +1,41 @@
+{
+    "label"       : "MultipleNotifications",
+    "id"          : "multiplenotifications",
+    "component"   : "MultipleNotifications",
+    "version"     : "1.2",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Notify users with the same permissions at the same time for workflow emails.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "cfg_space"   : 1,
+    "config_settings" : {
+        "multiplenotifications_to_same_group" : false,
+        "multiplenotifications_to_all_publisher" : false,
+        "multiplenotifications_send_bcc" : false,
+        "multiplenotifications_send_bcc_logging" : false
+    },
+    "settings"    : {
+        "multiplenotifications_enabled" : false
+    },
+    "callbacks": {
+        "multiplenotifications_mail_filter": {
+            "mail_filter" : {
+                "mail_filter" : {
+                    "component" : "MultipleNotifications",
+                    "priority"  : 10,
+                    "method" : "mail_filter"
+                }
+            }
+        },
+        "multiplenotifications_publish_object": {
+            "workflow" : {
+                "publish_object" : {
+                    "component" : "MultipleNotifications",
+                    "priority"  : 10,
+                    "method" : "publish_object"
+                }
+            }
+        }
+    }
+}

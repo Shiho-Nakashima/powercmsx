@@ -1,0 +1,35 @@
+<button id="axerunner_check_url" type="button" class="btn btn-secondary"><mt:trans phrase="Re-Verification" component="AxeRunner"></button>
+<mt:ifcomponent component="HTML_CodeSniffer">
+<button id="axerunner_verify_url" type="button" class="btn btn-secondary"><mt:trans phrase="Verification with a Browser" component="AxeRunner"></button>
+</mt:ifcomponent>
+<mt:ifcomponent component="NuHtmlChecker">
+  <mt:pluginsetting component="NuHtmlChecker" name="nuhtmlchecker_agree" setvar="nuhtmlchecker_agree">
+  <mt:if name="nuhtmlchecker_agree">
+  <button type="button" id="__nu_html_checker" class="btn btn-secondary btn-sm"><mt:trans phrase="HTML Check" component="NuHtmlChecker"></button>
+</mt:if>
+</mt:ifcomponent>
+<script>
+$('#axerunner_check_url').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to re-validate accessibility with axe-core?" component="AxeRunner">' ) ) {
+        return false;
+    }
+    $('#__mode').val( 'axerunner_check_url' );
+    $(this).attr('disabled', true);
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+});
+$('#axerunner_verify_url').click(function(){
+    $('#__mode').val( 'axerunner_verify_url' );
+    $('#edit-form-main').attr( 'target', '_blank' );
+    $('#edit-form-main').submit();
+    $('#edit-form-main').attr( 'target', '_self' );
+    $('#__mode').val( 'save' );
+});
+$('#__nu_html_checker').click(function(){
+    $('#__mode').val( 'axerunner_html_check' );
+    $('#edit-form-main').attr( 'target', '_blank' );
+    $('#edit-form-main').submit();
+    $('#edit-form-main').attr( 'target', '_self' );
+    $('#__mode').val( 'save' );
+});
+</script>

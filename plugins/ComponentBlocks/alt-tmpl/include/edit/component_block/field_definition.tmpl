@@ -1,0 +1,28 @@
+<script src="<mt:var name="component_blocks_asset_dir" escape />/js/fieldblockbuilder.js"></script>
+<script type="module">
+  import { FieldDefinition, Detail } from './<mt:var name="component_blocks_asset_dir" escape />/js/field_definition.js';
+  import { TableEditor } from './<mt:var name="component_blocks_asset_dir" escape />/js/component_blocks_components.js?v=1.23';
+  import { defaultMessages } from '<mt:var name="script_uri">?__mode=component_blocks_i18n';
+
+  const app = Vue.createApp(FieldDefinition);
+  app.component('Draggable', vuedraggable);
+  app.component('Detail', Detail);
+  app.component('TableEditor', TableEditor);
+
+  // 国際化対応
+  const messages = $.extend(true, {}, defaultMessages, <mt:var name="componentblocks_translation" default="{}" />); // jQueryがある間は代用する
+  const i18n = VueI18n.createI18n({
+    locale: '<mt:var name="user_language" />',
+    fallbackLocale: 'en',
+    messages,
+  });
+  app.use(i18n);
+
+  const vm = app.mount('#<mt:var name="__col_name__">_app');
+  vm.type = '<mt:var name="__col_name__">';
+
+  const savedData = document.getElementById('_saved_<mt:var name="__col_name__">').value;
+  if (savedData) {
+    vm.properties = JSON.parse(savedData);
+  }
+</script>

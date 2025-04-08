@@ -1,0 +1,456 @@
+<mt:unless name="workspace_id">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_end_point">
+      <mt:trans phrase="Endpoint" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_machinetranslator_end_point" name="setting_machinetranslator_end_point" class="form-control" value="<mt:var name="setting_machinetranslator_end_point" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_subscription_key">
+      <mt:trans phrase="Subscription Key" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" autocomplete="new-password" id="setting_machinetranslator_subscription_key" name="setting_machinetranslator_subscription_key" class="form-control" value="<mt:var name="setting_machinetranslator_subscription_key" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_region">
+      <mt:trans phrase="Region" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-5">
+    <input type="text" id="setting_machinetranslator_region" name="setting_machinetranslator_region" class="form-control very-short" value="<mt:var name="setting_machinetranslator_region" escape>">
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Specify only when using multi-service resources(Resource types enable access to multiple Cognitive Services using a single API key and endpoint)." component="MachineTranslator">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_api_version">
+      <mt:trans phrase="API Version" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_machinetranslator_api_version" name="setting_machinetranslator_api_version" class="form-control" value="<mt:var name="setting_machinetranslator_api_version" escape>">
+  </div>
+</div>
+</mt:unless>
+<mt:setvar name="use_system_settings" value="0">
+<mt:if name="workspace_id">
+  <mt:if name="setting_machinetranslator_use_system_settings">
+    <mt:setvar name="use_system_settings" value="1">
+  </mt:if>
+  <div class="row form-group mb-1">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_machinetranslator_use_system_settings" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_machinetranslator_use_system_settings" name="setting_machinetranslator_use_system_settings" value="1"
+          <mt:if name="setting_machinetranslator_use_system_settings">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use system settings" component="MachineTranslator"></span>
+      </label>
+    </div>
+  </div>
+<script>
+$('#setting_machinetranslator_use_system_settings').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide( 100 );
+    } else {
+        $('#individual-setting-container').show( 100 );
+    }
+});
+</script>
+</mt:if>
+<div id="individual-setting-container"<mt:if name="use_system_settings"> style="display:none;"</mt:if>>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_translate_from">
+      <mt:trans phrase="Translate From" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select" id="setting_machinetranslator_translate_from" name="setting_machinetranslator_translate_from">
+      <option value="" <mt:unless name="setting_machinetranslator_translate_from">selected</mt:unless>><mt:trans phrase="Automatic Detection" component="MachineTranslator"></option>
+      <option value="ja" <mt:if name="setting_machinetranslator_translate_from" eq="ja">selected</mt:if>><mt:trans phrase="Japanese" component="MachineTranslator"></option>
+      <option value="en" <mt:if name="setting_machinetranslator_translate_from" eq="en">selected</mt:if>><mt:trans phrase="English" component="MachineTranslator"></option>
+      <option value="zh-Hans" <mt:if name="setting_machinetranslator_translate_from" eq="zh-Hans">selected</mt:if>><mt:trans phrase="Simplified Chinese" component="MachineTranslator"></option>
+      <option value="zh-Hant" <mt:if name="setting_machinetranslator_translate_from" eq="zh-Hant">selected</mt:if>><mt:trans phrase="Traditional Chinese" component="MachineTranslator"></option>
+      <option value="ko" <mt:if name="setting_machinetranslator_translate_from" eq="ko">selected</mt:if>><mt:trans phrase="Korean" component="MachineTranslator"></option>
+      <option value="vi" <mt:if name="setting_machinetranslator_translate_from" eq="vi">selected</mt:if>><mt:trans phrase="Vietnamese" component="MachineTranslator"></option>
+      <option value="th" <mt:if name="setting_machinetranslator_translate_from" eq="th">selected</mt:if>><mt:trans phrase="Thai" component="MachineTranslator"></option>
+      <option value="pt" <mt:if name="setting_machinetranslator_translate_from" eq="pt">selected</mt:if>><mt:trans phrase="Portuguese (Brazil)" component="MachineTranslator"></option>
+      <option value="pt-PT" <mt:if name="setting_machinetranslator_translate_from" eq="pt-PT">selected</mt:if>><mt:trans phrase="Portuguese (Portugal)" component="MachineTranslator"></option>
+      <option value="es" <mt:if name="setting_machinetranslator_translate_from" eq="es">selected</mt:if>><mt:trans phrase="Spanish" component="MachineTranslator"></option>
+      <option value="fr" <mt:if name="setting_machinetranslator_translate_from" eq="fr">selected</mt:if>><mt:trans phrase="French" component="MachineTranslator"></option>
+      <option value="fr-CA" <mt:if name="setting_machinetranslator_translate_from" eq="fr-CA">selected</mt:if>><mt:trans phrase="French (Canada)" component="MachineTranslator"></option>
+      <option value="it" <mt:if name="setting_machinetranslator_translate_from" eq="it">selected</mt:if>><mt:trans phrase="Italian" component="MachineTranslator"></option>
+      <option value="de" <mt:if name="setting_machinetranslator_translate_from" eq="de">selected</mt:if>><mt:trans phrase="German" component="MachineTranslator"></option>
+      <option value="sv" <mt:if name="setting_machinetranslator_translate_from" eq="sv">selected</mt:if>><mt:trans phrase="Swedish" component="MachineTranslator"></option>
+      <option value="ru" <mt:if name="setting_machinetranslator_translate_from" eq="ru">selected</mt:if>><mt:trans phrase="Russian" component="MachineTranslator"></option>
+      <option value="nl" <mt:if name="setting_machinetranslator_translate_from" eq="nl">selected</mt:if>><mt:trans phrase="Dutch" component="MachineTranslator"></option>
+      <option value="af" <mt:if name="setting_machinetranslator_translate_from" eq="af">selected</mt:if>><mt:trans phrase="Afrikaans" component="MachineTranslator"></option>
+      <option value="ar" <mt:if name="setting_machinetranslator_translate_from" eq="ar">selected</mt:if>><mt:trans phrase="Arabic" component="MachineTranslator"></option>
+      <option value="az" <mt:if name="setting_machinetranslator_translate_from" eq="az">selected</mt:if>><mt:trans phrase="Azerbaijani (Latin)" component="MachineTranslator"></option>
+      <option value="bg" <mt:if name="setting_machinetranslator_translate_from" eq="bg">selected</mt:if>><mt:trans phrase="Bulgarian" component="MachineTranslator"></option>
+      <option value="bn" <mt:if name="setting_machinetranslator_translate_from" eq="bn">selected</mt:if>><mt:trans phrase="Bangla" component="MachineTranslator"></option>
+      <option value="bs" <mt:if name="setting_machinetranslator_translate_from" eq="bs">selected</mt:if>><mt:trans phrase="Bosnian" component="MachineTranslator"></option>
+      <option value="ca" <mt:if name="setting_machinetranslator_translate_from" eq="ca">selected</mt:if>><mt:trans phrase="Catalan" component="MachineTranslator"></option>
+      <option value="cs" <mt:if name="setting_machinetranslator_translate_from" eq="cs">selected</mt:if>><mt:trans phrase="Czech language" component="MachineTranslator"></option>
+      <option value="cy" <mt:if name="setting_machinetranslator_translate_from" eq="cy">selected</mt:if>><mt:trans phrase="Welsh" component="MachineTranslator"></option>
+      <option value="da" <mt:if name="setting_machinetranslator_translate_from" eq="da">selected</mt:if>><mt:trans phrase="Danish" component="MachineTranslator"></option>
+      <option value="el" <mt:if name="setting_machinetranslator_translate_from" eq="el">selected</mt:if>><mt:trans phrase="Greek language" component="MachineTranslator"></option>
+      <option value="et" <mt:if name="setting_machinetranslator_translate_from" eq="et">selected</mt:if>><mt:trans phrase="Estonian" component="MachineTranslator"></option>
+      <option value="fa" <mt:if name="setting_machinetranslator_translate_from" eq="fa">selected</mt:if>><mt:trans phrase="Persian" component="MachineTranslator"></option>
+      <option value="fi" <mt:if name="setting_machinetranslator_translate_from" eq="fi">selected</mt:if>><mt:trans phrase="Finnish" component="MachineTranslator"></option>
+      <option value="fil" <mt:if name="setting_machinetranslator_translate_from" eq="fil">selected</mt:if>><mt:trans phrase="Filipino" component="MachineTranslator"></option>
+      <option value="fj" <mt:if name="setting_machinetranslator_translate_from" eq="fj">selected</mt:if>><mt:trans phrase="Fijian" component="MachineTranslator"></option>
+      <option value="ga" <mt:if name="setting_machinetranslator_translate_from" eq="ga">selected</mt:if>><mt:trans phrase="Irish" component="MachineTranslator"></option>
+      <option value="gu" <mt:if name="setting_machinetranslator_translate_from" eq="gu">selected</mt:if>><mt:trans phrase="Gujarati" component="MachineTranslator"></option>
+      <option value="he" <mt:if name="setting_machinetranslator_translate_from" eq="he">selected</mt:if>><mt:trans phrase="Hebrew" component="MachineTranslator"></option>
+      <option value="hi" <mt:if name="setting_machinetranslator_translate_from" eq="hi">selected</mt:if>><mt:trans phrase="Hindi" component="MachineTranslator"></option>
+      <option value="hr" <mt:if name="setting_machinetranslator_translate_from" eq="hr">selected</mt:if>><mt:trans phrase="Croatian" component="MachineTranslator"></option>
+      <option value="ht" <mt:if name="setting_machinetranslator_translate_from" eq="ht">selected</mt:if>><mt:trans phrase="Haitian" component="MachineTranslator"></option>
+      <option value="hu" <mt:if name="setting_machinetranslator_translate_from" eq="hu">selected</mt:if>><mt:trans phrase="Hungarian" component="MachineTranslator"></option>
+      <option value="hy" <mt:if name="setting_machinetranslator_translate_from" eq="hy">selected</mt:if>><mt:trans phrase="Armenian" component="MachineTranslator"></option>
+      <option value="id" <mt:if name="setting_machinetranslator_translate_from" eq="id">selected</mt:if>><mt:trans phrase="Indonesian" component="MachineTranslator"></option>
+      <option value="is" <mt:if name="setting_machinetranslator_translate_from" eq="is">selected</mt:if>><mt:trans phrase="Icelandic" component="MachineTranslator"></option>
+      <option value="kk" <mt:if name="setting_machinetranslator_translate_from" eq="kk">selected</mt:if>><mt:trans phrase="Kazakh" component="MachineTranslator"></option>
+      <option value="kn" <mt:if name="setting_machinetranslator_translate_from" eq="kn">selected</mt:if>><mt:trans phrase="Kannada" component="MachineTranslator"></option>
+      <option value="lt" <mt:if name="setting_machinetranslator_translate_from" eq="lt">selected</mt:if>><mt:trans phrase="Lithuanian" component="MachineTranslator"></option>
+      <option value="lv" <mt:if name="setting_machinetranslator_translate_from" eq="lv">selected</mt:if>><mt:trans phrase="Latvian" component="MachineTranslator"></option>
+      <option value="mg" <mt:if name="setting_machinetranslator_translate_from" eq="mg">selected</mt:if>><mt:trans phrase="Malagasy" component="MachineTranslator"></option>
+      <option value="mi" <mt:if name="setting_machinetranslator_translate_from" eq="mi">selected</mt:if>><mt:trans phrase="Maori" component="MachineTranslator"></option>
+      <option value="ml" <mt:if name="setting_machinetranslator_translate_from" eq="ml">selected</mt:if>><mt:trans phrase="Malayalam" component="MachineTranslator"></option>
+      <option value="mr" <mt:if name="setting_machinetranslator_translate_from" eq="mr">selected</mt:if>><mt:trans phrase="Marathi" component="MachineTranslator"></option>
+      <option value="ms" <mt:if name="setting_machinetranslator_translate_from" eq="ms">selected</mt:if>><mt:trans phrase="Malay" component="MachineTranslator"></option>
+      <option value="mt" <mt:if name="setting_machinetranslator_translate_from" eq="mt">selected</mt:if>><mt:trans phrase="Maltese" component="MachineTranslator"></option>
+      <option value="mww" <mt:if name="setting_machinetranslator_translate_from" eq="mww">selected</mt:if>><mt:trans phrase="Mon" component="MachineTranslator"></option>
+      <option value="nb" <mt:if name="setting_machinetranslator_translate_from" eq="nb">selected</mt:if>><mt:trans phrase="Norwegian" component="MachineTranslator"></option>
+      <option value="ne" <mt:if name="setting_machinetranslator_translate_from" eq="ne">selected</mt:if>><mt:trans phrase="Nepali" component="MachineTranslator"></option>
+      <option value="or" <mt:if name="setting_machinetranslator_translate_from" eq="or">selected</mt:if>><mt:trans phrase="Odia" component="MachineTranslator"></option>
+      <option value="otq" <mt:if name="setting_machinetranslator_translate_from" eq="otq">selected</mt:if>><mt:trans phrase="Otomi, Queretaro" component="MachineTranslator"></option>
+      <option value="pa" <mt:if name="setting_machinetranslator_translate_from" eq="pa">selected</mt:if>><mt:trans phrase="Punjabi" component="MachineTranslator"></option>
+      <option value="pl" <mt:if name="setting_machinetranslator_translate_from" eq="pl">selected</mt:if>><mt:trans phrase="Polish" component="MachineTranslator"></option>
+      <option value="ro" <mt:if name="setting_machinetranslator_translate_from" eq="ro">selected</mt:if>><mt:trans phrase="Romanian" component="MachineTranslator"></option>
+      <option value="sk" <mt:if name="setting_machinetranslator_translate_from" eq="sk">selected</mt:if>><mt:trans phrase="Slovak" component="MachineTranslator"></option>
+      <option value="sl" <mt:if name="setting_machinetranslator_translate_from" eq="sl">selected</mt:if>><mt:trans phrase="Slovenian" component="MachineTranslator"></option>
+      <option value="sm" <mt:if name="setting_machinetranslator_translate_from" eq="sm">selected</mt:if>><mt:trans phrase="Samoan" component="MachineTranslator"></option>
+      <option value="sq" <mt:if name="setting_machinetranslator_translate_from" eq="sq">selected</mt:if>><mt:trans phrase="Albanian" component="MachineTranslator"></option>
+      <option value="sr-Cyrl" <mt:if name="setting_machinetranslator_translate_from" eq="sr-Cyrl">selected</mt:if>><mt:trans phrase="Serbian (Cyrillic)" component="MachineTranslator"></option>
+      <option value="sr-Latn" <mt:if name="setting_machinetranslator_translate_from" eq="sr-Latn">selected</mt:if>><mt:trans phrase="Serbian (Latin)" component="MachineTranslator"></option>
+      <option value="sw" <mt:if name="setting_machinetranslator_translate_from" eq="sw">selected</mt:if>><mt:trans phrase="Swahili" component="MachineTranslator"></option>
+      <option value="ta" <mt:if name="setting_machinetranslator_translate_from" eq="ta">selected</mt:if>><mt:trans phrase="Tamil" component="MachineTranslator"></option>
+      <option value="te" <mt:if name="setting_machinetranslator_translate_from" eq="te">selected</mt:if>><mt:trans phrase="Telugu" component="MachineTranslator"></option>
+      <option value="to" <mt:if name="setting_machinetranslator_translate_from" eq="to">selected</mt:if>><mt:trans phrase="Tongan" component="MachineTranslator"></option>
+      <option value="tr" <mt:if name="setting_machinetranslator_translate_from" eq="tr">selected</mt:if>><mt:trans phrase="Turkish language" component="MachineTranslator"></option>
+      <option value="ty" <mt:if name="setting_machinetranslator_translate_from" eq="ty">selected</mt:if>><mt:trans phrase="Tahitian" component="MachineTranslator"></option>
+      <option value="uk" <mt:if name="setting_machinetranslator_translate_from" eq="uk">selected</mt:if>><mt:trans phrase="Ukrainian" component="MachineTranslator"></option>
+      <option value="ur" <mt:if name="setting_machinetranslator_translate_from" eq="ur">selected</mt:if>><mt:trans phrase="Urdu" component="MachineTranslator"></option>
+      <option value="yua" <mt:if name="setting_machinetranslator_translate_from" eq="yua">selected</mt:if>><mt:trans phrase="Yucatec Maya" component="MachineTranslator"></option>
+      <option value="yue" <mt:if name="setting_machinetranslator_translate_from" eq="yue">selected</mt:if>><mt:trans phrase="Cantonese (Traditional)" component="MachineTranslator"></option>
+    </select>
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="If there is a user setting, the user setting has priority." component="MachineTranslator">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_translate_to">
+      <mt:trans phrase="Translate To" component="MachineTranslator">
+    </label>
+  </div>
+  <mt:pluginsetting component="MachineTranslator" name="machinetranslator_end_point" workspace_id="0" setvar="end_point">
+  <div class="col-lg-10">
+    <select class="form-control custom-select" id="setting_machinetranslator_translate_to" name="setting_machinetranslator_translate_to">
+      <option value="" <mt:unless name="setting_machinetranslator_translate_from">selected</mt:unless>><mt:trans phrase="None"></option>
+      <option value="ja" <mt:if name="setting_machinetranslator_translate_to" eq="ja">selected</mt:if>><mt:trans phrase="Japanese" component="MachineTranslator"></option>
+      <mt:ifcomponent component="SimplifiedJapanese">
+      <mt:if name="end_point" like="tsutaeru.cloud">
+      <option value="jp-yn" <mt:if name="setting_machinetranslator_translate_to" eq="jp-yn">selected</mt:if>><mt:trans phrase="Japanese(Simplified)" component="MachineTranslator"></option>
+      </mt:if>
+      <option value="jp-rb" <mt:if name="setting_machinetranslator_translate_to" eq="jp-rb">selected</mt:if>><mt:trans phrase="Japanese(with phonetic)" component="MachineTranslator"></option>
+      </mt:ifcomponent>
+      <option value="en" <mt:if name="setting_machinetranslator_translate_to" eq="en">selected</mt:if>><mt:trans phrase="English" component="MachineTranslator"></option>
+      <option value="zh-Hans" <mt:if name="setting_machinetranslator_translate_to" eq="zh-Hans">selected</mt:if>><mt:trans phrase="Simplified Chinese" component="MachineTranslator"></option>
+      <option value="zh-Hant" <mt:if name="setting_machinetranslator_translate_to" eq="zh-Hant">selected</mt:if>><mt:trans phrase="Traditional Chinese" component="MachineTranslator"></option>
+      <option value="ko" <mt:if name="setting_machinetranslator_translate_to" eq="ko">selected</mt:if>><mt:trans phrase="Korean" component="MachineTranslator"></option>
+      <option value="vi" <mt:if name="setting_machinetranslator_translate_to" eq="vi">selected</mt:if>><mt:trans phrase="Vietnamese" component="MachineTranslator"></option>
+      <option value="th" <mt:if name="setting_machinetranslator_translate_to" eq="th">selected</mt:if>><mt:trans phrase="Thai" component="MachineTranslator"></option>
+      <option value="pt" <mt:if name="setting_machinetranslator_translate_to" eq="pt">selected</mt:if>><mt:trans phrase="Portuguese (Brazil)" component="MachineTranslator"></option>
+      <option value="pt-PT" <mt:if name="setting_machinetranslator_translate_to" eq="pt-PT">selected</mt:if>><mt:trans phrase="Portuguese (Portugal)" component="MachineTranslator"></option>
+      <option value="es" <mt:if name="setting_machinetranslator_translate_to" eq="es">selected</mt:if>><mt:trans phrase="Spanish" component="MachineTranslator"></option>
+      <option value="fr" <mt:if name="setting_machinetranslator_translate_to" eq="fr">selected</mt:if>><mt:trans phrase="French" component="MachineTranslator"></option>
+      <option value="fr-CA" <mt:if name="setting_machinetranslator_translate_to" eq="fr-CA">selected</mt:if>><mt:trans phrase="French (Canada)" component="MachineTranslator"></option>
+      <option value="it" <mt:if name="setting_machinetranslator_translate_to" eq="it">selected</mt:if>><mt:trans phrase="Italian" component="MachineTranslator"></option>
+      <option value="de" <mt:if name="setting_machinetranslator_translate_to" eq="de">selected</mt:if>><mt:trans phrase="German" component="MachineTranslator"></option>
+      <option value="sv" <mt:if name="setting_machinetranslator_translate_to" eq="sv">selected</mt:if>><mt:trans phrase="Swedish" component="MachineTranslator"></option>
+      <option value="ru" <mt:if name="setting_machinetranslator_translate_to" eq="ru">selected</mt:if>><mt:trans phrase="Russian" component="MachineTranslator"></option>
+      <option value="nl" <mt:if name="setting_machinetranslator_translate_to" eq="nl">selected</mt:if>><mt:trans phrase="Dutch" component="MachineTranslator"></option>
+      <option value="af" <mt:if name="setting_machinetranslator_translate_to" eq="af">selected</mt:if>><mt:trans phrase="Afrikaans" component="MachineTranslator"></option>
+      <option value="ar" <mt:if name="setting_machinetranslator_translate_to" eq="ar">selected</mt:if>><mt:trans phrase="Arabic" component="MachineTranslator"></option>
+      <option value="az" <mt:if name="setting_machinetranslator_translate_to" eq="az">selected</mt:if>><mt:trans phrase="Azerbaijani (Latin)" component="MachineTranslator"></option>
+      <option value="bg" <mt:if name="setting_machinetranslator_translate_to" eq="bg">selected</mt:if>><mt:trans phrase="Bulgarian" component="MachineTranslator"></option>
+      <option value="bn" <mt:if name="setting_machinetranslator_translate_to" eq="bn">selected</mt:if>><mt:trans phrase="Bangla" component="MachineTranslator"></option>
+      <option value="bs" <mt:if name="setting_machinetranslator_translate_to" eq="bs">selected</mt:if>><mt:trans phrase="Bosnian" component="MachineTranslator"></option>
+      <option value="ca" <mt:if name="setting_machinetranslator_translate_to" eq="ca">selected</mt:if>><mt:trans phrase="Catalan" component="MachineTranslator"></option>
+      <option value="cs" <mt:if name="setting_machinetranslator_translate_to" eq="cs">selected</mt:if>><mt:trans phrase="Czech language" component="MachineTranslator"></option>
+      <option value="cy" <mt:if name="setting_machinetranslator_translate_to" eq="cy">selected</mt:if>><mt:trans phrase="Welsh" component="MachineTranslator"></option>
+      <option value="da" <mt:if name="setting_machinetranslator_translate_to" eq="da">selected</mt:if>><mt:trans phrase="Danish" component="MachineTranslator"></option>
+      <option value="el" <mt:if name="setting_machinetranslator_translate_to" eq="el">selected</mt:if>><mt:trans phrase="Greek language" component="MachineTranslator"></option>
+      <option value="et" <mt:if name="setting_machinetranslator_translate_to" eq="et">selected</mt:if>><mt:trans phrase="Estonian" component="MachineTranslator"></option>
+      <option value="fa" <mt:if name="setting_machinetranslator_translate_to" eq="fa">selected</mt:if>><mt:trans phrase="Persian" component="MachineTranslator"></option>
+      <option value="fi" <mt:if name="setting_machinetranslator_translate_to" eq="fi">selected</mt:if>><mt:trans phrase="Finnish" component="MachineTranslator"></option>
+      <option value="fil" <mt:if name="setting_machinetranslator_translate_to" eq="fil">selected</mt:if>><mt:trans phrase="Filipino" component="MachineTranslator"></option>
+      <option value="fj" <mt:if name="setting_machinetranslator_translate_to" eq="fj">selected</mt:if>><mt:trans phrase="Fijian" component="MachineTranslator"></option>
+      <option value="ga" <mt:if name="setting_machinetranslator_translate_to" eq="ga">selected</mt:if>><mt:trans phrase="Irish" component="MachineTranslator"></option>
+      <option value="gu" <mt:if name="setting_machinetranslator_translate_to" eq="gu">selected</mt:if>><mt:trans phrase="Gujarati" component="MachineTranslator"></option>
+      <option value="he" <mt:if name="setting_machinetranslator_translate_to" eq="he">selected</mt:if>><mt:trans phrase="Hebrew" component="MachineTranslator"></option>
+      <option value="hi" <mt:if name="setting_machinetranslator_translate_to" eq="hi">selected</mt:if>><mt:trans phrase="Hindi" component="MachineTranslator"></option>
+      <option value="hr" <mt:if name="setting_machinetranslator_translate_to" eq="hr">selected</mt:if>><mt:trans phrase="Croatian" component="MachineTranslator"></option>
+      <option value="ht" <mt:if name="setting_machinetranslator_translate_to" eq="ht">selected</mt:if>><mt:trans phrase="Haitian" component="MachineTranslator"></option>
+      <option value="hu" <mt:if name="setting_machinetranslator_translate_to" eq="hu">selected</mt:if>><mt:trans phrase="Hungarian" component="MachineTranslator"></option>
+      <option value="hy" <mt:if name="setting_machinetranslator_translate_to" eq="hy">selected</mt:if>><mt:trans phrase="Armenian" component="MachineTranslator"></option>
+      <option value="id" <mt:if name="setting_machinetranslator_translate_to" eq="id">selected</mt:if>><mt:trans phrase="Indonesian" component="MachineTranslator"></option>
+      <option value="is" <mt:if name="setting_machinetranslator_translate_to" eq="is">selected</mt:if>><mt:trans phrase="Icelandic" component="MachineTranslator"></option>
+      <option value="kk" <mt:if name="setting_machinetranslator_translate_to" eq="kk">selected</mt:if>><mt:trans phrase="Kazakh" component="MachineTranslator"></option>
+      <option value="kn" <mt:if name="setting_machinetranslator_translate_to" eq="kn">selected</mt:if>><mt:trans phrase="Kannada" component="MachineTranslator"></option>
+      <option value="lt" <mt:if name="setting_machinetranslator_translate_to" eq="lt">selected</mt:if>><mt:trans phrase="Lithuanian" component="MachineTranslator"></option>
+      <option value="lv" <mt:if name="setting_machinetranslator_translate_to" eq="lv">selected</mt:if>><mt:trans phrase="Latvian" component="MachineTranslator"></option>
+      <option value="mg" <mt:if name="setting_machinetranslator_translate_to" eq="mg">selected</mt:if>><mt:trans phrase="Malagasy" component="MachineTranslator"></option>
+      <option value="mi" <mt:if name="setting_machinetranslator_translate_to" eq="mi">selected</mt:if>><mt:trans phrase="Maori" component="MachineTranslator"></option>
+      <option value="ml" <mt:if name="setting_machinetranslator_translate_to" eq="ml">selected</mt:if>><mt:trans phrase="Malayalam" component="MachineTranslator"></option>
+      <option value="mr" <mt:if name="setting_machinetranslator_translate_to" eq="mr">selected</mt:if>><mt:trans phrase="Marathi" component="MachineTranslator"></option>
+      <option value="ms" <mt:if name="setting_machinetranslator_translate_to" eq="ms">selected</mt:if>><mt:trans phrase="Malay" component="MachineTranslator"></option>
+      <option value="mt" <mt:if name="setting_machinetranslator_translate_to" eq="mt">selected</mt:if>><mt:trans phrase="Maltese" component="MachineTranslator"></option>
+      <option value="mww" <mt:if name="setting_machinetranslator_translate_to" eq="mww">selected</mt:if>><mt:trans phrase="Mon" component="MachineTranslator"></option>
+      <option value="nb" <mt:if name="setting_machinetranslator_translate_to" eq="nb">selected</mt:if>><mt:trans phrase="Norwegian" component="MachineTranslator"></option>
+      <option value="ne" <mt:if name="setting_machinetranslator_translate_to" eq="ne">selected</mt:if>><mt:trans phrase="Nepali" component="MachineTranslator"></option>
+      <option value="or" <mt:if name="setting_machinetranslator_translate_to" eq="or">selected</mt:if>><mt:trans phrase="Odia" component="MachineTranslator"></option>
+      <option value="otq" <mt:if name="setting_machinetranslator_translate_to" eq="otq">selected</mt:if>><mt:trans phrase="Otomi, Queretaro" component="MachineTranslator"></option>
+      <option value="pa" <mt:if name="setting_machinetranslator_translate_to" eq="pa">selected</mt:if>><mt:trans phrase="Punjabi" component="MachineTranslator"></option>
+      <option value="pl" <mt:if name="setting_machinetranslator_translate_to" eq="pl">selected</mt:if>><mt:trans phrase="Polish" component="MachineTranslator"></option>
+      <option value="ro" <mt:if name="setting_machinetranslator_translate_to" eq="ro">selected</mt:if>><mt:trans phrase="Romanian" component="MachineTranslator"></option>
+      <option value="sk" <mt:if name="setting_machinetranslator_translate_to" eq="sk">selected</mt:if>><mt:trans phrase="Slovak" component="MachineTranslator"></option>
+      <option value="sl" <mt:if name="setting_machinetranslator_translate_to" eq="sl">selected</mt:if>><mt:trans phrase="Slovenian" component="MachineTranslator"></option>
+      <option value="sm" <mt:if name="setting_machinetranslator_translate_to" eq="sm">selected</mt:if>><mt:trans phrase="Samoan" component="MachineTranslator"></option>
+      <option value="sq" <mt:if name="setting_machinetranslator_translate_to" eq="sq">selected</mt:if>><mt:trans phrase="Albanian" component="MachineTranslator"></option>
+      <option value="sr-Cyrl" <mt:if name="setting_machinetranslator_translate_to" eq="sr-Cyrl">selected</mt:if>><mt:trans phrase="Serbian (Cyrillic)" component="MachineTranslator"></option>
+      <option value="sr-Latn" <mt:if name="setting_machinetranslator_translate_to" eq="sr-Latn">selected</mt:if>><mt:trans phrase="Serbian (Latin)" component="MachineTranslator"></option>
+      <option value="sw" <mt:if name="setting_machinetranslator_translate_to" eq="sw">selected</mt:if>><mt:trans phrase="Swahili" component="MachineTranslator"></option>
+      <option value="ta" <mt:if name="setting_machinetranslator_translate_to" eq="ta">selected</mt:if>><mt:trans phrase="Tamil" component="MachineTranslator"></option>
+      <option value="te" <mt:if name="setting_machinetranslator_translate_to" eq="te">selected</mt:if>><mt:trans phrase="Telugu" component="MachineTranslator"></option>
+      <option value="to" <mt:if name="setting_machinetranslator_translate_to" eq="to">selected</mt:if>><mt:trans phrase="Tongan" component="MachineTranslator"></option>
+      <option value="tr" <mt:if name="setting_machinetranslator_translate_to" eq="tr">selected</mt:if>><mt:trans phrase="Turkish language" component="MachineTranslator"></option>
+      <option value="ty" <mt:if name="setting_machinetranslator_translate_to" eq="ty">selected</mt:if>><mt:trans phrase="Tahitian" component="MachineTranslator"></option>
+      <option value="uk" <mt:if name="setting_machinetranslator_translate_to" eq="uk">selected</mt:if>><mt:trans phrase="Ukrainian" component="MachineTranslator"></option>
+      <option value="ur" <mt:if name="setting_machinetranslator_translate_to" eq="ur">selected</mt:if>><mt:trans phrase="Urdu" component="MachineTranslator"></option>
+      <option value="yua" <mt:if name="setting_machinetranslator_translate_to" eq="yua">selected</mt:if>><mt:trans phrase="Yucatec Maya" component="MachineTranslator"></option>
+      <option value="yue" <mt:if name="setting_machinetranslator_translate_to" eq="yue">selected</mt:if>><mt:trans phrase="Cantonese (Traditional)" component="MachineTranslator"></option>
+    </select>
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="If there is a user setting, the user setting has priority." component="MachineTranslator">
+  </p>
+  </div>
+</div>
+<hr>
+<div class="row form-group mt-2">
+  <div class="col-lg-2">
+    <h2><label for="setting_machinetranslator_translate_page"><mt:trans phrase="Website Translation" component="MachineTranslator"></label></h2>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_machinetranslator_translate_page" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input plugin-target-setting"
+        id="setting_machinetranslator_translate_page" name="setting_machinetranslator_translate_page" value="1"
+        <mt:if name="setting_machinetranslator_translate_page">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Translate Pages" component="MachineTranslator"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_machinetranslator_translate_page').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#webite-translate-container').show( 100 );
+    } else {
+        $('#webite-translate-container').hide( 100 );
+    }
+});
+</script>
+<div id="webite-translate-container" <mt:unless name="setting_machinetranslator_translate_page">class="hidden"</mt:unless>>
+<mt:ifcomponent component="AccessAnalytics">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_tracking">
+      <mt:trans phrase="Activity" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_machinetranslator_tracking" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input individual-setting"
+        id="setting_machinetranslator_tracking" name="setting_machinetranslator_tracking" value="1"
+        <mt:if name="setting_machinetranslator_tracking">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Save Activity" component="MachineTranslator"></span>
+    </label>
+  </div>
+</div>
+</mt:ifcomponent>
+<div class="row form-group" style="margin-top:-1em;">
+  <div class="col-lg-12">
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="After that, Template tags are available(template variable 'language_from','language_to' are set to the target language code)." component="MachineTranslator">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_exclude_urls">
+      <mt:trans phrase="Exclude URLs" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea rows="6" id="setting_machinetranslator_exclude_urls" name="setting_machinetranslator_exclude_urls" class="form-control"><mt:var name="setting_machinetranslator_exclude_urls" escape></textarea>
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Enter the URL of the page or directory you want to exclude on each line." component="MachineTranslator">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_individuals">
+      <mt:trans phrase="Tags to translate individually" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="setting_machinetranslator_individuals" type="text" class="form-control" name="setting_machinetranslator_individuals" value="<mt:var name="setting_machinetranslator_individuals" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Specify the tag name to be translated individually(Comma separated values)." component="MachineTranslator">
+      <mt:trans phrase="You can specify a specific id and class in the format of 'tagName#id', 'tagName.class'." component="MachineTranslator">
+    </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_exclude_classes">
+      <mt:trans phrase="Exclude Classes" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="setting_machinetranslator_exclude_classes" type="text" class="form-control" name="setting_machinetranslator_exclude_classes" value="<mt:var name="setting_machinetranslator_exclude_classes" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The class name(s) of the element(s) to not translate block(Comma separated values)." component="MachineTranslator">
+      <mt:trans phrase="You can specify a specific tagName in the format of 'tagName.class'." component="MachineTranslator">
+    </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_hidden_classes">
+      <mt:trans phrase="Not Display Classes" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="setting_machinetranslator_hidden_classes" type="text" class="form-control" name="setting_machinetranslator_hidden_classes" value="<mt:var name="setting_machinetranslator_hidden_classes" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The class name(s) of the element(s) to not display block(Comma separated values)." component="MachineTranslator">
+      <mt:trans phrase="You can specify a specific tagName in the format of 'tagName.class'." component="MachineTranslator">
+    </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_ucwords_classes">
+      <mt:trans phrase="Title Case Classes" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="setting_machinetranslator_ucwords_classes" type="text" class="form-control" name="setting_machinetranslator_ucwords_classes" value="<mt:var name="setting_machinetranslator_ucwords_classes" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The class name(s) to apply title case(Comma separated values)." component="MachineTranslator">
+      <mt:trans phrase="You can specify a specific tagName in the format of 'tagName.class'." component="MachineTranslator">
+    </p>
+  </div>
+</div>
+<mt:ignore>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_block_classes">
+      <mt:trans phrase="Block Cache Classes" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="setting_machinetranslator_block_classes" type="text" class="form-control" name="setting_machinetranslator_block_classes" value="<mt:var name="setting_machinetranslator_block_classes" escape>">
+    <p class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The class name(s) to saves the cache of the translation result in block units(Comma separated values)." component="MachineTranslator">
+      <mt:trans phrase="You can specify a specific tagName in the format of 'tagName.class'." component="MachineTranslator">
+    </p>
+  </div>
+</div>
+</mt:ignore>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_machinetranslator_footer_html">
+      <mt:trans phrase="HTML Footer" component="MachineTranslator">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea rows="6" id="setting_machinetranslator_footer_html" name="setting_machinetranslator_footer_html" class="form-control"><mt:var name="setting_machinetranslator_footer_html" escape></textarea>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Enter the HTML code to insert just before the &lt;/body&gt; tag on the translated page." component="MachineTranslator">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_machinetranslator_trans_footer" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input individual-setting"
+        id="setting_machinetranslator_tracking" name="setting_machinetranslator_trans_footer" value="1"
+        <mt:if name="setting_machinetranslator_trans_footer">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Translate Footer" component="MachineTranslator"></span>
+    </label>
+  </div>
+</div>
+</div>
+</div>

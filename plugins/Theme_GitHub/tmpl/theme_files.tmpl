@@ -1,0 +1,243 @@
+<mt:setvarblock name="html_head" append="1">
+<link rel="stylesheet" type="text/css" href="<mt:var name="prototype_path">assets/css/diff/diff2html.min.css">
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff.min.js"></script>
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff2html.min.js"></script>
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff2html-ui.min.js"></script>
+</mt:setvarblock>
+<mt:include file="include/header.tmpl">
+<style>
+.d2h-file-name, .d2h-changed-tag {
+    color:black !important;
+}
+#list_body th, #list_body td {
+    padding-bottom:0px;
+}
+</style>
+<mt:if name="request.does_act">
+<mt:var name="request.commits" setvar="commits">
+<div id="success-message" class="alert alert-success mb-4" tabindex="0">
+<mt:if name="commits" eq="1">
+<mt:trans phrase="%s file have been committed to theme on GitHub." params="$commits" component="Theme_GitHub">
+<mt:else>
+<mt:trans phrase="%s files have been committed to theme on GitHub." params="$commits" component="Theme_GitHub">
+</mt:if>
+</div>
+<script>
+$('#success-message').focus();
+</script>
+</mt:if>
+<mt:unless name="theme_files">
+<div id="system_info-message" class="alert alert-info" tabindex="0">
+<mt:trans phrase="No update found." component="Theme_GitHub">
+</div>
+<mt:unless name="request.does_act">
+<script>
+$('#system_info-message').focus();
+</script>
+</mt:unless>
+</mt:unless>
+<mt:loop name="theme_files">
+<mt:if name="__first__">
+<div class="row form-group">
+  <div class="col-lg-5">
+<form action="<mt:var name="script_uri">" method="POST" id="commit-form">
+<input type="hidden" name="__mode" value="theme_to_github">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="_screen_id" value="<mt:var name="screen_id">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id" cast_to="int">">
+<div style="overflow-y: scroll;min-height:200px" id="list-files">
+<table class="table table-sm listing-table table-hover">
+<thead>
+<tr id="line_header">
+  <th class="all-selector cb-col pb-0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" checked class="selector custom-control-input cb-all-select">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </th>
+  <th scope="col"><mt:trans phrase="File"></th>
+  <th scope="col" style="width:100px"></th>
+</tr>
+</thead>
+<tbody id="list_body">
+</mt:if>
+<tr id="line_<mt:var name="__counter__">">
+  <th>
+    <label class="custom-control custom-checkbox">
+      <input id="box_<mt:var name="__counter__">" type="checkbox" checked class="custom-control-input" name="file_path[]" value="<mt:var name="__key__" escape>">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+  </th>
+  <td>
+  <mt:var name="__key__" escape> <input type="hidden" name="<mt:var name="__value__[md5]">_status" value="<mt:var name="__value__[status]">">
+  </td>
+  <td style="width:100px">
+  <mt:if name="__value__[status]" eq="Update">
+    <span style="border:1px solid goldenrod; padding:0px 7px 3px 7px;color:goldenrod"><b>&bull;</b></span>
+  <mt:elseif name="__value__[status]" eq="New">
+    <span style="border:1px solid blue; padding:0px 6px 3px 6px;color:blue">+</span>
+  <mt:elseif name="__value__[status]" eq="Delete">
+    <span style="border:1px solid red; padding:0px 7px 3px 8px;color:red">-</span>
+  </mt:if>
+  &nbsp; <mt:var name="__value__[status]" translate escape>
+  <textarea class="hidden" id="repos_<mt:var name="__counter__">"><mt:var name="__value__[repos_file]" escape></textarea>
+  <textarea class="hidden" id="theme_<mt:var name="__counter__">"><mt:var name="__value__[theme_file]" escape></textarea>
+  </td>
+</tr>
+<mt:if name="__last__">
+</tbody>
+</table>
+</div>
+<table class="table table-sm listing-table mt-3">
+<tr>
+<td class="pr-1">
+<input type="text" class="form-control" id="commit_message" name="commit_message" value="" placeholder="<mt:trans phrase="Summery(required)" component="Theme_GitHub">">
+</td>
+</tr>
+<td class="pl-0">
+<button class="form-control btn btn-primary" style="background-color:#0a4dcd" id="commit" type="button"><mt:trans phrase="Commit to %s" params="$branch_name" component="Theme_GitHub"></button>
+</td>
+</tr>
+</tbody>
+</table>
+</form>
+  </div>
+  <div class="col-lg-7" style="padding:0 13px">
+    <div id="diff_area" style="border-radius: 5px;padding:10px;background-color:#eee;height:100%;border:1px solid gray;width:100%"></div>
+  </div>
+</div>
+<script>
+$('#commit').click(function() {
+    var commit_message = $('#commit_message').val();
+    if (! commit_message ) {
+        alert( '<mt:trans phrase="The commit message is required." component="Theme_GitHub">' );
+        $('#commit_message').focus();
+        return false;
+    }
+    var file_selected = false;
+    $("input[name='file_path[]']").each(function(){
+        if ( $(this).prop('checked') == true ) {
+            file_selected = true;
+        }
+    });
+    if (! file_selected ) {
+        alert( '<mt:trans phrase="You did not select any file." component="Theme_GitHub">' );
+        return false;
+    }
+    if(!confirm('<mt:trans phrase="Are you sure you want to commit to GitHub this theme?" component="Theme_GitHub">')){
+        return false;
+    }
+    $(this).attr('disabled', 'disabled');
+    $('#commit-form').submit();
+});
+var in_link = false;
+var is_all  = false;
+$('label').mouseover(function() {
+    in_link = true;
+});
+$('label').mouseout(function() {
+    in_link = false;
+});
+$('#line_header').click(function() {
+    $("input[name='file_path[]']").each(function(){
+        let line_id = $(this).prop('id');
+        line_id = line_id.replace( /box_/, 'line_' );
+        $('#' + line_id ).css('background-color', 'transparent');
+        $('#' + line_id ).css('color', '#000');
+    });
+    $('#diff_area').html('');
+});
+$('#list_body tr').click(function() {
+    if ( in_link ) {
+        return true;
+    }
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    var path = $('#box_'+line).val();
+    path = path.split('/');
+    var file_name = path.pop();
+    const unifiedDiff = JsDiff.createPatch( file_name, $('#repos_'+line).val(), $('#theme_'+line).val());
+    const diff2htmlUi = new Diff2HtmlUI({diff: unifiedDiff});
+    diff2htmlUi.draw('#diff_area', {inputFormat: 'json', showFiles: true, matching: 'lines'});
+    $("input[name='file_path[]']").each(function(){
+        let line_id = $(this).prop('id');
+        line_id = line_id.replace( /box_/, 'line_' );
+        $('#' + line_id ).css('background-color', 'transparent');
+        $('#' + line_id ).css('color', '#000');
+    });
+    $(this).css('background-color', '#0a4dcd');
+    $(this).css('color', '#fff');
+});
+function set_all_select () {
+    is_all = true;
+    $("input[name='file_path[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            return false;
+        }
+    });
+    $('.selector').prop('checked', is_all );
+}
+$("input[name='file_path[]']").change(function(){
+    set_all_select();
+});
+$('.selector').click(function(){
+    checked = $(this).prop('checked');
+    $("input[name='file_path[]']").each(function(){
+        $(this).prop('checked', checked);
+    });
+    $('.selector').prop('checked', checked);
+});
+var selected_item_count;
+function item_checked( count ) {
+    selected_item_count = 0;
+    var selected = false;
+    $("input[name='file_path[]']").each(function(){
+        if($(this).prop('checked') === true) {
+            selected = true;
+            if (! count ) {
+                return false;
+            }
+            selected_item_count++;
+        }
+    });
+    if ( count ) {
+        return selected_item_count;
+    }
+    return selected;
+}
+$(":checkbox").keypress(function(e) {
+    if ( e.keyCode == 13 ) {
+        if ( $(this).prop('checked') ) {
+            $(this).prop('checked', false);
+        } else {
+            $(this).prop('checked', true);
+        }
+        if ( $(this).hasClass('cb-all-select') ) {
+            checked = $(this).prop('checked');
+            $("input[name='file_path[]']").each(function(){
+                $(this).prop('checked', checked);
+            });
+            $('.selector').prop('checked', checked);
+        } else {
+            set_all_select();
+        }
+    }
+    return false;
+});
+$(document).ready(function () {
+  hsize = $(window).height();
+  hsize -= 360;
+  $("#list-files").css("height", hsize + "px");
+});
+$(window).resize(function () {
+  hsize = $(window).height();
+  hsize -= 360;
+  $("#list-files").css("height", hsize + "px");
+});
+</script>
+</mt:if>
+</mt:loop>
+<mt:include file="include/footer.tmpl">

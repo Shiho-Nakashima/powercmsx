@@ -1,0 +1,426 @@
+<mt:unless name="workspace_id">
+<mt:if name="admin_start_with_site_path">
+  <div id="header-error-message" class="alert alert-danger" role="alert" tabindex="0">
+  <mt:trans phrase="HTTP Authentication cannot be set because the management screen path is under the Site Path." component="HTTPAuth">
+  </div>
+  <script>
+  $('#header-error-message').focus();
+  </script>
+<mt:else>
+<fieldset class="card mb-4">
+  <div class="card-header pb-0">
+    <h2 style="display:inline;"><mt:trans phrase="Management Screen Setting" component="HTTPAuth"></h2>
+    <input type="hidden" name="setting_httpauth_auth_cms" value="0">
+    <label class="custom-control custom-checkbox ml-3">
+      <input type="checkbox" class="custom-control-input individual-setting"
+        id="setting_httpauth_auth_cms" name="setting_httpauth_auth_cms" value="1"
+        <mt:if name="setting_httpauth_auth_cms">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Configure Authentication" component="HTTPAuth"></span>
+    </label>
+  </div>
+  <div class="card-block<mt:unless name="setting_httpauth_auth_cms"> hidden</mt:unless>" id="httpauth_auth_cms-block">
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_column">
+          <mt:trans phrase="Login ID" component="HTTPAuth">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" id="setting_httpauth_column"
+             name="setting_httpauth_column" value="name" <mt:if name="setting_httpauth_column" eq="name">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="User's Name" component="HTTPAuth"></span>
+        </label>
+      <mt:ignore>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_column" value="email" <mt:if name="setting_httpauth_column" eq="email">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Email"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_column" value="nickname" <mt:if name="setting_httpauth_column" eq="nickname">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Display Name"></span>
+        </label>
+      </mt:ignore>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_column" value="_specified" <mt:if name="setting_httpauth_column" eq="_specified">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="User's Column" component="HTTPAuth"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_column" value="_unique" <mt:if name="setting_httpauth_column" eq="_unique">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Unique Common ID" component="HTTPAuth"></span>
+        </label>
+        <div id="id-column-wrapper"<mt:if name="setting_httpauth_column" ne="_specified"> class="hidden"</mt:if>>
+        <mt:setvar name="exclude_cols" value="name,password,space_order,text_format,language,control_border,last_login_ip">
+        <mt:var name="exclude_cols" split="," setvar="exclude_cols">
+        <select aria-label="<mt:trans phrase="User's Column" component="HTTPAuth">" class="form-control custom-select" name="setting_httpauth_id_column" id="setting_httpauth_id_column">
+          <mt:objectcols type="edit" model="user">
+          <mt:if name="type" eq="string">
+            <mt:ifinarray array="exclude_cols" value="$name">
+            <mt:else>
+              <mt:if name="edit" ne="password">
+                <option <mt:if name="setting_httpauth_id_column" eq="$name">selected</mt:if> value="<mt:var name="name" escape>"><mt:var name="label" escape></option>
+              </mt:if>
+            </mt:ifinarray>
+          </mt:if>
+          </mt:objectcols>
+        </select>
+        </div>
+        <div id="login_id-wrapper"<mt:if name="setting_httpauth_column" ne="_unique"> class="hidden"</mt:if>>
+          <input type="text" id="setting_httpauth_loginid" name="setting_httpauth_loginid" class="form-control" value="<mt:var name="setting_httpauth_loginid" escape>">
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_type">
+          <mt:trans phrase="Password Type" component="HTTPAuth">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" id="setting_httpauth_type"
+             name="setting_httpauth_type" value="1" <mt:if name="setting_httpauth_type" eq="1">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="User's Password" component="HTTPAuth"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_type" value="3" <mt:if name="setting_httpauth_type" eq="3">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="User's Column" component="HTTPAuth"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_type" value="2" <mt:if name="setting_httpauth_type" eq="2">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Unique Common Password" component="HTTPAuth"></span>
+        </label>
+        <div id="pw-column-wrapper"<mt:if name="setting_httpauth_type" ne="3"> class="hidden"</mt:if>>
+        <mt:setvar name="exclude_cols" value="password,space_order,text_format,language,control_border,last_login_ip">
+        <mt:var name="exclude_cols" split="," setvar="exclude_cols">
+        <select aria-label="<mt:trans phrase="User's Column" component="HTTPAuth">" class="form-control custom-select" name="setting_httpauth_pw_column" id="setting_httpauth_pw_column">
+          <mt:objectcols type="edit" model="user">
+          <mt:if name="type" eq="string">
+            <mt:ifinarray array="exclude_cols" value="$name">
+            <mt:else>
+              <option <mt:if name="setting_httpauth_pw_column" eq="$name">selected</mt:if> value="<mt:var name="name" escape>"><mt:var name="label" escape></option>
+            </mt:ifinarray>
+          </mt:if>
+          </mt:objectcols>
+        </select>
+        </div>
+      </div>
+    </div>
+    <div id="password-wrapper"<mt:if name="setting_httpauth_type" ne="2"> class="hidden"</mt:if>>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_password">
+          <mt:trans phrase="Password" component="HTTPAuth">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <input type="password" id="setting_httpauth_password" name="setting_httpauth_password" class="form-control" value="<mt:var name="setting_httpauth_password" escape>">
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_password-verify">
+          <mt:trans phrase="Password (Confirm)">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <input type="password" id="setting_httpauth_password-verify" name="setting_httpauth_password-verify" class="form-control" value="">
+      </div>
+    </div>
+    </div>
+  </div>
+</fieldset>
+</mt:if>
+</mt:unless>
+  <div id="header-has_setting-message" class="alert alert-info <mt:unless name="http_auth_has_settings">hidden</mt:unless>" role="alert" tabindex="0">
+  <mt:trans phrase="The authentication settings for the document root are set." component="HTTPAuth">
+  </div>
+<mt:if name="http_auth_has_settings">
+  <script>
+  $('#header-has_setting-message').focus();
+  </script>
+</mt:if>
+<fieldset class="card mb-4">
+  <div class="card-header pb-0">
+    <h2 style="display:inline;"><mt:trans phrase="Document Root Setting" component="HTTPAuth"></h2>
+    <label class="custom-control custom-checkbox ml-3">
+      <input type="checkbox" class="custom-control-input individual-setting"
+        id="setting_httpauth_auth_site_url" name="setting_httpauth_auth_site_url" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Configure Authentication" component="HTTPAuth"></span>
+    </label>
+  </div>
+  <div class="card-block hidden" id="httpauth_auth_site_url-block">
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_auth_type">
+          <mt:trans phrase="AuthType" component="HTTPAuth">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio" id="setting_httpauth_auth_type"
+             name="setting_httpauth_auth_type" value="Digest" <mt:if name="setting_httpauth_auth_type" eq="Digest">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Digest</span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+             name="setting_httpauth_auth_type" value="Basic" <mt:if name="setting_httpauth_auth_type" eq="Basic">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">Basic</span>
+        </label>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_htpasswd_authname">
+          <mt:trans phrase="AuthName" component="HTTPAuth">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <input type="text" id="setting_httpauth_htpasswd_authname" name="setting_httpauth_htpasswd_authname" class="form-control" value="<mt:var name="setting_httpauth_htpasswd_authname" escape>">
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_htpasswd_username">
+          <mt:trans phrase="Username">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <input type="text" id="setting_httpauth_htpasswd_username" name="setting_httpauth_htpasswd_username" class="form-control" value="<mt:var name="setting_httpauth_htpasswd_username" escape>">
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_htpasswd_password">
+          <mt:trans phrase="Password">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <input type="password" id="setting_httpauth_htpasswd_password" name="setting_httpauth_htpasswd_password" class="form-control" value="">
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-lg-2">
+        <label for="setting_httpauth_password-verify">
+          <mt:trans phrase="Password (Confirm)">
+        </label>
+      </div>
+      <div class="col-lg-10">
+        <input type="password" id="setting_httpauth_htpasswd_password-verify" name="setting_httpauth_htpasswd_password-verify" class="form-control" value="">
+      </div>
+    </div>
+    <div class="text-muted hint-block mb-3">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Username and Password are not stored in the Database." component="HTTPAuth">
+    </div>
+  <button type="button" id="save_htpasswd-btn" class="ml-0 btn btn-info"><mt:if name="setting_httpauth_auth_type" eq="Basic"><mt:trans phrase="Generate '.htpasswd' and '.htaccess'" component="HTTPAuth"><mt:else><mt:trans phrase="Generate '.htdigest' and '.htaccess'" component="HTTPAuth"></mt:if></button>
+  <button type="button" id="reset_htpasswd-btn" class="ml-2 btn btn-danger <mt:unless name="http_auth_has_settings">hidden</mt:unless>"><mt:trans phrase="Reset Document Root Setting" component="HTTPAuth"></button>
+</div>
+</fieldset>
+<script>
+$('input:radio[name="setting_httpauth_column"]').change(function(){
+    if ( $(this).val() == '_unique' ) {
+        $('#login_id-wrapper').show( 100 );
+        $('input[value="2"]').prop( 'checked', true );
+        $('#password-wrapper').show( 100 );
+        $('#pw-column-wrapper').hide( 100 );
+    } else {
+        $('#login_id-wrapper').hide( 100 );
+    }
+    if ( $(this).val() == '_specified' ) {
+        $('#id-column-wrapper').show( 100 );
+    } else {
+        $('#id-column-wrapper').hide( 100 );
+    }
+});
+$('input:radio[name="setting_httpauth_auth_type"]').change(function(){
+    if ( $(this).val() == 'Basic' ) {
+        $('#save_htpasswd-btn').html( "<mt:trans phrase="Generate '.htpasswd' and '.htaccess'" component="HTTPAuth">" );
+    } else {
+        $('#save_htpasswd-btn').html( "<mt:trans phrase="Generate '.htdigest' and '.htaccess'" component="HTTPAuth">" );
+    }
+});
+$('input:radio[name="setting_httpauth_type"]').change(function(){
+    if ( $(this).val() != 2 ) {
+        let httpauth_column = $('input:radio[name="setting_httpauth_column"]:checked').val();
+        if ( httpauth_column == '_unique' ) {
+            alert( '<mt:trans phrase="Unique Common ID is selected, but Unique Common Password is not selected." component="HTTPAuth">' );
+            $('input[value="2"]').prop( 'checked', true );
+            $('#pw-column-wrapper').hide( 100 );
+            return false;
+        }
+        $('#password-wrapper').hide( 100 );
+    } else {
+        $('#password-wrapper').show( 100 );
+    }
+    if ( $(this).val() == 3 ) {
+        $('#pw-column-wrapper').show( 100 );
+    } else {
+        $('#pw-column-wrapper').hide( 100 );
+    }
+});
+$('#setting_httpauth_auth_cms').change(function(){
+    if (! $(this).prop( 'checked' ) ) {
+        $('#httpauth_auth_cms-block').hide( 100 );
+    } else {
+        $('#httpauth_auth_cms-block').show( 100 );
+    }
+});
+$('#setting_httpauth_auth_site_url').change(function(){
+    if (! $(this).prop( 'checked' ) ) {
+        $('#httpauth_auth_site_url-block').hide( 100 );
+    } else {
+        $('#httpauth_auth_site_url-block').show( 100 );
+    }
+});
+$('#save_htpasswd-btn').click(function(){
+    let url = '<mt:var name="script_uri">?__mode=http_auth_htpasswd<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+    let authname = $('#setting_httpauth_htpasswd_authname').val();
+    let username = $('#setting_httpauth_htpasswd_username').val();
+    let password = $('#setting_httpauth_htpasswd_password').val();
+    let verify = $('#setting_httpauth_htpasswd_password-verify').val();
+    if (!authname || !username || !password || !verify ) {
+        alert( '<mt:trans phrase="Please enter all fields." component="HTTPAuth">' );
+        return false;
+    }
+    if ( password != verify ) {
+        alert( '<mt:trans phrase="Both passwords must match.">' );
+        return false;
+    }
+    if (! confirm( '<mt:trans phrase="When you save the settings, HTTP authentication is required for Site URL access. Are you sure you want to save your settings?" component="HTTPAuth">' ) ) {
+        return false;
+    }
+    $(this).attr( 'disabled', 'disabled' );
+    var data = {
+        authtype: $('input:radio[name="setting_httpauth_auth_type"]:checked').val(),
+        authname: authname,
+        username: username,
+        password: password,
+        verify: verify,
+        magic_token: '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ){
+            if ( responce.message ) {
+                $('#header-has_setting-message').show();
+                $('#reset_htpasswd-btn').show();
+                alert( responce.message );
+            }
+            $('#save_htpasswd-btn').removeAttr( 'disabled' );
+        },
+        error: function(){
+            if ( $('input:radio[name="setting_httpauth_auth_type"]:checked').val() == 'Basic' ) {
+                alert( '<mt:trans phrase="An error occues while Generating .htpasswd and .htaccess." component="HTTPAuth">' );
+            } else {
+                alert( '<mt:trans phrase="An error occues while Generating .htdigest and .htaccess." component="HTTPAuth">' );
+            }
+            $('#save_htpasswd-btn').removeAttr( 'disabled' );
+        }
+    });
+});
+$('#reset_htpasswd-btn').click(function(){
+    if (! confirm( '<mt:trans phrase="When you reset the settings, your current authentication settings will be lost. Are you sure you want to continue?" component="HTTPAuth">' ) ) {
+        return false;
+    }
+    let url = '<mt:var name="script_uri">?__mode=http_auth_htpasswd<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&_type=reset';
+    $(this).attr( 'disabled', 'disabled' );
+    var data = {
+        magic_token: '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+            }
+            $('#header-has_setting-message').hide(100);
+            $('#reset_htpasswd-btn').removeAttr( 'disabled' );
+            $('#reset_htpasswd-btn').hide(100);
+        },
+        error: function(){
+            alert( '<mt:trans phrase="An error occues while reset Authentication information." component="HTTPAuth">' );
+            $('#reset_htpasswd-btn').removeAttr( 'disabled' );
+        }
+    });
+});
+$(function(){
+    <mt:unless name="workspace_id">
+    $('#dialog-reset-btn').click(function(){
+        if (! confirm( '<mt:trans phrase="Reset only Management Screen Settings. Document Root Setting are not reset. Are you sure you want to continue?" component="HTTPAuth">' ) ) {
+            return false;
+        }
+    });
+    </mt:unless>
+    $('#dialog-save-btn').click(function(){
+        let auth_cms = $('#setting_httpauth_auth_cms').prop( 'checked' );
+        if (! auth_cms ) {
+            if (! confirm( '<mt:trans phrase="HTTP Authentication on the Administration Screen is disabled. Do you want to save the settings as is?" component="HTTPAuth">' ) ) {
+                return false;
+            }
+            return true; 
+        }
+        let httpauth_column = $('input:radio[name="setting_httpauth_column"]:checked').val();
+        let httpauth_type = $('input:radio[name="setting_httpauth_type"]:checked').val();
+        if ( httpauth_column == '_unique' ) {
+            let loginid = $('#setting_httpauth_loginid').val();
+            if (! loginid ) {
+                alert( '<mt:trans phrase="Login ID is required."  component="HTTPAuth">' );
+                return false;
+            }
+            if ( httpauth_type != 2 ) {
+                alert( '<mt:trans phrase="Unique Common ID is selected, but Unique Common Password is not selected."  component="HTTPAuth">' );
+                $('input[value="2"]').prop( 'checked', true );
+                $('#auth-type-hint').html( '<mt:var name="auth_type_digest">' );
+                $('#password-wrapper').show( 100 );
+                return false;
+            }
+        }
+        let httpauth_password = $('#setting_httpauth_password').val();
+        if ( httpauth_type == 2 && httpauth_password == '' ) {
+            alert( '<mt:trans phrase="Password is required." component="HTTPAuth">' );
+            return false;
+        }
+        let httpauth_password_verify = $('#setting_httpauth_password-verify').val();
+        if ( httpauth_type == 2 && httpauth_password != httpauth_password_verify ) {
+            alert( '<mt:trans phrase="Both passwords must match.">' );
+            return false;
+        }
+        if (! confirm( '<mt:trans phrase="When you save the settings, HTTP authentication is required for management screen access. Are you sure you want to save your settings?" component="HTTPAuth">' ) ) {
+            return false;
+        }
+        return true; 
+    });
+});
+</script>

@@ -1,0 +1,47 @@
+<mt:currenturlmappingvalue column="container" setvar="current_container">
+<mt:websiteid setvar="website_id">
+<mt:websitelanguage setvar="website_language">
+<mt:var name="website_language" setvar="language">
+<mt:if name="request._language">
+  <mt:var name="request._language" escape setvar="language">
+</mt:if>
+<mt:websitename language="$language" setvar="website_name">
+<mt:websiteurl setvar="website_url">
+<mt:var name="website_url" relative setvar="website_url_relative">
+<mt:if name="website_id">
+  <mt:workspacelinkurl setvar="website_link_url">
+<mt:else>
+  <mt:property name="link_url" setvar="website_link_url">
+</mt:if>
+<mt:websitecopyright setvar="website_copyright">
+<mt:setvar name="date_format" value="M jS, Y">
+<mt:if name="language" eq="ja">
+  <mt:setvar name="date_format" value="Y年m月d日">
+</mt:if>
+<mt:setvar name="datetime_format" value="M jS, Y, g:i a">
+<mt:if name="language" eq="ja">
+  <mt:setvar name="datetime_format" value="Y年m月d日 g時i分">
+</mt:if>
+<mt:var name="website_name" setvar="page_title">
+<mt:setvar name="page_title_delimiter" value=" | ">
+<mt:websitedescription language="$language" setvar="page_description">
+<mt:setvar name="page_keywords" value="">
+<mt:setvar name="additional_script" value="">
+<mt:setvarblock name="ogp_image"><mt:include module="(Media) OGP Image URL" ogp_image_key="default"></mt:setvarblock>
+<mt:setvar name="entries_limit" value="8">
+<mt:setvar name="ranking_enabled" value="1">
+<mt:ifcomponent component="AccessAnalytics">
+<mt:else>
+  <mt:setvar name="ranking_enabled" value="0">
+</mt:ifcomponent>
+<mt:setvar name="ranking_period" value="last10days">
+<mt:setvar name="async_parts_enabled" value="1">
+<mt:setvar name="dynamic_cache_ttl" value="86400">
+
+<mt:ifcomponent component="SimplifiedJapanese">
+<mt:if tag="property" name="simplifiedjapanese_furigana_api_only">
+<mt:if tag="property" name="simplifiedjapanese_api_endpoint">
+<mt:setvar name="use_furigana_js" value="1">
+</mt:if>
+</mt:if>
+</mt:ifcomponent>

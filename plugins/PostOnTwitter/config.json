@@ -1,0 +1,143 @@
+{
+    "label"       : "PostOnTwitter",
+    "id"          : "postontwitter",
+    "component"   : "PostOnTwitter",
+    "version"     : "1.2",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Provides the ability to post to 𝕏 from PowerCMS X.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "cfg_space"   : 1,
+    "settings": {
+        "api_key": "",
+        "api_secret_key": "",
+        "callback_url": "",
+        "all_target_models": "",
+        "base_account_name": "",
+        "base_access_token": "",
+        "base_access_token_secret": "",
+        "base_target_models": "",
+        "base_tweet_template": "<mt:var name=\"object_primary\" remove_html>",
+        "enabled": 0,
+        "use_base_access_token": 1,
+        "use_base_target_models": 1,
+        "use_base_tweet_template": 1,
+        "use_link_url": 0,
+        "account_name": "",
+        "access_token": "",
+        "access_token_secret": "",
+        "target_models": "",
+        "tweet_template": ""
+    },
+    "config_overwrite": {
+        "publish_callbacks": true
+    },
+    "menus": {
+        "twitter_account": {
+            "display_system" : 1,
+            "display_space"  : 1,
+            "component"      : "PostOnTwitter",
+            "mode"           : "link_twitter_account",
+            "label"          : "Link to a 𝕏 account",
+            "permission"     : "can_twitter_account",
+            "condition"      : "can_link_twitter_account",
+            "order"          : 3000
+        }
+    },
+    "hooks": {
+        "postontwitter_start_app": {
+            "start_app": {
+                "component": "PostOnTwitter",
+                "method"   : "start_app",
+                "priority" : 1
+            }
+        },
+        "postontwitter_post_init": {
+            "post_init": {
+                "component": "PostOnTwitter",
+                "method"   : "post_init"
+            }
+        },
+        "postontwitter_start_mode": {
+            "start_mode": {
+                "component": "PostOnTwitter",
+                "method"   : "start_mode"
+            }
+        },
+        "postontwitter_take_down": {
+            "take_down": {
+                "component": "PostOnTwitter",
+                "method"   : "take_down"
+            }
+        }
+    },
+    "callbacks": {
+        "postontwitter_template_source_edit": {
+            "edit": {
+                "template_source": {
+                    "component": "PostOnTwitter",
+                    "method"   : "template_source_edit"
+                }
+            }
+        },
+        "postontwitter_start_publish": {
+            "template": {
+                "start_publish": {
+                    "component": "PostOnTwitter",
+                    "method"   : "check_object_publishing"
+                }
+            }
+        },
+        "postontwitter_post_rebuild": {
+            "template": {
+                "post_rebuild": {
+                    "component": "PostOnTwitter",
+                    "method"   : "check_object_publishing"
+                }
+            }
+        },
+        "postontwitter_post_publish": {
+            "template": {
+                "post_publish": {
+                    "component": "PostOnTwitter",
+                    "method"   : "check_object_publishing"
+                }
+            }
+        }
+    },
+    "methods": {
+        "link_twitter_account": {
+            "component"  : "PostOnTwitter",
+            "method"     : "method_link_twitter_account",
+            "permission" : "can_twitter_account"
+        },
+        "twitter_authorization": {
+            "component" : "PostOnTwitter",
+            "method"    : "method_twitter_authorization",
+            "permission" : "can_twitter_account"
+        },
+        "twitter_oauth_callback": {
+            "component" : "PostOnTwitter",
+            "method"    : "method_twitter_oauth_callback",
+            "permission" : "can_twitter_account"
+        },
+        "twitter_post_test": {
+            "component" : "PostOnTwitter",
+            "method"    : "method_twitter_post_test",
+            "permission": "is_superuser"
+        }
+    },
+    "tags": {
+        "conditional": {
+            "ifpostontwitterenabled": {
+                "component": "PostOnTwitter",
+                "method"   : "hdlr_ifpostontwitterenabled"
+            },
+            "ifpostontwittertweetmodel": {
+                "component": "PostOnTwitter",
+                "method"   : "hdlr_ifpostontwittertweetmodel"
+            }
+        }
+    }
+}

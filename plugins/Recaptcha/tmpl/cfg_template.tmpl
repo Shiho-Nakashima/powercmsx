@@ -1,0 +1,86 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_api_js_url">
+      <mt:Trans phrase="API js url" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" name="setting_api_js_url" id="setting_api_js_url" class="form-control" value="<mt:Var name="setting_api_js_url" escape />">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_api_endpoint">
+      <mt:Trans phrase="API endpoint" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" name="setting_api_endpoint" id="setting_api_endpoint" class="form-control" value="<mt:Var name="setting_api_endpoint" escape />">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_api_site_key">
+      <mt:Trans phrase="API site key" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" name="setting_api_site_key" id="setting_api_site_key" class="form-control" value="<mt:Var name="setting_api_site_key" escape />">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_api_secret_key">
+      <mt:Trans phrase="API secret key" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" name="setting_api_secret_key" id="setting_api_secret_key" class="form-control" value="<mt:Var name="setting_api_secret_key" escape />">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_token_hidden_name">
+      <mt:Trans phrase="token hidden element name attribute" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" name="setting_token_hidden_name" id="setting_token_hidden_name" class="form-control" value="<mt:Var name="setting_token_hidden_name" escape />">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_pass_score">
+      <mt:Trans phrase="Minimum score to validate reCAPTCHA" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" name="setting_pass_score" id="setting_pass_score" class="form-control" value="<mt:Var name="setting_pass_score" escape />">
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_use_members">
+      <mt:Trans phrase="Member page" component="Recaptcha" />
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_use_members" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" name="setting_use_members" id="setting_use_members" class="custom-control-input watch-changed" value="1"<mt:If name="setting_use_members"> checked</mt:If>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:Trans phrase="Enable reCAPTCHA when registering or editing membership" component="Recaptcha" /></span>
+    </label>
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:Trans phrase="Hint"></span>
+      <mt:trans phrase="The token issuing tag needs to be added to the member registration and editing pages." component="Recaptcha">
+    </div>
+  </div>
+</div>

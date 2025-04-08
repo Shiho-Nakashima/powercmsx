@@ -1,0 +1,32 @@
+{
+    "label": "URLRedirect",
+    "id": "urlredirect",
+    "component": "URLRedirect",
+    "description": "Manage the URL redirect settings.",
+    "version": "1.1",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net",
+    "config_settings": {
+        "urlredirect_delimiter": "!"
+    },
+    "callbacks": {
+        "urlredirect_save_filter_redirect_map": {
+            "redirect_map": {
+                "save_filter": {
+                    "component": "URLRedirect",
+                    "priority": 5,
+                    "method": "save_filter_redirect_map"
+                }
+            }
+        },
+        "urlredirect_redirect": {
+            "template" : {
+                "404-error" : {
+                    "component" : "URLRedirect",
+                    "priority"  : 10,
+                    "method" : "urlredirect_redirect"
+                }
+            }
+        }
+    }
+}

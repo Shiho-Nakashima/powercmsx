@@ -1,0 +1,61 @@
+<mt:setvarblock name="html_body_footer" append="1">
+<link rel=stylesheet href="assets/codemirror/lib/codemirror.css">
+<script src="assets/codemirror/lib/codemirror.js"></script>
+<script src="assets/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="assets/codemirror/mode/xml/xml.js"></script>
+<script src="assets/codemirror/mode/javascript/javascript.js"></script>
+<script src="assets/codemirror/mode/css/css.js"></script>
+<script>
+  let templateTextarea;
+<mt:if name="template_text_exist">
+  templateTextarea = CodeMirror.fromTextArea(document.getElementById('template'), {
+    lineNumbers: true,
+  });
+<mt:else>
+  const templateWrapper = document.querySelector('#template-wrapper details');
+  templateWrapper.addEventListener('toggle', (e) => {
+    templateTextarea = CodeMirror.fromTextArea(document.getElementById('template'), {
+      lineNumbers: true,
+    });
+  }, { once: true });
+</mt:if>
+<mt:if name="methods_text_exist">
+  CodeMirror.fromTextArea(document.getElementById('methods'), {
+    lineNumbers: true,
+    mode: "javascript",
+  });
+<mt:else>
+  const methodsWrapper = document.querySelector('#methods-wrapper details');
+  methodsWrapper.addEventListener('toggle', (e) => {
+    CodeMirror.fromTextArea(document.getElementById('methods'), {
+      lineNumbers: true,
+      mode: "javascript",
+    });
+  }, { once: true });
+</mt:if>
+
+  const toggleFieldByCheckbox = ($srcElement, $targetElement, animation = false) => {
+    if ($srcElement.prop('checked')) {
+      if (animation) {
+        $targetElement.slideDown();
+      } else {
+        $targetElement.show();
+      }
+    } else {
+      if (animation) {
+        $targetElement.slideUp();
+      } else {
+        $targetElement.hide();
+      }
+    }
+  };
+  const $useMultiBlock = $('#use_multi_block');
+  const $enableBlocks = $('#enable_blocks-wrapper');
+
+  $useMultiBlock.on('change', () => {
+    toggleFieldByCheckbox($useMultiBlock, $enableBlocks, true);
+  });
+
+  toggleFieldByCheckbox($useMultiBlock, $enableBlocks);
+</script>
+</mt:setvarblock>

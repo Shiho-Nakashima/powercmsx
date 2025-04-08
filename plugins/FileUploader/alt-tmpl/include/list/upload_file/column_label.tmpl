@@ -1,0 +1,61 @@
+<mt:setvar name="show_icon" value="">
+<mt:if name="class" eq="image">
+  <mt:setvar name="show_icon" value="1">
+<mt:elseif name="file_ext" eq="svg">
+  <mt:setvar name="show_icon" value="1">
+<mt:elseif name="class" eq="video">
+  <mt:property name="fileuploader_list_video_thumb" setvar="show_icon">
+</mt:if>
+<input type="hidden" id="_get_col_img_<mt:var name="id">" value="<mt:if name="file_ext" eq="svg"><mt:var name="url" escape><mt:else><mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=upload_file&amp;id=<mt:var name="id"></mt:if>&amp;column=file_path">
+<mt:if name="show_icon">
+<div class="list-icon">
+<a href="javascript:void(0);" id="popover-list-<mt:var name="id">">
+<img src="<mt:var name="prototype_path">assets/img/spacer.gif"
+style="background-image:url('<mt:var name="prototype_path">assets/img/loading.gif');background-size:25px;background-repeat:no-repeat;background-position:center center;"
+class="lazy" data-original="<mt:if name="file_ext" eq="svg"><mt:var name="url" escape><mt:else><mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=upload_file&amp;id=<mt:var name="id"></mt:if>&column=file_path" width="32" alt="<mt:trans phrase="$class">"> 
+</a>
+<script>
+$('#popover-list-<mt:var name="id">').popover({
+    content: "<img src='<mt:if name="file_ext" eq="svg"><mt:var name="url" escape><mt:else><mt:var name="script_uri">?__mode=get_thumbnail&amp;_model=upload_file&amp;id=<mt:var name="id"></mt:if>&amp;column=file_path' alt='<mt:trans phrase="Preview">' width='150'>",
+    placement: "right",
+    html: true
+});
+$('body').on('click', function (e) {
+    $('#popover-list-<mt:var name="id">').popover('hide');
+});
+</script>
+</div>
+<mt:else>
+<span class="list-file-icon">
+<i class="fa-2x list-small-icon fa <mt:if name="class" eq="pdf">fa-file-pdf-o<mt:elseif name="file_ext" eq="zip">fa-file-archive-o<mt:elseif name="file_ext" eq="gz">fa-file-archive-o<mt:elseif name="file_ext" eq="tar">fa-file-archive-o<mt:elseif name="class" eq="video">fa-file-video-o<mt:elseif name="class" eq="audio">fa-file-audio-o<mt:else><mt:unless name="class">fa-minus<mt:else>fa-file-o</mt:unless></mt:if>" aria-hidden="true"></i>
+</span>
+</mt:if>
+<mt:ifusercan action="edit" model="$this_model" id="$id"><a id="edit-link-<mt:var name="id" escape>" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="this_model" escape>&amp;id=<mt:var name="id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:if name="model" eq="workspace">&amp;workspace_id=<mt:objectvar name="id"></mt:if><mt:if name="request.revision_select">&amp;edit_revision=1</mt:if><mt:if name="request.dialog_view">&amp;dialog_view=1</mt:if>"></mt:ifusercan>
+  <mt:unless name="$_name">
+  <mt:setvarblock name="$_name">(<mt:trans phrase="null">)</mt:setvarblock>
+  </mt:unless>
+  <mt:if name="request.target" eq="urls">
+    <mt:var name="_model_primary" escape>
+  <mt:else>
+    <mt:var name="$_name" escape>
+  </mt:if>
+<mt:ifusercan action="edit" model="$this_model" id="$id"></a></mt:ifusercan>
+<mt:if name="url">
+&nbsp; 
+<mt:if name="_link_url">
+  <mt:var name="url" replace="'$_site_url','$_link_url'" setvar="__permalink">
+<mt:else>
+  <mt:var name="url" setvar="__permalink">
+</mt:if>
+<a href="<mt:if name="_show_both"><mt:var name="url" escape><mt:else><mt:var name="__permalink" escape></mt:if>" target="_blank">
+<i class="fa fa-external-link" aria-hidden="true"></i>
+<span class="sr-only"><mt:trans phrase="View"></span>
+</a>
+<mt:if name="_show_both">
+&nbsp;
+  <a style="position:absolute;margin-top:-1px" title="<mt:trans phrase="View Published">" href="<mt:var name="__permalink" escape>" target="_blank">
+  <i class="fa fa-globe" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="View Published"></span>
+  </a>
+</mt:if>
+</mt:if>

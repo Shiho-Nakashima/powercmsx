@@ -1,0 +1,149 @@
+<mt:property name="tinymce_version" cast_to="int" setvar="tinymce_version">
+<mt:if name="tinymce_version" eq="4">
+<mt:include file="include/richtext4.tmpl">
+<mt:else>
+<script src="<mt:var name="prototype_path">assets/js/tinymce<mt:var name="tinymce_version">/tinymce.min.js?version=<mt:property name="tinymce_version">"></script>
+<script>
+<mt:unless name="request.id">
+  <mt:if name="user_text_format">
+    <mt:var name="user_text_format" lower_case setvar="user_text_format">
+    <mt:setvar name="_object_text_format" value="$user_text_format">
+  <mt:elseif name="__format_default">
+    <mt:var name="__format_default" lower_case setvar="user_text_format">
+    <mt:setvar name="_object_text_format" value="$user_text_format">
+  <mt:else>
+    <mt:setvar name="_object_text_format" value="richtext">
+  </mt:if>
+</mt:unless>
+<mt:tablehascolumn model="$model" column="text_format">
+<mt:if name="forward_params">
+<mt:var name="request.text_format" setvar="_object_text_format">
+</mt:if>
+<mt:if name="_object_text_format" eq="richtext">
+$(function(){
+    editorInit();
+    editorMode = 'richtext';
+});
+</mt:if>
+<mt:else>
+$(function(){
+    editorInit();
+    window.editorMode = 'richtext';
+});
+</mt:tablehascolumn>
+function editorInit () {
+    var pressCmdKey    = false;
+    var pressShiftKey  = false;
+    var pressOptKey    = false;
+    var pressCtrlKey   = false;
+    tinymce.init({
+        language : '<mt:var name="user_language">',
+        selector : 'textarea.richtext',<mt:if name="model" like="email">
+        convert_urls: false,</mt:if>
+        relative_urls : false,
+        image_advtab: true,
+        promotion: false,
+        menubar: 'edit insert view format table tools',
+        content_css: "<mt:var name="prototype_path">assets/css/editor.css",
+        onchange_callback : "editHtmlEditor",
+        plugins  : 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code<mt:if name="tinymce_version" lt="6"> print paste</mt:if>',
+        toolbar  : 'undo redo insert styleselect bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent fullscreen link image pt-file pt-image',
+        setup: function (ed) {
+            ed.on('keyDown', function(e) {
+                if ( e.keyCode == 16 ) {
+                    pressShiftKey = true;
+                } else if ( e.keyCode == 91 ) {
+                    pressCmdKey = true;
+                } else if ( e.keyCode == 18 ) {
+                    pressOptKey = true;
+                } else if ( e.keyCode == 17 ) {
+                    pressCtrlKey = true;
+                }
+            });
+            ed.on('keyUp', function(e) {
+                pressCmdKey    = false;
+                pressShiftKey  = false;
+                pressOptKey    = false;
+                pressCtrlKey   = false;
+            });
+            ed.on('click', function(e) {
+                pressCmdKey    = false;
+                pressShiftKey  = false;
+                pressOptKey    = false;
+                pressCtrlKey   = false;
+            });
+            ed.on('paste', function(e) {
+                $('.tox-tinymce').css('width', '99.9%');
+                window.setTimeout( _reset_editor_width , 1 );
+            });
+            ed.on('change', function(e) {
+                editContentChanged = true;
+                ed.save();
+            });
+            ed.ui.registry.addButton('pt-image', {
+                <mt:if name="tinymce_version" eq="5">
+                text: '<img src="<mt:var name="prototype_path">assets/img/insert_image.png" alt="" style="height:18px;width:18px;margin-top:3px;">',
+                <mt:else>
+                icon: 'gallery',
+                </mt:if>
+                tooltip: '<mt:trans phrase="Insert Image">',
+                onAction: function () {
+                    url = '<mt:var name="script_uri">?__mode=view&_type=list&_model=asset<mt:if name="has_asset_workspace_id">&workspace_id=<mt:var name="asset_workspace_id">&_from_scope=<mt:var name="workspace_id" castto="int"><mt:elseif name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&dialog_view=1&select_system_filters=filter_class_image&_system_filters_option=image&_filter=asset&insert_editor=1&ref_model=<mt:var name="_model">&insert=' + ed.id;
+                    $('#modal').modal().find('iframe').attr( 'src', url );
+                }
+            });
+            ed.ui.registry.addButton('pt-file', {
+                <mt:if name="tinymce_version" eq="5">
+                text: '<img src="<mt:var name="prototype_path">assets/img/insert_file.png" alt="" style="height:18px;width:18px;margin-top:3px;">',
+                <mt:else>
+                icon: 'browse',
+                </mt:if>
+                tooltip: '<mt:trans phrase="Insert File">',
+                onAction: function () {
+                    url = '<mt:var name="script_uri">?__mode=view&_type=list&_model=asset<mt:if name="has_asset_workspace_id">&workspace_id=<mt:var name="asset_workspace_id">&_from_scope=<mt:var name="workspace_id" castto="int"><mt:elseif name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&dialog_view=1&insert_editor=1&ref_model=<mt:var name="_model">&insert=' + ed.id;
+                    $('#modal').modal().find('iframe').attr( 'src', url );
+                }
+            });
+            <mt:var name="editor_buttons">
+            var _reset_editor_width = function()
+            {
+                $('.tox-tinymce').css('width', '100%');
+                $('#__loader-bg').hide();
+            }
+            <mt:if name="model" eq="widget">
+            ed.on('LoadContent',function(){
+                if ( ed.id && ed.id == 'text' ) {
+                    let clipboard_image = $('#clipboard-image');
+                    let inline_image = $('#inline-image');
+                    let bg_image_url = clipboard_image.val();
+                    if ( inline_image.length ) {
+                        bg_image_url = inline_image.attr('href');
+                    }
+                    let html_head = ed.iframeElement.contentWindow.document.getElementsByTagName('head')[0];
+                    let style = document.createElement('style');
+                    let content_style;
+                    if ( clipboard_image.length ) {
+                      <mt:unless name="__object_back_color"><mt:setvar name="__object_back_color" value="#ffffff"></mt:unless>
+                      <mt:unless name="__object_fore_color"><mt:setvar name="__object_fore_color" value="#000000"></mt:unless>
+                        var rgba = getConversionRgba('<mt:var name="__object_back_color">');
+                        content_style = 'body {margin: 40px; font-size: 110%;color:<mt:var name="__object_fore_color">; background-color:<mt:var name="__object_back_color">;'
+                        + 'background-size: cover; background-position: center;'
+                        + 'text-shadow: 2px 2px 2px <mt:var name="__object_back_color">,'
+                        + '-2px 2px 2px <mt:var name="__object_back_color">,'
+                        + '2px -2px 2px <mt:var name="__object_back_color">,'
+                        + '-2px -2px 2px <mt:var name="__object_back_color">;'
+                        + 'background-image:url("' + bg_image_url + '&rnd=' + Math.random() + '")} body *{background-color: rgba(' + rgba + ')}';
+                    } else {
+                        content_style = 'body {margin: 40px; font-size: 110%;color:<mt:var name="__object_fore_color">; background:<mt:var name="__object_back_color">;}';
+                    }
+                    style.innerHTML = content_style;
+                    html_head.appendChild(style);
+                }
+            });
+            </mt:if>
+            $('#__loader-bg').hide("fast");
+        }
+    });
+}
+</script>
+</mt:if>

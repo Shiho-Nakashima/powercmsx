@@ -1,0 +1,28 @@
+<input type="hidden" id="__nu_html_checker_agreement" name="__nu_html_checker_agreement" value="">
+<button type="button" id="__nu_html_checker" class="btn btn-secondary btn-sm"><mt:trans phrase="HTML Check" component="NuHtmlChecker"></button>
+<mt:pluginsetting component="NuHtmlChecker" name="nuhtmlchecker_url" setvar="nuhtmlchecker_url">
+<script>
+$('#__nu_html_checker').click(async function(){
+    if (! $('#__nu_html_checker_agreement').val() ) {
+        <mt:if name="nuhtmlchecker_url" like="https://validator.w3.org/">
+        <mt:if tag="property" name="confirm_web_service" eq="1">
+        if (! confirm( "<mt:trans phrase="Are you sure you want to send the preview html to '%s'?" params="$nuhtmlchecker_url" component="NuHtmlChecker">" ) ) {
+            return;
+        }
+        <mt:elseif tag="property" name="confirm_web_service" eq="2">
+        <mt:getcookie name="pt-nu-agreement" setvar="pt_nu_agreement">
+        <mt:unless name="pt_nu_agreement">
+        if (! confirm( "<mt:trans phrase="Are you sure you want to send the preview html to '%s'?" params="$nuhtmlchecker_url" component="NuHtmlChecker">" ) ) {
+            return;
+        }
+        </mt:unless>
+        </mt:if>
+        </mt:if>
+        $('#__nu_html_checker_agreement').val(1);
+    }
+    $('#_preview').val('nu_html_checker');
+    $('#edit-form-main').attr('target', '_blank');
+    $('#edit-form-main').submit();
+    $('#_preview').val('');
+});
+</script>

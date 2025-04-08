@@ -1,0 +1,22 @@
+<mt:columnproperty model="$this_model" name="state" property="options" split="," setvar="state_options">
+<mt:unless name="__col_value__">
+<mt:setvar name="__state_index__" value="0">
+<mt:else>
+<mt:math eq="x - 1" x="$__col_value__" setvar="__state_index__">
+</mt:unless>
+<a class="col-status-<mt:if name="__col_value__" eq="1">draft<mt:elseif name="__col_value__" eq="2">review<mt:elseif name="__col_value__" eq="3">reserved<mt:elseif name="__col_value__" eq="4">published<mt:elseif name="__col_value__" eq="5">approval<mt:elseif name="__col_value__" eq="6">unpublished</mt:if>" href="<mt:var name="script_uri">?__mode=view&amp;_model=<mt:var name="this_model" escape>&amp;_type=list&amp;_filter=<mt:var name="this_model" escape>&amp;_filter_cond_state[]=eq&amp;_filter_value_state[]=<mt:var name="__col_value__">">
+<mt:if name="__col_value__" eq="1">
+<i class="fa fa-minus" aria-hidden="true"></i>
+<mt:elseif name="__col_value__" eq="2">
+<i class="fa fa-check" aria-hidden="true"></i>
+<mt:elseif name="__col_value__" eq="3">
+<i class="fa fa-clock-o" aria-hidden="true"></i>
+<mt:elseif name="__col_value__" eq="4">
+<i class="fa fa-check-square" aria-hidden="true"></i>
+<mt:elseif name="__col_value__" eq="5">
+<i class="fa fa-flag" aria-hidden="true"></i>
+<mt:elseif name="__col_value__" eq="6">
+<i class="fa fa-calendar-times-o" aria-hidden="true"></i>
+</mt:if>
+<mt:var name="state_options" index="$__state_index__" translate>
+</a>

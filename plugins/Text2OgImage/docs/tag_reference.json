@@ -1,0 +1,9 @@
+{
+    "text2ogimage": {
+        "description": "Generate og:image from text.",
+        "attributes": {
+            "text": "The text to image.",
+            "furigana": "Specify '1' to add furigana, Specify '2' to add furigana and break with clauses and Specify '3' to only break with clauses."
+        }
+    }
+}

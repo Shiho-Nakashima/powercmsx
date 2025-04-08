@@ -1,0 +1,78 @@
+<mt:ifformisopen>
+<mt:else>
+<mt:setvar name="form_closed" value="1">
+<mt:formname escape language="$language" setvar="form_name">
+<mt:setvarblock name="add_error"><mt:trans phrase="The reception on '%s' has been closed." params="$form_name"></mt:setvarblock>
+<mt:setvar name="errors" value="$add_error" function="unshift">
+<mt:setvar name="error" value="1">
+</mt:ifformisopen>
+<div class="container-fluid">
+<mt:if name="request.__mode" eq="submit">
+  <mt:if name="error">
+  <mt:unless name="request._form_re_publish"><p class="text-center text-danger"><mt:trans phrase="An error occurred." language="$language"></p></mt:unless>
+    <mt:loop name="errors" unique="1">
+      <mt:if name="__first__"><ul></mt:if>
+      <li><mt:var name="__value__"></li>
+      <mt:if name="__last__"></ul></mt:if>
+    </mt:loop>
+  <mt:else>
+  <p class="text-center"><mt:trans phrase="Thank you for your inquiry." language="$language"></p>
+  </mt:if>
+<mt:elseif name="request.submit" eq="1">
+  <p class="text-center"><mt:trans phrase="Thank you for your inquiry." language="$language"></p>
+<mt:else>
+  <mt:if name="error">
+    <mt:unless name="form_closed"><p class="text-center"><mt:trans phrase="Please check your entries." language="$language"></p></mt:unless>
+    <mt:loop name="errors" unique="1">
+      <mt:if name="__first__"><ul></mt:if>
+      <li><mt:var name="__value__" escape></li>
+      <mt:if name="__last__"></ul></mt:if>
+    </mt:loop>
+  <mt:else>
+    <mt:if name="confirm_ok">
+      <p class="text-center"><mt:trans phrase="Confirm the following and click Submit button."  language="$language"></p>
+    <mt:else>
+      <mt:if tag="formdescription">
+        <mt:formdescription convert_breaks="auto">
+      <mt:else>
+      <p class="text-center"><mt:trans phrase="Please complete the form below and click Confirm button."  language="$language"></p>
+      </mt:if>
+    </mt:if>
+  </mt:if>
+</div>
+<mt:unless name="form_closed">
+<form action="<mt:formpermalink>" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="form_id" value="<mt:formid>">
+  <input type="hidden" name="__mode" value="<mt:if name="confirm_ok">submit<mt:else>confirm</mt:if>">
+  <input type="hidden" name="_type" value="form">
+  <input type="hidden" name="_language" value="<mt:var name="language">">
+  <input type="hidden" name="_identifier" value="<mt:if name="request._identifier"><mt:var name="request._identifier" escape><mt:else><mt:var name="form_identifier"></mt:if>">
+  <input type="hidden" name="object_id" value="<mt:if name="request.object_id"><mt:var name="request.object_id" escape><mt:else><mt:var name="current_object_id"></mt:if>">
+  <input type="hidden" name="model" value="<mt:if name="request.model"><mt:var name="request.model" escape><mt:else><mt:var name="current_archive_model"></mt:if>">
+  <input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+  <table class="table table-hover table-striped form-table">
+    <tbody>
+      <mt:formquestions>
+        <mt:objectcontext model="question" prefix="question">
+          <mt:questiontemplate eval="1">
+        </mt:objectcontext>
+      <mt:if name="__last__">
+      <tr>
+        <td colspan="2" class="text-center">
+          <button id="form-post-button" type="submit" class="btn btn-secondary btn-lg"><mt:if name="confirm_ok"><mt:trans phrase="Submit" language="$language"><mt:else><mt:trans phrase="Confirm" language="$language"></mt:if></button>
+        </td>
+      </tr>
+      </mt:if>
+      </mt:formquestions>
+    </tbody>
+  </table>
+<script>
+$('#form-post-button').click(function(){
+    $(this).attr('disabled', true);
+    this.form.submit();
+    return false;
+});
+</script>
+</form>
+</mt:unless>
+</mt:if>

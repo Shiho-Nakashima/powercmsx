@@ -1,0 +1,127 @@
+{
+    "version": "1.2",
+    "label": "User Dictionary",
+    "plural": "User Dictionaries",
+    "primary": "word",
+    "auditing": 1,
+    "order": 550,
+    "menu_type": 2,
+    "display_system": 1,
+    "display_space": 1,
+    "has_status": 1,
+    "default_status": 2,
+    "relations": [],
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "word": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "phonetic": {
+            "type": "string",
+            "size": 255
+        },
+        "exception": {
+            "type": "tinyint",
+            "default": 0,
+            "size": 4,
+            "not_null": 1
+        },
+        "proper_noun": {
+            "type": "tinyint",
+            "default": 0,
+            "size": 4,
+            "not_null": 1
+        },
+        "status": {
+            "type": "int",
+            "size": 11,
+            "default": "1"
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        },
+        "created_on": {
+            "type": "datetime"
+        },
+        "modified_on": {
+            "type": "datetime"
+        },
+        "created_by": {
+            "type": "int",
+            "size": 11
+        },
+        "modified_by": {
+            "type": "int",
+            "size": 11
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "word": "word",
+        "status": "status",
+        "exception" : "exception",
+        "proper_noun" : "proper_noun",
+        "workspace_id": "workspace_id",
+        "created_on": "created_on",
+        "modified_on": "modified_on",
+        "created_by": "created_by",
+        "modified_by": "modified_by"
+    },
+    "options": {
+        "status": "Disable,Enable"
+    },
+    "extras": [],
+    "sort_by": {
+        "modified_on": "descend"
+    },
+    "autoset": [
+        "workspace_id",
+        "created_on",
+        "modified_on",
+        "created_by",
+        "modified_by"
+    ],
+    "unique": [
+        "word"
+    ],
+    "unchangeable": [
+        "workspace_id"
+    ],
+    "validation_types": {
+        "phonetic": "hiragana"
+    },
+    "disp_edit": {
+        "status": "select"
+    },
+    "edit_properties": {
+        "id": "hidden",
+        "word": "primary",
+        "phonetic": "text_short",
+        "proper_noun" : "checkbox",
+        "exception" : "checkbox",
+        "status": "selection"
+    },
+    "list_properties": {
+        "id": "number",
+        "word": "primary",
+        "phonetic": "text_short",
+        "proper_noun" : "checkbox",
+        "exception" : "checkbox",
+        "status": "number",
+        "workspace_id": "reference:workspace:name",
+        "modified_on": "datetime",
+        "modified_by": "reference:user:name"
+    },
+    "hide_edit_options": [
+        "status"
+    ]
+}

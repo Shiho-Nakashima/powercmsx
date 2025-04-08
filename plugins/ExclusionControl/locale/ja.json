@@ -1,0 +1,28 @@
+{
+    "Provides exclusion control for edit screen." : "編集画面への排他制御機能を提供します。",
+    "Please try again in a short while." : "しばらくたってからやり直してください。",
+    "Target Models" : "対象モデル",
+    "Session Expires" : "セッション有効期限",
+    "Error Handling" : "エラー処理",
+    "Redirect to Dashboard" : "ダッシュボードへリダイレクト",
+    "Show Error" : "エラーを表示",
+    "Show warning only" : "警告のみ表示",
+    "Show user's nickname in error message" : "エラーメッセージに編集中のユーザー名を表示",
+    "Target hierarchy management screen" : "階層の管理画面を排他制御の対象とする",
+    "The %s you tried to edit are being edited by other user %s."
+        : "あなたが編集しようとした%sはユーザー%sによって編集中です。",
+    "This %s you tried to edit are being edited by other user %s."
+        : "あなたが編集しようとしているこの%sはユーザー%sによって編集中です。",
+    "The %s you tried to manage hierarchy are being edited by other user %s."
+        : "あなたが編集しようとした%sの階層はユーザー%sによって編集中です。",
+    "This %s you tried to manage hierarchy are being edited by other user %s."
+        : "あなたが編集しようとしている%sの階層はユーザー%sによって編集中です。",
+    "The %s you tried to edit are being edited by other user."
+        : "あなたが編集しようとした%sは他のユーザーによって編集中です。",
+    "This %s you tried to edit are being edited by other user."
+        : "あなたが編集しようとしているこの%sは他のユーザーによって編集中です。",
+    "The %s you tried to manage hierarchy are being edited by other user."
+        : "あなたが編集しようとした%sの階層は他のユーザーによって編集中です。",
+    "This %s you tried to manage hierarchy are being edited by other user."
+        : "あなたが編集しようとしている%sの階層は他のユーザーによって編集中です。"
+}

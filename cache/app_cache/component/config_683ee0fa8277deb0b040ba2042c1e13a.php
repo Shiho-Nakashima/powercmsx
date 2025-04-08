@@ -1,0 +1,27 @@
+<?php $this->get_cache=array (
+  'label' => 'UniqueURL',
+  'id' => 'uniqueurl',
+  'component' => 'UniqueURL',
+  'description' => 'Returns an error when the URL to publish is duplicated.',
+  'version' => '1.0',
+  'author' => 'Alfasado Inc.',
+  'author_link' => 'https://alfasado.net/',
+  'config_settings' => 
+  array (
+    'uniqueurl_save_asset' => true,
+    'uniqueurl_upload_multi' => true,
+    'uniqueurl_before_save' => true,
+  ),
+  'hooks' => 
+  array (
+    'uniqueurl_pre_run' => 
+    array (
+      'pre_run' => 
+      array (
+        'component' => 'UniqueURL',
+        'priority' => 10,
+        'method' => 'pre_run',
+      ),
+    ),
+  ),
+);

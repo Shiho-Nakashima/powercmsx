@@ -1,0 +1,100 @@
+<mt:trans phrase="Show Diff" component="EditorDiff" setvar="page_title">
+<mt:setvarblock name="html_head" append="1">
+<link rel="stylesheet" type="text/css" href="<mt:var name="prototype_path">assets/css/diff/diff2html.min.css">
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff.min.js"></script>
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff2html.min.js"></script>
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff2html-ui.min.js"></script>
+<style>
+h1{display: none}
+tr{color:#555;}
+.d2h-file-header{display:none}
+ins{color:#000; font-weight:bold; font-family: sans-selif !important}
+del{color:#000; font-weight:bold; font-family: sans-selif !important}
+.d2h-code-linenumber {display:none !important}
+.d2h-code-line {margin-left:0px !important}
+span{white-space: nowrap;}
+#diff_area{font-family: 'Noto Sans JP';padding: 0.5rem 1.2rem !important;line-height: 2.3rem;}
+</style>
+</mt:setvarblock>
+<mt:include file="include/dialog_header.tmpl">
+<div id="__loader-bg">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<div id="alert-success" class="alert alert-success hidden" tabindex="0">
+  <mt:trans phrase="No diff found." component="EditorDiff">
+</div>
+<div id="diff_area" class="hidden" style="border-radius: 5px;padding:10px;background-color:#eee;border:1px solid gray;width:100%"></div>
+<button type="button" id="dialog-close-btn" class="ml-0 btn btn-secondary mt-4"><mt:trans phrase="Close"></button>
+<mt:if name="debug_mode">
+<div style="height:50px;"></div>
+</mt:if>
+<script>
+    var editor = window.parent.tinymce.activeEditor;
+    let col_name = null;
+    if ( editor ) {
+        var html = editor.getContent();
+        col_name = editor.id;
+    } else {
+        col_name = '<mt:var name="request.column" escape>';
+        var target = window.parent.document.getElementById('<mt:var name="request.column" escape>');
+        var html = target.value;
+    }
+    let url = '<mt:var name="script_uri">?__mode=editor_diff&_type=diff<mt:if name="request._from_master">&_from_master=1</mt:if><mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>';
+    let data = {
+        _model: '<mt:var name="request._model" escape="js">',
+        id: '<mt:var name="request.id" escape="js">',
+        column : col_name,
+        magic_token : '<mt:var name="magic_token">'
+    };
+    if ( html.length > 1000 ) {
+        $('#__loader-bg').show();
+    }
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ) {
+            if ( responce.message ) {
+                $('#__loader-bg').hide();
+                alert( responce.message );
+                window.parent.$('#modal').modal('hide');
+                window.location.href = '<mt:var name="script_uri">?__mode=loading';
+            } else {
+                if ( responce.page_title ) {
+                    $('h1').show();
+                    $('#page-title .title').html( responce.page_title );
+                }
+                if ( html == responce.revision ) {
+                    $('#close-btn').hide();
+                    $('#alert-success').show();
+                    $('#__loader-bg').hide();
+                    $('#alert-success').focus();
+                    return;
+                }
+                $('#__loader-bg').hide();
+                const unifiedDiff = JsDiff.createPatch( 'replaced', responce.revision, html );
+                const diff2htmlUi = new Diff2HtmlUI({diff: unifiedDiff});
+                diff2htmlUi.draw('#diff_area', { matching: 'words', diffStyle:'char', highlightLanguages: 'html'});
+                $('#diff_area').show( 100 );
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while get diff." component="EditorDiff">' );
+            window.parent.$('#modal').modal('hide');
+            window.location.href = '<mt:var name="script_uri">?__mode=loading';
+        }
+    });
+    $('#close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+    $('#dialog-close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+</script>
+<mt:include file="include/dialog_footer.tmpl">

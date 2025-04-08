@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="<mt:if name="user_language"><mt:var name="user_language" escape><mt:else>en</mt:if>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title><mt:if name="html_title"><mt:var name="html_title"><mt:else><mt:var name="page_title"></mt:if> | <mt:getoption key="appname" escape><mt:if name="workspace_id"> | <mt:var name="workspace_name" escape></mt:if></title>
+    <link href="<mt:var name="prototype_path">assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="<mt:var name="prototype_path">assets/js/jquery-3.2.1.min.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/tether.min.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/bootstrap.min.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/jquery-ui.min.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/jquery.cookie.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/clipboard.min.js"></script>
+    <script src="<mt:var name="prototype_path">assets/js/ie10-viewport-bug-workaround.js"></script>
+    <link href="<mt:var name="prototype_path">assets/css/theme.min.css?v=<mt:var name="version">" rel="stylesheet">
+    <link href="<mt:var name="prototype_path">assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<mt:var name="prototype_path">assets/css/jquery-ui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+<style>
+.badge-success {
+  background-color: #017200;
+}
+.badge-danger {
+  background-color: #D80000;
+}
+.figure-wrapper {
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+<mt:if name="dialog_type" eq="pdf">
+  max-height: 250px;
+  overflow-y:scroll;
+</mt:if>
+}
+.figure-wrapper img {
+  max-width: 100%;
+<mt:if name="dialog_type" eq="image">
+  max-height: 180px;
+</mt:if>
+  background-image: url("<mt:var name="prototype_path">assets/img/layer-bg.png");
+  background-repeat : repeat;
+  background-size : 20%;
+}
+.test-failed {
+  color: red;
+  font-weight: bold;
+}
+<mt:if name="is_picture">
+.color {
+  display:none;
+}
+</mt:if>
+.result {
+  text-align:right;
+}
+.badge{
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+#pdf_outline ul {
+  list-style-type: disc;
+  margin-left: 0;
+  padding-left: 1rem;
+}
+#pdf_outline ul li ul {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+#pdf_outline div {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.5rem 0.5rem 0px 0.5rem;
+  max-height:128px;
+  overflow-y:scroll;
+  background-color: #ECEEEF;
+}
+<mt:if name="dialog_type" eq="pdf">
+.carousel-inner .image {
+  height: 250px;
+}
+.carousel-inner canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 250px;
+  width: auto;
+  height: auto;
+}
+.carousel-inner .carousel-item > div {
+  flex-basis: 100%;
+}
+.carousel-inner .text {
+  margin: 0.5em 0 1em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px dotted #aaa;
+  text-align: center;
+}
+</mt:if>
+@media (max-width: 991px) {
+  textarea {
+      font-size: 99% !important;
+  }
+}
+</style>
+    <script src="assets/js/jquery-3.2.1.min.js"></script>
+    <script src="assets/js/tether.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery-ui.js"></script>
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script type="module" src="<mt:if name="imageinfo_assets_base"><mt:var name="imageinfo_assets_base"><mt:else><mt:var name="prototype_path">plugins/ImageInfo/assets/</mt:if>js/pdfinfo.js?v=1"></script>
+    <link href="assets/css/theme.css?<mt:date format="YmdHis">" rel="stylesheet">
+  </head>
+  <body class="dialog edit_image">
+<div id="__loader-bg">
+  <img src="assets/img/loading.gif" alt="" width="45">
+</div>
+<script>
+$(function() {
+    var h = $(window).height();
+    $('#loader-bg ,#loader').height(h).css('display','block');
+});
+window.onload = function(){
+    $('#__loader-bg').hide("fast");
+}
+</script>
+<mt:property name="imageinfo_check_contrast" setvar="imageinfo_check_contrast">
+<div class="container-fluid<mt:if name="debug_mode"> mb-5</mt:if>">
+  <div class="row<mt:if name="debug_mode"> mb-5</mt:if>">
+    <main class="col-md-12 pt-3<mt:if name="debug_mode"> mb-5</mt:if>">
+<mt:if name="dialog_type" eq="pdf">
+  <mt:if name="base64">
+  <div class="figure-wrapper mb-4">
+    <a target="_blank" id="figure-link"><img src="<mt:var name="base64">" alt="<mt:trans phrase="Image">" id="target"></a>
+  </div>
+  </mt:if>
+  <mt:unless name="extracted">
+    <div class="alert alert-danger" role="alert" tabindex="0">
+      <mt:trans phrase="Could not extract the text of this Document." component="ImageInfo">
+    </div>
+  <mt:else>
+    <mt:unless name="document_outline">
+      <div class="alert alert-warning" role="alert" tabindex="0">
+        <mt:trans phrase="Could not get the Outline of this Document." component="ImageInfo">
+      </div>
+    </mt:unless>
+  </mt:unless>
+  <mt:if name="has_image">
+    <div id="could_not_check_image" class="alert alert-warning" role="alert" tabindex="0" hidden>
+      <mt:trans phrase="Could not display the image and alternative text of this Document." component="ImageInfo">
+    </div>
+  </mt:if>
+  <table class="table table-sm">
+    <tr>
+      <th style="width: 8rem !important">
+        <mt:trans phrase="Information" component="ImageInfo">
+      </th>
+        <td colspan="2" style="line-height:2rem">
+          <span class="badge badge-default"><mt:trans phrase="Size"> : <mt:var name="pdfinfo_file_size" regex_replace="'/[^0-9]*/',''" format_size></span>
+          <span class="badge badge-default"><mt:trans phrase="Page Size" component="ImageInfo"> : <mt:var name="pdfinfo_page_size"></span>
+          <span class="badge badge-default"><mt:trans phrase="Pages" component="ImageInfo"> : <mt:var name="pdfinfo_pages" escape></span>
+          <span class="badge badge-default"><mt:trans phrase="Contains Image" component="ImageInfo"> : <mt:if name="has_image"><mt:trans phrase="Yes" component="ImageInfo"><mt:else><mt:trans phrase="No" component="ImageInfo"></mt:if></span>
+          <span class="badge badge-<mt:if name="pdfinfo_tagged" eq="yes">success<mt:else>danger</mt:if>"><mt:trans phrase="Tagged" component="ImageInfo"> : <mt:if name="pdfinfo_tagged" eq="yes"><mt:trans phrase="Yes" component="ImageInfo"><mt:else><mt:trans phrase="No" component="ImageInfo"></mt:if></span>
+          <mt:ignore><span class="badge badge-<mt:if name="pdfinfo_optimized" eq="yes">success<mt:else>danger</mt:if>"><mt:trans phrase="Optimized" component="ImageInfo"> : <mt:if name="pdfinfo_optimized" eq="yes"><mt:trans phrase="Yes" component="ImageInfo"><mt:else><mt:trans phrase="No" component="ImageInfo"></mt:if></span></mt:ignore>
+          <span <mt:if name="pdfinfo_encrypted" match="/^yes/">title="<mt:var name="pdfinfo_encrypted" escape>" data-toggle="tooltip" data-placement="right" </mt:if> class="badge badge-<mt:if name="pdfinfo_encrypted" match="/^yes/">danger<mt:else>success</mt:if>"><mt:trans phrase="Encrypted" component="ImageInfo"> : <mt:if name="pdfinfo_encrypted" match="/^yes/"><mt:trans phrase="Yes" component="ImageInfo"><mt:else><mt:trans phrase="No" component="ImageInfo"></mt:if></span>
+          <mt:if name="can_pdftotext"><span class="badge badge-<mt:if name="pdftotext">success<mt:else>danger</mt:if>"><mt:trans phrase="Can Extract" component="ImageInfo"> : <mt:if name="pdftotext"><mt:trans phrase="Yes" component="ImageInfo"><mt:else><mt:trans phrase="No" component="ImageInfo"></mt:if></span></mt:if>
+          <span class="badge badge-default"><mt:trans phrase="PDF Version" component="ImageInfo"> : <mt:var name="pdfinfo_pdf_version" escape></span>
+          <span class="badge badge-default"><mt:trans phrase="Creator" component="ImageInfo"> : <mt:var name="pdfinfo_creator" escape></span>
+        </td>
+    </tr>
+    <tr>
+      <th><label for="title"><mt:trans phrase="Title"></label></th>
+      <td colspan="2">
+      <input type="text" id="title" name="title" class="form-control" value="<mt:var name="pdfinfo_title" escape>">
+      </td>
+    </tr>
+    <tr>
+      <th><label for="subject"><mt:trans phrase="Subject" component="ImageInfo"></label></th>
+      <td colspan="2">
+      <input type="text" id="subject" name="subject" class="form-control" value="<mt:var name="pdfinfo_subject" escape>">
+      </td>
+    </tr>
+    <tr>
+      <th><label for="keywords"><mt:trans phrase="Keywords"></label></th>
+      <td colspan="2">
+      <input type="text" id="keywords" name="keywords" class="form-control" value="<mt:var name="pdfinfo_keywords" escape>">
+      </td>
+    </tr>
+    <tr>
+      <th><label for="author"><mt:trans phrase="Author" component="ImageInfo"></label></th>
+      <td colspan="2">
+      <input type="text" id="author" name="author" class="form-control" value="<mt:var name="pdfinfo_author" escape>">
+      </td>
+    </tr>
+    <mt:if name="extracted">
+    <tr>
+      <th><mt:trans phrase="Extracted" component="ImageInfo">
+      <button id="textarea-toggler" data-status="close" class="btn btn-sm" style="padding:0px;background: transparent">
+      <i class="fa fa-toggle-off" aria-hidden="true" id="textarea-toggler-icon"></i> <span class="sr-only" id="textarea-togller-alt"><mt:trans phrase="Show Extracted Text" component="ImageInfo"></span>
+      </button>
+      </th>
+      <td colspan="2">
+      <textarea id="extracted-text" rows="7" readonly class="hidden form-control"><mt:var name="extracted" escape></textarea>
+      <p class="text-muted mt-1 ml-2" id="check-extracted">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Please Check the Text and Logical Reading Order." component="ImageInfo">
+        <mt:ifcomponent component="SimplifiedJapanese">
+        <mt:pluginsetting component="SimplifiedJapanese" name="simplifiedjapanese_aws_id" setvar="simplifiedjapanese_aws_id">
+        <mt:pluginsetting component="SimplifiedJapanese" name="simplifiedjapanese_aws_id" setvar="simplifiedjapanese_aws_secret">
+        <mt:if name="simplifiedjapanese_aws_id">
+          <mt:if name="simplifiedjapanese_aws_secret">
+          <mt:property name="simplifiedjapanese_ffmpeg_path" setvar="ffmpeg_path">
+          <mt:var name="extracted" count_chars="1" setvar="count_chars">
+          <mt:unless name="ffmpeg_path">
+            <mt:if name="count_chars" gt="500">
+              <mt:setvar name="text_too_large" value="1">
+            </mt:if>
+          </mt:unless>
+          <mt:if name="text_too_large">
+            <button class="btn btn-secondary btn-sm" disabled>
+             <i class="fa fa-volume-off" aria-hidden="true"></i> <mt:trans phrase="Text too large" component="ImageInfo">
+             </button>
+          <mt:else>
+            <span style="display:block" class="mt-2">
+            <button id="play-audio" class="btn btn-info btn-sm">
+            <i class="fa fa-volume-up" aria-hidden="true"></i>
+            <mt:trans phrase="Speech" component="ImageInfo">
+            </button>
+            <button id="export-audio" class="btn btn-info btn-sm">
+            <i class="fa fa-file-audio-o" aria-hidden="true"></i>
+            <mt:trans phrase="Download MP3" component="ImageInfo">
+            </button>
+            </span>
+          </mt:if>
+          </mt:if>
+        </mt:if>
+        </mt:ifcomponent>
+      </p>
+      <audio class="full hidden" id="speech-control" controls src=""></audio>
+      </td>
+    </tr>
+    <mt:if name="document_outline">
+    <tr>
+      <th><mt:trans phrase="Outline" component="ImageInfo">
+      <button id="outline-toggler" data-status="close" class="btn btn-sm" style="padding:0px;background: transparent">
+      <i class="fa fa-toggle-off" aria-hidden="true" id="outline-toggler-icon"></i> <span class="sr-only" id="outline-togller-alt"><mt:trans phrase="Show Outline of this Document" component="ImageInfo"></span>
+      </button>
+      </th>
+      <td id="pdf_outline" colspan="2">
+        <div class="hidden" id="pdf_outline-wrapper">
+         <mt:var name="document_outline">
+        </div>
+        <p class="text-muted mt-1 ml-2" id="check-outline">
+          <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Hint"></span>
+          <mt:trans phrase="Please Check the Outline of this Document." component="ImageInfo">
+        </p>
+      </td>
+    </tr>
+    </mt:if>
+    </mt:if>
+    <mt:if name="pdfinfo_tagged" eq="yes">
+    <tr>
+      <th><mt:trans phrase="Alternative Text"></th>
+      <td colspan="2">
+        <div id="alt_text_check_carousel" class="carousel slide" data-ride="carousel" data-interval="0" data-wrap="false">
+          <div>
+            <button class="btn btn-secondary btn-sm ml-0" href="#alt_text_check_carousel" role="button" data-slide="prev">
+              <mt:trans phrase="Previous">
+            </button>
+            <button class="btn btn-secondary btn-sm" href="#alt_text_check_carousel" role="button" data-slide="next">
+              <mt:trans phrase="Next">
+            </button>
+          </div>
+          <div id="alt_text_check_carousel_data" class="carousel-inner">
+          </div>
+        </div>
+      </td>
+    </tr>
+    </mt:if>
+  <mt:if name="imageinfo_check_contrast">
+    <tr class="color">
+      <th>
+        <label for="fore_color">
+          <mt:trans phrase="Fore Color">
+        </label>
+      </th>
+      <td colspan="2">
+        <input style="width:100% !important" type="color" id="fore_color" name="fore_color" class="form-control color-picker" value="<mt:if name="fore_color"><mt:var name="fore_color" escape><mt:else>#000000</mt:if>">
+      </td>
+    </tr>
+    <tr class="color">
+      <th>
+        <label for="back_color">
+          <mt:trans phrase="Back Color">
+        </label>
+      </th>
+      <td colspan="2">
+        <input style="width:100% !important" type="color" id="back_color" name="back_color" class="form-control color-picker" value="<mt:if name="back_color"><mt:var name="back_color" escape><mt:else>#000000</mt:if>">
+      </td>
+    </tr>
+    <tr class="color">
+      <th>
+        <mt:trans phrase="Contrast Ratio" component="ImageInfo">
+      </th>
+      <td class="text-center" colspan="2">
+        <strong id="contrast_ratio"><mt:trans phrase="$contrast_ratio" component="ImageInfo"></strong>
+      </td>
+    </tr>
+    <tr id="aa_large" class="color <mt:unless name="aa_large"> test-failed</mt:unless>">
+      <th>
+        AA
+      </th>
+      <td>
+        <mt:trans phrase="Large Text" component="ImageInfo">
+      </td>
+      <td id="aa_large-result" class="result">
+        <mt:if name="aa_large"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+    <tr id="aa_small" class="color <mt:unless name="aa_small"> test-failed</mt:unless>">
+      <th>
+        AA
+      </th>
+      <td>
+        <mt:trans phrase="Small Text" component="ImageInfo">
+      </td>
+      <td id="aa_small-result" class="result">
+        <mt:if name="aa_small"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+    <tr id="aaa_large" class="color <mt:unless name="aaa_large"> test-failed</mt:unless>">
+      <th>
+        AAA
+      </th>
+      <td>
+        <mt:trans phrase="Large Text" component="ImageInfo">
+      </td>
+      <td id="aaa_large-result" class="result">
+        <mt:if name="aaa_large"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+    <tr id="aaa_small" class="color <mt:unless name="aaa_small"> test-failed</mt:unless>">
+      <th>
+        AAA
+      </th>
+      <td>
+        <mt:trans phrase="Small Text" component="ImageInfo">
+      </td>
+      <td id="aaa_small-result" class="result">
+        <mt:if name="aaa_small"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+  </mt:if>
+    <tr>
+      <th>
+        <label for="verified"><mt:trans phrase="Inspection" component="ImageInfo"></label>
+      </th>
+      <td>
+        <label class="custom-control custom-checkbox mt-1">
+          <input type="checkbox" class="custom-control-input" name="verified" id="verified" value="1" <mt:if name="verified">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Verified This PDF" component="ImageInfo"></span>
+        </label>
+      </td>
+      <td class="result">
+        <mt:if name="a11y_report">
+        <a class="btn btn-info" href="<mt:var name="script_uri">?<mt:var name="query_string">&amp;a11y_report=1" target="_blank">
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        <mt:trans phrase="Acrobat Accessibility Report" component="ImageInfo">
+        <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i>
+        </a>
+        </mt:if>
+      </td>
+    </tr>
+  </table>
+  <button id="dialog-cancel-btn" class="btn btn-secondary" type="button"><mt:trans phrase="Cancel"></button>
+  <button id="dialog-submit-btn" class="btn btn-primary" type="button"><mt:trans phrase="Save"></button>
+<mt:else>
+    <div class="figure-wrapper mb-4">
+      <a target="_blank" id="figure-link"><img src="<mt:var name="edit_url">" alt="<mt:trans phrase="Image">" id="target"></a>
+    </div>
+    <table class="table table-sm">
+    <tr>
+      <th style="width: 8rem !important">
+        <mt:trans phrase="Information" component="ImageInfo">
+      </th>
+      <td colspan="2" style="line-height:2rem">
+        <span class="badge badge-default"><mt:trans phrase="Size"> : <mt:var name="file_size" format_size></span>
+        <span class="badge badge-default"><mt:trans phrase="Width"> : <mt:var name="image_width"></span>
+        <span class="badge badge-default"><mt:trans phrase="Height"> : <mt:var name="image_height"></span>
+        <span class="badge badge-default"><mt:trans phrase="Type"> : <mt:var name="mime_type"></span>
+        <mt:if name="is_animated"><span class="badge badge-default"><mt:trans phrase="Animation : Yes" component="ImageInfo"></span></mt:if>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <label for="alternative">
+          <mt:trans phrase="Text Alternative">
+        </label>
+      </th>
+      <td>
+        <textarea id="alternative" name="alternative" class="form-control" rows="3"></textarea>
+      </td>
+      <td style="vertical-align: middle;width: 6rem !important">
+      <mt:pluginsetting component="ImageInfo" name="imageinfo_subscription_key" setvar="subscription_key">
+      <mt:pluginsetting component="ImageInfo" name="imageinfo_end_point" setvar="end_point">
+      <mt:if name="subscription_key">
+      <mt:if name="end_point">
+        <button id="get-image-info-btn" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Analyze the image" component="ImageInfo">" type="button" class="btn btn-sm" data-asset-id="<mt:var name="id">">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Analyze the image" component="ImageInfo"></span>
+        </button>
+        <button id="get-image-text-btn" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Extract text from an image" component="ImageInfo">" type="button" class="btn btn-sm" data-asset-id="<mt:var name="id">">
+          <i class="fa fa-font" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Extract text from an image" component="ImageInfo"></span>
+        </button>
+      </mt:if>
+      </mt:if>
+      </td>
+    </tr>
+  <mt:if name="imageinfo_check_contrast">
+    <tr>
+      <th>
+        <mt:trans phrase="Kind">
+      </th>
+      <td colspan="2">
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+            <mt:if name="is_picture">checked</mt:if>
+            name="image_kind" value="picture">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Picture" component="ImageInfo"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+            <mt:unless name="is_picture">checked</mt:unless>
+            name="image_kind" value="graphics">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Graphic" component="ImageInfo"></span>
+        </label>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input" type="radio"
+            <mt:if name="is_logo">checked</mt:if>
+            name="image_kind" value="logo">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Logo" component="ImageInfo"></span>
+        </label>
+      </td>
+    </tr>
+    <tr class="color">
+      <th>
+        <label for="fore_color">
+          <mt:trans phrase="Fore Color">
+        </label>
+      </th>
+      <td colspan="2">
+        <input style="width:100% !important" type="color" id="fore_color" name="fore_color" class="form-control color-picker" value="<mt:if name="fore_color"><mt:var name="fore_color" escape><mt:else>#000000</mt:if>">
+      </td>
+    </tr>
+    <tr class="color">
+      <th>
+        <label for="back_color">
+          <mt:trans phrase="Back Color">
+        </label>
+      </th>
+      <td colspan="2">
+        <input style="width:100% !important" type="color" id="back_color" name="back_color" class="form-control color-picker" value="<mt:if name="back_color"><mt:var name="back_color" escape><mt:else>#000000</mt:if>">
+      </td>
+    </tr>
+    <tr class="color">
+      <th>
+        <mt:trans phrase="Contrast Ratio" component="ImageInfo">
+      </th>
+      <td class="text-center">
+        <strong id="contrast_ratio"><mt:trans phrase="$contrast_ratio" component="ImageInfo"></strong>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr id="aa_large" class="color <mt:unless name="aa_large"> test-failed</mt:unless>">
+      <th>
+        AA
+      </th>
+      <td>
+        <mt:trans phrase="Large Text" component="ImageInfo">
+      </td>
+      <td id="aa_large-result" class="result">
+        <mt:if name="aa_large"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+    <tr id="aa_small" class="color <mt:unless name="aa_small"> test-failed</mt:unless>">
+      <th>
+        AA
+      </th>
+      <td>
+        <mt:trans phrase="Small Text" component="ImageInfo">
+      </td>
+      <td id="aa_small-result" class="result">
+        <mt:if name="aa_small"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+    <tr id="aaa_large" class="color <mt:unless name="aaa_large"> test-failed</mt:unless>">
+      <th>
+        AAA
+      </th>
+      <td>
+        <mt:trans phrase="Large Text" component="ImageInfo">
+      </td>
+      <td id="aaa_large-result" class="result">
+        <mt:if name="aaa_large"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+    <tr id="aaa_small" class="color <mt:unless name="aaa_small"> test-failed</mt:unless>">
+      <th>
+        AAA
+      </th>
+      <td>
+        <mt:trans phrase="Small Text" component="ImageInfo">
+      </td>
+      <td id="aaa_small-result" class="result">
+        <mt:if name="aaa_small"><mt:trans phrase="Pass" component="ImageInfo"><mt:else><mt:trans phrase="Fail" component="ImageInfo"></mt:if>
+      </td>
+    </tr>
+  </mt:if>
+    <tr>
+      <th>
+        <label for="verified"><mt:trans phrase="Inspection" component="ImageInfo"></label>
+      </th>
+      <td colspan="2">
+        <label class="custom-control custom-checkbox mt-1">
+          <input type="checkbox" class="custom-control-input" name="verified" id="verified" value="1" <mt:if name="verified">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Verified This Image" component="ImageInfo"></span>
+        </label>
+      </td>
+    </tr>
+    </table>
+    <button id="dialog-cancel-btn" class="btn btn-secondary" type="button"><mt:trans phrase="Cancel"></button>
+    <button id="dialog-submit-btn" class="btn btn-primary" type="button"><mt:trans phrase="Save"></button>
+</mt:if>
+    </main>
+  </div>
+</div>
+<script>
+var clipboardURL = <mt:if name="request.permalink">'<mt:var name="request.permalink">'<mt:else>window.parent.$('#clipboard-<mt:var name="request.view">').val()</mt:if>;
+$('#figure-link').attr( 'href', clipboardURL );
+$('[data-toggle="tooltip"]').tooltip();
+<mt:if name="request._model" eq="upload_file">
+$('#alternative').val( window.parent.$('#label').val() );
+<mt:else>
+<mt:unless name="request.permalink">
+$('#alternative').val( window.parent.$('#files-<mt:var name="request.view">-label').val() );
+<mt:if name="request._model" eq="asset">
+    if (! $('#alternative').val() ) {
+        $('#alternative').val( window.parent.$('#label').val() );
+    }
+</mt:if>
+</mt:unless>
+</mt:if>
+$('#dialog-cancel-btn').click(function(){
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    return false;
+});
+$(document).keydown(evnt_keydown);
+function evnt_keydown(e) {
+    if ( e.keyCode == 27 ) {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    }
+}
+window.setPDFInfoCache = function (text) {
+    let extracted_text = text;
+    let url = '<mt:var name="script_uri">?<mt:var name="query_string">&set_pdfinfo=1';
+    var data = {
+        text : extracted_text,
+        model: '<mt:var name="request._model">',
+        column: '<mt:var name="request.view">',
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 99999999999999999,
+        success: function( responce ){
+            $('#__loader-bg').hide();
+            if ( responce.message ) {
+                alert( responce.message );
+            } else {
+                $('#extracted-text').val( responce.result );
+                // alert( 'PDF Informations Saved );
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while set pdf informations." component="ImageInfo">' );
+        }
+    });
+};
+
+<mt:if name="extracted">
+window.addEventListener('load', () => {
+  const pdfInfo = new PTPDFInfo();
+  pdfInfo.init(clipboardURL, '<mt:if name="imageinfo_assets_base"><mt:var name="imageinfo_assets_base"><mt:else><mt:var name="prototype_path">plugins/ImageInfo/assets</mt:if>').then(async () => {
+      // テキスト抽出
+      <mt:unless name="js_extracted_text">pdfInfo.extractText();</mt:unless>
+
+      // 代替テキスト情報表示
+      await pdfInfo.collectAltTextData();
+      if (Object.keys(pdfInfo.altTextData).length) {
+          // カルーセルのPrev / Nextボタン制御
+          (() => {
+              const altTextCheckCarousel = document.getElementById('alt_text_check_carousel');
+              let altTextCheckCarouselItem = null;
+              let altTextCheckCarouselLength = 0;
+              const altTextCheckCarouselPrev = document.querySelector('button[data-slide="prev"]');
+              const altTextCheckCarouselNext = document.querySelector('button[data-slide="next"]');
+
+              function altTextCheckCarouselUtil() {
+                  const active = altTextCheckCarousel.querySelector('.active');
+                  if (parseInt(active.dataset.order) === 0) {
+                      altTextCheckCarouselPrev.disabled = true;
+                  } else {
+                      altTextCheckCarouselPrev.disabled = false;
+                  }
+
+                  if (parseInt(active.dataset.order) === (altTextCheckCarouselLength - 1)) {
+                      altTextCheckCarouselNext.disabled = true;
+                  } else {
+                      altTextCheckCarouselNext.disabled = false;
+                  }
+              }
+
+              $('#alt_text_check_carousel').on('slid.bs.carousel', altTextCheckCarouselUtil);
+              const observer = new MutationObserver(function (mutations) {
+                  observer.disconnect();
+                  altTextCheckCarouselPrev.disabled = true;
+
+                  altTextCheckCarouselItem = altTextCheckCarousel.querySelectorAll('.carousel-item');
+                  altTextCheckCarouselLength = altTextCheckCarouselItem.length;
+                  if (altTextCheckCarouselLength === 1) {
+                      altTextCheckCarouselNext.disabled = true;
+                  }
+              });
+              observer.observe(altTextCheckCarousel, {
+                  childList: true,
+                  subtree: true
+              });
+          })();
+
+          // 画像データを集めて表示する（appendChildする）
+          await pdfInfo.collectImageObjectsData();
+          await pdfInfo.renderImageAndAltText('alt_text_check_carousel_data');
+      } else {
+          const altCheckFailMessage = document.getElementById('could_not_check_image');
+          if (altCheckFailMessage) {
+              altCheckFailMessage.hidden = false;
+          }
+      }
+
+      $('#__loader-bg').hide();
+  });
+});
+<mt:else>
+const altCheckFailMessage = document.getElementById('could_not_check_image');
+if (altCheckFailMessage) {
+    altCheckFailMessage.hidden = false;
+}
+</mt:if>
+var ii_agreement = 0;
+$('#get-image-info-btn').click(function(){
+    let url = '<mt:var name="script_uri">?<mt:var name="query_string">&ajax=1';
+    if (! ii_agreement ) {
+        <mt:if tag="property" name="confirm_web_service" eq="1">
+        if (! confirm( '<mt:trans phrase="Are you sure you want to send this Image to Microsoft Computer Vision API?" component="ImageInfo">' ) ) {
+            return;
+        }
+        <mt:elseif tag="property" name="confirm_web_service" eq="2">
+        <mt:getcookie name="pt-ii-agreement" setvar="pt_ii_agreement">
+        <mt:unless name="pt_ii_agreement">
+        if (! confirm( '<mt:trans phrase="Are you sure you want to send this Image to Microsoft Computer Vision API?" component="ImageInfo">' ) ) {
+            return;
+        }
+        </mt:unless>
+        ii_agreement = 1;
+        </mt:if>
+    }
+    let data = {
+        type : 1,
+        model: '<mt:var name="request._model">',
+        column: '<mt:var name="request.view">',
+        magic_token : '<mt:var name="magic_token">',
+        agreement: ii_agreement
+    };
+    $('#__loader-bg').show();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 99999999999999999,
+        success: function( responce ){
+            if ( responce.message ) {
+                $('#__loader-bg').hide();
+                alert( responce.message );
+            } else {
+                $('#__loader-bg').hide();
+                $('#alternative').val( responce.text );
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while get image informations." component="ImageInfo">' );
+        }
+    });
+});
+$('#play-audio').click(function(){
+    let speechURL = '<mt:var name="script_uri">?<mt:var name="query_string">&texttospeech=1';
+    $('#speech-control').show();
+    document.querySelector('#speech-control').setAttribute( 'src', speechURL );
+    document.querySelector('#speech-control').load();
+    document.querySelector('#speech-control').play();
+});
+$('#export-audio').click(function(){
+    let exportURL = '<mt:var name="script_uri">?<mt:var name="query_string">&texttospeech=1&export=1';
+    window.location.href = exportURL;
+});
+$('#textarea-toggler').click(function(){
+    let status = $(this).attr('data-status');
+    if ( status == 'close' ) {
+        $('#extracted-text').show( 200 );
+        $('#check-extracted').hide( 200 );
+        $(this).attr('data-status', 'open');
+        $('#textarea-toggler-icon').removeClass( 'fa-toggle-off' );
+        $('#textarea-toggler-icon').addClass( 'fa-toggle-on' );
+        $('#textarea-togller-alt').html( '<mt:trans phrase="Hide Extracted Text" component="ImageInfo">' );
+    } else {
+        $('#extracted-text').hide( 200 );
+        $('#check-extracted').show( 200 );
+        $(this).attr('data-status', 'close');
+        $('#textarea-toggler-icon').removeClass( 'fa-toggle-on' );
+        $('#textarea-toggler-icon').addClass( 'fa-toggle-off' );
+        $('#textarea-togller-alt').html();
+        $('#textarea-togller-alt').html( '<mt:trans phrase="Show Extracted Text" component="ImageInfo">' );
+    }
+});
+$('#outline-toggler').click(function(){
+    let status = $(this).attr('data-status');
+    if ( status == 'close' ) {
+        $('#pdf_outline-wrapper').show( 200 );
+        $('#check-outline').hide( 200 );
+        $(this).attr('data-status', 'open');
+        $('#outline-toggler-icon').removeClass( 'fa-toggle-off' );
+        $('#outline-toggler-icon').addClass( 'fa-toggle-on' );
+        $('#outline-togller-alt').html( '<mt:trans phrase="Hide Outline of this Document" component="ImageInfo">' );
+    } else {
+        $('#pdf_outline-wrapper').hide( 200 );
+        $('#check-outline').show( 200 );
+        $(this).attr('data-status', 'close');
+        $('#outline-toggler-icon').removeClass( 'fa-toggle-on' );
+        $('#outline-toggler-icon').addClass( 'fa-toggle-off' );
+        $('#outline-togller-alt').html();
+        $('#outline-togller-alt').html( '<mt:trans phrase="Show Outline of this Document" component="ImageInfo">' );
+    }
+});
+$('#get-image-text-btn').click(function(){
+    let url = '<mt:var name="script_uri">?<mt:var name="query_string">&ajax=1';
+    if (! ii_agreement ) {
+        <mt:if tag="property" name="confirm_web_service" eq="1">
+        if (! confirm( '<mt:trans phrase="Are you sure you want to send this Image to Microsoft Computer Vision API?" component="ImageInfo">' ) ) {
+            return;
+        }
+        <mt:elseif tag="property" name="confirm_web_service" eq="2">
+        <mt:getcookie name="pt-ii-agreement" setvar="pt_ii_agreement">
+        <mt:unless name="pt_ii_agreement">
+        if (! confirm( '<mt:trans phrase="Are you sure you want to send this Image to Microsoft Computer Vision API?" component="ImageInfo">' ) ) {
+            return;
+        }
+        </mt:unless>
+        ii_agreement = 1;
+        </mt:if>
+    }
+    let data = {
+        type : 2,
+        model: '<mt:var name="request._model">',
+        column: '<mt:var name="request.view">',
+        magic_token : '<mt:var name="magic_token">',
+        agreement: ii_agreement
+    };
+    $('#__loader-bg').show();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 99999999999999999,
+        success: function( responce ){
+            $('#__loader-bg').hide();
+            if ( responce.message ) {
+                alert( responce.message );
+            } else {
+                $('#alternative').val( responce.text );
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while get image informations." component="ImageInfo">' );
+        }
+    });
+});
+var editContentChanged = false;
+$('.form-control').change(function(){
+    editContentChanged = true;
+});
+$('.custom-control-input').change(function(){
+    editContentChanged = true;
+});
+$('#dialog-submit-btn').click(function(){
+    let url = '<mt:var name="script_uri">?<mt:var name="query_string">&save=1';
+    var data = {
+        model: '<mt:var name="request._model">',
+        column: '<mt:var name="request.view">',
+        type: '<mt:var name="dialog_type">',
+        <mt:if name="dialog_type" eq="image">
+        alternative: $('#alternative').val(),
+          <mt:if name="imageinfo_check_contrast">
+        image_kind: $('input[name=image_kind]:checked').val(),
+          </mt:if>
+        <mt:else>
+        title: $('#title').val(),
+        subject: $('#subject').val(),
+        keywords: $('#keywords').val(),
+        author: $('#author').val(),
+        pdftotext:<mt:if name="pdftotext">'true'<mt:else>'false'</mt:if>,
+        </mt:if>
+        <mt:if name="imageinfo_check_contrast">
+        fore_color: $('#fore_color').val(),
+        back_color: $('#back_color').val(),
+        contrast_ratio: $('#contrast_ratio').html(),
+        </mt:if>
+        verified: $('#verified').prop('checked'),
+        list_dialog: <mt:if name="request.permalink">true<mt:else>false</mt:if>,
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $('#__loader-bg').show();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 99999999999999999,
+        success: function( responce ){
+            $('#__loader-bg').hide();
+            if ( responce.message ) {
+                alert( responce.message );
+                return false;
+            } else {
+                window.parent.$('#modal').modal('hide');
+                window.location.href = '<mt:var name="script_uri">?__mode=loading';
+              <mt:if name="request.permalink">
+                if ( editContentChanged ) {
+                    window.parent.location.reload();
+                }
+              <mt:else>
+                <mt:if name="dialog_type" eq="image">
+                let alternative = $('#alternative').val();
+                <mt:else>
+                let alternative = $('#title').val();
+                </mt:if>
+                alternative = alternative.replace(/\r?\n/g, '');
+                <mt:if name="request._model" eq="upload_file">
+                window.parent.$('#label').val( alternative );
+                <mt:else>
+                window.parent.$('#files-<mt:var name="request.view">-label').val( alternative );
+                </mt:if>
+                <mt:if name="request._model" eq="asset">
+                  <mt:property name="imageinfo_set_asset_label" setvar="set_asset_label">
+                  <mt:if name="set_asset_label">
+                if ( alternative ) {
+                    window.parent.$('#label').val( alternative );
+                }
+                  </mt:if>
+                </mt:if>
+                if ( $('#verified').prop('checked') ) {
+                    window.parent.$('#files-<mt:var name="request.view">-verified').removeClass('hidden');
+                    window.parent.$('#files-<mt:var name="request.view">-verified').show();
+                    <mt:if name="request._model" eq="asset">
+                    window.parent.$('#a11y_verified').prop( 'checked', true );
+                    </mt:if>
+                } else {
+                    window.parent.$('#files-<mt:var name="request.view">-verified').addClass('hidden');
+                    window.parent.$('#files-<mt:var name="request.view">-verified').hide();
+                }
+              </mt:if>
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            <mt:if name="dialog_type" eq="pdf">
+            alert( '<mt:trans phrase="An error occurred while save PDF informations." component="ImageInfo">' );
+            <mt:else>
+            alert( '<mt:trans phrase="An error occurred while save image informations." component="ImageInfo">' );
+            </mt:if>
+        }
+    });
+    $('#__loader-bg').hide();
+});
+$('#fore_color').change(function(){
+    recalculate();
+});
+$('#back_color').change(function(){
+    recalculate();
+});
+$('input[name=image_kind]').change(function(){
+    $('.color').toggle(100);
+});
+function recalculate () {
+    let color1 = hex2rgb( $('#fore_color').val() );
+    let color2 = hex2rgb( $('#back_color').val() );
+    let luminance1 = getRelativeLuminance( color1[0], color1[1], color1[2] );
+    let luminance2 = getRelativeLuminance( color2[0], color2[1], color2[2] );
+    let contrast = getContrast(luminance1, luminance2)*10;
+    contrast = Math.floor( contrast );
+    contrast = contrast / 10;
+    if ( contrast >= 3 ) {
+        $('#aa_large').removeClass( 'test-failed' );
+        $('#aa_large-result').html('<mt:trans phrase="Pass" component="ImageInfo">');
+    } else {
+        $('#aa_large').addClass( 'test-failed' );
+        $('#aa_large-result').html('<mt:trans phrase="Fail" component="ImageInfo">');
+    }
+    if ( contrast >= 4.5 ) {
+        $('#aa_small').removeClass( 'test-failed' );
+        $('#aa_small-result').html('<mt:trans phrase="Pass" component="ImageInfo">');
+        $('#aaa_large').removeClass( 'test-failed' );
+        $('#aaa_large-result').html('<mt:trans phrase="Pass" component="ImageInfo">');
+    } else {
+        $('#aa_small').addClass( 'test-failed' );
+        $('#aa_small-result').html('<mt:trans phrase="Fail" component="ImageInfo">');
+        $('#aaa_large').addClass( 'test-failed' );
+        $('#aaa_large-result').html('<mt:trans phrase="Fail" component="ImageInfo">');
+    }
+    if ( contrast >= 7 ) {
+        $('#aaa_small').removeClass( 'test-failed' );
+        $('#aaa_small-result').html('<mt:trans phrase="Pass" component="ImageInfo">');
+    } else {
+        $('#aaa_small').addClass( 'test-failed' );
+        $('#aaa_small-result').html('<mt:trans phrase="Fail" component="ImageInfo">');
+    }
+    let contrast_ratio = contrast.toString() + ' : 1';
+    $('#contrast_ratio').html( contrast_ratio );
+}
+function getSRGB(_8bitColor) {
+    return _8bitColor / 255;
+}
+function getRGBForCalculateLuminance(rgb) {
+  if (rgb <= 0.03928){
+    return rgb / 12.92;
+  } else {
+    return Math.pow(((rgb + 0.055) / 1.055), 2.4);
+  }
+}
+function getRelativeLuminance(r, g , b) {
+    let R = getRGBForCalculateLuminance(getSRGB(r));
+    let G = getRGBForCalculateLuminance(getSRGB(g));
+    let B = getRGBForCalculateLuminance(getSRGB(b));
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+}
+function getContrast(l1, l2) {
+    let bright = (l1 > l2) ? l1 : l2;
+    let dark   = (l1 < l2) ? l1 : l2;
+    return (bright + 0.05) / (dark + 0.05);
+}
+function hex2rgb ( hex ) {
+    if ( hex.slice(0, 1) == "#" ) hex = hex.slice(1) ;
+    if ( hex.length == 3 ) hex = hex.slice(0,1) + hex.slice(0,1) + hex.slice(1,2) + hex.slice(1,2) + hex.slice(2,3) + hex.slice(2,3) ;
+    return [ hex.slice( 0, 2 ), hex.slice( 2, 4 ), hex.slice( 4, 6 ) ].map( function ( str ) {
+    return parseInt( str, 16 );
+    } ) ;
+}
+</script>
+<mt:include file="include/dialog_footer.tmpl">

@@ -1,0 +1,213 @@
+<style>
+#caption-error-message p {
+  margin: 0;
+}
+.form-inline .btn-secondary {
+  padding: 10px;
+  border-color: #000;
+}
+.form-inline .btn-secondary i {
+  font-size: 18px;
+}
+@media ( max-width: 650px ) {
+  .form-inline .form-control {
+    display: inline-block;
+    width: calc(100% - 6em);
+  }
+  .form-inline .form-control,
+  .form-inline .btn-secondary {
+    margin-bottom: 1rem;
+  }
+  .form-inline label.ml-4 {
+    margin-left: 0 !important;
+  }
+}
+</style>
+
+<div class="container-fluid full pt-3 pb-3">
+  <h2 id="dialog-page-title" class="page-title-full"><mt:trans phrase="Make Caption" component="VideoCaptions"></h2>
+
+  <div class="caption-editor-wrapper mb-4">
+    <div class="caption-editor">
+      <div id="caption-preview"></div>
+      <video controls id="video-player-dialog" class="video-js" style="width: 100%;">
+        <source src="<mt:var name="__permalink">" id="video-player-dialog-src">
+      </video>
+    </div>
+  </div>
+
+  <div id="caption-error" style="display: none;"></div>
+
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="video_caption_text">
+        <mt:trans phrase="Start and End" component="VideoCaptions">
+        <i class="fa fa-asterisk required" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Required"></span>
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <div class="form-inline">
+        <label for="video_caption_start"><mt:trans phrase="Start" component="VideoCaptions"></label>
+        <input type="text" name="video_caption_start" id="video_caption_start" class="form-control" data-validation="true" data-required="true" data-required-error="<mt:trans phrase="Start time is required." component="VideoCaptions">" data-format="date" data-format-error="<mt:trans phrase="Invalid start time format. Please specify in hh:mm:ss.ms." component="VideoCaptions">" data-compare-error="<mt:trans phrase="The start time exceeds the end time. Please set the start time lower than the end time." component="VideoCaptions">" data-duration-error="<mt:trans phrase="The start time exceeds the video time. Please specify within the video time." component="VideoCaptions">">
+        <button type="button" id="set_caption_start" class="ml-2 btn btn-secondary" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Set the current playback time to the start time" component="VideoCaptions">">
+          <i class="fa fa-video-camera" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Set the current playback time to the start time" component="VideoCaptions"></span>
+        </button>
+        <label class="ml-4" for="video_caption_end"><mt:trans phrase="End" component="VideoCaptions"></label>
+        <input type="text" name="video_caption_end" id="video_caption_end" class="form-control" data-validation="true" data-required="true" data-required-error="<mt:trans phrase="End time is required." component="VideoCaptions">" data-format="date" data-format-error="<mt:trans phrase="The format of the end time is invalid. Please specify it in hh:mm:ss.ms." component="VideoCaptions">" data-duration-error="<mt:trans phrase="The end time exceeds the video time. Please specify within the video time." component="VideoCaptions">">
+        <button type="button" id="set_caption_end" class="ml-2 btn btn-secondary" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Set the current playback time to the end time" component="VideoCaptions">">
+          <i class="fa fa-video-camera" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Set the current playback time to the end time" component="VideoCaptions"></span>
+        </button>
+      </div>
+      <p class="text-muted hint-block mb-0">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Press the camera button to set the current playback time." component="VideoCaptions">
+      </p>
+      <p class="text-muted hint-block mb-0">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="For HTTP Live Streaming (HLS), play once and then enter the time." component="VideoCaptions">
+      </p>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="video_caption_text">
+        <mt:trans phrase="Caption" component="VideoCaptions">
+        <i class="fa fa-asterisk required" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Required"></span>
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <mt:ifcomponent component="SimplifiedJapanese">
+        <div class="form-inline">
+          <input type="text" name="video_caption_text" id="video_caption_text" class="form-control ml-0" style="width:calc(100% - (42px + .5rem));" data-validation="true" data-required="true" data-required-error="<mt:trans phrase="Captions is required." component="VideoCaptions">">
+          <button type="button" id="add_furigana" class="ml-2 btn btn-secondary" style="padding:5px;" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Add furigana to selections" component="VideoCaptions">" data-required-error="<mt:trans phrase="Caption is required to set the furigana." component="VideoCaptions">" data-unselected-error="<mt:trans phrase="Select a range from the caption." component="VideoCaptions">">
+            <img src="<mt:var name="simplifiedjapanese_asset_path">img/insert_furigana.png" alt="" style="height:30px;width:30px;">
+            <span class="sr-only"><mt:trans phrase="Add furigana to selections" component="VideoCaptions"></span>
+          </button>
+        </div>
+        <p class="text-muted hint-block mb-0">
+          <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Hint"></span>
+          <mt:trans phrase="Select the text and click the Furigana button to add furigana." component="VideoCaptions">
+        </p>
+      <mt:else>
+        <input type="text" name="video_caption_text" id="video_caption_text" class="form-control ml-0" data-validation="true" data-required="true" data-required-error="キャプションは必須です。">
+      </mt:ifcomponent>
+    </div>
+  </div>
+
+  <div id="display_position-wrapper" class="row form-group">
+    <div class="col-lg-2">
+      <label for="video_caption"><mt:trans phrase="Display Position" component="VideoCaptions"></label>
+    </div>
+    <div class="col-lg-10">
+      <mt:pluginsetting name="video_captions_default_pos" component="VideoCaptions" workspace_id="$workspace_id" setvar="captions_default_pos" />
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_position" value="0"<mt:if name="captions_default_pos" eq="0"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="None"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_position" value="3"<mt:if name="captions_default_pos" eq="3"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Title" component="VideoCaptions"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_position" value="2"<mt:if name="captions_default_pos" eq="2"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Top" component="VideoCaptions"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_position" value="1"<mt:if name="captions_default_pos" eq="1"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Bottom" component="VideoCaptions"></span>
+      </label>
+    </div>
+  </div>
+
+  <div id="text_color-wrapper" class="row form-group">
+    <div class="col-lg-2">
+      <label for="video_caption"><mt:trans phrase="Text Color" component="VideoCaptions"></label>
+    </div>
+    <div class="col-lg-10">
+      <mt:pluginsetting name="video_captions_default_color" component="VideoCaptions" workspace_id="$workspace_id" setvar="captions_default_color" />
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_color" value="1"<mt:if name="captions_default_color" eq="1"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="White" component="VideoCaptions"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_color" value="2"<mt:if name="captions_default_color" eq="2"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Black" component="VideoCaptions"></span>
+      </label>
+    </div>
+  </div>
+
+  <div id="text_processing-wrapper" class="row form-group">
+    <div class="col-lg-2">
+      <label for="video_caption"><mt:trans phrase="Text Processing" component="VideoCaptions"></label>
+    </div>
+    <div class="col-lg-10">
+      <mt:pluginsetting name="video_captions_default_ruby" component="VideoCaptions" workspace_id="$workspace_id" setvar="captions_default_ruby" />
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_ruby" value="0"<mt:if name="captions_default_ruby" eq="0"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="None"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_ruby" value="1"<mt:if name="captions_default_ruby" eq="1"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Auto Ruby" component="VideoCaptions"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_ruby" value="2"<mt:if name="captions_default_ruby" eq="2"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Ruby and Word-Separate" component="VideoCaptions"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_ruby" value="3"<mt:if name="captions_default_ruby" eq="3"> checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Word-Separate only" component="VideoCaptions"></span>
+      </label>
+    </div>
+  </div>
+
+  <div id="chapter-wrapper" class="row form-group mb-5">
+    <div class="col-lg-2">
+      <mt:trans phrase="Chapter" component="VideoCaptions">
+    </div>
+    <div class="col-lg-10">
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_is_chapter" value="0" checked>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="No Chapter" component="VideoCaptions"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="video_caption_is_chapter" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Is Chapter" component="VideoCaptions"></span>
+      </label>
+    </div>
+  </div>
+
+  <div <mt:if name="debug_mode">style="margin-bottom: 100px;"</mt:if>>
+    <button id="vc-dialog-cancel-btn" class="btn btn-secondary" type="button"><mt:trans phrase="Cancel"></button>
+    <button id="dialog-preview-btn" class="btn btn-secondary" type="button"><mt:trans phrase="Preview"></button>
+    <button id="dialog-save-btn" class="btn btn-primary" type="button"><mt:trans phrase="Determine" component="VideoCaptions"></button>
+  </div>
+</div>
+
+<script>
+$(function () {
+    if (window.ontouchstart !== null) {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+});
+</script>

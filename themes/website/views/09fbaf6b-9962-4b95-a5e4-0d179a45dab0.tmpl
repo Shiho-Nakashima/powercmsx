@@ -1,0 +1,128 @@
+<mt:ifacceptcomment>
+<div class="container-fluid">
+<mt:include module="(Website) Comments">
+<hr>
+<h2 id="comment"><span class="title"><mt:trans phrase="New Comment" language="$language"></span></h2>
+<hr>
+<mt:if name="request.comment_publish_on_post">
+  <p class="text-center"><mt:trans phrase="Please complete the form below and click Confirm button."  language="$language"></p>
+<mt:else>
+  <mt:if name="request.__mode" eq="submit">
+    <mt:if name="error">
+    <p class="text-center text-danger"><mt:trans phrase="An error occurred." language="$language"></p>
+      <mt:loop name="errors">
+        <mt:if name="__first__"><ul></mt:if>
+        <li><mt:var name="__value__" escape></li>
+        <mt:if name="__last__"></ul></mt:if>
+      </mt:loop>
+    <mt:else>
+    <p class="text-center">
+      <mt:trans phrase="Thank you for your comment." language="$language">
+      <mt:if name="comment_status" ne="2"><mt:trans phrase="Your comment has been received and held for review by administrator." language="$language"><mt:else><script>window.location.hash='comment-<mt:var name="comment_id">';</script></mt:if>
+    </p>
+    </mt:if>
+  <mt:elseif name="request.submit" eq="1">
+    <p class="text-center">
+      <mt:trans phrase="Thank you for your comment." language="$language">
+      <mt:if name="comment_status" ne="2"><mt:trans phrase="Your comment has been received and held for review by administrator." language="$language"><mt:else><script>window.location.hash='comment-<mt:var name="comment_id">';</script></mt:if>
+    </p>
+  <mt:else>
+    <mt:if name="error">
+      <p class="text-center"><mt:trans phrase="Please check your entries." language="$language"></p>
+      <mt:loop name="errors">
+        <mt:if name="__first__"><ul></mt:if>
+        <li><mt:var name="__value__" escape></li>
+        <mt:if name="__last__"></ul></mt:if>
+      </mt:loop>
+    <mt:else>
+      <mt:if name="confirm_ok">
+        <p class="text-center"><mt:trans phrase="Confirm the following and click Submit button." language="$language"></p>
+      <mt:else>
+        <p class="text-center"><mt:trans phrase="Please complete the form below and click Confirm button."  language="$language"></p>
+      </mt:if>
+    </mt:if>
+  </mt:if>
+</mt:if>
+</div>
+<div class="container-fluid">
+<mt:setvarblock name="autoset_cols">id,remote_ip,object_id,model,status,contributor_id,contributor_type,parent_id,created_by,modified_by,,created_on,modified_on,workspace_id</mt:setvarblock>
+<mt:var name="autoset_cols" split="," setvar="autoset_cols">
+<form action="<mt:var name="current_archive_url">#comment" method="POST">
+  <input type="hidden" name="__mode" value="<mt:if name="confirm_ok">submit<mt:else>confirm</mt:if>">
+  <input type="hidden" name="_type" value="comment">
+  <input type="hidden" name="_language" value="<mt:var name="language">">
+  <input type="hidden" name="model" value="<mt:var name="current_archive_model">">  
+  <input type="hidden" name="object_id" value="<mt:var name="current_object_id">">
+  <input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+  <table class="table table-hover table-striped form-table">
+    <tbody>
+      <mt:objectcols model="comment">
+      <mt:ifinarray value="$name" array="$autoset_cols">
+      <mt:else>
+        <mt:setvarblock name="error_key">errors[<mt:var name="name">]</mt:setvarblock>
+        <mt:if name="name" eq="text"><mt:trans phrase="Comment" setvar="column_label">
+        <mt:else><mt:var name="label" setvar="column_label">
+        </mt:if>
+      <tr class="<mt:if name="$error_key">has-danger</mt:if>">
+        <th scope="row" class="cell-form-question">
+          <label class="form-control-label" for="<mt:var name="name">">
+            <mt:var name="column_label">
+            <mt:if name="not_null">
+              <small><i class="fa fa-asterisk required text-muted" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Required"></span></small>
+            </mt:if>
+          </label>
+        </th>
+        <td class="cell-form-input">
+          <mt:if name="request.__mode" ne="save"><mt:unless name="request.comment_publish_on_post">
+            <mt:setvarblock name="request_name">request.<mt:var name="name"></mt:setvarblock>
+          </mt:unless></mt:if>
+          <mt:if name="confirm_ok"><mt:var name="$request_name" trim escape nl2br></mt:if>
+          <mt:if name="edit" eq="textarea">
+            <mt:if name="confirm_ok">
+              <input type="hidden" id="<mt:var name="name">" name="<mt:var name="name">" value="<mt:unless name="submit_ok"><mt:var name="$request_name" trim escape></mt:unless>"> 
+            <mt:else>
+              <textarea class="form-control watch-changed <mt:if name="$error_key">form-control-danger</mt:if>" id="<mt:var name="name">" name="<mt:var name="name">" rows="5"><mt:unless name="submit_ok"><mt:var name="$request_name" trim escape></mt:unless></textarea>
+              <mt:if name="$error_key"><div class="form-control-feedback"><mt:var name="$error_key" escape></div></mt:if>
+            </mt:if>
+          <mt:else>
+              <mt:setvar name="input_type" value="text">
+              <mt:if name="edit" like="date">
+                <mt:setvar name="input_type" value="date">
+                <mt:setvar name="input_short" value="1">
+              <mt:elseif name="edit" like="number">
+                <mt:setvar name="input_type" value="number">
+                <mt:setvar name="input_short" value="1">
+              <mt:elseif name="edit" like="short">
+                <mt:setvar name="input_short" value="1">
+              </mt:if>
+            <input type="<mt:if name="confirm_ok">hidden<mt:else><mt:var name="input_type"></mt:if>"
+                id="<mt:var name="name">" class="form-control watch-changed <mt:if name="input_short">short</mt:if> <mt:if name="$error_key">form-control-danger</mt:if>"
+                name="<mt:var name="name">" value="<mt:unless name="submit_ok"><mt:var name="$request_name" trim escape></mt:unless>">
+              <mt:if name="$error_key"><div class="form-control-feedback"><mt:var name="$error_key" escape></div></mt:if>
+          </mt:if>
+        </td>
+      </tr>
+      </mt:ifinarray>
+      </mt:objectcols>
+      <tr>
+        <td colspan="2" class="text-center">
+          <button type="submit" class="btn btn-secondary btn-lg"><mt:if name="confirm_ok"><mt:trans phrase="Submit" language="$language"><mt:else><mt:trans phrase="Confirm" language="$language"></mt:if></button>
+        </td>
+      </tr>
+  </tbody>
+</table>
+</form>
+</div>
+<mt:property name="request_method" setvar="request_method">
+<mt:if name="request_method" eq="POST">
+<script>
+var adjustHash = function(){
+    window.scrollBy(0, -65);
+}
+if ( window.location.hash ) {
+    setTimeout( adjustHash, 50 );
+}
+</script>
+</mt:if>
+</mt:ifacceptcomment>

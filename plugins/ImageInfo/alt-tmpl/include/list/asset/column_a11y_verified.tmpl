@@ -1,0 +1,147 @@
+<mt:property name="imageinfo_pdfinfo_path" setvar="pdfinfo_path">
+<mt:setvar name="pdf_title" value="">
+<mt:setvar name="axe_error_msg" value="">
+<mt:setvar name="pdf_error" value="">
+<mt:setvar name="asset_alternative" value="">
+<mt:setvar name="axe_core_result_id" value="">
+<mt:setvar name="show_result" value="">
+<mt:setvar name="info_dialog_btn_start" value="">
+<mt:setvar name="info_dialog_btn_end" value="">
+<mt:if name="_icon_class" eq="image">
+  <mt:setvar name="show_result" value="1">
+<mt:elseif name="_icon_class" eq="pdf">
+  <mt:if name="pdfinfo_path">
+    <mt:setvar name="show_result" value="1">
+  </mt:if>
+<mt:elseif name="_permalink" match="/\.svg$/">
+  <mt:setvar name="show_result" value="1">
+<mt:elseif name="_permalink" match="/\.html$/">
+  <mt:setvar name="show_result" value="1">
+</mt:if>
+<mt:setvar name="image_kind" value="">
+<mt:if name="a11y_verified">
+ <i style="font-size:110%" class="fa fa-check-square-o col-status-published" aria-hidden="true"></i>
+ <span class="sr-only"><mt:trans phrase="Checked"></span>
+<mt:else>
+ <i style="font-size:110%" class="fa fa-square-o col-status-draft" aria-hidden="true"></i>
+</mt:if>
+<mt:if name="show_result">
+ &nbsp;
+<mt:ifusercan action="edit" model="asset" id="$id" workspace_id="$workspace_id">
+  <mt:setvarblock name="info_dialog_btn_start">
+  <button type="button" style="cursor:pointer;padding:3px 5px;margin-top:-3px;margin-left:<mt:if name="a11y_verified">-5<mt:else>-4</mt:if>px;" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal"
+      data-href="<mt:var name="script_uri">?__mode=get_imageinfo_dialog&amp;_model=asset&amp;id=<mt:var name="id">&amp;view=file&amp;_screen_id=<mt:var name="screen_id"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;permalink=<mt:var name="_permalink" escape="url">">
+  </mt:setvarblock>
+  <mt:setvarblock name="info_dialog_btn_end">
+  </button>
+  </mt:setvarblock>
+</mt:ifusercan>
+  <mt:objectloop model="meta" object_id="$id" meta_model="asset" limit="1">
+    <mt:var name="text" from_json="metadata">
+  <mt:var name="metadata[label]" trim setvar="alternative_label">
+  <mt:var name="metadata[image_kind]" setvar="image_kind">
+    <mt:setvarblock name="asset_alternative">
+       data-toggle="tooltip" data-placement="right" 
+       title="<mt:if name="image_kind" eq="logo"><mt:trans phrase="Logo" component="ImageInfo">
+       <mt:elseif name="image_kind" eq="picture"><mt:trans phrase="Picture" component="ImageInfo">
+       <mt:elseif name="image_kind" eq="graphics"><mt:trans phrase="Graphic" component="ImageInfo">
+       </mt:if><mt:if name="alternative_label"> : <mt:var name="alternative_label" escape></mt:if>"
+    </mt:setvarblock>
+    <mt:var name="metadata[contrast_ratio]" setvar="contrast_ratio">
+    <mt:if name="contrast_ratio">
+<mt:var name="info_dialog_btn_start">
+  <mt:if name="image_kind" ne="graphics">
+    <mt:if name="_icon_class" eq="pdf">
+      <mt:var name="metadata[title]" trim setvar="pdf_title">
+      <span style="padding: 0px 1px" data-toggle="tooltip" data-placement="right" title="PDF : <mt:if name="pdf_title"><mt:var name="pdf_title" escape><mt:else><mt:trans phrase="The PDF has no title" component="ImageInfo"></mt:if>"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></span>
+    <mt:else>
+      <mt:if name="image_kind" ne="logo">
+        <i class="fa fa-camera-retro" aria-hidden="true"<mt:var name="asset_alternative">></i>
+        <span class="sr-only"><mt:trans phrase="Picture" component="ImageInfo"></span>
+      <mt:else>
+        <i class="fa fa-check" aria-hidden="true"<mt:var name="asset_alternative">></i>
+        <span class="sr-only"><mt:trans phrase="Logo" component="ImageInfo"></span>
+      </mt:if>
+    </mt:if>
+  <mt:else>
+    <i class="fa fa-paint-brush" aria-hidden="true"<mt:var name="asset_alternative">></i>
+    <span class="sr-only"><mt:trans phrase="Graphic" component="ImageInfo"></span>
+  </mt:if>
+<mt:var name="info_dialog_btn_end">
+     <mt:if name="image_kind" ne="picture">
+      <span aria-label="<mt:trans phrase="Contrast Ratio" component="ImageInfo">" class="badge badge-default" style="color:<mt:var name="metadata[fore_color]">;
+        background-color:<mt:var name="metadata[back_color]">;
+        border: 1px solid <mt:var name="metadata[fore_color]">;
+        width:4.2rem;
+        margin-left:<mt:unless name="a11y_verified">4px;<mt:else>3px;</mt:unless>">
+        <mt:var name="contrast_ratio">
+      </span>
+      <mt:unless name="a11y_verified">
+      <mt:if name="_icon_class" eq="pdf">
+        <mt:if name="contrast_ratio">
+          <mt:var name="metadata[pdftotext]" setvar="pdftotext">
+          <mt:unless name="pdf_title">
+            <mt:setvarblock name="pdf_error"><mt:trans phrase="The PDF has no title" component="ImageInfo"></mt:setvarblock>
+          </mt:unless>
+          <mt:unless name="pdftotext">
+            <mt:setvarblock name="pdf_error" append="1"><mt:if name="pdf_error">, </mt:if><mt:trans phrase="Failed to extract PDF text" component="ImageInfo"></mt:setvarblock>
+          </mt:unless>
+          <mt:if name="metadata[pdf_encrypted]">
+            <mt:setvarblock name="pdf_error" append="1"><mt:if name="pdf_error">, </mt:if><mt:trans phrase="The File is encrypted" component="ImageInfo"></mt:setvarblock>
+          </mt:if>
+          <mt:if name="pdf_error">
+            <span class="badge badge-danger" style="margin-left:2px;padding:4px 0px 4px 0px;width: 1.5rem" data-toggle="tooltip" data-toggle="tooltip" data-placement="right" title="<mt:var name="pdf_error">">
+              <i class="fa fa-exclamation-triangle" style="color:white;" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Failed to extract PDF text" component="ImageInfo"></span>
+            </span>
+          </mt:if>
+        </mt:if>
+      </mt:if>
+      </mt:unless>
+     </mt:if>
+    </mt:if>
+    <mt:unless name="a11y_verified">
+    <mt:var name="metadata[axe_core_result_id]" setvar="axe_core_result_id">
+    <mt:if name="axe_core_result_id">
+      <mt:setvar name="axe_start_tag" value="">
+      <mt:setvar name="axe_end_tag" value="">
+      <mt:ifusercan action="edit" model="axe_core_result" id="$axe_core_result_id" workspace_id="$workspace_id">
+        <mt:setvarblock name="axe_start_tag"><a target="_blank" style="text-decoration:none" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=axe_core_result&amp;id=<mt:var name="axe_core_result_id"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"></mt:setvarblock>
+        <mt:setvarblock name="axe_end_tag"></a></mt:setvarblock>
+      </mt:ifusercan>
+        <mt:var name="metadata[violations]" setvar="axe_core_violations">
+        <mt:var name="metadata[incompletes]" setvar="axe_core_incompletes">
+        <mt:if name="axe_core_violations">
+          <mt:var name="axe_start_tag">
+            <span class="badge badge-danger" style="margin-left:-3px;padding:4px 0px 4px 0px;width: 1.5rem" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="%s violations were found." params="$axe_core_violations" component="ImageInfo">">
+            <i class="fa fa-exclamation-triangle" style="color:white;" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="%s violations were found." params="$axe_core_violations" component="ImageInfo"></span>
+            </span>
+          <mt:var name="axe_end_tag">
+          <mt:if name="axe_core_incompletes">
+            <mt:var name="axe_start_tag">
+              <span class="badge badge-warning ml-1" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="There were %s items to check" params="$axe_core_incompletes" component="ImageInfo">" style="margin-left:2px;padding:4px 0px 4px 0px;width: 1.5rem">
+              <i class="fa fa-exclamation" style="color:white;" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="There were %s items to check" params="$axe_core_incompletes" component="ImageInfo"></span>
+              </span>
+            <mt:var name="axe_end_tag">
+          </mt:if>
+        <mt:elseif name="axe_core_incompletes">
+          <mt:var name="axe_start_tag">
+            <span class="badge badge-warning" style="margin-left:-3px;padding:4px 0px 4px 0px;width: 1.5rem">
+            <i class="fa fa-exclamation" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="There were %s items to check" params="$axe_core_incompletes" component="ImageInfo">" style="color:white;" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="There were %s items to check" params="$axe_core_incompletes" component="ImageInfo"></span>
+            </span>
+          <mt:var name="axe_end_tag">
+        <mt:else>
+          <mt:var name="axe_start_tag">
+            <span class="badge badge-info" style="background-color:#3B8698;margin-left:-3px;padding:4px 0px 4px 0px;width: 1.5rem" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="No errors were found" component="ImageInfo">">
+            <i class="fa fa-certificate" style="color:white" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="No errors were found" component="ImageInfo"></span>
+            </span>
+          <mt:var name="axe_end_tag">
+        </mt:if>
+    </mt:if>
+    </mt:unless>
+  </mt:objectloop>
+</mt:if>

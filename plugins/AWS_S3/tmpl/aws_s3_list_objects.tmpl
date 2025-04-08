@@ -1,0 +1,297 @@
+<mt:var name="request.offset" setvar="list_offset">
+<mt:unless name="list_offset"><mt:setvar name="list_offset" value="0"></mt:unless>
+<mt:if name="request.query"><mt:setvarblock name="query_param">&amp;query=<mt:var name="request.query" escape></mt:setvarblock></mt:if>
+<mt:if name="request.bucket"><mt:setvarblock name="bucket_param">&amp;bucket=<mt:var name="request.bucket" escape></mt:setvarblock></mt:if>
+<mt:setvarblock name="html_head" append="1">
+<style>
+h1 { margin-top: 10px !important; }
+</style>
+</mt:setvarblock>
+<mt:include file="include/popup_header.tmpl">
+  <mt:if name="request.errors">
+  <div class="alert alert-danger" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:var name="request.errors" setvar="errors">
+      <mt:trans phrase="%s bucket's object(s) have not been deleted." params="$errors" component="AWS_S3">
+  </div>
+    <script>
+    $('.alert-danger').focus();
+    </script>
+  <mt:elseif name="request.deleted">
+  <div class="alert alert-success" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:var name="request.deleted" setvar="deletes">
+      <mt:trans phrase="%s bucket's object(s) have been deleted." params="$deletes" component="AWS_S3">
+  </div>
+    <script>
+    $('.alert-success').focus();
+    </script>
+  </mt:if>
+<mt:setvarblock name="paging_base"><mt:var name="script_uri">?__mode=aws_s3_list_objects<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:var name="query_param"><mt:var name="bucket_param"></mt:setvarblock>
+<mt:if name="total_result">
+  <div class="text-right mb-2 mr-2 ml-2"><mt:var name="total_result"> <mt:trans phrase="Items"></div>
+  <mt:setvarblock name="page_navigation">
+      <nav aria-label="<mt:trans phrase="Page Navigation" component="AWS_S3">">
+        <ul class="pagination justify-content-center">
+    <mt:loop name="pager">
+    <mt:if name="__first__">
+      <mt:if name="list_offset">
+          <li class="page-item">
+            <a title="<mt:trans phrase="First">" class="page-link" href="<mt:var name="paging_base">" aria-label="<mt:trans phrase="First">">
+              <span>&laquo;</span>
+              <span class="sr-only"><mt:trans phrase="First"></span>
+            </a>
+          </li>
+          <li class="page-item">
+            <mt:var name="list_offset" decrement="$list_limit" setvar="prev_offset">
+            <a title="<mt:trans phrase="Previous">" class="page-link" href="<mt:var name="paging_base"><mt:if name="prev_offset">&amp;offset=<mt:var name="prev_offset"></mt:if>" aria-label="<mt:trans phrase="Previous">">
+              <span>&lsaquo;</span>
+              <span class="sr-only"><mt:trans phrase="Previous"></span>
+            </a>
+          </li>
+      </mt:if>
+    </mt:if>
+      <li <mt:if name="list_offset" eq="$__value__">title="<mt:trans phrase="Selected">"</mt:if> class="page-item <mt:if name="list_offset" eq="$__value__">active</mt:if>">
+        <a class="page-link" href="<mt:var name="paging_base"><mt:if name="__value__">&amp;offset=<mt:var name="__value__" escape="url"></mt:if>" <mt:if name="list_offset" eq="$__value__">aria-label="<mt:trans phrase="Selected">"</mt:if>>
+          <span>
+          <mt:var name="__key__">
+          </span>
+        </a>
+      </li>
+    <mt:if name="__last__">
+      <mt:if name="list_offset" ne="$__value__">
+          <li class="page-item">
+            <a title="<mt:trans phrase="Next">" class="page-link" href="<mt:var name="paging_base">&amp;offset=<mt:var name="list_offset" increment="$list_limit">" aria-label="<mt:trans phrase="Next">">
+              <span>&rsaquo;</span>
+              <span class="sr-only"><mt:trans phrase="Next"></span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a title="<mt:trans phrase="Last">" class="page-link" href="<mt:var name="paging_base">&amp;offset=<mt:var name="__value__" escape="url">" aria-label="<mt:trans phrase="Last">">
+              <span>&raquo;</span>
+              <span class="sr-only"><mt:trans phrase="Last"></span>
+            </a>
+          </li>
+      </mt:if>
+    </mt:if>
+    </mt:loop>
+        </ul>
+      </nav>
+  </mt:setvarblock>
+  <mt:if name="next_marker">
+  <mt:setvarblock name="page_navigation">
+    <nav aria-label="<mt:trans phrase="Page Navigation" component="AWS_S3">">
+      <ul class="pagination justify-content-center">
+      <mt:if name="current_marker">
+        <li class="page-item">
+        <a title="<mt:trans phrase="First">" class="page-link" href="<mt:var name="paging_base">" aria-label="<mt:trans phrase="First">">
+        <span>&laquo;</span>
+        <mt:trans phrase="First">
+        </a>
+        </li>
+      </mt:if>
+        <li class="page-item">
+        <a title="<mt:trans phrase="Next">" class="page-link" href="<mt:var name="paging_base">&amp;marker=<mt:var name="next_marker" escape="url">">
+        <span>&rsaquo;</span>
+        <mt:trans phrase="Next">
+        </a>
+        </li>
+      </ul>
+    </nav>
+  </mt:setvarblock>
+  </mt:if>
+<mt:var name="page_navigation">
+  <mt:var name="site_url" setvar="cms_base">
+  <mt:if name="link_url">
+    <mt:var name="link_url" setvar="base_url">
+    <mt:if name="show_both">
+      <mt:var name="site_url" setvar="cms_base">
+    <mt:else>
+      <mt:var name="link_url" setvar="cms_base">
+    </mt:if>
+  <mt:else>
+    <mt:var name="site_url" setvar="base_url">
+  </mt:if>
+  <mt:var name="cms_base" regex_replace="'!(^https{0,1}://.*?/).*$!','\$1'" setvar="cms_base">
+  <mt:var name="base_url" regex_replace="'!(^https{0,1}://.*?/).*$!','\$1'" setvar="base_url">
+  <mt:loop name="aws_s3_list_result" limit="$list_limit" offset="$list_offset">
+    <mt:if name="__first__">
+    <div id="search-box" class="form-group mb-4 mx-auto">
+      <div class="form-inline">
+      <button type="button" id="delete-btn" class="list-delete-btn btn btn-secondary btn-sm">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Delete"></span>
+      </button>
+      <form action="<mt:var name="script_uri">">
+        <input type="hidden" name="__mode" value="aws_s3_list_objects">
+        <label class="sr-only" for="query_box"><mt:trans phrase="Object Name" component="AWS_S3"></label>
+        <input class="form-control mr-sm-2 form-control-sm" id="query_box" name="query" type="text" value="<mt:var name="request.query" escape>">
+        <mt:if name="request.bucket"><input name="bucket" type="hidden" value="<mt:var name="request.bucket" escape>"></mt:if>
+        <mt:if name="workspace_id"><input name="workspace_id" type="hidden" value="<mt:var name="workspace_id" escape>"></mt:if>
+        <label class="custom-control custom-checkbox mr-1" style="display:inline;">
+          <input type="checkbox" class="custom-control-input"
+             name="prefix_match" value="1"
+            <mt:if name="request.prefix_match">checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:trans phrase="Prefix Match for Relative URL" component="AWS_S3"></span>
+        </label>
+        <button class="btn btn-secondary ml-0 my-2 my-sm-0 btn-sm" type="submit"><mt:trans phrase="Search"></button>
+      </form>
+    <mt:if name="request.query">
+    &nbsp; <a class="ml-3" href="<mt:var name="script_uri">?__mode=aws_s3_list_objects<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:var name="bucket_param">">
+      <mt:var name="request.query" escape setvar="condition">
+      <i class="fa fa-list" aria-hidden="true"></i> <mt:trans phrase="Remove the search condition '%s'" params="$condition" component="AWS_S3">
+    </a>
+    </mt:if>
+      </div>
+    </div>
+    <form action="<mt:var name="script_uri">" method="POST" id="list-delete-form">
+      <input type="hidden" name="__mode" value="aws_s3_list_objects">
+      <input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+      <input type="hidden" name="_type" value="delete">
+      <mt:if name="request.prefix_match"><input type="hidden" name="prefix_match" value="1"></mt:if>
+      <input type="hidden" name="workspace_id" value="<mt:var name="workspace_id" escape>">
+      <mt:if name="request.bucket"><input name="bucket" type="hidden" value="<mt:var name="request.bucket" escape>"></mt:if>
+      <mt:if name="request.query"><input type="hidden" name="query" value="<mt:var name="request.query" escape>"></mt:if>
+      <textarea id="merged_params" name="merged_params" class="hidden"></textarea>
+    <table class="table table-sm listing-table table-hover table-striped">
+    <thead>
+      <th class="text-center" style="width:10px;">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="selector custom-control-input cb-all-select"
+          aria-label="<mt:trans phrase="Select all">">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"></span>
+      </label>
+      </th>
+      <th class="text-center">URL</th>
+      <th class="text-center"><mt:trans phrase="Date Modified"></th>
+      <th class="text-center" style="width:100px;white-space:nowrap"><mt:trans phrase="View"></th>
+    </thead>
+    <tbody id="list_body">
+    </mt:if>
+    <tr id="line_<mt:var name="__counter__">">
+    <th style="width:10px;">
+    <label class="custom-control custom-checkbox">
+      <input id="box_<mt:var name="__counter__">" type="checkbox" name="urls[]"
+        value="<mt:var name="__key__" escape>" class="custom-control-input cb-select-url"
+        aria-label="<mt:trans phrase="Select or deselect %s in this row." params="$__value__" escape>">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"></span>
+    </label>
+    </th>
+    <td>
+      <span title="<mt:var name="base_url"><mt:var name="__key__" encode_url_basename>">
+      <mt:var name="base_url"><mt:var name="__key__" encode_url_basename>
+      </span>
+      &nbsp;
+      <a href="<mt:var name="cms_base"><mt:var name="__key__" encode_url_basename escape>" target="_blank">
+      <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+      <span class="sr-only"><mt:trans phrase="View"></span>
+      </a>
+      <mt:if name="link_url"><mt:if name="show_both">
+        &nbsp;
+        <a href="<mt:var name="link_url"><mt:var name="__key__" encode_url_basename escape>" target="_blank">
+        <i class="fa fa-globe" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="View Published"></span>
+      </mt:if></mt:if>
+      </a>
+    </td>
+    <td class="text-center" style="white-space:nowrap">
+      <mt:var name="__value__" escape>
+    </td>
+    <td class="text-center" style="width:100px">
+    <mt:unless name="__key__" match="\/$">
+    <a target="_blank" class="btn btn-sm btn-secondary"
+      href="<mt:var name="script_uri">?__mode=aws_s3_list_objects&amp;_type=get<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;url=<mt:var name="__key__" escape="url"><mt:if name="request.bucket">&amp;bucket=<mt:var name="request.bucket" escape></mt:if>">
+    <i class="fa fa-eye" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+    </a>
+    </mt:unless>
+    </td>
+    </tr>
+    <mt:if name="__last__">
+    </tbody>
+    </table>
+    </form>
+    </mt:if>
+  </mt:loop>
+<mt:var name="page_navigation">
+<mt:else>
+  <div id="alert-object" class="alert alert-info" tabindex="0">
+    <mt:trans phrase="Object" setvar="objectLabel">
+    <mt:trans phrase="%s not found." params="$objectLabel">
+    <mt:if name="request.query">
+    <a href="<mt:var name="script_uri">?__mode=aws_s3_list_objects<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if><mt:var name="bucket_param">">
+      <mt:var name="request.query" escape setvar="condition">
+      <i class="fa fa-list" aria-hidden="true"></i> <mt:trans phrase="Remove the search condition '%s'" params="$condition" component="AWS_S3">
+    </a>
+    </mt:if>
+  </div>
+<script>
+$('#alert-object').focus();
+</script>
+</mt:if>
+<script>
+$('#list_body tr').click(function() {
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+    is_all = true;
+    $("input[name='urls[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            $('.cb-all-select').prop('checked', false);
+            return false;
+        }
+    });
+    $('.cb-all-select').prop('checked', is_all );
+});
+$('.cb-all-select').change(function(){
+    $('.cb-select-url').prop('checked', $(this).prop('checked'));
+});
+$('.cb-select-url').change(function(){
+    is_all = true;
+    $("input[name='urls[]']").each(function(){
+        if ( $(this).prop('checked') == false ) {
+            is_all = false;
+            $('.cb-all-select').prop('checked', false);
+            return false;
+        }
+    });
+    $('.cb-all-select').prop('checked', is_all );
+});
+$('#delete-btn').click(function(){
+    let selected_items = 0;
+    let input_data = [];
+    $("input[name='urls[]']").each(function(){
+        if ( $(this).prop('checked') == true ) {
+             selected_items++;
+             input_data.push( $(this).val() );
+        }
+    });
+    if (! selected_items ) {
+        alert( "<mt:trans phrase="You did not select any bucket's object to delete." component="AWS_S3">" );
+        return;
+    }
+    let message;
+    if ( selected_items == 1 ) {
+        message = "<mt:trans phrase="Are you sure you want to remove _1 bucket's object?" component="AWS_S3">";
+    } else {
+        message = "<mt:trans phrase="Are you sure you want to remove _1 bucket's objects?" component="AWS_S3">";
+    }
+    message = message.replace( '_1', selected_items );
+    if(! confirm( message ) ) {
+        return false;
+    }
+    $('#merged_params').val(JSON.stringify( input_data ));
+    $("input[name='urls[]']").prop('disabled',true);
+    $('#list-delete-form').submit();
+});
+</script>
+<mt:include file="include/popup_footer.tmpl">

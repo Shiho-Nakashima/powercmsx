@@ -1,0 +1,210 @@
+{
+    "label": "ComponentBlock",
+    "plural": "ComponentBlocks",
+    "version": "1.0",
+    "primary": "label",
+    "auditing": 1,
+    "order": 210,
+    "menu_type": 2,
+    "max_revisions": 20,
+    "display_system": 1,
+    "display_space": 1,
+    "can_duplicate": 1,
+    "im_export": 1,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "label": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "fields": {
+            "type": "text"
+        },
+        "repeat_fields": {
+            "type": "text"
+        },
+        "template": {
+            "type": "text"
+        },
+        "methods": {
+            "type": "text"
+        },
+        "use_multi_block": {
+            "type": "tinyint",
+            "size": 4
+        },
+        "enable_blocks": {
+            "type": "relation"
+        },
+        "enable_model": {
+            "type": "relation"
+        },
+        "component_name": {
+            "type": "string",
+            "size": 50,
+            "not_null": 1
+        },
+        "status": {
+            "type": "int",
+            "size": 11,
+            "default": "2"
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        },
+        "created_on": {
+            "type": "datetime"
+        },
+        "modified_on": {
+            "type": "datetime"
+        },
+        "created_by": {
+            "type": "int",
+            "size": 11
+        },
+        "modified_by": {
+            "type": "int",
+            "size": 11
+        },
+        "order": {
+            "type": "int",
+            "size": 11
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "status": "status",
+        "workspace_id": "workspace_id",
+        "created_on": "created_on",
+        "modified_on": "modified_on",
+        "created_by": "created_by",
+        "modified_by": "modified_by",
+        "order": "order"
+    },
+    "has_status": 1,
+    "default_status": 2,
+    "relations": {
+        "enable_blocks": "component_block",
+        "enable_model": "table"
+    },
+    "options": {
+        "fields": "10",
+        "repeat_fields": "10",
+        "template": "25",
+        "methods": "5",
+        "status": "Disable,Enable"
+    },
+    "extras": [],
+    "sort_by": {
+        "order": "ascend"
+    },
+    "autoset": [
+        "workspace_id",
+        "created_on",
+        "modified_on",
+        "created_by",
+        "modified_by"
+    ],
+    "unchangeable": [
+        "workspace_id"
+    ],
+    "disp_edit": {
+        "status": "select"
+    },
+    "edit_properties": {
+        "id": "hidden",
+        "label": "primary",
+        "fields": "textarea",
+        "repeat_fields": "textarea",
+        "template": "textarea",
+        "methods": "textarea",
+        "use_multi_block": "checkbox",
+        "enable_blocks": "relation:component_block:label:dialog",
+        "enable_model": "relation:table:name:dialog",
+        "component_name": "text_short",
+        "status": "selection",
+        "order": "number"
+    },
+    "list_properties": {
+        "id": "number",
+        "label": "primary",
+        "enable_model": "reference:table:name",
+        "component_name": "text_short",
+        "status": "number",
+        "workspace_id": "reference:workspace:name",
+        "modified_on": "datetime",
+        "modified_by": "reference:user:name",
+        "order": "number"
+    },
+    "locale": {
+        "ja": {
+            "component_block": "ブロック",
+            "ComponentBlock": "ブロック",
+            "ComponentBlocks": "ブロック",
+            "ID": "ID",
+            "Label": "ラベル",
+            "Fields": "フィールド",
+            "Repeat Fields": "繰り返しフィールド",
+            "Block Template": "テンプレート",
+            "methods": "methods",
+            "Use Multi Block": "マルチブロックを使用",
+            "Enable Blocks": "利用できるブロック",
+            "Model": "モデル",
+            "Component Name": "コンポーネント名",
+            "Status": "ステータス",
+            "WorkSpace": "スペース",
+            "Date Created": "作成日",
+            "Date Modified": "更新日",
+            "Created By": "作成者",
+            "Modified By": "更新者",
+            "Order": "表示順",
+            "Defines an input field to display only once.": "1回だけ表示する入力フィールドを定義します。",
+            "Define fields with repetitions like dt+dd and th+td.": "dt + ddやth + tdのような繰り返しのあるフィールドを定義します。",
+            "This field is an advanced setting. A template can be specified.": "このフィールドは上級者向けの設定です。テンプレートが指定できます。",
+            "This field is an advanced setting. A component method can be specified.": "このフィールドは上級者向けの設定です。コンポーネントのメソッドが指定できます。",
+            "e.g. Heading": "例）Heading"
+        }
+    },
+    "column_labels": {
+        "id": "ID",
+        "label": "Label",
+        "fields": "Fields",
+        "repeat_fields": "Repeat Fields",
+        "template": "Block Template",
+        "methods": "methods",
+        "use_multi_block": "Use Multi Block",
+        "enable_blocks": "Enable Blocks",
+        "enable_model": "Model",
+        "component_name": "Component Name",
+        "status": "Status",
+        "workspace_id": "WorkSpace",
+        "created_on": "Date Created",
+        "modified_on": "Date Modified",
+        "created_by": "Created By",
+        "modified_by": "Modified By",
+        "order": "Order"
+    },
+    "hide_edit_options": [
+        "status"
+    ],
+    "sortable": 1,
+    "hint": {
+        "fields": "Defines an input field to display only once.",
+        "repeat_fields": "Define fields with repetitions like dt+dd and th+td.",
+        "template": "This field is an advanced setting. A template can be specified.",
+        "methods": "This field is an advanced setting. A component method can be specified.",
+        "component_name": "e.g. Heading"
+    },
+    "translate": [
+        "methods",
+        "enable_model"
+    ]
+}

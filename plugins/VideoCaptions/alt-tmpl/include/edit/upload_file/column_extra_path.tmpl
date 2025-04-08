@@ -1,0 +1,2138 @@
+<mt:if name="object_class" eq="video">
+<script src="<mt:var name="theme_static">common/js/video8.min.js?v=8.5"></script>
+</mt:if>
+<mt:pluginsetting name="video_captions_font" component="VideoCaptions" workspace_id="$workspace_id" setvar="captions_font">
+<mt:pluginsetting name="video_captions_font_face" component="VideoCaptions" workspace_id="$workspace_id" setvar="captions_font_face">
+<mt:pluginsetting name="video_captions_font_weight" component="VideoCaptions" workspace_id="$workspace_id" setvar="captions_font_weight">
+<mt:setvarblock name="video_captions_asset_path"><mt:if name="video_captions_assets_base"><mt:var name="video_captions_assets_base">/<mt:else><mt:var name="prototype_path">plugins/VideoCaptions/assets/</mt:if></mt:setvarblock>
+<mt:setvarblock name="simplifiedjapanese_asset_path"><mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/</mt:if></mt:setvarblock>
+<mt:date format="YmdHis" setvar="timestamp">
+<mt:if name="object_class" eq="video">
+<link rel="stylesheet" href="<mt:var name="theme_static">common/css/video8.css?v=8.5">
+</mt:if>
+<style>
+.caption-editor-wrapper {
+  background-color: #000;
+}
+.caption-editor {
+  position: relative;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+@media ( max-width: 991px ) {
+  .caption-editor {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+}
+@media ( max-width: 768px ) {
+  .caption-editor {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
+@media ( max-width: 576px ) {
+  .caption-editor {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+.video-js .vjs-current-time {
+  display: none;
+}
+.video-js .vjs-duration {
+  display: block;
+}
+.caption-tabs {
+  margin-bottom: -11px !important;
+  border: none;
+}
+.caption-tab {
+  width:50%;
+  color: black;
+  text-align: center;
+}
+.caption-tab a {
+  display: block !important;
+  width:100% !important;
+  margin-bottom: 10px;
+  padding: 0.4rem;
+  color: #4259CA;
+}
+.tab-left {
+  border-radius: 0.5rem 0 0 0.5rem;
+  border: 1px solid #4259CA;
+}
+.tab-right {
+  border-radius: 0 0.5rem 0.5rem 0;
+  border: 1px solid #4259CA;
+}
+.caption-tab a.active {
+  background-color: #4259CA;
+  color: white !important;
+  font-weight: bold;
+}
+#tab-wrapper {
+  padding: 1rem 0rem;
+}
+
+#card-editor {
+  margin: 1rem 0;
+}
+#card-panels {
+  display: flex;
+  flex-wrap: wrap;
+}
+.card-panel {
+  position: relative;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+  font-size: 0.9rem;
+  font-family: <mt:if name="captions_font_face">"<mt:var name="captions_font_face">", </mt:if><mt:var name="captions_font">;
+  /*font-weight: <mt:var name="captions_font_weight"> !important;*/
+  white-space: normal;
+}
+.card-panel::before {
+  content: "";
+  display: block;
+  /* アスペクト比を16:9に固定。9/16*100=56.25 */
+  padding-top: 56.25%;
+}
+.card-panel.white {
+  background: #000;
+  color: #fff;
+}
+.card-panel.white .card-time {
+  background: rgba(255,255,255,.8);
+  color: #000;
+}
+.card-panel.black {
+  background: #ccc;
+  color: #000;
+}
+.card-panel.black .card-time {
+  background: rgba(0,0,0,1);
+  color: #fff;
+}
+.card-panel[data-is-chapter="1"] {
+  background: #bee8ef;
+  color: #000;
+}
+.card-time {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: .3rem .4rem;
+  border-radius: .25rem;
+  background: rgba(0,0,0,.8);
+  color: #fff;
+  font-size: .8rem;
+  font-family: monospace;
+}
+.card-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 0 .3rem;
+  text-wrap: balance;
+  max-height: calc(1.4em * 3);
+  width: 100%;
+  line-height: 1.4em;
+  font-size: .9rem;
+  transform: translate(-50%, -50%);
+  display: -webkit-box;
+  overflow: hidden;
+  <mt:if name="captions_font_weight">font-weight: <mt:var name="captions_font_weight"> !important;</mt:if>
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+#card-panels {
+  max-height: 600px;
+  overflow: auto;
+}
+.card-position {
+  position: absolute;
+  bottom: .5rem;
+  left: 0;
+  width: 100%;
+  font-size: .7rem;
+  font-weight: 200 !important;
+}
+.detach-caption {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #000 !important;
+  padding: 2px 6px 4px 7px !important;
+}
+@media ( min-width: 1701px ) {
+  .card-panel {
+    width: calc((100% / 6) - (1rem * 5 / 6));
+  }
+  .card-panel:not(:nth-child(6n)) {
+    margin-right: 1rem;
+  }
+}
+@media ( min-width: 1401px ) and ( max-width: 1700px ) {
+  .card-panel {
+    width: calc((100% / 5) - (1rem * 4 / 5));
+  }
+  .card-panel:not(:nth-child(5n)) {
+    margin-right: 1rem;
+  }
+}
+@media ( min-width: 1101px ) and ( max-width: 1400px ) {
+  .card-panel {
+    width: calc((100% / 4) - (1rem * 3 / 4));
+  }
+  .card-panel:not(:nth-child(4n)) {
+    margin-right: 1rem;
+  }
+}
+@media ( min-width: 701px ) and ( max-width: 1100px ) {
+  .card-panel {
+    width: calc((100% / 3) - (1rem * 2 / 3));
+  }
+  .card-panel:not(:nth-child(3n)) {
+    margin-right: 1rem;
+  }
+}
+@media ( max-width: 701px ) {
+  .card-panel {
+    width: calc((100% / 2) - (1rem * 1 / 2));
+  }
+  .card-panel:not(:nth-child(2n)) {
+    margin-right: 1rem;
+  }
+}
+@media ( max-width: 480px ) {
+  .card-panel {
+    margin-right: 0 !important;
+    width: 100%;
+  }
+}
+#progressbar {
+  font-size: 0.3em;
+  width: 100%;
+  height: 8px;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  background-image: repeating-linear-gradient( 50deg, #f6f6f6, #f6f6f6 20px, #ddd 20px, #ddd 40px );
+  background-size: 5000%;
+  animation: animatedBackground 400s linear infinite;
+}
+#progressbar-progress {
+  font-size: 0.3em;
+  width: 100%;
+  border-radius: 0.5em;
+  background-color: #ddd;
+}
+#progressbar-inner {
+  height: 8px;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  width: 0;
+  background-color: #0dd;
+}
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: -100% 0; }
+}
+
+#modal-fluid .modal-fluid {
+  max-width: 100% !important;
+  width: 90%;
+  height: 90%;
+  overflow: auto;
+}
+#caption-preview {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+#caption-preview.-pos1 {
+  bottom: 3em;
+}
+#caption-preview.-pos2 {
+  top: 0;
+}
+#caption-preview.-pos3 {
+  top: 50%;
+}
+#caption-preview img {
+  width: 100%;
+}
+.vjs-text-track-cue,
+video::cue {
+  font-family: <mt:if name="captions_font_face">"<mt:var name="captions_font_face">",</mt:if><mt:var name="captions_font" escape> !important;
+  font-weight: <mt:var name="captions_font_weight"> !important;
+}
+.vttTitle, .vttTitle ruby, .vttTitle rt,
+.vttTop, .vttTop ruby, .vttTop rt,
+.vttBottom, .vttBottom ruby, .vttBottom rt  {
+  font-weight: <mt:var name="captions_font_weight"> !important;
+}
+.video-player-dimensions.vjs-fluid:not(.vjs-audio-only-mode),
+.video-player-dialog-dimensions.vjs-fluid:not(.vjs-audio-only-mode) {
+  padding-top: calc(56.25% + 3em);
+}
+.video-js .vjs-tech {
+  height: calc(100% - 3em);
+}
+.video-js .vjs-control-bar {
+  display: flex;
+}
+.vjs-text-track-display {
+  bottom: 3em;
+}
+.video-js .vjs-big-play-button {
+  top: 50%;
+  left: 50%;
+}
+</style>
+<input type="hidden" name="upload-file-magic" value="<mt:var name="request.upload-file-magic" escape>" id="upload-file-magic">
+<input type="hidden" name="file-changed" value="" id="file-changed">
+<mt:var name="object_url" setvar="__permalink">
+<mt:pluginsetting component="VideoCaptions" name="video_captions_src_relative" workspace_id="$workspace_id" setvar="src_relative">
+<mt:if name="request.workspace_id">
+  <mt:if name="workspace_link_url">
+    <mt:if name="src_relative" eq="0">
+    <mt:var name="__permalink" replace="'$workspace_site_url','$workspace_link_url'" setvar="__permalink">
+    </mt:if>
+    <mt:var name="__permalink" replace="'$workspace_site_url','$workspace_link_url'" setvar="_pub_permalink">
+  </mt:if>
+<mt:else>
+  <mt:if name="link_url">
+    <mt:if name="src_relative" eq="0">
+    <mt:var name="__permalink" replace="'$site_url','$link_url'" setvar="__permalink">
+    </mt:if>
+    <mt:var name="__permalink" replace="'$site_url','$link_url'" setvar="_pub_permalink">
+  </mt:if>
+</mt:if>
+<mt:if name="src_relative" eq="1">
+  <mt:var name="__permalink" relative setvar="__permalink">
+</mt:if>
+<mt:var name="object_class" setvar="class">
+<mt:if name="object_id">
+  <mt:if name="class" eq="video">
+  <mt:if name="with-caption-url">
+    <mt:setvar name="has_caption" value="1">
+    <mt:setvar name="video_state" value="1">
+    <mt:trans phrase="With Captions" component="VideoCaptions" setvar="change_btn_label">
+  <mt:elseif name="caption-vtt-url">
+    <mt:setvar name="has_caption" value="1">
+    <mt:setvar name="video_state" value="2">
+    <mt:trans phrase="With VTT" component="VideoCaptions" setvar="change_btn_label">
+  <mt:elseif name="chapter-vtt-url-orig">
+    <mt:setvar name="has_caption" value="1">
+    <mt:setvar name="video_state" value="2">
+    <mt:trans phrase="With VTT" component="VideoCaptions" setvar="change_btn_label">
+  </mt:if>
+<mt:if name="class" eq="video">
+<mt:setvar name="_is_streaming_media" value="0">
+<mt:if name="object_mime_type" eq="application/x-mpegURL"><mt:setvar name="_is_streaming_media" value="1"></mt:if>
+<mt:if name="object_mime_type" eq="application/dash+xml"><mt:setvar name="_is_streaming_media" value="1"></mt:if>
+<div id="caption-editor-area">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="fileupload">">
+      <mt:trans phrase="Video">
+      <span id="current-video"><mt:if name="has_caption">(<mt:trans phrase="Original Video" component="VideoCaptions">)</mt:if></span>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <div id="caption-editor-wrapper" class="caption-editor-wrapper <mt:unless name="class" eq="video">hidden</mt:unless>">
+      <div id="caption-editor" class="caption-editor">
+        <video controls id="video-player" class="video-js vjs-fluid <mt:unless name="class" eq="video">hidden</mt:unless>" style="width: 100%;">
+          <source src="<mt:var name="__permalink" escape><mt:unless name="object_mime_type" eq="application/x-mpegURL"><mt:unless name="object_mime_type" eq="application/dash+xml">?ts=<mt:var name="timestamp"></mt:unless></mt:unless>" id="video-player-src">
+        </video>
+      </div>
+    </div>
+    <div id="progressbar-progress" class="hidden"><div id="progressbar-inner"></div></div>
+    <div id="progressbar" class="hidden"></div>
+    <div class="alert alert-success hidden mt-3 text-center" id="captionCreatedAlert" role="alert" tabindex="0">
+      <button onclick="$('#captionCreatedAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="The captions has successfully created. Select whether to Determine or Discard." component="VideoCaptions">
+    </div>
+    <div class="alert alert-success hidden mt-3 text-center" id="captionSavedAlert" role="alert" tabindex="0">
+      <button onclick="$('#captionSavedAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="The captions has successfully saved." component="VideoCaptions">
+    </div>
+    <div class="alert alert-success hidden mt-3 text-center" id="captionDetermineAlert" role="alert" tabindex="0">
+      <button onclick="$('#captionDetermineAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="The backup file was deleted successfully." component="VideoCaptions">
+    </div>
+    <div class="alert alert-success hidden mt-3 text-center" id="captionFixAlert" role="alert" tabindex="0">
+      <button onclick="$('#captionFixAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="The created caption has been determined." component="VideoCaptions">
+    </div>
+    <div class="alert alert-success hidden mt-3 text-center" id="captionDiscardAlert" role="alert" tabindex="0">
+      <button onclick="$('#captionDiscardAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="The backup file has been restored." component="VideoCaptions">
+    </div>
+    <div class="alert alert-success hidden mt-3 text-center" id="captionTrashAlert" role="alert" tabindex="0">
+      <button onclick="$('#captionTrashAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="Discarded the video captions." component="VideoCaptions">
+    </div>
+    <div class="mb-3 mt-2">
+      <div class="mb-2 text-center mb-3">
+        <button data-state="<mt:var name="video_state">" style="margin-left:-1px" id="change-captions" class="mt-2 <mt:unless name="has_caption">hidden</mt:unless> btn btn-secondary mr-1" type="button">
+          <i class="fa fa-refresh" aria-hidden="true"></i> <span id="change-captions-text"><mt:var name="change_btn_label"></span>
+        </button>
+        <button style="margin-left:-1px" id="temp-captions-save" class="mt-2 btn btn-secondary mr-1" type="button">
+          <i class="fa fa-upload" aria-hidden="true"></i> <mt:trans phrase="Temporarily Save" component="VideoCaptions">
+        </button>
+        <button style="margin-left:-1px" id="captions-preview" class="mt-2 btn btn-secondary mr-1" type="button">
+          <i class="fa fa-eye" aria-hidden="true"></i> <mt:trans phrase="Preview">
+        </button>
+        <mt:if name="can_bake_captions">
+          <mt:unless name="_is_streaming_media">
+            <button style="margin-left:-1px" id="make-video-captions" class="mt-2 btn btn-info mr-1" type="button">
+            <i class="fa fa-video-camera" aria-hidden="true"></i> <mt:trans phrase="Generate Captions" component="VideoCaptions">
+            </button>
+          </mt:unless>
+        </mt:if>
+        <button style="margin-left:-1px" id="make-video-vtt" class="mt-2 btn btn-info mr-1" type="button">
+          <i class="fa fa-video-camera" aria-hidden="true"></i> <mt:trans phrase="Generate VTT" component="VideoCaptions">
+        </button>
+        <mt:if name="can_polly">
+        <mt:unless name="_is_streaming_media">
+        <button style="margin-left:-1px" id="audio-processing" class="mt-2 btn btn-info mr-1" type="button">
+          <i class="fa fa-audio-description" aria-hidden="true"></i> <mt:trans phrase="Audio Processing" component="VideoCaptions">
+        </button>
+        </mt:unless>
+        </mt:if>
+        <button style="margin-left:-1px" id="determine-captions" class="mt-2 btn btn-primary mr-1 hidden" type="button">
+          <i class="fa fa-check-circle" aria-hidden="true"></i> <mt:trans phrase="Determine" component="VideoCaptions">
+        </button>
+        <button style="margin-left:-1px" id="discard-captions" class="mt-2 btn btn-danger hidden" type="button">
+          <i class="fa fa-trash" aria-hidden="true"></i> <mt:trans phrase="Discard" component="VideoCaptions">
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<mt:if name="can_polly">
+<mt:unless name="_is_streaming_media">
+<div class="row form-group" style="margin-top:-10px !important">
+  <div class="col-lg-2">
+    <mt:trans phrase="Audio">
+  </div>
+  <div class="col-lg-10 text-center">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="audio_description" value="0">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Do nothing" component="VideoCaptions"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="audio_description" value="2">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Delete" component="VideoCaptions"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="audio_description" value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Restore" component="VideoCaptions"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="audio_description" value="3">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Generating and Replace" component="VideoCaptions"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" name="audio_description" value="4">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Generating and Combining" component="VideoCaptions"></span>
+    </label>
+  </div>
+</div>
+</mt:unless>
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+      <mt:trans phrase="Caption" component="VideoCaptions">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <ul class="nav nav-tabs caption-tabs mb-0">
+      <li class="caption-tab">
+        <a class="active tab-left" href="javascript:void(0);"><mt:trans phrase="Card List" component="VideoCaptions"></a>
+      </li>
+      <li class="caption-tab">
+        <a class="tab-right" href="javascript:void(0);"><mt:trans phrase="Tab Delimited Text" component="VideoCaptions"></a>
+      </li>
+    </ul>
+   <div id="tab-wrapper" class="mt-0">
+      <button id="add-video-captions" class="btn btn-block btn-success ml-0 mb-3" type="button" data-toggle="modal" data-target="#modal-fluid">
+        <i class="fa fa-plus-circle" aria-hidden="true"></i> <mt:trans phrase="Add Caption" component="VideoCaptions">
+      </button>
+    <div id="caption-card-wrapper">
+      <div id="card-panels"></div>
+    </div>
+    <div id="caption-text-wrapper">
+      <textarea placeholder="<mt:trans phrase="00:00:00.5	00:00:05.0	The quick brown fox jumps over the lazy dog.	3	1	0	1	0" component="VideoCaptions">" class="form-control watch-changed" rows="6" id="video-captions" name="video-captions"><mt:var name="file_caption" escape></textarea>
+      <div class="text-muted mt-2">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Tab delimited (can be pasted from spreadsheet software)." component="VideoCaptions">
+        <mt:trans phrase="Start(required) End(required) Text(required) Position(1=Bottom,2=Top,3=Title) Color(1=white,2=black) Ruby(0=None,1=Yes,2=Ruby and Word-Separate,3=Word-Separate only) Word Wrap(0=None,1=Auto) Chapter(0=No,1=Is Chapter)." component="VideoCaptions">
+        <a id="video_caption_example" href="<mt:var name="script_uri">?__mode=video_caption_example<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"><mt:trans phrase="Download example" component="VideoCaptions"> <i class="fa fa-download" aria-hidden="true"></i></a>
+      </div>
+    </div>
+   </div>
+  </div>
+</div>
+<input type="hidden" name="return_args" value="" id="vtt_return_args">
+<script>
+var vc_agreement = 0;
+var caption_created = 'movie';
+var original_video_url = '<mt:var name="__permalink">?ts=<mt:var name="timestamp">';
+var caption_video_url  = '<mt:if name="with-caption-url"><mt:var name="with-caption-url">?ts=<mt:var name="timestamp"></mt:if>';
+var caption_video_url_orig  = '<mt:if name="with-caption-url"><mt:var name="with-caption-url">?ts=<mt:var name="timestamp"></mt:if>';
+var caption_vtt_url  = '<mt:if name="caption-vtt-url"><mt:var name="caption-vtt-url">?ts=<mt:var name="timestamp"></mt:if>';
+var caption_vtt_url_orig  = '<mt:if name="caption-vtt-url-orig"><mt:var name="caption-vtt-url-orig">?ts=<mt:var name="timestamp"></mt:if>';
+var caption_vtt_url_ruby  = '<mt:if name="caption-vtt-url-ruby"><mt:var name="caption-vtt-url-ruby">?ts=<mt:var name="timestamp"></mt:if>';
+var chapter_vtt_url_orig = '<mt:if name="chapter-vtt-url-orig"><mt:var name="chapter-vtt-url-orig">?ts=<mt:var name="timestamp"></mt:if>';
+var inEditContentChanged = false;
+<mt:if name="request.baked">
+$('#captionCreatedAlert2').show();
+$('#captionCreatedAlert2').focus();
+$('#determine-captions').show();
+$('#determine-captions').css('display', 'inline');
+$('#discard-captions').show();
+$('#discard-captions').css('display', 'inline');
+$('#video-player-src').attr( 'src', caption_video_url );
+if ( caption_vtt_url ) {
+    $('#change-captions').attr( 'data-state', 2 );
+    $('#change-captions-text').html( '<mt:trans phrase="With VTT" component="VideoCaptions">' );
+} else {
+    $('#change-captions').attr( 'data-state', 3 );
+    $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+}
+$('#current-video').html('(' + '<mt:trans phrase="With Captions" component="VideoCaptions">' + ')');
+</mt:if>
+var currentTab = 'Card';
+$('#video_caption_example').click(function(){
+    var nowEditContentChanged = editContentChanged;
+    editContentChanged = false;
+    setTimeout(function(){
+        editContentChanged = nowEditContentChanged;
+    },1000);
+    return true;
+});
+$('.tab-left').click(function(){
+    $('#caption-text-wrapper').hide(0);
+    $('#caption-card-wrapper').show(100);
+    $(this).addClass('active');
+    $('.tab-right').removeClass('active');
+    $.cookie( 'pt-caption-editor-mode', 'Card', { expires: 365 });
+    currentTab = 'Card';
+});
+$('.tab-right').click(function(){
+    $('#caption-card-wrapper').hide(0);
+    $('#caption-text-wrapper').show(100);
+    $(this).addClass('active');
+    $('.tab-left').removeClass('active');
+    $.cookie( 'pt-caption-editor-mode', 'Text', { expires: 365 });
+    currentTab = 'Text';
+});
+const captionEditMode = $.cookie( 'pt-caption-editor-mode');
+if ( captionEditMode == 'Card' || !captionEditMode ) {
+    $('#caption-text-wrapper').hide();
+    currentTab = 'Card';
+} else {
+    $('#caption-card-wrapper').hide();
+    $('.tab-left').removeClass('active');
+    $('.tab-right').addClass('active');
+    currentTab = 'Text';
+}
+$('#change-captions').click(function(){
+    if ( $(this).attr( 'data-state' ) == 1 ) {
+        if (window.vjsUtil) {
+            window.vjsUtil.refreshVTT(videoCaptions.player);
+            window.vjsUtil.removeVTT(videoCaptions.player);
+            if (chapter_vtt_url_orig) {
+                window.vjsUtil.removeVTT(videoCaptions.player);
+                window.vjsUtil.setVTT(videoCaptions.player, { chapters: chapter_vtt_url_orig });
+            }
+        }
+        videoCaptions.player.src({ src: caption_video_url });
+        videoCaptions.player.currentTime(0);
+        $('#current-video').html('(' + '<mt:trans phrase="With Captions" component="VideoCaptions">' + ')');
+        if ( caption_vtt_url ) {
+            $(this).attr( 'data-state', 2 );
+            $('#change-captions-text').html( '<mt:trans phrase="With VTT" component="VideoCaptions">' );
+        } else {
+            $(this).attr( 'data-state', 3 );
+            $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+        }
+    } else if ( $(this).attr( 'data-state' ) == 2 ) {
+        videoCaptions.player.src({ src: original_video_url });
+        videoCaptions.player.currentTime(0);
+        // $('#video-vtt-track').attr( 'src', caption_vtt_url + '?ts=' + Date.now() );
+        if (window.vjsUtil) {
+            const vttUrls = {
+                captions: caption_vtt_url_orig ? caption_vtt_url_orig + '?ts=' + Date.now() : '',
+                chapters: chapter_vtt_url_orig ? chapter_vtt_url_orig + '?ts=' + Date.now() : ''
+            };
+            window.vjsUtil.removeVTT(videoCaptions.player);
+            window.vjsUtil.setVTT(videoCaptions.player, vttUrls);
+        }
+        $('#current-video').html('(' + '<mt:trans phrase="With VTT" component="VideoCaptions">' + ')');
+        $(this).attr( 'data-state', 3 );
+        $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+    } else {
+        if (window.vjsUtil) {
+            window.vjsUtil.refreshVTT(videoCaptions.player);
+            window.vjsUtil.removeVTT(videoCaptions.player);
+        }
+        videoCaptions.player.src({ src: original_video_url });
+        videoCaptions.player.currentTime(0);
+        $('#current-video').html('(' + '<mt:trans phrase="Original Video" component="VideoCaptions">' + ')');
+        if ( caption_video_url ) {
+            $(this).attr( 'data-state', 1 );
+            $('#change-captions-text').html( '<mt:trans phrase="With Captions" component="VideoCaptions">' );
+        } else {
+            $(this).attr( 'data-state', 2 );
+            $('#change-captions-text').html( '<mt:trans phrase="With VTT" component="VideoCaptions">' );
+        }
+    }
+});
+$('#captions-preview').click(function(){
+    if (! $('#video-captions').val() ) {
+        alert( '<mt:trans phrase="There is no caption." component="VideoCaptions">' );
+        return false;
+    }
+    let url = '<mt:var name="script_uri">?__mode=video_caption_preview_vtt<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    let data = {
+        text: $('#video-captions').val(),
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+            } else {
+                $('#video-player-src').attr( 'src', original_video_url );
+                if (window.vjsUtil) {
+                    const previewUrls = responce.preview_url;
+                    const vttUrls = {
+                        captions: previewUrls.captions ? previewUrls.captions + '&ts=' + Date.now() : null,
+                        chapters: previewUrls.chapter ? previewUrls.chapter + '&ts=' + Date.now() : null
+                    };
+                    window.vjsUtil.removeVTT(videoCaptions.player);
+                    window.vjsUtil.setVTT(videoCaptions.player, vttUrls);
+                }
+                window.videojs.getPlayer('video-player_html5_api').currentTime(0);
+                $('#current-video').html('(' + '<mt:trans phrase="Preview">' + ')');
+                setTimeout(function(){
+                $('#video-player_html5_api').get(0).play();
+                },1000);
+            }
+        },
+        error: function(){
+            alert( '<mt:trans phrase="An error occurred while generation captions." component="VideoCaptions">' );
+        }
+    });
+});
+$('#audio-processing').click(function(){
+    let audioTrack = $('input[name=audio_description]:checked').val();
+    if (! audioTrack || audioTrack == 0 ) {
+        alert( '<mt:trans phrase="Audio Processing is not selected." component="VideoCaptions">' );
+        return false;
+    }
+    if (! $('#video-captions').val() ) {
+        alert( '<mt:trans phrase="There is no audio description." component="VideoCaptions">' );
+        return false;
+    }
+    if (! confirm( '<mt:trans phrase="Are you sure you want to audio processing?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    $('#captionDeleteAlert').hide();
+    $('#vttDeleteAlert').hide();
+    let url = '<mt:var name="script_uri">?__mode=video_caption_generate_vtt<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    if ( audioTrack == 3 || audioTrack == 4 ) {
+        if (! vc_agreement ) {
+            <mt:if tag="property" name="confirm_web_service" eq="1">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="VideoCaptions">' ) ) {
+                return;
+            }
+            <mt:elseif tag="property" name="confirm_web_service" eq="2">
+            <mt:getcookie name="pt-sj-polly-agreement" setvar="pt_vc_agreement">
+            <mt:unless name="pt_vc_agreement">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="VideoCaptions">' ) ) {
+                return;
+            }
+            </mt:unless>
+            vc_agreement = 1;
+            </mt:if>
+        }
+    }
+    $(this).attr('disabled', true);
+    $('#change-captions').attr('disabled', true);
+    $('#temp-captions-save').attr('disabled', true);
+    $('#make-video-vtt').attr('disabled', true);
+    $('#make-video-captions').attr('disabled', true);
+    <mt:if name="can_polly">
+    $('#audio-processing').attr('disabled', true);
+    </mt:if>
+    $('#captions-preview').attr('disabled', true);
+    <mt:ifcomponent component="Watermark">
+    $('#combine-watermark').attr('disabled', true);
+    </mt:ifcomponent>
+    $('#progressbar').show();
+    let data = {
+        text: $('#video-captions').val(),
+        audio: audioTrack,
+        audio_processing: true,
+        magic_token : '<mt:var name="magic_token">',
+        agreement: vc_agreement
+    };
+    editContentChanged = false;
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#progressbar').hide();
+                $('#temp-captions-save').attr('disabled', false);
+                $('#make-video-captions').attr('disabled', false);
+                <mt:if name="can_polly">
+                $('#audio-processing').attr('disabled', false);
+                </mt:if>
+                $('#change-captions').attr('disabled', false);
+                $('#make-video-vtt').attr('disabled', false);
+                $('#captions-preview').attr('disabled', false);
+                <mt:ifcomponent component="Watermark">
+                $('#combine-watermark').attr('disabled', false);
+                </mt:ifcomponent>
+            } else {
+                video_url = responce.result;
+                video_url = video_url + '?ts=' + Date.now();
+                $('#video-player-src').attr( 'src', video_url );
+                document.querySelector('#video-player_html5_api').load();
+                $('#progressbar').hide();
+                $('#temp-captions-save').attr('disabled', false);
+                $('#make-video-captions').attr('disabled', false);
+                <mt:if name="can_polly">
+                $('#audio-processing').attr('disabled', false);
+                </mt:if>
+                $('#change-captions').attr('disabled', false);
+                $('#make-video-vtt').attr('disabled', false);
+                $('#captions-preview').attr('disabled', false);
+                <mt:ifcomponent component="Watermark">
+                $('#combine-watermark').attr('disabled', false);
+                </mt:ifcomponent>
+                inEditContentChanged = editContentChanged;
+                setTimeout(function(){
+                $('#video-player_html5_api').get(0).play();
+                },1000);
+            }
+        },
+        error: function(){
+            $('#progressbar').hide();
+            $('#temp-captions-save').attr('disabled', false);
+            $('#make-video-captions').attr('disabled', false);
+            <mt:if name="can_polly">
+            $('#audio-processing').attr('disabled', false);
+            </mt:if>
+            $('#change-captions').attr('disabled', false);
+            $('#make-video-vtt').attr('disabled', false);
+            $('#captions-preview').attr('disabled', false);
+            <mt:ifcomponent component="Watermark">
+            $('#combine-watermark').attr('disabled', false);
+            </mt:ifcomponent>
+            alert( '<mt:trans phrase="An error occurred while generation captions." component="VideoCaptions">' );
+        }
+    });
+});
+$('#make-video-vtt').click(function(){
+    if (! $('#video-captions').val() ) {
+        alert( '<mt:trans phrase="There is no caption." component="VideoCaptions">' );
+        return false;
+    }
+    if (! confirm( '<mt:trans phrase="Are you sure you want to create vtt file?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    $('#captionDeleteAlert').hide();
+    $('#vttDeleteAlert').hide();
+    let url = '<mt:var name="script_uri">?__mode=video_caption_generate_vtt<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    <mt:if name="can_polly">let audioTrack = $('input[name=audio_description]:checked').val();
+    if ( audioTrack == 3 || audioTrack == 4 ) {
+        if (! vc_agreement ) {
+            <mt:if tag="property" name="confirm_web_service" eq="1">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="VideoCaptions">' ) ) {
+                return;
+            }
+            <mt:elseif tag="property" name="confirm_web_service" eq="2">
+            <mt:getcookie name="pt-sj-polly-agreement" setvar="pt_vc_agreement">
+            <mt:unless name="pt_vc_agreement">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="VideoCaptions">' ) ) {
+                return;
+            }
+            </mt:unless>
+            vc_agreement = 1;
+            </mt:if>
+        }
+    }
+    </mt:if>
+    let data = {
+        text: $('#video-captions').val(),
+        <mt:if name="can_polly">audio: audioTrack,</mt:if>
+        magic_token : '<mt:var name="magic_token">',
+        agreement: vc_agreement
+    };
+    editContentChanged = false;
+    $(this).attr('disabled', true);
+    $('#change-captions').attr('disabled', true);
+    $('#temp-captions-save').attr('disabled', true);
+    $('#make-video-captions').attr('disabled', true);
+    <mt:if name="can_polly">
+    $('#audio-processing').attr('disabled', true);
+    </mt:if>
+    $('#captions-preview').attr('disabled', true);
+    <mt:ifcomponent component="Watermark">
+    $('#combine-watermark').attr('disabled', true);
+    </mt:ifcomponent>
+    $('#progressbar').show();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#progressbar').hide();
+                $('#temp-captions-save').attr('disabled', false);
+                $('#make-video-captions').attr('disabled', false);
+                <mt:if name="can_polly">
+                $('#audio-processing').attr('disabled', false);
+                </mt:if>
+                $('#change-captions').attr('disabled', false);
+                $('#make-video-vtt').attr('disabled', false);
+                $('#captions-preview').attr('disabled', false);
+                <mt:ifcomponent component="Watermark">
+                $('#combine-watermark').attr('disabled', false);
+                </mt:ifcomponent>
+            } else {
+                /*
+                <mt:ifuseragent like="Firefox">
+                    $('#vtt_return_args').val('generate_vtt=1');
+                    $('#edit-form-main').submit();
+                    return;
+                </mt:ifuseragent>
+                */
+                caption_ruby_url = responce.result;
+                caption_vtt_url = caption_ruby_url;
+                url_params = original_video_url.split( '?' );
+                original_video_url = url_params[0] + '?ts=' + Date.now();
+                videoCaptions.player.src({ src: original_video_url });
+                if (window.vjsUtil) {
+                    const vttUrls = {
+                        captions: caption_ruby_url ? caption_ruby_url + '?ts=' + Date.now() : null,
+                        chapters: responce.chapter ? responce.chapter + '?ts=' + Date.now() : null
+                    };
+                    if (! caption_ruby_url ) {
+                        $('#clipboard-vtt-wrapper').hide();
+                    } else {
+                        $('#clipboard-vtt-wrapper').show();
+                        $('#clipboard-vtt').val( caption_ruby_url );
+                    }
+                    if (! responce.chapter ) {
+                        $('#clipboard-chapter-wrapper').hide();
+                    } else {
+                        $('#clipboard-chapter').val( responce.chapter );
+                        $('#clipboard-chapter-wrapper').show();
+                    }
+                    if (! responce.chapter_json ) {
+                        $('#clipboard-chapter-json-wrapper').hide();
+                    } else {
+                        $('#clipboard-chapter-json').val( responce.chapter_json );
+                        $('#clipboard-chapter-json-wrapper').show();
+                    }
+                    window.vjsUtil.removeVTT(videoCaptions.player);
+                    window.vjsUtil.setVTT(videoCaptions.player, vttUrls);
+                }
+                caption_created = 'vtt';
+                $('#determine-captions').show();
+                $('#determine-captions').css('display', 'inline');
+                $('#discard-captions').show();
+                $('#discard-captions').css('display', 'inline');
+                if ( responce.result ) {
+                    $('#clipboard-vtt').val( responce.result );
+                    $('#clipboard-vtt-wrapper').show();
+                }
+                if ( responce.ruby ) {
+                    $('#clipboard-vtt-ruby').val( responce.ruby );
+                    $('#clipboard-vtt-ruby-wrapper').show();
+                }
+                $('#current-video').html('(' + '<mt:trans phrase="With VTT" component="VideoCaptions">' + ')');
+                $('#change-captions').attr( 'data-state', 3 );
+                $('#change-captions').show();
+                $('#change-captions').css('display', 'inline');
+                $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+                $('#captionCreatedAlert').show();
+                $('#captionCreatedAlert').focus();
+                $('#progressbar').hide();
+                $('#temp-captions-save').attr('disabled', false);
+                $('#make-video-captions').attr('disabled', false);
+                <mt:if name="can_polly">
+                $('#audio-processing').attr('disabled', false);
+                </mt:if>
+                $('#change-captions').attr('disabled', false);
+                $('#make-video-vtt').attr('disabled', false);
+                $('#captions-preview').attr('disabled', false);
+                <mt:ifcomponent component="Watermark">
+                $('#combine-watermark').attr('disabled', false);
+                </mt:ifcomponent>
+                inEditContentChanged = editContentChanged;
+                editContentChanged = true;
+                setTimeout(function(){
+                $('#video-player_html5_api').get(0).play();
+                },1000);
+            }
+        },
+        error: function(){
+            $('#progressbar').hide();
+            $('#temp-captions-save').attr('disabled', false);
+            $('#make-video-captions').attr('disabled', false);
+            <mt:if name="can_polly">
+            $('#audio-processing').attr('disabled', false);
+            </mt:if>
+            $('#change-captions').attr('disabled', false);
+            $('#make-video-vtt').attr('disabled', false);
+            $('#captions-preview').attr('disabled', false);
+            <mt:ifcomponent component="Watermark">
+            $('#combine-watermark').attr('disabled', false);
+            </mt:ifcomponent>
+            alert( '<mt:trans phrase="An error occurred while generation captions." component="VideoCaptions">' );
+        }
+    });
+});
+<mt:ifuseragent like="Firefox">
+// Firefox could not dynamic load vtt file.
+<mt:if name="request.generate_vtt">
+    $('#video-player-src').attr( 'src', original_video_url );
+    // $('#video-vtt-track').attr( 'src', caption_vtt_url + '?ts=' + Date.now() );
+    if (window.vjsUtil) {
+        const vttUrls = {
+            captions: caption_ruby_url ? caption_ruby_url + '?ts=' + Date.now() : '',
+            chapters: chapter_vtt_url_orig ? chapter_vtt_url_orig + '?ts=' + Date.now() : ''
+        };
+        window.vjsUtil.removeVTT(videoCaptions.player);
+        window.vjsUtil.setVTT(videoCaptions.player, vttUrls);
+    }
+    document.querySelector('#video-player_html5_api').load();
+    caption_created = 'vtt';
+    if ( caption_vtt_url ) {
+        $('#determine-captions').show();
+        $('#determine-captions').css('display', 'inline');
+        $('#discard-captions').show();
+        $('#determine-captions').css('display', 'inline');
+    }
+    $('#current-video').html('(' + '<mt:trans phrase="With VTT" component="VideoCaptions">' + ')');
+    $('#change-captions').attr( 'data-state', 3 );
+    $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+    $('#captionCreatedAlert').show();
+    $('#captionCreatedAlert').focus();
+    editContentChanged = true;
+    setTimeout(function(){
+    $('#video-player_html5_api').get(0).play();
+    },1000);
+</mt:if>
+</mt:ifuseragent>
+$('#temp-captions-save').click(function(){
+    if (! $('#video-captions').val() ) {
+        alert( '<mt:trans phrase="There is no caption." component="VideoCaptions">' );
+        return false;
+    }
+    let url = '<mt:var name="script_uri">?__mode=video_caption_temp_save<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    // $('#__loader-bg').show();
+    $(this).attr('disabled', true);
+    $('#make-video-captions').attr('disabled', true);
+    <mt:if name="can_polly">
+    $('#audio-processing').attr('disabled', true);
+    </mt:if>
+    $('#change-captions').attr('disabled', true);
+    $('#make-video-vtt').attr('disabled', true);
+    $('#captions-preview').attr('disabled', true);
+    <mt:ifcomponent component="Watermark">
+    $('#combine-watermark').attr('disabled', true);
+    </mt:ifcomponent>
+    $('#progressbar').show();
+    let data = {
+        text: $('#video-captions').val(),
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 99999999999999999,
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#progressbar').hide();
+                $('#temp-captions-save').attr('disabled', false);
+                $('#make-video-captions').attr('disabled', false);
+                <mt:if name="can_polly">
+                $('#audio-processing').attr('disabled', false);
+                </mt:if>
+                $('#change-captions').attr('disabled', false);
+                $('#make-video-vtt').attr('disabled', false);
+                $('#captions-preview').attr('disabled', false);
+                <mt:ifcomponent component="Watermark">
+                $('#combine-watermark').attr('disabled', false);
+                </mt:ifcomponent>
+            } else {
+                $('#captionSavedAlert').show();
+                $('#captionSavedAlert').focus();
+                setTimeout( hideAlert, 3000, 'captionSavedAlert' );
+            }
+            $('#progressbar').hide();
+            $('#temp-captions-save').attr('disabled', false);
+            $('#make-video-captions').attr('disabled', false);
+            <mt:if name="can_polly">
+            $('#audio-processing').attr('disabled', false);
+            </mt:if>
+            $('#change-captions').attr('disabled', false);
+            $('#make-video-vtt').attr('disabled', false);
+            $('#captions-preview').attr('disabled', false);
+            <mt:ifcomponent component="Watermark">
+            $('#combine-watermark').attr('disabled', false);
+            </mt:ifcomponent>
+        },
+        error: function(){
+            alert( '<mt:trans phrase="An error occurred while generation captions." component="VideoCaptions">' );
+            $('#progressbar').hide();
+            $('#temp-captions-save').attr('disabled', false);
+            $('#make-video-captions').attr('disabled', false);
+            <mt:if name="can_polly">
+            $('#audio-processing').attr('disabled', false);
+            </mt:if>
+            $('#change-captions').attr('disabled', false);
+            $('#make-video-vtt').attr('disabled', false);
+            $('#captions-preview').attr('disabled', false);
+            <mt:ifcomponent component="Watermark">
+            $('#combine-watermark').attr('disabled', false);
+            </mt:ifcomponent>
+        }
+    });
+});
+$('#determine-captions').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to determine the video with caption?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    url = '<mt:var name="script_uri">?__mode=video_caption_determine<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    var data = {
+        magic_token : '<mt:var name="magic_token">',
+        kind : caption_created
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#determine-captions').hide( 200 );
+                $('#discard-captions').hide( 200 );
+                $('#captionCreatedAlert').hide( 200 );
+                $('#captionCreatedAlert2').hide( 200 );
+            } else {
+                let arertID = 'captionDetermineAlert';
+                if ( caption_created == 'vtt' && ! caption_vtt_url_orig ) {
+                    arertID = 'captionFixAlert';
+                    caption_vtt_url_orig = caption_vtt_url;
+                } else if ( caption_created == 'movie' && ! caption_video_url_orig ) {
+                    arertID = 'captionFixAlert';
+                    caption_video_url_orig = caption_video_url;
+                }
+                $('#' + arertID ).show();
+                setTimeout( hideAlert, 3000, arertID );
+            }
+            $('#determine-captions').hide( 200 );
+            $('#discard-captions').hide( 200 );
+            $('#captionCreatedAlert').hide( 200 );
+            $('#captionCreatedAlert2').hide( 200 );
+            if (! inEditContentChanged ) {
+                editContentChanged = false;
+            }
+        },
+        error: function(){
+            alert( '<mt:trans phrase="An error occurred while determine captioned video." component="VideoCaptions">' );
+            $('#determine-captions').hide( 200 );
+            $('#discard-captions').hide( 200 );
+            $('#captionCreatedAlert').hide( 200 );
+            $('#captionCreatedAlert2').hide( 200 );
+        }
+    });
+});
+$('#discard-captions').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to discard the captioned video and revert to backup?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    url = '<mt:var name="script_uri">?__mode=video_caption_discard<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    var data = {
+        magic_token : '<mt:var name="magic_token">',
+        kind : caption_created
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#determine-captions').hide( 200 );
+                $('#discard-captions').hide( 200 );
+                $('#captionCreatedAlert').hide( 200 );
+                $('#captionCreatedAlert2').hide( 200 );
+            } else {
+                let alertID = 'captionDiscardAlert';
+                // let src = $('#video-player-src').attr( 'src' );
+                let src = original_video_url;
+                if ( src.indexOf('?') ) {
+                    let uriParams = src.split( '?' );
+                    src = uriParams[0] + '?ts=' + + Date.now();
+                }
+                if ( caption_created == 'vtt' ) {
+                    let existing = false;
+                    if ( caption_vtt_url ) {
+                        // $('#video-vtt-track').attr( 'src', caption_vtt_url_ruby + '?ts=' + + Date.now() );
+                        if (window.vjsUtil) {
+                            const vttUrls = {
+                                captions: caption_vtt_url ? caption_vtt_url + '?ts=' + Date.now() : '',
+                                chapters: chapter_vtt_url_orig ? chapter_vtt_url_orig + '?ts=' + Date.now() : ''
+                            };
+                            window.vjsUtil.removeVTT(videoCaptions.player);
+                            window.vjsUtil.setVTT(videoCaptions.player, vttUrls);
+                        }
+                        // caption_vtt_url = caption_vtt_url_ruby;
+                    } else {
+                        if (window.vjsUtil) {
+                            window.vjsUtil.removeVTT(videoCaptions.player);
+                        }
+                        $('#current-video').html('(' + '<mt:trans phrase="Original Video" component="VideoCaptions">' + ')');
+                        alertID = 'captionTrashAlert';
+                        $('#clipboard-vtt-ruby-wrapper').hide();
+                        $('#clipboard-vtt-wrapper').hide();
+                    }
+                    if (! caption_video_url ) {
+                        $('#current-video').html('');
+                        $('#change-captions').hide( 200 );
+                    } else {
+                        $('#change-captions').attr( 'data-state', 1 );
+                        $('#change-captions-text').html( '<mt:trans phrase="With Captions" component="VideoCaptions">' );
+                    }
+                } else {
+                    if (! caption_video_url_orig ) {
+                        if (! caption_vtt_url ) {
+                            $('#current-video').html('');
+                            $('#current-video').html('');
+                            $('#change-captions').hide( 200 );
+                        } else {
+                            $('#current-video').html('(' + '<mt:trans phrase="Original Video" component="VideoCaptions">' + ')');
+                            $('#change-captions').attr( 'data-state', 2 );
+                            $('#change-captions-text').html( '<mt:trans phrase="With VTT" component="VideoCaptions">' );
+                        }
+                        caption_video_url = null;
+                        $('#clipboard-caption-wrapper').hide();
+                        alertID = 'captionTrashAlert';
+                        src = original_video_url + '?ts=' + + Date.now();
+                    }
+                }
+                if ( $('#clipboard-vtt').val() ) {
+                    $('#clipboard-vtt-wrapper').show();
+                }
+                if ( $('#clipboard-chapter').val() ) {
+                    $('#clipboard-chapter-wrapper').show();
+                }
+                $('#' + alertID ).show();
+                setTimeout( hideAlert, 3000, alertID );
+                $('#video-player-src').attr( 'src', src );
+                videoCaptions.player.src({ src: original_video_url });
+            }
+            if (! inEditContentChanged ) {
+                editContentChanged = false;
+            }
+            $('#determine-captions').hide( 200 );
+            $('#discard-captions').hide( 200 );
+            $('#captionCreatedAlert').hide( 200 );
+            $('#captionCreatedAlert2').hide( 200 );
+        },
+        error: function(){
+            alert( '<mt:trans phrase="An error occurred while restore captioned video." component="VideoCaptions">' );
+            $('#determine-captions').hide( 200 );
+            $('#discard-captions').hide( 200  );
+            $('#captionCreatedAlert').hide( 200 );
+            $('#captionCreatedAlert2').hide( 200 );
+        }
+    });
+});
+var progressBarPercent = 0;
+var pregressBarProgress = null;
+<mt:if name="can_bake_captions">
+$('#make-video-captions').click(function(){
+    if (! $('#video-captions').val() ) {
+        alert( '<mt:trans phrase="There is no caption." component="VideoCaptions">' );
+        return false;
+    }
+    if (! confirm( '<mt:trans phrase="This process may take a few minutes. Are you sure you want to continue?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    $('#captionDeleteAlert').hide();
+    $('#vttDeleteAlert').hide();
+    let url = '<mt:var name="script_uri">?__mode=video_caption_add_subtitles<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">';
+    // $('#__loader-bg').show();
+    <mt:if name="can_polly">let audioTrack = $('input[name=audio_description]:checked').val();
+    if ( audioTrack == 3 || audioTrack == 4 ) {
+        if (! vc_agreement ) {
+            <mt:if tag="property" name="confirm_web_service" eq="1">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="VideoCaptions">' ) ) {
+                return;
+            }
+            <mt:elseif tag="property" name="confirm_web_service" eq="2">
+            <mt:getcookie name="pt-sj-polly-agreement" setvar="pt_vc_agreement">
+            <mt:unless name="pt_vc_agreement">
+            if (! confirm( '<mt:trans phrase="Are you sure you want to send the editing text to Amazon Polly?" component="VideoCaptions">' ) ) {
+                return;
+            }
+            </mt:unless>
+            vc_agreement = 1;
+            </mt:if>
+        }
+    }
+    </mt:if>
+    $(this).attr('disabled', true);
+    <mt:if name="can_polly">
+    $('#audio-processing').attr('disabled', true);
+    </mt:if>
+    $('#change-captions').attr('disabled', true);
+    $('#temp-captions-save').attr('disabled', true);
+    $('#make-video-vtt').attr('disabled', true);
+    $('#captions-preview').attr('disabled', true);
+    <mt:ifcomponent component="Watermark">
+    $('#combine-watermark').attr('disabled', true);
+    </mt:ifcomponent>
+    $('#determine-captions').hide( 150 );
+    $('#discard-captions').hide( 150 );
+    $('#progressbar-progress').show();
+    progressBarPercent = 0;
+    pregressBarProgress = setInterval( progressBar, 200 );
+    var data = {
+        text: $('#video-captions').val(),
+        <mt:if name="can_polly">audio : audioTrack,</mt:if>
+        screen_id : '<mt:var name="screen_id" escape="js">',
+        magic_token : '<mt:var name="magic_token">',
+        agreement: vc_agreement
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 0,
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#make-video-captions').attr('disabled', false);
+                <mt:if name="can_polly">
+                $('#audio-processing').attr('disabled', false);
+                </mt:if>
+                $('#temp-captions-save').attr('disabled', false);
+                $('#change-captions').attr('disabled', false);
+                $('#make-video-vtt').attr('disabled', false);
+                $('#captions-preview').attr('disabled', false);
+                <mt:ifcomponent component="Watermark">
+                $('#combine-watermark').attr('disabled', false);
+                </mt:ifcomponent>
+                $('#progressbar').hide();
+                $('#progressbar-progress').hide();
+                clearInterval( pregressBarProgress );
+            } else {
+                $('#progressbar-progress').hide();
+                $('#progressbar').show();
+                let createdURL = responce.result + '?ts=' + Date.now();
+                $('#video-player-src').attr('src', createdURL );
+                $('#video-player_html5_api').attr('src', createdURL );
+                $('#captionCreatedAlert').show();
+                $('#captionCreatedAlert').focus();
+                // setTimeout( hideAlert, 3000, 'captionCreatedAlert' );
+                document.querySelector('#video-player_html5_api').load();
+                caption_video_url = responce.result;
+                $('#clipboard-caption').val( responce.result );
+                $('#clipboard-caption-wrapper').show();
+                $('#clipboard-caption-wrapper').css( 'display', 'block' );
+                $('#change-captions').show( 200 );
+                $('#change-captions').attr( 'data-state', 2 );
+                $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+                $('#current-video').html('(' + '<mt:trans phrase="With Captions" component="VideoCaptions">' + ')');
+                if ( caption_vtt_url ) {
+                    $('#change-captions').attr( 'data-state', 2 );
+                    $('#change-captions-text').html( '<mt:trans phrase="With VTT" component="VideoCaptions">' );
+                } else {
+                    $('#change-captions').attr( 'data-state', 3 );
+                    $('#change-captions-text').html( '<mt:trans phrase="Original Video" component="VideoCaptions">' );
+                }
+                if ( caption_video_url ) {
+                    $('#determine-captions').show();
+                    $('#determine-captions').css('display', 'inline');
+                    $('#discard-captions').show();
+                    $('#discard-captions').css('display', 'inline');
+                }
+                if (window.vjsUtil) {
+                    window.vjsUtil.removeVTT(videoCaptions.player);
+                    if (responce.chapter) {
+                        window.vjsUtil.removeVTT(videoCaptions.player);
+                        window.vjsUtil.setVTT(videoCaptions.player, { chapters: responce.chapter });
+                    }
+                }
+                caption_created = 'movie';
+                inEditContentChanged = editContentChanged;
+                editContentChanged = true;
+                setTimeout(function(){
+                $('#video-player_html5_api').get(0).play();
+                },1000);
+            }
+            $('#make-video-captions').attr('disabled', false);
+            <mt:if name="can_polly">
+            $('#audio-processing').attr('disabled', false);
+            </mt:if>
+            $('#temp-captions-save').attr('disabled', false);
+            $('#change-captions').attr('disabled', false);
+            $('#make-video-vtt').attr('disabled', false);
+            $('#captions-preview').attr('disabled', false);
+            <mt:ifcomponent component="Watermark">
+            $('#combine-watermark').attr('disabled', false);
+            </mt:ifcomponent>
+            $('#progressbar-progress').hide();
+            setTimeout( hideAlert, 2000, 'progressbar', 1000 );
+            clearInterval( pregressBarProgress );
+        },
+        error: function(){
+            // NOTE : Ajax request was Gateway Timeout.
+            let url = '<mt:var name="script_uri">?__mode=video_caption_bake_processing<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">&screen_id=<mt:var name="screen_id" escape="js">';
+            window.location.href = url;
+        }
+    });
+});
+</mt:if>
+const progressBar = () => {
+    progressBarPercent += <mt:var name="genarate_percent">;
+    if ( progressBarPercent > 100 ) {
+        $('#progressbar-progress').hide();
+        $('#progressbar').show();
+    } else {
+        $('#progressbar-inner').css( 'width', progressBarPercent + '%' );
+    }
+}
+var hideAlert = function( id, interval = 200 ) {
+    $('#' + id ).hide( interval );
+};
+</script>
+</div>
+</mt:if>
+  </mt:if>
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="fileupload">">
+      <mt:trans phrase="File">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <div class="alert alert-success hidden mt-3" id="fileUploadedAlert" role="alert" tabindex="0">
+      <button onclick="$('#fileUploadedAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <mt:trans phrase="Save the file to edit the video captions." component="VideoCaptions">
+    </div>
+    <div class="alert alert-success <mt:if name="request.extract_error"> hidden </mt:if><mt:unless name="zip_is_hls"> hidden </mt:unless> mt-3" id="zipUploadedAlert" role="alert" tabindex="0">
+      <label class="custom-control custom-checkbox" style="margin-top: 0.5rem">
+      <input class="custom-control-input watch-changed"
+       type="checkbox" name="extract-zip" value="1">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">
+            <mt:trans phrase="This archive contains streaming video media files. Do you want to unzip the archive and register the video?" component="VideoCaptions">
+          </span>
+      </label>
+    </div>
+    <div id="drop-zone" class="mb-3">
+      <i id="icon-file" class="btn fa <mt:if name="object_class" eq="image">fa-file-image-o<mt:elseif name="object_file_ext" eq="svg">fa-file-image-o<mt:elseif name="object_file_ext" eq="zip">fa-file-archive-o<mt:elseif name="object_file_ext" eq="gz">fa-file-archive-o<mt:elseif name="object_file_ext" eq="tar">fa-file-archive-o<mt:elseif name="object_class" eq="pdf">fa-file-pdf-o<mt:elseif name="object_class" eq="video">fa-file-video-o<mt:elseif name="class" eq="audio">fa-file-audio-o<mt:else>fa-file-o</mt:if> fa-3x" aria-hidden="true"></i>
+      <mt:setvar name="preview_width" value="150">
+      <mt:if name="_meta_id">
+      <mt:setvar name="preview_width" value="150">
+      <mt:assetproperty name="file_path" model="upload_file" property="image_width" id="$object_id" setvar="image_width">
+      <mt:if name="image_width">
+      <mt:if name="image_width" lt="$preview_width">
+        <mt:setvar name="preview_width" value="$image_width">
+      </mt:if>
+      </mt:if>
+      </mt:if>
+      <mt:property name="simplifiedjapanese_ffmpeg_path" setvar="ffmpeg_path">
+      <mt:unless name="object_class" eq="image">
+        <mt:if name="object_file_ext" ne="svg">
+          <mt:setvar name="hidden_class" value="hidden">
+        </mt:if>
+      </mt:unless>
+      <mt:if name="object_class" eq="video">
+        <mt:if name="ffmpeg_path">
+          <mt:if name="request.id">
+            <mt:setvar name="hidden_class" value="">
+          </mt:if>
+        </mt:if>
+      </mt:if>
+      <img class="<mt:var name="hidden_class">
+        <mt:unless name="object_file_name"> hidden</mt:unless> preview-file-field lazy"
+        id="image_preview-file"
+        src="<mt:var name="prototype_path">assets/img/spacer.gif"
+        style="max-width:<mt:var name="preview_width">px;max-height:<mt:var name="preview_width">px;background-image:url('<mt:var name="prototype_path">assets/img/loading.gif');background-size:40px;background-repeat:no-repeat;background-position:center;"
+        data-original="<mt:var name="thumbnail">" alt="<mt:trans phrase="Preview">">
+        <mt:var name="object_url" setvar="_object_url">
+        <mt:unless name="object_url">
+          <mt:if name="forward_params">
+            <mt:var name="request.upload-file-magic" escape regex_replace="'/\-file$/',''" setvar="upload_file_magic">
+            <mt:setvarblock name="_object_url"><mt:var name="script_uri">?__mode=view&_type=edit&_model=upload_file&id=<mt:var name="object_id">&view=file&_screen_id=<mt:var name="upload_file_magic">&workspace_id=<mt:var name="workspace_id"></mt:setvarblock>
+          </mt:if>
+        <mt:else>
+          <mt:if name="object_file_ext" eq="m3u8">
+            <mt:setvarblock name="_object_url"><mt:var name="script_uri">?__mode=video_captions_view_hls&id=<mt:var name="object_id"></mt:setvarblock>
+          </mt:if>
+        </mt:unless>
+        &nbsp; <a id="file_view-btn" target="_blank" class="btn btn-secondary <mt:unless name="object_file_name">hidden</mt:unless>" href="<mt:var name="_object_url" escape>"><mt:trans phrase="View"> <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></a> &nbsp;
+      <mt:ifcomponent component="ImageInfo">
+        <mt:property name="imageinfo_pdfinfo_path" setvar="imageinfo_pdfinfo_path">
+        <mt:if name="imageinfo_pdfinfo_path"><mt:if name="class" eq="pdf"><mt:setvar name="_pdf_support" value="1"></mt:if></mt:if>
+        <button type="button" id="info-file_path" class="btn btn-info<mt:unless name="value"> hidden</mt:unless><mt:unless name="class" eq="image"> <mt:unless name="_pdf_support"> hidden</mt:unless></mt:unless><mt:if name="file_mime_type" eq="image/gif"> hidden</mt:if>" data-toggle="modal" data-target="#modal"
+        data-href="<mt:var name="script_uri">?__mode=get_imageinfo_dialog&amp;_model=<mt:var name="model">&amp;id=<mt:var name="request.id" escape>&amp;view=<mt:if name="upload_file_magic">file<mt:else>file_path</mt:if>&amp;_screen_id=<mt:if name="upload_file_magic"><mt:var name="upload_file_magic"><mt:else><mt:var name="screen_id" escape></mt:if><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"><mt:trans phrase="Info..." component="ImageInfo"></button>
+        <mt:assetproperty name="file_path" model="$model" property="image_verified" setvar="image_verified">
+        <span id="files-file_path-verified" class="<mt:unless name="image_verified">hidden</mt:unless>">
+          <i class="fa fa-check-circle" style="color:#089" aria-hidden="true" title="<mt:trans phrase="Verified This Image" component="ImageInfo">">
+          <span class="sr-only"><mt:trans phrase="Verified This Image" component="ImageInfo"></span>
+          </i>
+        </span>
+        &nbsp;
+      </mt:ifcomponent>
+      <span id="file-chooser" class="btn btn-success fileinput-button">
+          <span><mt:trans phrase="Select File..."></span>
+          <!-- The file input field used as target for the file upload widget -->
+          <input id="fileupload" type="file" name="files"
+              onfocus="$('#file-chooser').css('border','2px solid green');"
+              onblur="$('#file-chooser').css('border','none');">
+      </span>
+      <!-- The global progress bar -->
+      <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+      </div>
+      <!-- The container for the uploaded files -->
+      <div id="files" class="files mt-2"><mt:var name="object_file_name" escape>
+      <mt:if name="object_file_ext" eq="m3u8">
+      <mt:loop name="hls_scales">
+        <a target="_blank" class="btn btn-secondary btn-sm" href="<mt:var name="script_uri">?__mode=video_captions_view_hls&amp;id=<mt:var name="object_id">&amp;basename=<mt:var name="__value__" escape>"><mt:var name="__key__" escape> <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></a>
+      </mt:loop>
+      </mt:if>
+      </div>
+        <div class="input-group copy-url<mt:unless name="object_url"> hidden</mt:unless>" id="clipboard-file-wrapper">
+          <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-file"
+            readonly value="<mt:var name="__permalink">">
+          <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-<mt:var name="__col_name__">"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+          <button id="view-file" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+        <mt:if name="_show_both">
+          <button id="view-published" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View Published">" type="button" class="input-group-addon"><i class="fa fa-globe" aria-hidden="true" aria-label="<mt:trans phrase="View Published">"></i></button>
+        </mt:if>
+        </div>
+      <div class="alert alert-success mt-3 text-center hidden" id="captionDeleteAlert" role="alert" tabindex="0">
+        <button onclick="$('#captionDeleteAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <mt:trans phrase="The file has successfully removed." component="VideoCaptions">
+      </div>
+      <div id="clipboard-caption-wrapper" <mt:unless name="with-caption-url"> class="hidden"</mt:unless>>
+        <div class="input-group copy-url">
+          <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-caption"
+            readonly value="<mt:var name="with-caption-url">">
+          <button id="delete-caption" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Delete">" type="button" class="input-group-addon"><i class="fa fa-trash-o" aria-hidden="true" aria-label="<mt:trans phrase="Delete">"></i></button>
+          <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-caption"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+          <button id="view-caption" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+        </div>
+      </div>
+      <div class="alert alert-success mt-3 text-center hidden" id="vttDeleteAlert" role="alert" tabindex="0">
+        <button onclick="$('#vttDeleteAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <mt:trans phrase="The file has successfully removed." component="VideoCaptions">
+      </div>
+      <div id="clipboard-vtt-wrapper" <mt:unless name="caption-vtt-url-orig"> class="hidden"</mt:unless>>
+        <div class="input-group copy-url">
+          <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-vtt"
+            readonly value="<mt:var name="caption-vtt-url-orig">">
+          <button id="delete-vtt" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Delete">" type="button" class="input-group-addon"><i class="fa fa-trash-o" aria-hidden="true" aria-label="<mt:trans phrase="Delete">"></i></button>
+          <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-vtt"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+          <button id="view-vtt" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+        </div>
+      </div>
+      <div id="clipboard-chapter-wrapper" <mt:unless name="chapter-vtt-url-orig"> class="hidden"</mt:unless>>
+        <div class="input-group copy-url">
+          <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-chapter"
+            readonly value="<mt:var name="chapter-vtt-url-orig">">
+          <button id="delete-chapter" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Delete">" type="button" class="input-group-addon"><i class="fa fa-trash-o" aria-hidden="true" aria-label="<mt:trans phrase="Delete">"></i></button>
+          <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-chapter"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+          <button id="view-chapter" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+        </div>
+      </div>
+      <div id="clipboard-chapter-json-wrapper" <mt:unless name="chapter-json-url-orig"> class="hidden"</mt:unless>>
+        <div class="input-group copy-url">
+          <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-chapter-json"
+            readonly value="<mt:var name="chapter-json-url-orig">">
+          <button id="delete-chapter-js" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Delete">" type="button" class="input-group-addon"><i class="fa fa-trash-o" aria-hidden="true" aria-label="<mt:trans phrase="Delete">"></i></button>
+          <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-chapter-json"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+          <button id="view-chapter-json" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+        </div>
+      </div>
+      <div id="clipboard-vtt-ruby-wrapper" <mt:unless name="caption-vtt-url-ruby"> class="hidden"</mt:unless>>
+        <div class="mb-3 input-group copy-url">
+          <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-vtt-ruby"
+            readonly value="<mt:var name="caption-vtt-url-ruby">">
+          <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-vtt-ruby"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+          <button id="view-vtt-ruby" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+        </div>
+      </div>
+        <input type="hidden" id="__permalink" value="<mt:if name="_show_both"><mt:var name="object_url"><mt:else><mt:var name="__permalink"></mt:if>">
+        <input type="hidden" id="__permalink_published" value="<mt:var name="__permalink">">
+    </div>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="assets/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="assets/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="assets/js/jquery.fileupload.js"></script>
+<script>
+$('#view-file').click(function(){
+    let viewlink = '<mt:var name="object_url">';
+    window.open( viewlink, '_blank');
+});
+$('#view-published').click(function(){
+    let viewlink = <mt:if name="_pub_permalink">'<mt:var name="_pub_permalink">'<mt:else>$('#__permalink_published').val()</mt:if>;
+    window.open( viewlink, '_blank');
+});
+$('#view-vtt').click(function(){
+    let viewlink = $('#clipboard-vtt').val();
+    window.open( viewlink, '_blank');
+});
+$('#view-chapter').click(function(){
+    let viewlink = $('#clipboard-chapter').val();
+    window.open( viewlink, '_blank');
+});
+$('#view-chapter-json').click(function(){
+    let viewlink = $('#clipboard-chapter-json').val();
+    window.open( viewlink, '_blank');
+});
+$('#view-vtt-ruby').click(function(){
+    let viewlink = $('#clipboard-vtt-ruby').val();
+    window.open( viewlink, '_blank');
+});
+$('#view-caption').click(function(){
+    let viewlink = $('#clipboard-caption').val();
+    window.open( viewlink, '_blank');
+});
+$('#delete-caption').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to delete this file?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    let data = {
+        type: 'with-caption',
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: '<mt:var name="script_uri">?__mode=video_caption_delete_file<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">',
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(responce){
+            if (responce.message) {
+                alert(responce.message);
+            } else {
+                $('#clipboard-caption-wrapper').hide(100);
+                videoCaptions.player.src({ src: original_video_url });
+                videoCaptions.player.currentTime(0);
+                $('#current-video').html('(' + '<mt:trans phrase="Original Video" component="VideoCaptions">' + ')');
+                $('#change-captions').attr( 'data-state', 1 );
+                $('#vttDeleteAlert').hide();
+                $('#captionDeleteAlert').show();
+                caption_video_url = null;
+                if ( $('#clipboard-vtt-wrapper').is(':visible') || $('#clipboard-chapter-wrapper').is(':visible') ) {
+                    $('#change-captions').attr( 'data-state', 2 );
+                    $('#change-captions-text').html( '<mt:trans phrase="With VTT" component="VideoCaptions">' );
+                } else {
+                    $('#change-captions').hide(100);
+                }
+            }
+        },
+        error: function(){
+            alert('<mt:trans phrase="An error occurred while deleting file." component="VideoCaptions">');
+        }
+    });
+});
+$('#delete-vtt').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to delete this file?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    let data = {
+        type: 'vtt',
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: '<mt:var name="script_uri">?__mode=video_caption_delete_file<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">',
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(responce){
+            if (responce.message) {
+                alert(responce.message);
+            } else {
+                $('#clipboard-vtt-wrapper').hide(100);
+                videoCaptions.player.src({ src: original_video_url });
+                videoCaptions.player.currentTime(0);
+                $('#current-video').html('(' + '<mt:trans phrase="Original Video" component="VideoCaptions">' + ')');
+                let visible = $('#clipboard-caption-wrapper').is(':visible');
+                $('#captionDeleteAlert').hide();
+                $('#vttDeleteAlert').show();
+                caption_vtt_url = null;
+                if ( $('#clipboard-vtt-wrapper').is(':visible') || $('#clipboard-chapter-wrapper').is(':visible') ) {
+                    $('#change-captions').attr( 'data-state', 2 );
+                } else {
+                    if (! visible ) {
+                        $('#change-captions').hide(100);
+                    } else {
+                        $('#change-captions').attr( 'data-state', 1 );
+                        $('#change-captions-text').html( '<mt:trans phrase="With Captions" component="VideoCaptions">' );
+                    }
+                }
+            }
+        },
+        error: function(){
+            alert('<mt:trans phrase="An error occurred while deleting file." component="VideoCaptions">');
+        }
+    });
+});
+$('#delete-chapter').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to delete this file?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    let data = {
+        type: 'chapter-vtt',
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: '<mt:var name="script_uri">?__mode=video_caption_delete_file&_type=caption<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">',
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(responce){
+            if (responce.message) {
+                alert(responce.message);
+            } else {
+                $('#clipboard-chapter-wrapper').hide(100);
+                videoCaptions.player.src({ src: original_video_url });
+                videoCaptions.player.currentTime(0);
+                $('#current-video').html('(' + '<mt:trans phrase="Original Video" component="VideoCaptions">' + ')');
+                
+                let visible = $('#clipboard-caption-wrapper').is(':visible');
+                $('#captionDeleteAlert').hide();
+                $('#vttDeleteAlert').show();
+                chapter_vtt_url_orig = null;
+                if ( $('#clipboard-vtt-wrapper').is(':visible') || $('#clipboard-chapter-wrapper').is(':visible') ) {
+                    $('#change-captions').attr( 'data-state', 2 );
+                } else {
+                    if (! visible ) {
+                        $('#change-captions').hide(100);
+                    } else {
+                        $('#change-captions').attr( 'data-state', 1 );
+                        $('#change-captions-text').html( '<mt:trans phrase="With Captions" component="VideoCaptions">' );
+                    }
+                }
+            }
+        },
+        error: function(){
+            alert('<mt:trans phrase="An error occurred while deleting file." component="VideoCaptions">');
+        }
+    });
+});
+$('#delete-chapter-js').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to delete this file?" component="VideoCaptions">' ) ) {
+        return false;
+    }
+    let data = {
+        type: 'chapter-vtt-js',
+        magic_token : '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: '<mt:var name="script_uri">?__mode=video_caption_delete_file&_type=caption<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">',
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(responce){
+            if (responce.message) {
+                alert(responce.message);
+            } else {
+                $('#clipboard-chapter-json-wrapper').hide(100);
+                videoCaptions.player.src({ src: original_video_url });
+                videoCaptions.player.currentTime(0);
+                $('#captionDeleteAlert').hide();
+                $('#vttDeleteAlert').show();
+            }
+        },
+        error: function(){
+            alert('<mt:trans phrase="An error occurred while deleting file." component="VideoCaptions">');
+        }
+    });
+});
+var DropZone = document.getElementById('drop-zone');
+DropZone.addEventListener('dragover', function (event) {
+    $('#drop-zone').css('background-color','#ddf');
+});
+DropZone.addEventListener('dragleave', function (event) {
+    $('#drop-zone').css('background-color','#fff');
+});
+$('#drop-zone').css('border','3px dashed #ccc');
+$('#drop-zone').css('padding','12px');
+$('.fileinput-button').css('margin','12px 0px');
+var uploading = false;
+$(function () {
+    'use strict';
+    $('#create-hls').hide();
+    var url = '<mt:var name="script_uri">?__mode=fileuploader_upload&magic_token=<mt:var name="magic_token" escape>&workspace_id=<mt:var name="workspace_id">&request_id=<mt:property name="request_id" escape>&chunk_upload=1';
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        maxChunkSize: <mt:if tag="property" name="fileuploader_max_chunk_size"><mt:property name="fileuploader_max_chunk_size" cast_to="int"><mt:else>1048576</mt:if>,
+        <mt:if tag="property" name="fileuploader_upload_size_limit">maxFileSize: <mt:property name="fileuploader_upload_size_limit" cast_to="int">,</mt:if>
+        dropZone: $("#drop-zone"),
+        add: function (e, data) {
+            $('#fileUploadedAlert').hide();
+            $('#zipUploadedAlert').hide();
+            if ( uploading == true ) {
+                alert("<mt:trans phrase="You cannot upload multiple files at once.">");
+                return false;
+            } else {
+                if ( $('#upload-file-magic').val() ) {
+                    $.post("<mt:var name="script_uri">",
+                      {
+                        '__mode': 'start_chunk_upload',
+                        'magic_token' : '<mt:var name="magic_token" escape>',
+                        'request_id': '<mt:property name="request_id" escape>',
+                        'upload-file-magic' : $('#upload-file-magic').val(),
+                      }
+                    );
+                }
+            }
+            uploading = true;
+            data.submit();
+        },
+        done: function (e, data) {
+            if (!data.result.files) {
+                var error = data.result.message;
+                $('#progress .progress-bar').css(
+                    'width', 0
+                );
+                alert("<mt:trans phrase="An error occurred while uploading.">"+' (' + error + ')');
+                return;
+            }
+            $.each(data.result.files, function (index, file) {
+                $('#files').html('');
+                file.name = escape_html( decodeURIComponent(file.name) );
+                var basename = escape_html( file.basename );
+                file.basename = escape_html( decodeURIComponent(file.basename) );
+                file.hashed_name = escape_html( file.hashed_name );
+                file_class = escape_html( file_class );
+                $('<span/>').text(file.name).appendTo('#files');
+                $('#upload-file-magic').val(file.magic);
+              <mt:ifcomponent component="ImageInfo">
+                var upload_file_magic = file.magic;
+                upload_file_magic = upload_file_magic.replace( /\-file$/, '' );
+                var upload_file_magic_url = '<mt:var name="script_uri">?__mode=get_imageinfo_dialog&_model=<mt:var name="model">&id=<mt:var name="request.id" escape>&view=file<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&_screen_id=' + upload_file_magic;
+                $('#info-file_path').attr('data-href', upload_file_magic_url);
+                $('#files-file_path-verified').attr('id', 'files-file-verified');
+              </mt:ifcomponent>
+                var file_class = file.class;
+                $('#class').val(file_class);
+                $('#mime_type').val(file.type);
+                $('#size').val(file.size);
+                $('#image_width').val(file.width);
+                $('#image_height').val(file.height);
+                $('#file_ext').val(file.extension);
+                <mt:property name="no_encode_filename" setvar="no_encode_filename">
+                <mt:property name="encode_filename_compat" setvar="encode_filename_compat">
+                <mt:property name="hash_multibyte_filename" setvar="hash_multibyte_filename">
+                <mt:if name="encode_filename_compat">
+                  <mt:var name="no_encode_filename" value="0">
+                </mt:if>
+                <mt:if name="hash_multibyte_filename">
+                $('#file_name').val(file.hashed_name + '.' + file.extension);
+                <mt:elseif name="no_encode_filename">
+                $('#file_name').val(file.name);
+                <mt:else>
+                $('#file_name').val(basename + '.' + file.extension);
+                </mt:if>
+                if (! $('#label').val() ) {
+                    if ( file.basename ) {
+                        $('#label').val(file.basename);
+                    } else {
+                        $('#label').val(file.name);
+                    }
+                }
+                var file_size = file.size;
+                if ( file_size >= 1048576 ) {
+                    file_size = Math.round( ( file_size / 1048576 )*10 )/10 + 'MB';
+                } else if ( file_size >= 1024 ) {
+                    file_size = Math.round( ( file_size / 1024 )*10 )/10 + 'KB';
+                } else {
+                    file_size = file_size + 'Byte';
+                }
+                if ( file_class == 'image' || file.extension == 'svg' ) {
+                    var thumbnail = 'data:' + file.type + ';base64,' + file.thumbnail;
+                    $('#image_preview-file').attr( 'src', thumbnail );
+                    $('#image_preview-file').removeClass( 'hidden' );
+                    $('#image_preview-file').css( 'max-width', '150px' );
+                    $('#image_preview-file').css( 'max-height', '150px' );
+                    $('#image_preview-file').show();
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-image-o');
+                } else if ( file.extension == 'zip' || file.extension == 'gz' || file.extension == 'tar') {
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-archive-o');
+                } else if ( file_class == 'pdf') {
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-pdf-o');
+                } else if ( file_class == 'video') {
+                    $('#icon-file').removeClass('fa-file-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').addClass('fa-file-video-o');
+                } else {
+                    $('#icon-file').removeClass('fa-file-pdf-o');
+                    $('#icon-file').removeClass('fa-file-image-o');
+                    $('#icon-file').removeClass('fa-file-archive-o');
+                    $('#icon-file').removeClass('fa-file-video-o');
+                    $('#icon-file').addClass('fa-file-o');
+                }
+                if (file_class != 'image' && file.extension != 'svg' ) {
+                    $('#image_preview-file').hide();
+                }
+                <mt:ifcomponent component="ImageInfo">
+                if (file_class == 'image' && file.extension != 'svg' ) {
+                    $('#info-file_path').show();
+                <mt:if name="imageinfo_pdfinfo_path">
+                } else if ( file_class == 'pdf' ) {
+                    $('#info-file_path').show();
+                </mt:if>
+                } else {
+                    $('#info-file_path').hide();
+                }
+                </mt:ifcomponent>
+                var magic = file.magic;
+                magic = magic.replace( /\-file$/, '' );
+                var preview_url = '<mt:var name="script_uri">?__mode=view&_type=edit&_model=upload_file&view=file&id=<mt:var name="request.id" escape>&view=file&_screen_id=' + magic + '<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                $('#file_view-btn').attr( 'href', preview_url );
+                $('#clipboard-file').val( preview_url );
+                $('#__permalink').val( preview_url );
+                $('#__permalink_published').val( preview_url );
+                $('#file_view-btn').removeClass( 'hidden' );
+                $('#file_view-btn').show();
+                $('#clipboard-file-wrapper').removeClass( 'hidden' );
+                $('#clipboard-file-wrapper').show();
+                $('#_object_size').html(file_size);
+                if ( file.width ) {
+                    $('#_object_width').html(file.width + 'px') ;
+                    $('#_object_height').html(file.height + 'px');
+                } else {
+                    $('#_object_width').html('');
+                    $('#_object_height').html('');
+                }
+                $('#progress .progress-bar').css(
+                    'width', 0
+                );
+                <mt:if name="class" eq="video">
+                $('#caption-editor-area').hide( 300 );
+                $('#file-changed').val( 1 );
+                </mt:if>
+                if ( file_class == 'video' ) {
+                    $('#thumbnail_sec-wrapper').show();
+                    $('#fileUploadedAlert').show();
+                    $('#fileUploadedAlert').focus();
+                    $('#file-changed').val( 1 );
+                    $('#clipboard-caption-wrapper').hide();
+                } else {
+                    $('#thumbnail_sec-wrapper').hide();
+                }
+                if ( file.type == 'application/zip' ) {
+                    let check_url = '<mt:var name="script_uri">?__mode=video_caption_is_hls&_screen_id=' + magic + '<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&file_magic=' + file.magic;
+                    $.get(check_url, function( data ){
+                        if ( data && data == 1 ) {
+                            $('#zipUploadedAlert').show();
+                            $('#zipUploadedAlert').focus();
+                            $('#clipboard-caption-wrapper').hide();
+                        }
+                    });
+                }
+                uploading = false;
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+</script>
+  </div>
+</div>
+<mt:property name="simplifiedjapanese_ffmpeg_path" setvar="ffmpeg_path">
+<mt:unless name="request.id"><mt:property name="video_captions_thumbnail_sec" setvar="object_thumbnail_sec"></mt:unless>
+<mt:if name="ffmpeg_path">
+<div class="row form-group" id="thumbnail_sec-wrapper">
+  <div class="col-lg-2">
+    <label for="thumbnail_sec">
+      <mt:trans phrase="Export Thumbnail Sec">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    <input id="thumbnail_sec" type="number" class="form-control watch-changed e-num" name="thumbnail_sec" value="<mt:unless name="object_thumbnail_sec">0.0<mt:else><mt:var name="object_thumbnail_sec"></mt:unless>">
+    &nbsp;
+    <button data-toggle="tooltip" data-placement="right" type="button" id="set-current-time-sec" class="ml-2 btn btn-secondary" title="<mt:trans phrase="Set the current playback time to value" component="VideoCaptions">">
+    <i class="fa fa-video-camera" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Set the current playback time to value" component="VideoCaptions"></span>
+    </button>
+  </div>
+</div>
+<script>
+$('#set-current-time-sec').click(function(){
+    let videoElement = document.querySelector('video');
+    let currentTime = videoElement.currentTime;
+    if (! currentTime ) {
+        currentTime = '0.0';
+    }
+    $('#thumbnail_sec').val( currentTime );
+});
+</script>
+<mt:if name="object_class" ne="video">
+<script>
+$('#thumbnail_sec-wrapper').hide();
+</script>
+</mt:if>
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:unless name="request.id">
+      <mt:pluginsetting component="FileUploader" name="fileuploader_extra_path" workspace_id="$workspace_id" setvar="value">
+      <mt:unless name="value">
+        <mt:unless name="request.workspace_id">
+          <mt:getoption key="extra_path" escape setvar="value">
+        <mt:else>
+          <mt:var name="workspace_extra_path" escape setvar="value">
+        </mt:unless>
+        <mt:if name="model_out_path">
+          <mt:var name="model_out_path" escape add_slash setvar="model_out_path">
+          <mt:setvar name="value" value="$model_out_path" append="1">
+        </mt:if>
+      </mt:unless>
+    </mt:unless>
+    <mt:if name="forward_params">
+      <mt:setvarblock name="__forward_name__">forward_<mt:var name="__col_name__"></mt:setvarblock>
+      <mt:var name="$__forward_name__" setvar="value">
+    </mt:if>
+    <input id="<mt:var name="__col_name__">" type="text" class="form-control watch-changed <mt:var name="ctrl_class">" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      <mt:if name="readonly">readonly</mt:if>>
+    <mt:var name="_hint">
+  </div>
+</div>
+<div id="modal-fluid" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true" data-keyboard="true">
+  <div class="modal-dialog modal-fluid">
+    <div class="modal-content">
+      <mt:setvarblock name="include_path">edit_subtitle.tmpl</mt:setvarblock>
+      <mt:include file="$include_path">
+    </div>
+  </div>
+</div>
+<mt:if name="object_class" eq="video">
+<script src="<mt:var name="script_uri">?__mode=video_caption_js&id=<mt:var name="object_id"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>"></script>
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    <mt:ifcomponent component="Watermark">
+      <mt:if name="_is_streaming_media">
+        $('input[name="watermark-pos"][value=""]').click();
+        $('input[name="watermark-pos"]').prop('disabled', true);
+        $('#combine-watermark').prop('disabled', true);
+      </mt:if>
+    </mt:ifcomponent>
+    window.videoCaptions = new PTVideoCaptions();
+    const videoOptions = {
+        controls: true,
+        autoplay: false,
+        preload: 'auto',
+        fluid: true,
+        LoadingSpinner: true,
+        controlBar: {
+            volumePanel: {
+                inline: false,
+                vertical: true
+            },
+            pictureInPictureToggle: false
+        },
+        html5: {
+          nativeTextTracks: false,
+          preloadTextTracks: true
+        },
+        inactivityTimeout: 0
+    };
+    window.videoCaptions.player = videojs('video-player', videoOptions, () => {
+        videoCaptions.setVideoPlayer();
+        videoCaptions.setPlaybackTime(videoCaptions.videoPlayer, videoCaptions.playbackPosition);
+    });
+    window.videoCaptions.playerDialog = videojs('video-player-dialog', videoOptions, () => {
+        videoCaptions.setVideoPlayerDialog();
+        videoCaptions.setPlaybackTime(videoCaptions.videoPlayerDialog, videoCaptions.playbackPositionDialog);
+        videoCaptions.init();
+    });
+    <mt:if name="object_mime_type" eq="application/dash+xml">
+      const dashSrc = {
+        src: '<mt:var name="__permalink">',
+        type: 'application/dash+xml'
+      };
+      window.videoCaptions.player.src(dashSrc);
+      window.videoCaptions.playerDialog.src(dashSrc);
+    </mt:if>
+    <mt:if name="request.baked">
+    <mt:ifuseragent like="Chrome">
+    <mt:else>
+    if (window.videoCaptions.player) {
+        window.videoCaptions.player.play();
+    }
+    </mt:ifuseragent>
+    </mt:if>
+    let resizeQueue = null;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeQueue);
+        resizeQueue = setTimeout(() => {
+            if (videoCaptions.player) {
+                const tracks = videoCaptions.player.remoteTextTracks();
+                if (!tracks.length) {
+                    return;
+                }
+                const vttUrl = tracks[0].src;
+                if (vttUrl && vttUrl.indexOf('preview_vtt') !== -1) {
+                    let data = {
+                        text: $('#video-captions').val(),
+                        magic_token : '<mt:var name="magic_token">'
+                    };
+                    $.ajax({
+                        url: '<mt:var name="script_uri">?__mode=video_caption_preview_vtt<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&id=<mt:var name="object_id">',
+                        type: 'POST',
+                        data:JSON.stringify(data),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        success: function(responce){
+                            if (responce.message) {
+                                alert(responce.message);
+                            } else {
+                                if (window.vjsUtil) {
+                                    const previewUrls = responce.preview_url;
+                                    const vttUrls = {
+                                        captions: previewUrls.captions ? previewUrls.captions + '&ts=' + Date.now() : '',
+                                        chapters: previewUrls.chapter ? previewUrls.chapter + '&ts=' + Date.now() : '',
+                                    };
+                                    window.vjsUtil.removeVTT(videoCaptions.player);
+                                    window.vjsUtil.setVTT(videoCaptions.player, vttUrls);
+                                }
+                            }
+                        },
+                        error: function(){
+                            alert('<mt:trans phrase="An error occurred while generation captions." component="VideoCaptions">');
+                        }
+                    });
+                }
+            }
+            if (videoCaptions.playerDialog) {
+                if (videoCaptions.validation()) {
+                    const caption = videoCaptions.getCaptionData();
+                    videoCaptions.getPreviewVTT(caption);
+                }
+            }
+        }, 100);
+    });
+});
+<mt:if name="object_class" eq="video">
+<mt:var name="object_size" setvar="wait_time">
+<mt:setvar name="wait_time" value="10" op="*">
+<mt:if name="wait_time" gt="6000">
+<mt:setvar name="wait_time" value="6000">
+</mt:if>
+$(window).on('load', function(){
+setTimeout(function(){
+    let duration = $('.vjs-duration-display').html();
+    if ( duration == '-:-' ) {
+        location.reload();
+    }
+},<mt:var name="wait_time">);
+});
+</mt:if>
+</script>
+</mt:if>

@@ -1,0 +1,16 @@
+<mt:for merge_linefeeds="1">
+<mt:trans phrase="The %1$s'%2$s' you're in charge of was pulled back by %3$s(Status changed to %4$s)." params="'$object_label','$object_name','$by_user','$status_text'">
+
+<mt:if name="request.workflow_message">
+<mt:trans phrase="(Message)">
+<mt:var name="request.workflow_message"></mt:if>
+
+<mt:trans phrase="(%s)" params="$object_label">
+<mt:var name="object_name"> (ID: <mt:var name="object_id">)
+
+<mt:trans phrase="(URLs)">
+<mt:if name="object_permalink"><mt:var name="object_permalink">
+</mt:if><mt:var name="edit_link">
+
+<mt:include file="mail_footer.tmpl">
+</mt:for>

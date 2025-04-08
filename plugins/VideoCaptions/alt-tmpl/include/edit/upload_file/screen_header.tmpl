@@ -1,0 +1,30 @@
+<mt:if name="request.hls_created">
+<div class="alert alert-info mt-3" id="hlsCreatedAlert" role="alert" tabindex="0">
+  <button onclick="$('#hlsCreatedAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <mt:if name="request.existing">
+    <mt:trans phrase="The object was successfully converted to HLS and overwritten." component="VideoCaptions">
+  <mt:else>
+    <mt:trans phrase="The object has successfully cloned and convert to HLS." component="VideoCaptions">
+  </mt:if>
+</div>
+<mt:elseif name="request.create_hls_error">
+<div class="alert alert-danger mt-3" id="hlsErrorAlert" role="alert" tabindex="0">
+  <button onclick="$('#hlsErrorAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+    <span aria-hidden="true">&times;</span>
+  </button>
+    <mt:if name="request.create_hls_error" eq="1">
+      <mt:trans phrase="Failed to convert to HLS because directory already exists." component="VideoCaptions">
+    <mt:else>
+      <mt:trans phrase="Conversion to HLS failed because the execution command failed." component="VideoCaptions">
+    </mt:if>
+</div>
+<mt:elseif name="request.create_hls_queue">
+<div class="alert alert-info mt-3" id="hlsCreatedAlert" role="alert" tabindex="0">
+  <button onclick="$('#hlsCreatedAlert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <mt:trans phrase="The quque has successfully saved. Conversion to HLS is done at scheduled task execution time." component="VideoCaptions">
+</div>
+</mt:if>

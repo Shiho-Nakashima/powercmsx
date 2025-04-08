@@ -1,0 +1,14 @@
+{
+    "iflivepreview" : {
+        "description" : "Evaluates a block if Live Preview is set on."
+    },
+    "iflivepreviewinpending" : {
+        "description" : "Evaluates a block if Live Preview is set on and include status in approval pending."
+    },
+    "livepreviewdate" : {
+        "description" : "Display the timestamp set for the Live Preview.",
+        "attributes" : {
+            "format" : "Format the date."
+        }
+    }
+}

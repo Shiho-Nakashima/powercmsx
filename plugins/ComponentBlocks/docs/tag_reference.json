@@ -1,0 +1,18 @@
+{
+    "blockparts": {
+        "description": "Used in customizing Component Blocks. Outputs the input field with the contents specified by the attribute.",
+        "attributes": {
+            "type": "Specifies type for input field",
+            "key": "Specifies key for input field",
+            "label": "Specifies label for input field (For radio button/checkbox, specify the radio button/checkbox label)",
+            "hint": "Specifies hint for input field",
+            "single": "Specify 1 when there is only one field in the block",
+            "value": "Specifies the value attribute value of a radio button or checkbox",
+            "asset_class": "Specifies the type of asset to select when the edit type is assets",
+            "relation_model": "Specify the model you want to select when the edit type is relation",
+            "single_choice": "Specify 1 if you want to single-select objects when the edit type is asset or relation",
+            "rows": "Specifies the rows attribute value of the textarea",
+            "v-on:*": "Specifies the v-on attribute value of the Vue.js"
+        }
+    }
+}

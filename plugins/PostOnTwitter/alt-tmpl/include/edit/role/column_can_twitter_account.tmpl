@@ -1,0 +1,18 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="name" escape>">
+      <strong><mt:trans phrase="$label" component="PostOnTwitter" escape="1"></strong>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label for="<mt:var name="name" escape>" class="custom-control custom-checkbox">
+      <input name="<mt:var name="name" escape>" value="0" type="hidden">
+      <input type="checkbox" class="custom-control-input watch-changed"
+             name="<mt:var name="name" escape>" id="<mt:var name="name" escape>"
+             value="1"
+             <mt:if name="value"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="$label" component="PostOnTwitter" escape></span>
+    </label>
+  </div>
+</div>

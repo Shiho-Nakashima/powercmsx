@@ -1,0 +1,51 @@
+{
+    "text": {
+        "name": "Input Text",
+        "order": 1
+    },
+    "textarea": {
+        "name": "Textarea",
+        "order": 2
+    },
+    "text_input_group": {
+        "name": "Text Input Group",
+        "order": 3
+    },
+    "radio": {
+        "name": "Radio Buttons",
+        "order": 4
+    },
+    "checkbox": {
+        "name": "Checkbox",
+        "order": 5
+    },
+    "checkboxes": {
+        "name": "Multiple Checkboxes",
+        "order": 6
+    },
+    "dropdown": {
+        "name": "Dropdown",
+        "order": 7
+    },
+    "date": {
+        "name": "Date",
+        "order": 8,
+        "aria_label": "Select a year,Select a month,Select a day"
+    },
+    "file": {
+        "name": "File Attachment",
+        "order": 9
+    },
+    "email_with_confirm": {
+        "name": "Email (Confirm)",
+        "order": 10
+    },
+    "hidden": {
+        "name": "Input Hidden",
+        "order": 11
+    },
+    "password": {
+        "name": "Password",
+        "order": 12
+    }
+}

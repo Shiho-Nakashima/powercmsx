@@ -1,0 +1,2706 @@
+<mt:setvar name="extensions_inline" value="csv" function="push">
+<mt:setvar name="extensions_inline" value="xls" function="push">
+<mt:setvar name="extensions_inline" value="xlsx" function="push">
+<mt:setvar name="extensions_inline" value="doc" function="push">
+<mt:setvar name="extensions_inline" value="docx" function="push">
+<mt:setvar name="extensions_inline" value="ppt" function="push">
+<mt:setvar name="extensions_inline" value="pptx" function="push">
+<mt:if name="error_selectors">
+<mt:property name="error_bordercolor" setvar="error_bordercolor">
+<mt:unless name="error_bordercolor"><mt:setvar name="error_bordercolor" value="#B72C23"></mt:unless>
+<mt:setvarblock name="html_head" append="1"><mt:loop name="error_selectors"><mt:if name="__first__"><style></mt:if><mt:var name="__value__"> { border: 2px solid <mt:var name="error_bordercolor"> !important; }
+<mt:if name="__last__"></style></mt:if></mt:loop>
+</mt:setvarblock>
+</mt:if>
+<mt:if name="permalink" eq="1">
+<mt:unsetvar name="permalink">
+<mt:elseif name="request._model" eq="template">
+<mt:var name="permalink" setvar="__permalink__">
+</mt:if>
+<mt:property name="asset_workspace_id" setvar="asset_workspace_id">
+<mt:var name="workspace_id" setvar="can_asset_workspace_id" castto="int">
+<mt:if name="asset_workspace_id" ne="">
+  <mt:setvar name="has_asset_workspace_id" value="1">
+  <mt:setvar name="can_asset_workspace_id" value="$asset_workspace_id">
+</mt:if>
+<mt:if name="request.cloned">
+<mt:if name="request.revision_create">
+<mt:setvarblock name="header_alert_message"><mt:trans phrase="The revision of %s created." params="$label"></mt:setvarblock>
+<mt:else>
+<mt:setvarblock name="header_alert_message"><mt:trans phrase="The %s duplicated." params="$label"> <mt:if name="label_and_status"><mt:trans phrase="This %s's status is %s." params="$label_and_status"></mt:if></mt:setvarblock>
+</mt:if>
+</mt:if>
+<mt:if name="request.dialog_view">
+<mt:include file="include/dialog_header.tmpl">
+<mt:else>
+<mt:include file="include/header.tmpl">
+</mt:if>
+<script src="<mt:var name="prototype_path">assets/js/jquery.lazyload.min.js"></script>
+<mt:setvarblock name="include_path">include/edit/screen_header.tmpl</mt:setvarblock>
+<mt:include file="$include_path">
+<mt:setvarblock name="include_path">include/edit/<mt:var name="model">/screen_header.tmpl</mt:setvarblock>
+<mt:include file="$include_path">
+<mt:var name="label" setvar="_object_label">
+<mt:var name="label" escape setvar="__object_label__">
+<mt:var name="model" setvar="_model">
+<mt:setvar name="_primary" value="">
+<mt:if name="request.edit_revision">
+  <div id="alert-revision" class="alert alert-success" tabindex="0">
+    <mt:var name="alert_close">
+    <span id="alert-revision-message">
+    <mt:trans phrase="You are about to edit the revision.">
+    </span>
+    <mt:if name="_rev_object_id">
+      <a target="_blank" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="model">&amp;id=<mt:var name="_rev_object_id"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>">
+        <mt:trans phrase="View Master"> <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+      </a>
+    </mt:if>
+  </div>
+  <mt:if name="_master_updated">
+  <div id="alert-revision-up" class="alert alert-warning" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="The master has changed since this revision was created. To reflected or ignore the changes, check 'Update Date Created' and Save.">
+  </div>
+<script>
+$('#alert-revision-up').focus();
+</script>
+  <mt:else>
+<script>
+$('#alert-revision').focus();
+</script>
+  </mt:if>
+</mt:if>
+<mt:if name="request.apply_to_master">
+  <div id="alert-saved" class="alert alert-info" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="Revision applied to master.">
+  </div>
+<script>
+$('#alert-saved').focus();
+</script>
+<mt:elseif name="request.change_to_master">
+  <div id="alert-saved" class="alert alert-info" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="Revision changed to master.">
+  </div>
+<script>
+$('#alert-saved').focus();
+<mt:elseif name="request.pull_back">
+  <div id="alert-saved" class="alert alert-info" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:trans phrase="Pulled back the %s." params="$__object_label__">
+  </div>
+<script>
+$('#alert-saved').focus();
+</script>
+<mt:elseif name="request.saved">
+  <div id="alert-saved" class="alert alert-success" tabindex="0">
+    <mt:var name="alert_close">
+    <mt:if name="request.is_new"><mt:trans phrase="New %s saved." params="$label"><mt:else><mt:trans phrase="Your changes have been saved."></mt:if>
+    <mt:if name="request.need_rebuild">
+    <a href="<mt:var name="script_uri">?__mode=rebuild_phase&amp;_type=start_rebuild<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>" class="popup">
+    <mt:trans phrase="Publish your site to see these changes take effect.">
+    </a>
+    </mt:if>
+  </div>
+<script>
+$('#alert-saved').focus();
+</script>
+</mt:if>
+<mt:if name="_has_workflow">
+  <mt:if name="user_id" ne="$object_user_id">
+  <div id="header-workflow-message" class="alert alert-danger" role="alert" tabindex="0">
+    <mt:var name="alert_close">
+  <mt:trans phrase="You are trying to edit %s to be processed by another User." params="$label">
+  </div>
+  <script>
+  $('#header-workflow-message').focus();
+  </script>
+  </mt:if>
+</mt:if>
+<mt:property name="time_step" setvar="time_step">
+<mt:setvarblock name="field_required">
+  <i class="fa fa-asterisk required" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Required"></span>
+</mt:setvarblock>
+<script src="<mt:var name="prototype_path">assets/js/prototype/inputHTML.js?ts=<mt:date>"></script>
+<form action="<mt:var name="script_uri">" method="POST" id="edit-form-main">
+<mt:var name="form_header">
+<mt:setvarblock name="include_path">include/edit/<mt:var name="model">/form_header.tmpl</mt:setvarblock>
+<mt:include file="$include_path">
+<mt:setvarblock name="col_right">include/edit/<mt:var name="model">/col_right.tmpl</mt:setvarblock>
+<mt:include file="$col_right" setvar="col_right">
+<mt:if name="col_right">
+<div class="row form-group">
+  <div class="col-lg-9 col-2-col">
+</mt:if>
+<input type="hidden" name="__mode" value="save" id="__mode">
+<input type="hidden" name="_model" value="<mt:var name="model">">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="_screen_id" value="<mt:var name="screen_id" escape>">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id" cast_to="int">">
+<input type="hidden" name="_type" value="edit">
+<mt:if name="request.dialog_view">
+  <input type="hidden" name="dialog_view" value="1">
+  <mt:if name="request.target">
+    <input type="hidden" name="target" value="<mt:var name="request.target" escape>">
+    <input type="hidden" name="get_col" value="<mt:var name="request.get_col" escape>">
+    <mt:if name="request.select_add"><input type="hidden" name="select_add" value="1"></mt:if>
+    <mt:if name="request.single_select"><input type="hidden" name="single_select" value="1"></mt:if>
+    <mt:if name="request.selected_ids"><input type="hidden" name="selected_ids" value="<mt:var name="request.selected_ids" escape>"></mt:if>
+    <mt:if name="request.direct_edit"><input type="hidden" name="direct_edit" value="1"></mt:if>
+    <input type="hidden" name="insert_editor" value="<mt:var name="request.insert_editor" escape>">
+  <mt:elseif name="request.insert_editor">
+    <input type="hidden" name="insert_editor" value="<mt:var name="request.insert_editor" escape>">
+    <input type="hidden" name="insert" value="<mt:var name="request.insert" escape>">
+  </mt:if>
+  <input type="hidden" name="select_system_filters" value="<mt:var name="request.select_system_filters" escape>">
+  <input type="hidden" name="_system_filters_option" value="<mt:var name="request._system_filters_option" escape>">
+  <input type="hidden" name="_filter" value="<mt:var name="request._filter" escape>">
+  <mt:if name="request.any_model"><input type="hidden" name="any_model" value="1"></mt:if>
+  <mt:if name="request._field_name"><input type="hidden" name="_field_name" value="<mt:var name="request._field_name" escape>"></mt:if>
+</mt:if>
+<input type="hidden" name="_preview" id="_preview" value="">
+<mt:if name="request.edit_revision">
+<input type="hidden" name="_revision_id" value="<mt:var name="request.id" escape>">
+<input type="hidden" name="_edit_revision" value="1">
+<input type="hidden" name="_apply_to_master" id="_apply_to_master" value="">
+<input type="hidden" name="_change_to_master" id="_change_to_master" value="">
+</mt:if>
+<mt:if name="_revisable">
+<input type="hidden" name="_save_as_revision" id="_save_as_revision" value="">
+</mt:if>
+<input type="hidden" name="_duplicate" value="" id="_duplicate">
+<mt:if name="request._profile">
+<input type="hidden" name="_profile" value="1">
+</mt:if>
+<input type="hidden" name="_from_scope" value="<mt:var name="request._from_scope" escape>">
+<span id="_start_fields"></span>
+<mt:objectcontext>
+<mt:objectcols type="edit">
+<mt:var name="name" setvar="_column_name">
+<mt:if name="type" ne="relation">
+<mt:objectvar name="$_column_name" setvar="value">
+  <mt:isarray array="value">
+  <mt:else>
+    <mt:var name="value" escape setvar="value">
+  </mt:isarray>
+</mt:if>
+<mt:if name="_column_name" eq="primary">
+  <mt:setvar name="_primary_" value="$value">
+</mt:if>
+<mt:if name="model" eq="workspace">
+  <mt:if name="_column_name" eq="site_path">
+    <mt:var name="value" setvar="workepace_site_path">
+  </mt:if>
+</mt:if>
+
+<mt:setvarblock name="_hint">
+  <mt:if name="hint">
+  <<mt:if name="edit" like="checkbox">span<mt:else>p</mt:if> class="text-muted <mt:if name="edit" like="date">ml-2 </mt:if><mt:unless name="edit" like="checkbox">hint-block mb-0</mt:unless>">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:var name="hint" trans="1">
+  </<mt:if name="edit" like="checkbox">span<mt:else>p</mt:if>>
+  </mt:if>
+</mt:setvarblock>
+
+<mt:var name="name" escape setvar="__col_name__">
+<mt:var name="value" setvar="__col_value__">
+<mt:setvar name="ctrl_class" value="">
+<mt:if name="edit" like="num">
+  <mt:setvar name="ctrl_class" value="e-num">
+<mt:elseif name="edit" like="short">
+  <mt:setvar name="ctrl_class" value="short">
+</mt:if>
+
+<mt:setvar name="readonly" value="0">
+<mt:if name="name" eq="modified_on">
+  <mt:setvar name="readonly" value="1">
+<mt:elseif name="name" eq="created_on">
+  <mt:setvar name="readonly" value="1">
+<mt:elseif name="autoset">
+  <mt:setvar name="readonly" value="1">
+</mt:if>
+
+<mt:if name="unchangeable">
+  <mt:if name="request.id">
+    <mt:setvar name="readonly" value="1">
+  </mt:if>
+  <mt:if name="_column_name" eq="uuid">
+    <mt:setvar name="readonly" value="1">
+  </mt:if>
+</mt:if>
+<mt:if name="menu_type" eq="3">
+  <mt:setvar name="readonly" value="1">
+</mt:if>
+<mt:includeparts screen="edit" type="column" name="$_column_name" model="$model" trim="1" setvar="_include_column">
+<mt:if name="__col_name__" ne="id">
+<div id="<mt:var name="__col_name__">-wrapper">
+</mt:if>
+<mt:unless name="_include_column">
+  <mt:includeparts screen="edit" type="edit_type" edit_type="$edit" trim="1" setvar="_include_column">
+</mt:unless>
+<mt:if name="_include_column">
+  <mt:var name="_include_column">
+<mt:elseif name="edit" eq="hidden">
+  <mt:if name="__col_name__" eq="id">
+    <mt:unless name="request._duplicate">
+  <input id="<mt:var name="__col_name__">" type="hidden" name="<mt:var name="__col_name__">" value="<mt:var name="request.id" escape>">
+    <mt:else>
+  <input id="_duplicate_from" type="hidden" name="_duplicate_from" value="<mt:var name="value">">
+    </mt:unless>
+  <mt:else>
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+  <input id="<mt:var name="__col_name__">" type="hidden" name="<mt:var name="__col_name__">" value="<mt:var name="value">">
+  </mt:if>
+<mt:elseif name="edit" eq="primary">
+
+<mt:setvar name="_primary" value="$value">
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <mt:var name="permalink" setvar="__permalink">
+  <mt:if name="request.workspace_id">
+    <mt:if name="workspace_link_url">
+      <mt:var name="__permalink" replace="'$workspace_site_url','$workspace_link_url'" setvar="__permalink">
+    </mt:if>
+  <mt:else>
+    <mt:if name="link_url">
+      <mt:var name="__permalink" replace="'$site_url','$link_url'" setvar="__permalink">
+    </mt:if>
+  </mt:if>
+  <div class="col-lg-10 input-group-lg">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <input id="<mt:var name="__col_name__">" type="text" class="form-control watch-changed" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      aria-label="<mt:var name="label" escape>" <mt:if name="readonly">readonly</mt:if>>
+  <mt:if name="permalink">
+  <div class="input-group copy-url copy-url-permalink">
+  <input type="text" class="form-control form-control-sm clipboard-url" id="__permalink-clipboard"
+  value="<mt:var name="__permalink">" readonly>
+  <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#__permalink-clipboard"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+  <button id="__view-permalink" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></button>
+<mt:if name="_show_both">
+    <button id="__view-published" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View Published">" type="button" class="input-group-addon"><i class="fa fa-globe" aria-hidden="true" aria-label="<mt:trans phrase="View Published">"></i></button>
+</mt:if>
+  </div>
+  <input type="hidden" name="__permalink" id="__permalink" value="<mt:if name="_show_both"><mt:var name="permalink"><mt:else><mt:var name="__permalink"></mt:if>">
+<mt:if name="_show_both">
+  <input type="hidden" name="__permalink_published" id="__permalink_published" value="<mt:var name="__permalink">">
+</mt:if>
+  <script>
+  <mt:if name="request.saved">
+  $('#__permalink-clipboard').css( 'color', 'gray' );
+  $('#__permalink-clipboard').val( '<mt:trans phrase="Getting permalink...">' );
+  var __permalink_success = false;
+  var get_current_permalink = function(){
+      setTimeout( get_permalink_error, 2000 );
+      $.post("<mt:var name="script_uri">", {
+          '__mode' : 'get_current_permalink',
+          '_model' : '<mt:var name="model" escape>',
+          'id'     : <mt:var name="object_id">,
+          'workspace_id' : '<mt:var name="workspace_id" cast_to="int">',
+          'magic_token': '<mt:var name="magic_token">'
+      },
+      function ( data ) {
+          if( data.permalink ) {
+              __permalink_success = true;
+              $('#__permalink-clipboard').css( 'color', '#555555' );
+              $('#__permalink-clipboard').val( data.view_link );
+              <mt:unless name="_show_both">
+              if ( data.view_link ) {
+                  $('#__permalink').val( data.view_link );
+              }
+              </mt:unless>
+          } else {
+              $('#__permalink-clipboard').css( 'color', '#555555' );
+          }
+      },
+      "json"
+      );
+  }
+  var get_permalink_error = function(){
+      if ( __permalink_success == false ) {
+          $('#__permalink-clipboard').val( '<mt:var name="permalink">' );
+          $('#__permalink-clipboard').css( 'color', '#555555' );
+      } 
+  }
+  setTimeout( get_current_permalink, 2500 );
+  </mt:if>
+  $('#__view-permalink').click(function(){
+      var permalink = $('#__permalink').val();
+      window.open( permalink, '_blank');
+  });
+  $('#__view-published').click(function(){
+      var permalink = $('#__permalink_published').val();
+      window.open( permalink, '_blank');
+  });
+  </script>
+  </mt:if>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="languages">
+<!--TODO-->
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <mt:loop name="languages">
+    <mt:if name="__first__">
+    <select class="form-control short custom-select" id="<mt:var name="__col_name__">" name="<mt:var name="__col_name__">">
+    </mt:if>
+      <option value="<mt:var name="__value__">" <mt:if name="value" eq="$__value__">selected<mt:else><mt:if name="readonly">disabled</mt:if></mt:if>><mt:var name="__value__" translate="1"></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+    </mt:loop>
+      <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="file">
+
+<mt:ignore>Reset Variables</mt:ignore>
+<mt:setvar name="class" value="">
+<mt:setvar name="asset_url" value="">
+<mt:setvar name="thumbnail" value="">
+<mt:setvar name="file_meta" value="">
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 input-group-lg">
+<mt:assetproperty name="$name" model="$model" property="class" setvar="class">
+<mt:assetproperty name="$name" model="$model" property="url" setvar="asset_url">
+<mt:assetthumbnail type="default" name="$name" model="$model" dynamic="1" setvar="thumbnail">
+<mt:unless name="class">
+<mt:if name="thumbnail">
+  <mt:setvar name="class" value="image">
+  <mt:else>
+  <mt:setvar name="class" value="$options">
+</mt:if>
+</mt:unless>
+<mt:setvar name="preview_width" value="150">
+<mt:assetproperty name="$name" model="$model" property="image_width" setvar="image_width">
+<mt:if name="image_width">
+<mt:if name="image_width" lt="$preview_width">
+  <mt:setvar name="preview_width" value="$image_width">
+</mt:if>
+</mt:if>
+<mt:assetproperty name="$name" model="$model" property="file_name" setvar="file_name">
+<mt:if name="file_name">
+<mt:assetproperty name="$name" model="$model" property="url" setvar="asset_url">
+<mt:if name="model" eq="asset">
+  <mt:var name="asset_url" encode_url_basename setvar="asset_url">
+</mt:if>
+<mt:var name="asset_url" setvar="asset_url_original">
+<mt:if name="request.workspace_id">
+  <mt:if name="workspace_link_url">
+    <mt:var name="asset_url" replace="'$workspace_site_url','$workspace_link_url'" setvar="asset_url">
+  </mt:if>
+<mt:else>
+  <mt:if name="link_url">
+    <mt:var name="asset_url" replace="'$site_url','$link_url'" setvar="asset_url">
+  </mt:if>
+</mt:if>
+<mt:setvarblock name="file_meta">
+    <b><mt:trans phrase="Name"></b> :
+      <mt:assetproperty name="$name" model="$model" property="file_name"><br>
+    <b><mt:trans phrase="Size"></b> :
+      <mt:assetproperty name="$name" model="$model" property="file_size" format_size="1"><br>
+    <b><mt:trans phrase="Type"></b> :
+      <mt:assetproperty name="$name" model="$model" property="mime_type" escape setvar="file_mime_type"><mt:var name="file_mime_type">
+    <mt:if name="class" eq="image">
+    <br>
+    <b><mt:trans phrase="Width"></b> :
+      <mt:assetproperty name="$name" model="$model" property="image_width">px<br>
+    <b><mt:trans phrase="Height"></b> : 
+      <mt:assetproperty name="$name" model="$model" property="image_height">px
+    </mt:if>
+</mt:setvarBlock>
+</mt:if>
+
+<mt:ignore>TODO: top of template</mt:ignore>
+
+<mt:setvarblock name="file_meta_tmpl">
+    <b><mt:trans phrase="Name"></b> :
+      file_name<br>
+    <b><mt:trans phrase="Size"></b> :
+      file_size<br>
+    <b><mt:trans phrase="Type"></b> :
+      mime_type
+</mt:setvarBlock>
+<mt:setvarblock name="file_image_tmpl">
+    <br>
+    <b><mt:trans phrase="Width"></b> :
+      image_widthpx<br>
+    <b><mt:trans phrase="Height"></b> : 
+      image_heightpx
+</mt:setvarBlock>
+    <div class="alert alert-success hidden" id="<mt:var name="__col_name__">-alert" role="alert" tabindex="0">
+      <button onclick="$('#<mt:var name="__col_name__">-alert').hide();" type="button" class="close" aria-label="<mt:trans phrase="Detach">">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <span id="<mt:var name="__col_name__">-alert-message"><mt:trans phrase="The file has successfully uploaded. The uploaded file will not be reflected until you save this page."></span>
+    </div>
+<mt:assetproperty name="$name" model="$model" property="image_width" thumbnail_height="$preview_width" setvar="thumbnail_height">
+<mt:assetproperty name="$name" model="$model" property="extension" setvar="file_extension">
+<div id="drop-<mt:var name="__col_name__">">
+<i id="icon-<mt:var name="__col_name__">" class="btn fa <mt:if name="class" eq="image">fa-file-image-o<mt:elseif name="file_extension" eq="svg">fa-file-image-o<mt:elseif name="file_extension" eq="zip">fa-file-archive-o<mt:elseif name="file_extension" eq="gz">fa-file-archive-o<mt:elseif name="file_extension" eq="tar">fa-file-archive-o<mt:elseif name="class" eq="pdf">fa-file-pdf-o<mt:elseif name="class" eq="video">fa-file-video-o<mt:elseif name="class" eq="audio">fa-file-audio-o<mt:else>fa-file-o</mt:if> fa-3x" aria-hidden="true"></i>
+  <img class="<mt:unless name="class" eq="image"><mt:unless name="file_extension" eq="svg">hidden</mt:unless></mt:unless>
+    <mt:unless name="file_name"> hidden</mt:unless> preview-file-field lazy"
+    id="image_preview-<mt:var name="__col_name__">"
+    src="<mt:var name="prototype_path">assets/img/spacer.gif"
+    style="max-width:<mt:var name="preview_width">px;max-height:<mt:var name="preview_width">px;background-image:url('<mt:var name="prototype_path">assets/img/loading.gif');background-size:40px;background-repeat:no-repeat;background-position:center;"
+    data-original="<mt:var name="thumbnail">" alt="<mt:trans phrase="Preview">">
+    <a href="javascript:void(0);"
+        id="popover-<mt:var name="__col_name__">"><i class="btn fa fa-info-circle fa-2x" aria-hidden="true" aria-label="<mt:trans phrase="Properties">"></i></a>
+    <mt:objectvar name="$name" setvar="value">
+    <mt:if name="thumbnail" match="/^data:image\//">
+      <mt:setvar name="value" value="1">
+    </mt:if>
+    <mt:ignore>TODO:not Image</mt:ignore>
+      &nbsp; <a id="inline-<mt:var name="__col_name__">" target="_blank" class="btn btn-secondary <mt:unless name="value">hidden</mt:unless>" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="model">&amp;id=<mt:var name="request.id" escape>&amp;view=<mt:var name="__col_name__">&amp;_screen_id=<mt:var name="screen_id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"><mt:trans phrase="View"></a>
+      <a id="download-<mt:var name="__col_name__">" class="btn btn-secondary <mt:unless name="value">hidden</mt:unless>" href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="model">&amp;id=<mt:var name="request.id" escape>&amp;view=<mt:var name="__col_name__">&amp;download=1&amp;_screen_id=<mt:var name="screen_id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"><mt:trans phrase="Download"></a>
+      <mt:setvarblock name="attach_key">request.<mt:var name="__col_name__">-magic</mt:setvarblock>
+      <mt:setvarblock name="label_key">request.<mt:var name="__col_name__">-label</mt:setvarblock>
+      <mt:unless name="readonly">
+        <button type="button" id="edit-<mt:var name="__col_name__">" class="btn btn-primary<mt:unless name="value"> hidden</mt:unless><mt:unless name="class" eq="image"> hidden</mt:unless><mt:if name="file_mime_type" eq="image/gif"> hidden</mt:if>" data-toggle="modal" data-target="#modal"
+        data-href="<mt:var name="script_uri">?__mode=edit_image&amp;_model=<mt:var name="model">&amp;id=<mt:var name="request.id" escape>&amp;view=<mt:var name="__col_name__">&amp;_screen_id=<mt:var name="screen_id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"><mt:trans phrase="Edit..."></button>
+      </mt:unless>
+    <input id="<mt:var name="__col_name__">-magic" type="hidden" value="<mt:var name="$attach_key" escape>" name="<mt:var name="__col_name__">-magic" class="watch-changed">
+    <mt:unless name="readonly">
+    <span id="<mt:var name="__col_name__">-chooser" class="btn btn-success fileinput-button">
+        <span><mt:trans phrase="Select File..."></span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="<mt:var name="__col_name__">" type="file" name="files"
+            onfocus="$('#<mt:var name="__col_name__">-chooser').css('border','2px solid green');"
+            onblur="$('#<mt:var name="__col_name__">-chooser').css('border','none');">
+    </span>
+    </mt:unless>
+<mt:setvar name="_asset_file_col" value="0">
+<mt:if name="model" eq="asset">
+<mt:if name="__col_name__" eq="file">
+  <mt:setvar name="_asset_file_col" value="1">
+</mt:if>
+</mt:if>
+<mt:unless name="_asset_file_col">
+  <mt:unless name="readonly">
+    <mt:unless name="not_null">
+    <span class="form-inline-span-cb <mt:var name="__col_name__">-remove-wrapper hidden">
+    <input type="hidden" name="<mt:var name="__col_name__">-remove" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">-remove" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="__col_name__">-remove" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Delete"></span>
+    </label>
+    </span>
+    </mt:unless>
+  </mt:unless>
+</mt:unless>
+  <!-- The global progress bar -->
+  <mt:unless name="readonly">
+  <div id="progress-<mt:var name="__col_name__">" class="progress">
+    <div class="progress-bar progress-bar-success"></div>
+  </div>
+  <input type="hidden" id="mime_type-<mt:var name="__col_name__">" value="<mt:var name="file_mime_type">">
+  <!-- The container for the uploaded files -->
+  <div id="files-<mt:var name="__col_name__">" class="files ml-1 mt-1"></div>
+  <div class="alt-text <mt:unless name="value"><mt:unless name="$attach_key">hidden</mt:unless></mt:unless>" id="file-<mt:var name="__col_name__">-label">
+    <label id="files-<mt:var name="__col_name__">-label-label" for="files-<mt:var name="__col_name__">-label" class="sr-only"><mt:if name="class" eq="image"><mt:trans phrase="Alternative Text"><mt:else><mt:trans phrase="Label"></mt:if></label>
+    <input id="files-<mt:var name="__col_name__">-label" type="text" class="form-control form-control-sm"
+           name="<mt:var name="__col_name__">-label" placeholder="<mt:if name="class" eq="image"><mt:trans phrase="Alternative Text"><mt:else><mt:trans phrase="Label"></mt:if>"
+           value="<mt:if name="$label_key"><mt:var name="$label_key" escape><mt:else><mt:assetproperty name="$name" model="$model" property="label" escape></mt:if>">
+  </div>
+  </mt:unless>
+  <div class="input-group copy-url" id="clipboard-<mt:var name="__col_name__">-wrapper">
+    <input type="text" class="form-control form-control-sm clipboard-url" id="clipboard-<mt:var name="__col_name__">"
+      readonly value="<mt:if name="asset_url"><mt:var name="asset_url"><mt:else><mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="model">&amp;id=<mt:var name="request.id" escape>&amp;view=<mt:var name="__col_name__">&amp;_screen_id=<mt:var name="screen_id" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:if>">
+    <input type="hidden" id="clipboard-<mt:var name="__col_name__">-hidden" value="<mt:if name="_show_both"><mt:var name="asset_url_original"><mt:else><mt:var name="asset_url"></mt:if>">
+    <button data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#clipboard-<mt:var name="__col_name__">"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+    <button id="view-<mt:var name="__col_name__">" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i></button>
+  <mt:if name="_show_both">
+    <button id="view-<mt:var name="__col_name__">-published" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View Published">" type="button" class="input-group-addon"><i class="fa fa-globe" aria-hidden="true" aria-label="<mt:trans phrase="View Published">"></i></button>
+  </mt:if>
+  </div>
+</div>
+<script>
+var file_<mt:var name="__col_name__">_selected;
+var file_<mt:var name="__col_name__">_class = '<mt:var name="class">';
+<mt:if name="file_name">
+file_<mt:var name="__col_name__">_selected = true;
+$('.<mt:var name="__col_name__">-remove-wrapper').show();
+</mt:if>
+$('body').on('click', function (e) {
+    //did not click a popover toggle or popover
+    $('#popover-<mt:var name="__col_name__">').popover('hide');
+});
+var file_meta_tmpl = '<mt:var name="file_meta_tmpl" strip_linefeeds="1">';
+var file_image_tmpl = '<mt:var name="file_image_tmpl" strip_linefeeds="1">';
+$('#view-<mt:var name="__col_name__">').click(function(){
+    var viewlink = $('#clipboard-<mt:var name="__col_name__">-hidden').val();
+    window.open( viewlink, '_blank');
+});
+$('#view-<mt:var name="__col_name__">-published').click(function(){
+    var viewlink = $('#clipboard-<mt:var name="__col_name__">').val();
+    window.open( viewlink, '_blank');
+});
+$('#download-<mt:var name="__col_name__">').click(function(){
+    if ( editContentChanged ) {
+        setTimeout(setEditContentChangedTrue, 1000);
+    }
+    editContentChanged = false;
+    return true;
+});
+<mt:if name="file_meta">
+$('#popover-<mt:var name="__col_name__">').popover({
+    title: "<mt:trans phrase="Properties">",
+    content: "<mt:var name="file_meta" strip_linefeeds="1">",
+    placement: "right",
+    html: true
+});
+<mt:else>
+$('#popover-<mt:var name="__col_name__">').hide();
+$('#clipboard-<mt:var name="__col_name__">-wrapper').hide();
+$('#image_preview-<mt:var name="__col_name__">').hide();
+</mt:if>
+$('#<mt:var name="__col_name__">-remove').change(function(){
+    if ( $(this).prop('checked') ) {
+        if (! confirm( '<mt:trans phrase="Are you sure you want to delete the file? Delete is reflected when saving this page.">' ) ) {
+            $(this).prop('checked',!$(this).prop('checked'));
+            return;
+        }
+    }
+    $('#files-<mt:var name="__col_name__">').toggle();
+    $('#files-<mt:var name="__col_name__">-label').toggle();
+    $('#popover-<mt:var name="__col_name__">').toggle();
+    $('#clipboard-<mt:var name="__col_name__">-wrapper').toggle();
+    $('#download-<mt:var name="__col_name__">').toggle();
+    $('#inline-<mt:var name="__col_name__">').toggle();
+    if ( file_<mt:var name="__col_name__">_class == 'image' ) {
+        $('#image_preview-<mt:var name="__col_name__">').toggle();
+        if ( $('#mime_type-<mt:var name="__col_name__">').val() != 'image/gif' ) {
+            $('#edit-<mt:var name="__col_name__">').toggle();
+        }
+    }
+});
+var DropZone<mt:var name="__col_name__"> = document.getElementById('drop-<mt:var name="__col_name__">');
+<mt:if name="readonly">
+$('#drop-<mt:var name="__col_name__">').css('border','1px solid <mt:if name="user_control_border"><mt:var name="user_control_border" escape><mt:else>#ccc</mt:if>');
+$('#drop-<mt:var name="__col_name__">').css('margin','1px');
+$('#drop-<mt:var name="__col_name__">').css('padding','8px');
+<mt:else>
+DropZone<mt:var name="__col_name__">.addEventListener('dragover', function (event) {
+    $('#drop-<mt:var name="__col_name__">').css('background-color','#ddf');
+});
+DropZone<mt:var name="__col_name__">.addEventListener('dragleave', function (event) {
+    $('#drop-<mt:var name="__col_name__">').css('background-color','#fff');
+});
+$('#drop-<mt:var name="__col_name__">').css('border','3px dashed <mt:if name="user_control_border"><mt:var name="user_control_border" escape><mt:else>#ccc</mt:if>');
+$('#drop-<mt:var name="__col_name__">').css('margin','1px');
+$('#drop-<mt:var name="__col_name__">').css('padding','8px');
+/*jslint unparam: true */
+/*global window, $ */
+$(function () {
+    'use strict';
+    var url = '<mt:var name="script_uri">?__mode=upload&_model=<mt:var name="model">&_screen_id=<mt:var name="screen_id" escape="url">&name=<mt:var name="__col_name__"><mt:if name="request.select_system_filters" eq="filter_class_image">&select_system_filters=filter_class_image</mt:if>';
+    $('#<mt:var name="__col_name__">').fileupload({
+        url: url,
+        dataType: 'json',
+        dropZone: $("#drop-<mt:var name="__col_name__">"),
+        done: function (e, data) {
+            if (!data.result.files) {
+                var error = data.result.message;
+                $('#progress-<mt:var name="__col_name__"> .progress-bar').css(
+                    'width', 0
+                );
+                alert("<mt:trans phrase="An error occurred while uploading.">"+' (' + error + ')');
+                return;
+            }
+            file_<mt:var name="__col_name__">_selected = true;
+            $.each(data.result.files, function (index, file) {
+                $('#files-<mt:var name="__col_name__">').html('');
+                $('#download-<mt:var name="__col_name__">').show();
+                $('#download-<mt:var name="__col_name__">').css('display', 'inline');
+                $('#file-<mt:var name="__col_name__">-label').show();
+                $('#file-<mt:var name="__col_name__">-label').css('display', 'inline');
+                $('#<mt:var name="__col_name__">-magic').val(file.magic);
+                file.name = escape_html( decodeURIComponent(file.name) );
+                var file_name = escape_html( decodeURIComponent(file.basename) );
+                var file_class = escape_html( file.class );
+                if (file_class == 'image' && file.type != 'image/gif' ) {
+                    $('#edit-<mt:var name="__col_name__">').show();
+                    $('#edit-<mt:var name="__col_name__">').css('display', 'inline');
+                } else {
+                    $('#edit-<mt:var name="__col_name__">').hide();
+                }
+                $('#inline-<mt:var name="__col_name__">').show();
+                $('#inline-<mt:var name="__col_name__">').css('display', 'inline');
+                $('<p/>').text(file.name).appendTo('#files-<mt:var name="__col_name__">');
+                file_<mt:var name="__col_name__">_class = file_class;
+                if (file_class == 'image') {
+                    $('#files-<mt:var name="__col_name__">-label').attr( 'placeholder', '<mt:trans phrase="Alternative Text">' );
+                } else {
+                    $('#files-<mt:var name="__col_name__">-label').attr( 'placeholder', '<mt:trans phrase="Label">' );
+                }
+                if (! $('#files-<mt:var name="__col_name__">-label').val() ) {
+                    $('#files-<mt:var name="__col_name__">-label').val( file_name );
+                }
+                if (file_class == 'image' || file.extension == 'svg' ) {
+                    $('#image_preview-<mt:var name="__col_name__">').show();
+                    $('#image_preview-<mt:var name="__col_name__">').css('display', 'inline');
+                    $('#image_preview-<mt:var name="__col_name__">').prop('src','data:' + file.type + ';base64,' + file.thumbnail);
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-pdf-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-archive-o');
+                    $('#icon-<mt:var name="__col_name__">').addClass('fa-file-image-o');
+                } else if (file.extension == 'zip' || file.extension == 'gz' || file.extension == 'tar') {
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-image-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-pdf-o');
+                    $('#icon-<mt:var name="__col_name__">').addClass('fa-file-archive-o');
+                } else if (file_class == 'pdf') {
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-image-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-archive-o');
+                    $('#icon-<mt:var name="__col_name__">').addClass('fa-file-pdf-o');
+                } else {
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-pdf-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-image-o');
+                    $('#icon-<mt:var name="__col_name__">').removeClass('fa-file-archive-o');
+                    $('#icon-<mt:var name="__col_name__">').addClass('fa-file-o');
+                }
+                if (file_class != 'image' && file.extension != 'svg' ) {
+                    $('#image_preview-<mt:var name="__col_name__">').hide();
+                }
+                var file_size = file.size;
+                if ( file_size >= 1048576 ) {
+                    file_size = Math.round( ( file_size / 1048576 )*10 )/10 + 'MB';
+                } else if ( file_size >= 1024 ) {
+                    file_size = Math.round( ( file_size / 1024 )*10 )/10 + 'KB';
+                } else {
+                    file_size = file_size + 'Byte';
+                }
+                var prop_tmpl = '<mt:var name="file_meta_tmpl" strip_linefeeds="1">';
+                prop_tmpl = prop_tmpl.replace('file_name', file_name);
+                prop_tmpl = prop_tmpl.replace('file_size', file_size);
+                prop_tmpl = prop_tmpl.replace('mime_type', file.type);
+                $('#mime_type-<mt:var name="__col_name__">').val(file.type);
+                var image_tmpl = '<mt:var name="file_image_tmpl" strip_linefeeds="1">';
+                if (file_class == 'image') {
+                    image_tmpl = image_tmpl.replace('image_width', file.width);
+                    image_tmpl = image_tmpl.replace('image_height', file.height);
+                    prop_tmpl = prop_tmpl + image_tmpl;
+                }
+                $('#clipboard-<mt:var name="__col_name__">-wrapper').show();
+                $('#clipboard-<mt:var name="__col_name__">').val('<mt:var name="script_uri">?__mode=view&_type=edit&_model=<mt:var name="model">&id=<mt:var name="request.id" escape>&view=<mt:var name="__col_name__">&_screen_id=<mt:var name="screen_id" escape="url"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>');
+                $('#clipboard-<mt:var name="__col_name__">-hidden').val('<mt:var name="script_uri">?__mode=view&_type=edit&_model=<mt:var name="model">&id=<mt:var name="request.id" escape>&view=<mt:var name="__col_name__">&_screen_id=<mt:var name="screen_id" escape="url"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>');
+                $('#popover-<mt:var name="__col_name__">').show();
+                $('#popover-<mt:var name="__col_name__">').popover('dispose');
+                $('#popover-<mt:var name="__col_name__">').popover({
+                    title: "<mt:trans phrase="Properties">",
+                    content: prop_tmpl,
+                    placement: "right",
+                    html: true
+                });
+                if('<mt:var name="model">' == 'asset' && '<mt:var name="__col_name__">' == 'file' ) {
+                    if ( $('#label').val() == '' ) {
+                        $('#label').val(file_name);
+                    }
+                    <mt:property name="no_encode_filename" setvar="no_encode_filename">
+                    <mt:property name="encode_filename_compat" setvar="encode_filename_compat">
+                    <mt:property name="hash_multibyte_filename" setvar="hash_multibyte_filename">
+                    <mt:if name="encode_filename_compat">
+                      <mt:var name="no_encode_filename" value="0">
+                    </mt:if>
+                    <mt:if name="hash_multibyte_filename">
+                    $('#file_name').val(file.hashed_name + '.' + file.extension );
+                    <mt:elseif name="no_encode_filename">
+                    $('#file_name').val(file_name + '.' + file.extension);
+                    <mt:else>
+                    $('#file_name').val(file.basename + '.' + file.extension);
+                    </mt:if>
+                    $('#file_ext').val(file.extension);
+                    $('#mime_type').val(file.type);
+                    $('#class').val(file_class);
+                    $('#size').val(file.size);
+                    $('#_object_size').html(file_size);
+                    if (file_class == 'image') {
+                        $('#image_width').val(file.width);
+                        $('#image_height').val(file.height);
+                        $('#_object_width').html(file.width+'px');
+                        $('#_object_height').html(file.height+'px');
+                    } else {
+                        $('#image_width').val('');
+                        $('#image_height').val('');
+                        $('#_object_width').html('');
+                        $('#_object_height').html('');
+                    }
+                }
+                if('<mt:var name="model">' == 'attachmentfile' && '<mt:var name="__col_name__">' == 'file' ) {
+                    if ( $('#name').val() == '' ) {
+                        $('#name').val(file_name);
+                    }
+                    $('#mime_type').val(file.type);
+                    $('#class').val(file_class);
+                    $('#size').val(file.size);
+                }
+                if ( file.resized != true ) {
+                    $('#<mt:var name="__col_name__">-alert-message').html('<mt:trans phrase="The file has successfully uploaded. The uploaded file will not be reflected until you save this page.">');
+                } else {
+                    $('#<mt:var name="__col_name__">-alert-message').html('<mt:trans phrase="It has been reduced because it exceeds the maximum size of the image. The uploaded file will not be reflected until you save this page.">');
+                }
+                $('#<mt:var name="__col_name__">-alert').show();
+                $('#<mt:var name="__col_name__">-alert').focus();
+                $('#progress-<mt:var name="__col_name__"> .progress-bar').css(
+                    'width', 0
+                );
+                $('#drop-<mt:var name="__col_name__">').css('background-color','#fff');
+                $('#<mt:var name="__col_name__">-remove').prop('checked', false);
+                $('.<mt:var name="__col_name__">-remove-wrapper').show();
+                editContentChanged = true;
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress-<mt:var name="__col_name__"> .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+</mt:if>
+</script>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="checkbox">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:if name="not_null"><mt:isset name="default"><mt:else><mt:var name="field_required"></mt:isset></mt:if>
+  </div>
+  <div class="col-lg-10">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <input type="hidden" name="<mt:var name="__col_name__">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">" class="custom-control-input watch-changed"
+    <mt:if name="readonly">onclick="return false;"</mt:if>
+     type="checkbox" name="<mt:var name="__col_name__">" value="1" <mt:if name="value">checked</mt:if>>
+        <span class="custom-control-indicator<mt:if name="readonly"> disabled-cb</mt:if>"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape></span>
+    </label>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="url">
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <div class="input-group">
+      <input id="<mt:var name="__col_name__">" type="url" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+        <mt:if name="readonly">readonly</mt:if> class="watch-changed form-control <mt:var name="ctrl_class">" placeholder="https://">
+      <div class="input-group-addon" style="border: 1px solid <mt:var name="user_control_border" escape>;border-left:none">
+      <a href="javascript:void(0);" id="<mt:var name="__col_name__">-btn">
+        <i class="fa fa-external-link" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Open in new window"></span>
+      </a>
+      </div>
+    </div>
+    <mt:var name="_hint">
+  </div>
+</div>
+<script>
+$('#<mt:var name="__col_name__">-btn').click(function(){
+    var url = $('#<mt:var name="__col_name__">').val();
+    if ( url && url.match( /^https?:\/\// ) ) {
+        window.open( url, '_blank');
+    }
+    return false;
+});
+</script>
+
+<mt:elseif name="edit" eq="color">
+
+<mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="<mt:var name="__col_name__">" type="color" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      <mt:if name="readonly">readonly</mt:if> class="watch-changed form-control color-picker <mt:var name="ctrl_class">">
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" like=":">
+
+<mt:var name="type" setvar="__col_type"><mt:ignore>The model has column named 'type'.</mt:ignore>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+        <mt:if name="edit" like=":hierarchy">
+        <mt:var name="edit" split=":" setvar="hierarchy_props">
+        <mt:var name="hierarchy_props[1]" setvar="hierarchy_model">
+        <mt:var name="hierarchy_props[2]" setvar="hierarchy_col">
+        <mt:var name="hierarchy_props[3]" setvar="hierarchy_type">
+          <mt:if name="hierarchy_type" eq="hierarchy">
+            <mt:ifworkspacemodel model="$hierarchy_model">
+              <mt:setvar name="hierarchy_workspace_id" value="$workspace_id">
+            <mt:else>
+              <mt:setvar name="hierarchy_workspace_id" value="0">
+            </mt:ifworkspacemodel>
+            <mt:ifusercan action="hierarchy" model="$hierarchy_model" workspace_id="$hierarchy_workspace_id">
+              <button type="button" class="btn btn-secondary btn-sm" aria-label="<mt:trans phrase="Manage">"
+                data-toggle="modal" data-target="#modal"
+                data-href="<mt:var name="script_uri">?__mode=view&amp;_type=hierarchy&amp;_model=<mt:var name="hierarchy_model" escape>&amp;<mt:ifworkspacemodel model="$hierarchy_model"><mt:if name="workspace_id">workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;dialog_type=<mt:if name="__col_type" eq="int">int<mt:else>relation</mt:if>">
+                <mt:modelproperty name="$hierarchy_model" property="plural" translate setvar="hierarchy_plural">
+                <i class="fa fa-sitemap" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Manage %s" params="$hierarchy_plural">"></i>
+                <span class="sr-only"><mt:trans phrase="Manage"></span>
+              </button>
+            </mt:ifusercan>
+          </mt:if>
+        </mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:if name="edit" like="reference">
+    <mt:getobjectname id="$value" type="$edit" escape>
+    <input type="hidden" id="<mt:var name="__col_name__">" name="<mt:var name="__col_name__">" value="<mt:var name="value">">
+    </mt:if>
+    <mt:if name="edit" like="relation">
+      <mt:if name="edit" like="__any__">
+        <mt:include file="include/edit/relation_any.tmpl">
+      <mt:elseif name="edit" like="relation:asset:label:dialog">
+        <mt:include file="include/edit/relation_asset.tmpl">
+      <mt:elseif name="edit" like="relation:attachmentfile:">
+        <mt:if name="__col_type" eq="int">
+          <mt:include file="include/edit/reference_attachmentfile.tmpl">
+        <mt:else>
+          <mt:include file="include/edit/relation_attachmentfile.tmpl">
+        </mt:if>
+      <mt:else>
+        <mt:var name="edit" split=":" setvar="edit_props">
+        <mt:var name="edit_props[1]" setvar="rel_model">
+        <mt:var name="edit_props[2]" setvar="rel_col">
+        <mt:var name="edit_props[3]" setvar="rel_type">
+        <mt:setvarblock name="rel_cols">id,<mt:var name="rel_col"></mt:setvarblock>
+        <mt:setvarblock name="prop_sort_by"><mt:var name="_model">_<mt:var name="__col_name__">_sort_by</mt:setvarblock>
+        <mt:setvarblock name="prop_sort_order"><mt:var name="_model">_<mt:var name="__col_name__">_sort_order</mt:setvarblock>
+        <mt:if tag="property" name="$prop_sort_by">
+          <mt:property name="$prop_sort_by" setvar="relation_sort_by">
+        <mt:else>
+          <mt:tablehascolumn column="order" model="$rel_model">
+            <mt:setvar name="relation_sort_by" value="order">
+          <mt:else>
+            <mt:setvar name="relation_sort_by" value="id">
+          </mt:tablehascolumn>
+        </mt:if>
+        <mt:if tag="property" name="$prop_sort_order">
+          <mt:property name="$prop_sort_order" setvar="relation_sort_order">
+        <mt:else>
+          <mt:setvar name="relation_sort_order" value="ascend">
+        </mt:if>
+          <mt:if name="rel_type" eq="radio">
+            <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+            <mt:if name="forward_params">
+              <mt:setvarblock name="__forward_name__">forward_<mt:var name="__col_name__"></mt:setvarblock>
+            </mt:if>
+            <mt:objectloop cols="$rel_cols" model="$rel_model" sort_by="$relation_sort_by" sort_order="$relation_sort_order" include_draft="1" workspace_id="$workspace_id">
+            <mt:if name="__first__">
+              <mt:unless name="not_null">
+            <label class="custom-control custom-radio">
+              <mt:setvar name="_this_checked" value="0">
+              <input class="custom-control-input" type="radio"
+                <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+                <mt:if name="__col_type" eq="int">
+                  <mt:unless name="__col_value__">checked<mt:setvar name="_this_checked" value="1"></mt:unless><mt:else>
+                  <mt:count name="$__rel_name__" setvar="__obj_count">
+                  <mt:unless name="__obj_count">checked<mt:setvar name="_this_checked" value="1"></mt:unless>
+                </mt:if>
+                <mt:unless name="_this_checked"><mt:if name="readonly">disabled</mt:if></mt:unless>
+                name="<mt:var name="__col_name__">" value="">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Unspecified"></span>
+            </label>
+              </mt:unless>
+            </mt:if>
+            <label class="custom-control custom-radio">
+              <mt:setvar name="_this_checked" value="0">
+              <input class="custom-control-input watch-changed" type="radio"
+                <mt:if name="not_null"><mt:unless name="__col_value__"><mt:if name="__first__">checked</mt:if><mt:setvar name="_this_checked" value="1"></mt:unless></mt:if>
+                <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+                <mt:if name="__col_type" eq="int"><mt:if name="__col_value__" eq="$id">checked<mt:setvar name="_this_checked" value="1"></mt:if>
+                  <mt:else><mt:ifinarray name="$__rel_name__" value="$id">checked<mt:setvar name="_this_checked" value="1"></mt:ifinarray></mt:if>
+                  <mt:unless name="_this_checked"><mt:if name="readonly">disabled</mt:if></mt:unless>
+                  name="<mt:var name="__col_name__">" value="<mt:var name="id">"
+                  <mt:if name="forward_params"><mt:if name="$__forward_name__" eq="$id">checked</mt:if></mt:if>>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:if name="$rel_col" eq=""><mt:trans phrase="null">(id:<mt:var name="id">)<mt:else><mt:var name="$rel_col" escape></mt:if></span>
+            </label>
+            </mt:objectloop>
+          <mt:elseif name="rel_type" eq="hierarchy">
+            <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+            <mt:if name="__col_type" eq="relation">
+              <mt:setvartemplate name="nestable_obj_list">
+              <mt:setvar name="__hierarchy_out" value="0">
+              <mt:var name="$__rel_name__" index="0" setvar="relation_primary_id">
+              <mt:if name="forward_params">
+                <mt:setvarblock name="__request_primary_id__" scope="local">request.<mt:var name="__col_name__">_primary_id</mt:setvarblock>
+                <mt:var name="$__request_primary_id__" setvar="relation_primary_id">
+              </mt:if>
+              <mt:nestableobjects model="$rel_model" parent_id="$_parent_id">
+                <mt:if name="__first__"><mt:setvar name="__hierarchy_out" value="1"><ul class="nestableobjects-list" id="nestableobjects-list-<mt:var name="__col_name__">"></mt:if>
+                  <li>
+                    <button style="padding:0px 5px" <mt:if name="readonly">disabled</mt:if> id="<mt:var name="__col_name__">_id_<mt:var name="id">" type="button" class="<mt:var name="__col_name__">_primary_chooser btn btn-sm btn-outline-secondary">
+                      <i class="fa <mt:if name="id" eq="$relation_primary_id">fa fa-star<mt:else>fa-check</mt:if>" style="<mt:if name="id" eq="$relation_primary_id">margin-right:0px;color:#00a;<mt:else>margin-right:3px;color:#777;font-size:70%</mt:if>" aria-hidden="true"></i>
+                      <span class="sr-only"><mt:if name="id" eq="$relation_primary_id"><mt:trans phrase="Specified"><mt:else><mt:trans phrase="Unspecified"></mt:if></span>
+                    </button>
+                    &nbsp;
+                    <label class="custom-control custom-checkbox">
+                      <input type="checkbox" <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+                        id="<mt:var name="__col_name__">_cb_<mt:var name="id">"
+                        class="custom-control-input watch-changed" name="<mt:var name="__col_name__">[]" value="<mt:var name="id">" <mt:ifinarray array="$__rel_name__" value="$id">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:ifinarray>>
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if>
+                      </span>
+                    </label>
+                    <mt:if name="has_children">
+                      <mt:var name="id" setvar="_parent_id">
+                      <mt:var name="nestable_obj_list">
+                    </mt:if>
+                  </li>
+                <mt:if name="__last__"></ul><mt:setvar name="__hierarchy_out" value="1"></mt:if>
+              </mt:nestableobjects>
+              <mt:unless name="__hierarchy_out">
+              <mt:ifusercan action="hierarchy" model="$hierarchy_model" workspace_id="$workspace_id">
+              <mt:else>
+                <script>
+                  $('#<mt:var name="__col_name__">-wrapper').hide();
+                </script>
+              </mt:ifusercan>
+              </mt:unless>
+              </mt:setvartemplate>
+            <mt:else>
+              <mt:setvartemplate name="nestable_obj_list">
+              <mt:nestableobjects model="$rel_model" parent_id="$_parent_id">
+                <mt:if name="__first__"><ul>
+                  <mt:unless name="_parent_id">
+                  <li class="nestable-unspecified">
+                  <label class="custom-control custom-radio">
+                    <input class="custom-control-input" type="radio" 
+                      <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+                    <mt:unless name="__col_value__">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:unless> name="<mt:var name="__col_name__">" value="">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"><mt:trans phrase="Unspecified"></span>
+                  </label>
+                  </li>
+                  </mt:unless>
+                </mt:if>
+                  <li <mt:unless name="__index__">class="nestable-first"</mt:unless>>
+                    <label class="custom-control custom-radio">
+                      <input class="custom-control-input watch-changed" type="radio"
+                      <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+                      <mt:if name="__col_value__" eq="$id">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:if> name="<mt:var name="__col_name__">" value="<mt:var name="id">">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if></span>
+                    </label>
+                    <mt:if name="has_children">
+                      <mt:var name="id" setvar="_parent_id">
+                      <mt:var name="nestable_obj_list">
+                    </mt:if>
+                  </li>
+                <mt:if name="__last__"></ul><mt:setvar name="__hierarchy_out" value="1"></mt:if>
+              </mt:nestableobjects>
+              <mt:unless name="__hierarchy_out">
+              <mt:ifusercan action="hierarchy" model="$hierarchy_model" workspace_id="$workspace_id">
+              <mt:else>
+                <script>
+                  $('#<mt:var name="__col_name__">-wrapper').hide();
+                </script>
+              </mt:ifusercan>
+              </mt:unless>
+              </mt:setvartemplate>
+            </mt:if>
+            <div class="relation_nestable_list">
+              <mt:setvar name="_parent_id" value="0">
+              <div id="nestable_list-<mt:var name="__col_name__">">
+              <mt:var name="nestable_obj_list">
+              </div>
+              <mt:if name="__col_type" eq="relation">
+              <input type="hidden" value="<mt:var name="relation_primary_id" escape>" id="<mt:var name="__col_name__">_primary_id" name="<mt:var name="__col_name__">_primary_id">
+                <mt:if name="rel_type" eq="hierarchy">
+                <script>
+                var orig_selected_id;
+                var selected_id = '<mt:var name="relation_primary_id" escape>';
+                $(document).on('click','.<mt:var name="__col_name__">_primary_chooser',function(){
+                    orig_selected_id = $(this).attr('id');
+                    selected_id = orig_selected_id.replace( '<mt:var name="__col_name__">_id_', '' );
+                    $('#<mt:var name="__col_name__">_primary_id').val( selected_id );
+                    $('.<mt:var name="__col_name__">_primary_chooser').each(function(){
+                        if ( $(this).prop('id') == orig_selected_id ) {
+                            $(this).children('i').css('color', '#00a');
+                            $(this).children('i').css('font-size', '100%');
+                            $(this).children('i').prop('class', 'fa fa-star');
+                            $(this).children('i').css('margin-right', '0px');
+                            $(this).children('span').css('color', '#000');
+                            $(this).children('span').html('<mt:trans phrase="Specified">');
+                        } else {
+                            $(this).children('i').css('color', '#777');
+                            $(this).children('i').css('font-size', '70%');
+                            $(this).children('i').css('margin-right', '4px');
+                            $(this).children('i').prop('class', 'fa fa-check');
+                            $(this).children('span').css('color', '#777');
+                            $(this).children('span').html('<mt:trans phrase="Unspecified">');
+                        }
+                    });
+                    $('#<mt:var name="__col_name__">_cb_' + selected_id ).prop('checked', true );
+                    return false;
+                });
+                $(document).on('change','input[name="<mt:var name="__col_name__">[]"]',function(){
+                    if ( $(this).prop('checked') == false ) {
+                        if ( selected_id == $(this).val() ) {
+                            $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('color', '#777');
+                            $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('font-size', '70%');
+                            $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').prop('class', 'fa fa-check');
+                            $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('margin-right', '4px');
+                            $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').css('color', '#777');
+                            $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').html('<mt:trans phrase="Unspecified">');
+                            $('#<mt:var name="__col_name__">_primary_id').val('');
+                            selected_id = null;
+                            $('.<mt:var name="__col_name__">_primary_chooser').each(function(){
+                                var cBox_id = $(this).attr('id');
+                                cBox_id = cBox_id.replace( '<mt:var name="__col_name__">_id_', '' );
+                                if ( $('#<mt:var name="__col_name__">_cb_' + cBox_id).prop('checked') ) {
+                                    if (! selected_id ) {
+                                        $('#<mt:var name="__col_name__">_primary_id').val(cBox_id);
+                                        selected_id = cBox_id;
+                                        $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').css('color', '#00a');
+                                        $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').css('font-size', '100%');
+                                        $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').prop('class', 'fa fa-star');
+                                        $('#<mt:var name="__col_name__">_id_' + cBox_id).children('i').css('margin-right', '0px');
+                                        $('#<mt:var name="__col_name__">_id_' + cBox_id).children('span').css('color', '#000');
+                                        $('#<mt:var name="__col_name__">_id_' + cBox_id).children('span').html('<mt:trans phrase="Specified">');
+                                    }
+                                }
+                            });
+                        }
+                    } else if (! selected_id ) {
+                        $('#<mt:var name="__col_name__">_primary_id').val($(this).val());
+                        selected_id = $(this).val();
+                        $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('color', '#00a');
+                        $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('font-size', '100%');
+                        $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').prop('class', 'fa fa-star');
+                        $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('i').css('margin-right', '0px');
+                        $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').css('color', '#000');
+                        $('#<mt:var name="__col_name__">_id_' + $(this).val()).children('span').html('<mt:trans phrase="Specified">');
+                    }
+                });
+                </script>
+                </mt:if>
+                </mt:if>
+            </div>
+          <mt:elseif name="rel_type" eq="select">
+            <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+            <mt:var name="$__rel_name__" setvar="__rel_value__">
+            <mt:if name="forward_params">
+              <mt:setvarblock name="__forward_name__" scope="local">forward_<mt:var name="__col_name__"></mt:setvarblock>
+              <mt:isarray name="$__forward_name__">
+                <mt:var name="$__forward_name__" setvar="__rel_value__">
+              <mt:else>
+                <mt:var name="$__forward_name__" cast_to="arr" setvar="__rel_value__">
+              </mt:isarray>
+            </mt:if>
+            <select id="<mt:var name="__col_name__">" class="form-control custom-select watch-changed" name="<mt:var name="__col_name__">">
+              <mt:objectloop cols="$rel_cols" model="$rel_model" sort_by="$relation_sort_by" sort_order="$relation_sort_order" include_draft="1" workspace_id="$workspace_id">
+                <mt:if name="__first__">
+                  <mt:unless name="not_null">
+                    <option value="" <mt:if name="readonly">
+                      <mt:if name="__col_type" eq="int">
+                        <mt:if name="__col_value__">disabled<mt:else>selected</mt:if>
+                      <mt:else>
+                        <mt:if name="__rel_value__">disabled<mt:else>selected</mt:if>
+                      </mt:if></mt:if>><mt:trans phrase="Unspecified"></option>
+                  </mt:unless>
+                </mt:if>
+                <mt:setvar name="this_selected" value="0">
+                <option <mt:if name="__col_type" eq="int">
+                  <mt:if name="__col_value__" eq="$id">selected<mt:setvar name="this_selected" value="1"></mt:if><mt:else>
+                  <mt:ifinarray name="__rel_value__" value="$id">selected<mt:setvar name="this_selected" value="1"></mt:ifinarray></mt:if>
+                  <mt:unless name="this_selected"><mt:if name="readonly">disabled</mt:if></mt:unless>
+                  value="<mt:var name="id">"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if></option>
+              </mt:objectloop>
+            </select>
+          <mt:elseif name="rel_type" eq="dialog">
+            <mt:if name="__col_type" eq="relation">
+            <mt:setvar name="has_thumbnail" value="">
+            <mt:ifhasthumbnail model="$rel_model">
+              <mt:setvar name="has_thumbnail" value="1">
+            </mt:ifhasthumbnail>
+              <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+              <ul id="<mt:var name="__col_name__">" class="relation-list">
+                <li <mt:if name="$__rel_name__">style="display:none" </mt:if>class="badge badge-edit-tmpl badge-default badge-relation" id="<mt:var name="__col_name__">-none">
+                <span><mt:trans phrase="(None selected)">&nbsp;</span>
+                </li>
+                <li style="margin-right: 4px" class="hidden badge badge-edit-tmpl badge-default badge-relation badge-draggable" id="<mt:var name="__col_name__">-tmpl">
+                <mt:if name="has_thumbnail">
+                <div class="assets-child-thumb" data-model="<mt:var name="rel_model" escape>"></div>
+                </mt:if>
+                <span><mt:trans phrase="Default"></span>
+                <a target="_blank" href="" class="hidden btn btn-secondary btn-sm asset-download-btn attachment-download-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View">">
+                  <i class="fa fa-external-link-square"></i>
+                </a>
+              <mt:if name="_show_both">
+                <a target="_blank" href="" class="hidden btn btn-secondary btn-sm asset-linkurl-btn attachment-linkurl-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View Published">">
+                  <i class="fa fa-globe"></i>
+                </a>
+              </mt:if>
+                <mt:unless name="readonly">
+                  <button type="button" class="_<mt:var name="__col_name__">-edit hidden btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+                      data-toggle="modal" data-target="#modal"
+                      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=__value__<mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </mt:unless>
+                <input type="hidden" name="<mt:var name="__col_name__">[]" value="">
+                </li>
+              <mt:setvarblock name="selected_ids"><mt:loop name="$__rel_name__" glue=","><mt:var name="__value__"></mt:loop></mt:setvarblock>
+              <mt:loop name="$__rel_name__">
+                <li class="<mt:var name="__col_name__">-child badge badge-edit-tmpl badge-default badge-relation badge-draggable">
+                <mt:if name="has_thumbnail">
+                <div class="assets-child-thumb" data-model="<mt:var name="rel_model" escape>" data-id="<mt:var name="__value__" escape>" style="background-image:url('<mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__value__" escape>')"></div>
+                </mt:if>
+                <span>
+                  <mt:getobjectname id="$__value__" type="$edit" escape setvar="_related_object">
+                  <mt:var name="_related_object" trans="$translate">
+                </span>
+                <mt:objectvar model="$rel_model" id="$__value__" name="permalink" setvar="_external_link">
+                <mt:if name="_external_link">
+                  <a target="_blank" href="<mt:var name="_external_link">" class="btn btn-secondary btn-sm asset-download-btn attachment-download-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View">">
+                    <i class="fa fa-external-link-square"></i>
+                  </a>
+                </mt:if>
+                <mt:unless name="readonly">
+                <mt:ifusercan action="edit" model="$rel_model" id="$__value__" workspace_id="$workspace_id">
+                  <button type="button" class="_<mt:var name="__col_name__">-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+                      data-toggle="modal" data-target="#modal"
+                      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__value__" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                </mt:ifusercan>
+                <button type="button" class="btn btn-secondary btn-sm close-sm detach-relation" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                </mt:unless>
+                <input type="hidden" name="<mt:var name="__col_name__">[]" value="<mt:var name="__value__" escape>"></li>
+              </mt:loop>
+              </ul>
+              <mt:unless name="readonly">
+                <mt:ignore>Choose other scope's objects by config_settings.</mt:ignore>
+                <mt:setvarblock name="_prop_name"><mt:var name="rel_model" escape>_workspace_id</mt:setvarblock>
+                <mt:property name="$_prop_name" setvar="workspace_list_id">
+                <mt:if name="workspace_list_id" eq="">
+                  <mt:setvar name="workspace_list_id" value="$workspace_id">
+                </mt:if>
+              <button type="button" id="add_<mt:var name="__col_name__">" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+                data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_list_id">&amp;workspace_id=<mt:var name="workspace_list_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select..."></button>
+              <mt:ifusercan model="$rel_model" action="create" workspace_id="$workspace_list_id">
+                <button title="<mt:trans phrase="New...">" type="button" class="ml-0 btn btn-info btn-sm" aria-label="<mt:trans phrase="New...">"
+                    data-toggle="modal" data-target="#modal"
+                    data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_list_id">&amp;workspace_id=<mt:var name="workspace_list_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+                  <i class="fa fa-plus-circle"></i>
+                </button>
+              </mt:ifusercan>
+              <script>
+                var <mt:var name="__col_name__">_add_objects = [];
+                $('#<mt:var name="__col_name__">').sortable ( {
+                    stop: function( evt, ui ) {
+                        editContentChanged = true;
+                    }
+                });
+                $('#<mt:var name="__col_name__">').ksortable();
+              </script>
+              </mt:unless>
+            <mt:else>
+              <mt:ignore>Choose other scope's objects by config_settings.</mt:ignore>
+              <mt:setvarblock name="_prop_name"><mt:var name="rel_model" escape>_workspace_id</mt:setvarblock>
+              <mt:property name="$_prop_name" setvar="workspace_list_id">
+              <mt:if name="workspace_list_id" eq="">
+                <mt:setvar name="workspace_list_id" value="$workspace_id">
+              </mt:if>
+              <mt:setvar name="has_thumbnail" value="">
+              <mt:ifhasthumbnail model="$rel_model">
+                <mt:setvar name="has_thumbnail" value="1">
+              </mt:ifhasthumbnail>
+              <mt:setvar name="thumbnail" value="">
+              <mt:getobjectname id="$__col_value__" type="$edit" wants="id" escape setvar="__col_value__">
+              <mt:assetthumbnail id="$__col_value__" type="default" square="1" model="$rel_model" data_uri="1" setvar="thumbnail">
+              <mt:unless name="thumbnail">
+                <mt:if name="has_thumbnail">
+                <mt:setvarblock name="thumbnail"><mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__col_value__" escape></mt:setvarblock>
+                </mt:if>
+              </mt:unless>
+              <ul class="relation-list">
+              <li class="<mt:var name="__col_name__">-child badge badge-default badge-relation">
+              <mt:if name="thumbnail">
+              <div id="<mt:var name="__col_name__">-img" class="<mt:unless name="__col_value__">hidden </mt:unless>assets-child-thumb" data-model="<mt:var name="rel_model" escape>" data-id="<mt:var name="__col_value__" escape>" style="background-image:url('<mt:var name="thumbnail">')"></div>
+              </mt:if>
+              <span id="<mt:var name="__col_name__">-label">
+              <mt:if name="__col_value__">
+                <mt:getobjectname id="$__col_value__" type="$edit" escape>
+              <mt:else>
+                <mt:trans phrase="(None selected)">&nbsp;
+              </mt:if>
+              </span>
+              <mt:if name="__col_value__">
+                <mt:objectvar model="$rel_model" id="$__col_value__" name="permalink" setvar="_external_link">
+                <mt:if name="_external_link">
+                  <a target="_blank" href="<mt:var name="_external_link">" class="btn btn-secondary btn-sm asset-download-btn attachment-download-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View">">
+                    <i class="fa fa-external-link-square"></i>
+                  </a>
+                </mt:if>
+                <mt:setvar name="_external_link_url" value="">
+                <mt:if name="_show_both">
+                <mt:if name="request.workspace_id">
+                  <mt:if name="workspace_link_url">
+                    <mt:var name="_external_link" replace="'$workspace_site_url','$workspace_link_url'" setvar="_external_link_url">
+                  </mt:if>
+                <mt:else>
+                  <mt:if name="link_url">
+                    <mt:var name="_external_link" replace="'$site_url','$link_url'" setvar="_external_link_url">
+                  </mt:if>
+                </mt:if>
+                </mt:if>
+                <mt:if name="_external_link_url">
+                  <a target="_blank" href="<mt:var name="_external_link_url">" class="btn btn-secondary btn-sm asset-download-btn attachment-linkurl-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View Published">">
+                    <i class="fa fa-globe"></i>
+                  </a>
+                </mt:if>
+                <mt:ifusercan action="edit" model="$rel_model" id="$__col_value__" workspace_id="$workspace_list_id">
+                  <button type="button" id="_<mt:var name="__col_name__">-edit-defeult" class="_<mt:var name="__col_name__">-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+                      data-toggle="modal" data-target="#modal"
+                      data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__col_value__" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_list_id">&amp;workspace_id=<mt:var name="workspace_list_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                </mt:ifusercan>
+              <mt:else>
+                <a target="_blank" href="" class="hidden btn btn-secondary btn-sm asset-download-btn attachment-download-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View">">
+                  <i class="fa fa-external-link-square"></i>
+                </a>
+                <a target="_blank" href="" class="hidden btn btn-secondary btn-sm asset-download-btn attachment-linkurl-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View Published">">
+                  <i class="fa fa-globe"></i>
+                </a>
+                <button type="button" id="_<mt:var name="__col_name__">-edit-defeult" class="_<mt:var name="__col_name__">-edit hidden btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+                    data-toggle="modal" data-target="#modal"
+                    data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=0<mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_list_id">&amp;workspace_id=<mt:var name="workspace_list_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </mt:if>
+              <mt:unless name="readonly">
+              <button style="display:inline" id="<mt:var name="__col_name__">-close" type="button" class="btn btn-secondary btn-sm close-sm detach-relation <mt:unless name="__col_value__"> hidden</mt:unless>" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              </mt:unless>
+              <input id="<mt:var name="__col_name__">" type="hidden" name="<mt:var name="__col_name__">" value="<mt:var name="__col_value__" escape>">
+              </li>
+              </ul>
+              <mt:unless name="readonly">
+              <button type="button" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+                data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_list_id">&amp;workspace_id=<mt:var name="workspace_list_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;single_select=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select..."></button>
+              <mt:ifusercan model="$rel_model" action="create" workspace_id="$workspace_id">
+                <button type="button" id="_<mt:var name="__col_name__">-edit-defeult" class="_<mt:var name="__col_name__">-edit btn btn-info btn-sm ml-0" aria-label="<mt:trans phrase="Edit">"
+                    data-toggle="modal" data-target="#modal"
+                    data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_list_id">&amp;workspace_id=<mt:var name="workspace_list_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+                  <i class="fa fa-plus-circle"></i>
+                </button>
+              </mt:ifusercan>
+              </mt:unless>
+            </mt:if>
+          <mt:elseif name="rel_type" eq="checkbox">
+            <mt:setvarblock name="__rel_name__">object_<mt:var name="__col_name__"></mt:setvarblock>
+            <mt:objectloop cols="$rel_cols" model="$rel_model" sort_by="$relation_sort_by" sort_order="$relation_sort_order" include_draft="1" workspace_id="$workspace_id">
+              <label class="custom-control custom-checkbox">
+                <input type="checkbox" <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if> class="custom-control-input watch-changed" name="<mt:var name="__col_name__">[]" value="<mt:var name="id">" <mt:ifinarray array="$__rel_name__" value="$id">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:ifinarray>>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if></span>
+              </label>
+            </mt:objectloop>
+          </mt:if>
+      </mt:if>
+    </mt:if>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" like="text">
+<mt:if name="edit" eq="textarea">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+<textarea id="<mt:var name="__col_name__">" rows="<mt:if name="options"><mt:var name="options" escape><mt:else>5</mt:if>"
+  class="form-control watch-changed" name="<mt:var name="__col_name__">"
+  <mt:if name="readonly">readonly</mt:if>>
+<mt:var name="value"></textarea>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="richtext">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+<div id="editor-<mt:var name="__col_name__">-wrapper"><textarea id="<mt:var name="__col_name__">" rows="<mt:if name="options"><mt:var name="options" escape><mt:else>10</mt:if>"
+  class="form-control richtext" name="<mt:var name="__col_name__">"
+  <mt:if name="readonly">readonly</mt:if>><mt:var name="value"></textarea></div>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:else>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:if name="name" eq="extra_path">
+    <mt:unless name="request.id">
+      <mt:unless name="request.workspace_id">
+        <mt:getoption key="extra_path" escape setvar="value">
+      <mt:else>
+        <mt:var name="workspace_extra_path" escape setvar="value">
+      </mt:unless>
+      <mt:if name="model_out_path">
+        <mt:var name="model_out_path" escape add_slash setvar="model_out_path">
+        <mt:setvar name="value" value="$model_out_path" append="1">
+      </mt:if>
+    </mt:unless>
+  </mt:if>
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <mt:if name="__col_name__" eq="uuid">
+      <mt:if name="request._duplicate">
+        <mt:setvar name="value" value="">
+      </mt:if>
+    </mt:if>
+    <input id="<mt:var name="__col_name__">" type="<mt:if name="disp_option" like="num">number<mt:else>text</mt:if>" class="form-control watch-changed <mt:var name="ctrl_class">" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      <mt:if name="readonly">readonly</mt:if>>
+    <mt:var name="_hint">
+  </div>
+</div>
+</mt:if>
+
+<mt:elseif name="edit" like="num">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <input id="<mt:var name="__col_name__">" type="number" class="form-control watch-changed <mt:var name="ctrl_class">" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      <mt:if name="readonly">readonly</mt:if>>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="password">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+    <mt:if name="request.id">
+      <mt:trans phrase="New %s" params="$label" escape>
+    <mt:else>
+      <mt:var name="label" escape>
+    </mt:if>
+    <mt:unless name="request.id">
+    <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </mt:unless>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="<mt:var name="__col_name__">" type="password" autocomplete="new-password" class="form-control watch-changed" name="<mt:var name="__col_name__">" value="<mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape></mt:unless></mt:unless>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">-verify">
+    <mt:if name="request.id">
+      <mt:trans phrase="New %s (Confirm)" params="$label" escape>
+    <mt:else>
+      <mt:trans phrase="%s (Confirm)" params="$label" escape>
+    </mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="<mt:var name="__col_name__">-verify" type="password" autocomplete="new-password" class="form-control watch-changed" name="<mt:var name="__col_name__">-verify" value="">
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="datetime">
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    <mt:setvar name="date_col_value" value="">
+    <mt:setvar name="time_col_value" value="">
+    <mt:setvarblock name="date_col_name"><mt:var name="__col_name__">_date</mt:setvarblock>
+    <mt:setvarblock name="time_col_name"><mt:var name="__col_name__">_time</mt:setvarblock>
+    <mt:if name="forward_params">
+      <mt:setvarblock name="request_date_col_name">request.<mt:var name="date_col_name"></mt:setvarblock>
+      <mt:setvarblock name="request_time_col_name">request.<mt:var name="time_col_name"></mt:setvarblock>
+      <mt:var name="$request_date_col_name" setvar="date_col_value">
+      <mt:var name="$request_time_col_name" setvar="time_col_value">
+    <mt:else>
+      <mt:if name="value">
+        <mt:var name="value" format_ts="Y-m-d" setvar="date_col_value">
+        <mt:var name="value" format_ts="H:i:s" setvar="time_col_value">
+      <mt:elseif name="not_null">
+        <mt:date format_ts="Y-m-d" setvar="date_col_value">
+        <mt:date format_ts="H:i:s" setvar="time_col_value">
+      </mt:if>
+    </mt:if>
+    <input id="<mt:var name="date_col_name">" type="date" class="form-control date watch-changed" name="<mt:var name="date_col_name">" value="<mt:var name="date_col_value" escape>"
+      <mt:if name="readonly">readonly</mt:if>>
+    &nbsp;
+    <span class="time-input"><input id="<mt:var name="time_col_name">" type="time" step="<mt:if name="time_step"><mt:var name="time_step"><mt:else>1</mt:if>" class="form-control time watch-changed" name="<mt:var name="time_col_name">" value="<mt:var name="time_col_value" escape>"
+      <mt:if name="readonly">readonly</mt:if>></span>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" eq="date">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    <mt:setvar name="date_col_value" value="">
+    <mt:setvar name="time_col_value" value="">
+    <mt:setvarblock name="date_col_name"><mt:var name="__col_name__">_date</mt:setvarblock>
+    <mt:setvarblock name="time_col_name"><mt:var name="__col_name__">_time</mt:setvarblock>
+    <mt:if name="forward_params">
+      <mt:setvarblock name="request_date_col_name">request.<mt:var name="date_col_name"></mt:setvarblock>
+      <mt:setvarblock name="request_time_col_name">request.<mt:var name="time_col_name"></mt:setvarblock>
+      <mt:var name="$request_date_col_name" setvar="date_col_value">
+      <mt:var name="$request_time_col_name" setvar="time_col_value">
+    <mt:else>
+      <mt:if name="value">
+        <mt:var name="value" format_ts="Y-m-d" setvar="date_col_value">
+        <mt:var name="value" format_ts="H:i:s" setvar="time_col_value">
+      </mt:if>
+    </mt:if>
+    <input id="<mt:var name="date_col_name">" type="date" class="form-control date watch-changed" name="<mt:var name="date_col_name">" value="<mt:var name="date_col_value" escape>"
+      <mt:if name="readonly">readonly</mt:if>>
+    &nbsp;
+    <span class="time-input"><input id="<mt:var name="time_col_name">" type="hidden" step="1" class="form-control time watch-changed" name="<mt:var name="time_col_name">" value="<mt:var name="time_col_value" escape>"
+      <mt:if name="readonly">readonly</mt:if>></span>
+    <mt:var name="_hint">
+  </div>
+</div>
+
+<mt:elseif name="edit" like="selection">
+  <mt:var name="_split_options" value="0">
+  <mt:var name="options" _eval setvar="_options">
+  <mt:var name="_options" split="," setvar="_options_loop">
+  <mt:if name="_options" match=".+=.+,.+=.+">
+    <mt:var name="_split_options" value="1">
+    <mt:var name="_spl_loop" value="">
+    <mt:loop name="_options_loop">
+      <mt:var name="__value__" split="=" setvar="key_and_var">
+      <mt:setvar name="_spl_loop" key="$key_and_var[0]" value="$key_and_var[1]">
+    </mt:loop>
+    <mt:var name="_spl_loop" setvar="_options_loop">
+  </mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape="1">
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:if name="disp_edit" eq="checkbox">
+    <mt:var name="__col_value__" split="," setvar="_options_arr">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape split="," setvar="__default_values__"></mt:unless></mt:unless>
+    <mt:loop name="_options_loop">
+      <label class="custom-control custom-checkbox">
+        <mt:var name="__escaped_value__" value="">
+        <mt:if name="_split_options"><mt:var name="__key__" escape setvar="__escaped_value__"><mt:else><mt:var name="__value__" escape setvar="__escaped_value__"></mt:if>
+        <input type="checkbox"<mt:unless name="request.id"><mt:if name="__default_values__">
+        <mt:ifinarray value="$__escaped_value__" array="$__default_values__"> checked </mt:ifinarray>
+        </mt:if></mt:unless><mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if> class="custom-control-input watch-changed" name="<mt:var name="__col_name__">[]" value="<mt:var name="__escaped_value__">"
+        <mt:ifinarray value="$__escaped_value__" array="$_options_arr">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:ifinarray>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> <mt:if name="translate"><mt:trans phrase="$__value__" escape><mt:else><mt:var name="__value__" escape></mt:if></span>
+      </label>
+    </mt:loop>
+    <mt:elseif name="disp_edit" eq="radio">
+      <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="__col_value__"></mt:unless></mt:unless>
+    <mt:loop name="_options_loop">
+      <mt:if name="__first__">
+      <mt:unless name="not_null">
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input watch-changed" type="radio" 
+        <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+        <mt:unless name="__col_value__">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:unless> name="<mt:var name="__col_name__">" value="">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Unspecified"></span>
+      </label>
+      </mt:unless>
+      </mt:if>
+      <mt:if name="_options">
+      <label class="custom-control custom-radio">
+        <mt:setvar name="this_checked" value="0">
+        <mt:var name="__escaped_value__" value="">
+        <mt:if name="_split_options"><mt:var name="__key__" escape setvar="__escaped_value__"><mt:else><mt:var name="__value__" escape setvar="__escaped_value__"></mt:if>
+        <input class="custom-control-input watch-changed" type="radio"
+         <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+         <mt:unless name="__col_value__"><mt:if name="not_null"><mt:if name="__counter__" eq="1">checked<mt:setvar name="this_checked" value="1"></mt:if></mt:if></mt:unless>
+         <mt:if name="__col_value__" eq="$__escaped_value__">checked<mt:setvar name="this_checked" value="1"></mt:if> name="<mt:var name="__col_name__">" value="<mt:var name="__escaped_value__">"
+         <mt:unless name="this_checked"><mt:if name="readonly">disabled</mt:if></mt:unless>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:if name="translate"><mt:trans phrase="$__value__" escape><mt:else><mt:var name="__value__" escape></mt:if></span>
+      </label>
+      </mt:if>
+    </mt:loop>
+    <mt:elseif name="disp_edit" eq="select">
+      <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="__col_value__"></mt:unless></mt:unless>
+    <select id="<mt:var name="__col_name__">" class="form-control custom-select watch-changed" name="<mt:var name="__col_name__">">
+    <mt:loop name="_options_loop">
+      <mt:if name="__first__">
+      <mt:unless name="not_null">
+        <option value="" <mt:if name="__col_value__"><mt:if name="readonly">disabled</mt:if></mt:if>>
+          <mt:trans phrase="Unspecified">
+        </option>
+      </mt:unless>
+      </mt:if>
+        <mt:var name="__escaped_value__" value="">
+        <mt:if name="_split_options"><mt:var name="__key__" escape setvar="__escaped_value__"><mt:else><mt:var name="__value__" escape setvar="__escaped_value__"></mt:if>
+        <option <mt:if name="__col_value__" eq="$__escaped_value__">selected<mt:else><mt:if name="readonly">disabled</mt:if></mt:if> value="<mt:var name="__escaped_value__">"><mt:if name="translate"><mt:trans phrase="$__value__" escape><mt:else><mt:var name="__value__" escape></mt:if></option>
+    </mt:loop>
+    </select>
+    </mt:if>
+    <mt:if name="_hint"><span style="white-space:nowrap"><mt:var name="_hint"></span></mt:if>
+  </div>
+</div>
+<mt:else>
+  <mt:setvarblock name="include_path">include/edit/<mt:var name="edit">.tmpl</mt:setvarblock>
+  <mt:include file="$include_path">
+</mt:if>
+<mt:if name="__col_name__" ne="id">
+</div>
+</mt:if>
+
+<mt:if name="__last__">
+<mt:setvar name="field__exists" value="0">
+<mt:fieldloop workspace_id="$workspace_id" model="$model" id="$object_id">
+<mt:if name="__first__">
+<mt:fieldloop workspace_id="$workspace_id" model="$model" id="$object_id" build_field="1">
+<mt:if name="field__display"><mt:var name="field__html"></mt:if>
+</mt:fieldloop>
+<div id="_field_html_area"></div>
+<mt:fieldloop workspace_id="$workspace_id" model="$model" id="$object_id">
+<mt:if name="field__menu"><mt:setvar name="field__exists" value="1"></mt:if>
+</mt:fieldloop>
+</mt:if>
+</mt:fieldloop>
+<mt:setvar name="_field_count" value="0">
+<mt:fieldloop workspace_id="$workspace_id" model="$model" id="$object_id">
+<mt:if name="__first__">
+<div class="row form-group" id="_field_selector_wrapper">
+  <div class="col-lg-2">
+    <label for="_field_selector">
+      <mt:trans phrase="Fields">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    <select id="_field_selector" class="form-control custom-select">
+      <option value=""><mt:trans phrase="(None selected)"></option>
+</mt:if>
+      <mt:if name="field__menu"><option <mt:if name="field__hidden">hidden<mt:else><mt:var name="_field_count" increment setvar="_field_count"></mt:if> id="_selector-field-<mt:var name="field__id" escape>" data-multiple="<mt:var name="field__multiple" escape>" class="<mt:var name="field__basename" escape> field-<mt:var name="field__basename" escape>-option" value="<mt:var name="field__id" escape>"><mt:var name="field__name" trans="1" escape></option></mt:if>
+<mt:if name="__last__">
+    </select>
+    <button type="button" id="_field_chooser" class="btn btn-primary btn-sm"><mt:trans phrase="Add"></button>
+  </div>
+</div>
+<script>
+<mt:unless name="_field_count">
+$('#_field_selector_wrapper').hide();
+</mt:unless>
+$('#_field_chooser').click(function(){
+    var field_id = $('#_field_selector').val();
+    var wrapper_id;
+    if ( field_id ) {
+        var basename = $('#_field_selector option:selected').prop('class');
+        basename = basename.split(' ');
+        basename = basename[0];
+        var str = '__mode=get_field_html<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&_model=<mt:var name="model">';
+        str += '&magic_token=<mt:var name="magic_token">&id=' + field_id;
+        wrapper_id = '#field-' + basename + '-wrapper';
+        if ( $(wrapper_id).length ) {
+            str += '&field__out=1';
+        }
+        $.post('<mt:var name="script_uri">', str,
+            function ( data ) {
+                if ( data.status != 200 ) {
+                    alert( data.message );
+                    return;
+                }
+                var dom_obj = $(data.html);
+                var insertFieldHTML = data.html;
+                if ( $(wrapper_id).length ) {
+                    $(wrapper_id).append(dom_obj);
+                } else {
+                    var html = $('#_field_html_area').html();
+                    $('#_field_html_area').append(dom_obj);
+                }
+                var multiple = $('#_field_selector option:selected').attr('data-multiple');
+                if ( multiple == 0 ) {
+                    $('#_selector-field-' + field_id ).attr('hidden','hidden');
+                    $('#_field_selector').val('');
+                } else {
+                    dom_obj.attr('tabindex', 0);
+                }
+                if ( $('#dispOptions').length ){
+                    reorder_fields();
+                }
+                if ( tinymce && insertFieldHTML.indexOf('<textarea') !== -1 ) {
+                    if ( insertFieldHTML.indexOf('richtext') !== -1 ) {
+                        var oldTextFormat = null;
+                        if ( $('#text_format-select').length ){
+                            oldTextFormat = $('#text_format-select').val();
+                        }
+                        editorInit();
+                        if ( oldTextFormat != null ) {
+                            if ( oldTextFormat != 'richtext' ) {
+                                tinymce.EditorManager.remove();
+                                editorMode = oldTextFormat;
+                            }
+                        }
+                    }
+                }
+            },
+            'json'
+        );
+    } else {
+        alert('<mt:trans phrase="You did not select any field.">');
+    }
+});
+</script>
+</mt:if>
+</mt:fieldloop>
+<mt:if name="_revisable">
+<mt:var name="object_rev_object_id" setvar="object_rev_object_id">
+<input type="hidden" name="rev_object_id" value="<mt:var name="object_rev_object_id" escape>">
+<mt:tablehascolumn column="status">
+<mt:else>
+<input type="hidden" name="rev_type" value="<mt:var name="object_rev_type" escape>">
+</mt:tablehascolumn>
+</mt:if>
+<mt:setvarblock name="modified_col">
+  <div class="col-lg-2">
+    <mt:trans phrase="Modified">
+  </div>
+  <div class="col-lg-<mt:if name="request.dialog_view">4<mt:else>3</mt:if>">
+    <mt:if name="model" eq="log">
+      <mt:if name="object_created_by">
+        <mt:getobjectname id="$object_created_by" type="reference:user:nickname" escape>
+      <mt:else>
+        <mt:trans phrase="System">
+      </mt:if>
+    <mt:else>
+      <mt:getobjectname id="$object_modified_by" type="reference:user:nickname" escape>
+    </mt:if>
+  </div>
+  <div class="col-lg-<mt:if name="request.dialog_view">6<mt:else>7</mt:if>">
+    <mt:if name="object_modified_on" ne="000000"><mt:var name="object_modified_on" escape></mt:if>
+<mt:unless name="request._duplicate">
+<mt:if name="can_revision">
+<mt:if name="_revision_count">
+&nbsp;
+  <i class="fa fa-code-fork" aria-hidden="true"></i> <mt:trans phrase="%s revision(s)" params="$_revision_count">
+  <button type="button" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+    data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;dialog_view=1&amp;single_select=1&amp;revision_select=1&amp;rev_object_id=<mt:var name="object_id" escape>&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select..."></button>
+  <a target="_blank" class="btn btn-secondary btn-sm dialog-chooser"
+    href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;revision_select=1&amp;rev_object_id=<mt:var name="object_id" escape>">
+    <i class="fa fa-external-link-square" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Manage"></span>
+  </a>
+</mt:if>
+</mt:if>
+</mt:unless>
+  </div>
+</mt:setvarblock>
+<mt:if name="model" eq="log">
+<div class="row form-group">
+  <mt:var name="modified_col">
+</div>
+</mt:if>
+<mt:if name="model" eq="user">
+  <mt:isadmin>
+  <mt:else>
+    <mt:setvar name="_auditing" value="0">
+  </mt:isadmin>
+</mt:if>
+<mt:if name="_auditing">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:trans phrase="Created">
+  </div>
+  <div class="col-lg-<mt:if name="request.dialog_view">4<mt:else>3</mt:if>">
+    <mt:unless name="object_created_by">
+      <mt:if name="request.id">
+        <mt:trans phrase="System">
+      </mt:if>
+    <mt:else>
+      <mt:getobjectname id="$object_created_by" type="reference:user:nickname" escape>
+    </mt:unless>
+  </div>
+  <div class="col-lg-<mt:if name="request.dialog_view">6<mt:else>7</mt:if>">
+     <mt:if name="object_created_on" ne="000000"><mt:var name="object_created_on" escape></mt:if>
+<mt:if name="request.edit_revision">
+  <mt:if name="_master_updated">
+    &nbsp;
+    <input type="hidden" name="_created_on_update" value="0">
+    <label class="custom-control custom-checkbox ml-3">
+    <input id="_created_on_update" class="custom-control-input watch-changed"
+     type="checkbox" name="_created_on_update" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Update Date Created"></span>
+    </label>
+  </mt:if>
+</mt:if>
+  </div>
+</div>
+
+<div class="row form-group">
+  <mt:var name="modified_col">
+</div>
+
+<mt:if name="can_revision">
+<mt:if name="_revisable">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:trans phrase="Change Note">
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="rev_note" class="form-control form-control-sm watch-changed" name="rev_note" value="">
+    <input type="hidden" id="__rev_note" name="__rev_note" value="<mt:var name="object_rev_note" escape>">
+  <mt:if name="object_rev_note">
+    <p class="text-muted mt-2">
+    <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Last Update"></span>
+    <mt:var name="object_modified_on" format_ts="Y-m-d H:i"> : <mt:var name="object_rev_note" escape>
+    </p>
+  </mt:if>
+  </div>
+</div>
+</mt:if>
+</mt:if>
+</mt:if>
+<mt:var name="object_text_format" setvar="_object_text_format">
+</mt:if>
+<mt:if name="__last__">
+  <mt:if name="object_status" gt="$max_status_for_create_revision">
+    <mt:setvar name="can_revision" value="0">
+  </mt:if>
+</mt:if>
+</mt:objectcols>
+</mt:objectcontext>
+<mt:if name="col_right">
+  </div>
+  <div class="col-lg-3 mt-2 col-2-col">
+    <mt:var name="col_right">
+  </div>
+</div>
+</mt:if>
+<hr>
+<mt:setvarblock name="include_path">include/edit/<mt:var name="model">/form_footer.tmpl</mt:setvarblock>
+<mt:include file="$include_path">
+<mt:var name="form_footer">
+<div class="row form-group edit-action-bar<mt:if name="request.dialog_view"><mt:if name="debug_mode"> mb-5</mt:if></mt:if>">
+  <div class="col-lg-12<mt:if name="request.dialog_view"><mt:if name="debug_mode"> mb-5</mt:if></mt:if>">
+  <mt:if name="menu_type" ne="3">
+    <button disabled type="button" id="__save" class="__save btn btn-primary disabled-btn"><mt:trans phrase="Save"></button>
+  </mt:if>
+  <mt:unless name="request.dialog_view">
+  <mt:if name="request.id">
+    <mt:unless name="request._duplicate">
+      <mt:unless name="model" eq="user">
+        <mt:if name="can_delete">
+          <button disabled type="button" id="__delete" class="btn btn-secondary disabled-btn"><mt:trans phrase="Delete"></button>
+        </mt:if>
+      </mt:unless>
+    </mt:unless>
+  </mt:if>
+  <mt:else>
+  <button id="dialog-cancel-btn" class="btn btn-secondary" type="button"><mt:trans phrase="Cancel"></button>
+<script>
+$('#dialog-cancel-btn').click(function(){
+    if ( editContentChanged ) {
+        if (! confirm('<mt:trans phrase="Are you sure you want to move from this page? The changes you made are not reflected.">') ) {
+            return false;
+        }
+    }
+    $(window).off('beforeunload');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    window.parent.$('#modal').modal('hide');
+    return false;
+});
+</script>
+  </mt:unless>
+  <mt:if name="_has_mapping">
+    <mt:property name="select_preview_urlmap" setvar="select_preview_urlmap">
+    <mt:if name="select_preview_urlmap">
+      <mt:isarray array="_has_mapping">
+      <mt:count name="_has_mapping" setvar="urlmap_count">
+      <mt:if name="urlmap_count" gt="1">
+       <select aria-label="<mt:trans phrase="Select a URL Map...">" name="__urlmap_id" class="custom-select form-control form-control-sm <mt:unless name="request.id">ml-3</mt:unless>" style="height:38px;margin-top:1px;width:200px;">
+          <mt:loop name="_has_mapping">
+          <option value="<mt:var name="urlmapping_id" escape>"><mt:var name="urlmapping_name" trim_to="30,..." escape></option>
+          </mt:loop>
+       </select>
+      </mt:if>
+      </mt:isarray>
+    </mt:if>
+    <button disabled type="button" id="__preview" class="btn btn-secondary disabled-btn"><mt:trans phrase="Preview"></button>
+    <mt:if name="model" eq="template">
+    <mt:if name="__can_rebuild_this_template">
+      <input type="hidden" name="__can_rebuild_this_template" value="1">
+      <input type="hidden" name="__save_and_publish" value="" id="__save_and_publish_flg">
+      <button disabled type="button" name="__save_and_publish" id="__save_and_publish" value="1" class="btn btn-secondary btn-sm __save_and_publish disabled-btn"><mt:trans phrase="Save &amp; Publish"></button>
+    </mt:if>
+    </mt:if>
+  </mt:if>
+<mt:unless name="request.dialog_view">
+<mt:if name="_revisable">
+  <mt:if name="request.edit_revision">
+  <mt:if name="_master_deleted">
+    <script>
+    $('#alert-revision-message').html( "<span><mt:trans phrase="You are about to edit the revision. To change this revision to the master click the 'Change to Master' button."></span>" );
+    </script>
+    <button disabled type="button" id="__change_to_master" class="btn btn-secondary btn-sm __change_to_master disabled-btn"><mt:trans phrase="Change to Master"></button>
+  <mt:else>
+  <mt:ifusercan id="$object_rev_object_id" model="$_model">
+    <script>
+    $('#alert-revision-message').html( '<span><mt:trans phrase="You are about to edit the revision. To apply this revision to the master click the \'Apply to Master\' button."></span>' );
+    </script>
+    <button disabled type="button" id="__apply_to_master" class="ml-3 btn btn-secondary btn-sm __apply_to_master disabled-btn"><mt:trans phrase="Apply to Master"></button>
+  </mt:ifusercan>
+  </mt:if>
+  </mt:if>
+  <mt:unless name="request.edit_revision">
+  <mt:if name="request.id"><mt:if name="can_revision">
+    <button disabled type="button" id="__save_as_revision" class="ml-3 btn btn-secondary btn-sm __save_as_revision disabled-btn"><mt:trans phrase="Save as Revision"></button>
+  </mt:if></mt:if>
+  </mt:unless>
+</mt:if>
+<mt:if name="request.id">
+  <mt:if name="model" eq="table">
+    <button disabled type="button" id="__export" class="btn btn-danger btn-sm disabled-btn"><mt:trans phrase="Export"></button>
+    <button disabled type="button" id="__export_csv" class="ml-3 btn btn-warning btn-sm disabled-btn" style="color:black"><mt:trans phrase="Export CSV"></button>
+  </mt:if>
+</mt:if>
+<mt:if name="menu_type" ne="3">
+<mt:if name="model" ne="table">
+  <mt:if name="model" ne="user">
+    <mt:unless name="request.edit_revision"><mt:if name="can_duplicate">
+    <button disabled type="button" id="__duplicate" class="ml-3 btn btn-secondary btn-sm disabled-btn disabled-btn"><mt:trans phrase="Save &amp; Duplicate"></button>
+    </mt:if></mt:unless>
+  </mt:if>
+</mt:if>
+</mt:if>
+</mt:unless>
+<mt:var name="add_edit_action_bar">
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', function(){
+    $('.disabled-btn').removeAttr('disabled');
+});
+var editContentChanged = false;
+<mt:if name="forward_params">
+editContentChanged = true;
+<mt:else>
+setTimeout(setEditContentChanged, 500);
+function setEditContentChanged () {
+    editContentChanged = false;
+}
+</mt:if>
+$('.watch-changed').change(function(){
+    editContentChanged = true;
+});
+$(function(){
+    $(window).on('beforeunload', function() {
+        if (! editContentChanged ) {
+            $(window).off('beforeunload');
+            return;
+        }
+        return '<mt:trans phrase="Are you sure you want to move from this page? The changes you made are not reflected.">';
+    });
+});
+$('#__preview').click(async function(){
+    $('#_preview').val(1);
+    $('#edit-form-main').attr('target', '<mt:property name="request_id" escape>');
+    $('#edit-form-main').submit();
+});
+$('#__duplicate').click(async function(){
+    if ( !confirm('<mt:trans phrase="Are you sure you want to save this %s and duplicate?" params="$label">') ) {
+        return false;
+    }
+    $('#_duplicate').val(1);
+    <mt:if name="model" eq="asset">
+    if (! file_file_selected || ! $('#label').val() ) {
+        alert( '<mt:trans phrase="File and Label are required.">' );
+        return false;
+    }
+    </mt:if>
+    $(this).attr('disabled', true);
+    $('#_preview').val('');
+    $('#edit-form-main').removeAttr('target');
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+});
+<mt:if name="model" ne="table">
+$('.__save').click(async function(){
+    <mt:if name="model" eq="asset">
+    if (! file_file_selected || ! $('#label').val() ) {
+        alert( '<mt:trans phrase="File and Label are required.">' );
+        return false;
+    }
+    </mt:if>
+    <mt:if name="model" eq="workspace">
+      <mt:property name="reset_url_method" setvar="reset_url_method">
+      <mt:if name="reset_url_method" eq="rename">
+      <mt:if name="request.id">
+    if ( $('#site_path').val() != '<mt:var name="workepace_site_path">' ) {
+        if(! confirm('<mt:trans phrase="Changing the site path will move all current files to the new file path. Are you sure you want to save your settings?">') ) {
+            return false;
+        }
+    }
+      </mt:if>
+      </mt:if>
+    </mt:if>
+    <mt:var name="__add_save_event">
+    $(this).attr('disabled', true);
+    $('#_preview').val('');
+    $('#edit-form-main').removeAttr('target');
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+    return false;
+});
+</mt:if>
+$('.__save_and_publish').click(async function(){
+    <mt:var name="__add_save_event">
+    $(this).attr('disabled', true);
+    $('#_preview').val('');
+    $('#__save_and_publish_flg').val(1);
+    $('#edit-form-main').removeAttr('target');
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+    return false;
+});
+<mt:if name="_revisable">
+$('.__save_as_revision').click(async function(){
+    if ( !confirm('<mt:trans phrase="Are you sure you want to save this %s as a revision instead of a master?" params="$label">') ) {
+        return false;
+    }
+    <mt:if name="model" eq="asset">
+    if (! file_file_selected || ! $('#label').val() ) {
+        // TODO label
+        alert( '<mt:trans phrase="File and Label are required.">' );
+        return false;
+    }
+    </mt:if>
+    $('#_save_as_revision').val('1');
+    $('#_preview').val('');
+    $('#edit-form-main').removeAttr('target');
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+    return false;
+});
+<mt:if name="request.edit_revision">
+$(function(){
+    $('.__apply_to_master').click(function(){
+        if(!confirm('<mt:trans phrase="Are you sure you want to apply this revision to master?"><mt:tablehascolumn column="status">(<mt:trans phrase="The status at apply will be status of the master."> ( <mt:trans phrase="Current status of Master"> : <mt:statustext status="$_master_status" text="1" model="$model">) )</mt:tablehascolumn>')){
+            return false;
+        }
+        $('#_preview').val('');
+        $('#edit-form-main').removeAttr('target');
+        $(window).off('beforeunload');
+        $('#id').val('<mt:var name="object_rev_object_id">');
+        $('#_apply_to_master').val('1');
+        $('#edit-form-main').submit();
+        return false;
+    });
+    $('.__change_to_master').click(function(){
+        if(!confirm('<mt:trans phrase="Are you sure you want to change this revision to master?">')){
+            return false;
+        }
+        $('#_preview').val('');
+        $('#edit-form-main').removeAttr('target');
+        $(window).off('beforeunload');
+        // $('#id').val('<mt:var name="object_rev_object_id">');
+        $('#_change_to_master').val('1');
+        $('#edit-form-main').submit();
+        return false;
+    });
+});
+</mt:if>
+</mt:if>
+</script>
+<mt:if name="model" eq="table">
+  <mt:if name="request.id">
+<script>
+var error_message;
+$('.__save').click(function(){
+    $('#_preview').val('');
+    $('#edit-form-main').removeAttr('target');
+    $(window).off('beforeunload');
+    $('#__validation').val('1');
+    $('#__mode').prop('value', 'save');
+    (function($) {
+        let $target = $('#column_data');
+        let json_data_name = 'json_data';
+        let $json_data_textarea = $('textarea[name=' + json_data_name + ']');
+        if (!$json_data_textarea.length ) {
+            $json_data_textarea = $('<textarea>')
+                .attr('name','json_data')
+                .hide()
+                .insertAfter($target);
+        } else {
+            $json_data_textarea.val('');
+        }
+        let input_data = {};
+        $target.find('input,select,textarea').filter('[name]:enabled').each(function() {
+            let $this = $(this);
+            let name = $this.attr('name');
+            let type = $this.attr('type');
+            let val = $this.val();
+            let is_multiple = false;
+            if ( ( /\[.*\]$/).test(name) ) {
+                name = name.replace(/\[.*\]$/,'');
+                is_multiple = true;
+            }
+            if ( ( type && type == 'checkbox') && !$this.prop('checked') ) {
+                return true;
+            }
+            if ( ( type && type == 'radio') && !$this.prop('checked') ) {
+                return true;
+            }
+            if(input_data[name]) {
+                if(Array.isArray(input_data[name]) ) {
+                    input_data[name].push(val);
+                }else{
+                    input_data[name] = [input_data[name],val];
+                }
+            }else{
+                if(!is_multiple ) {
+                    input_data[name] = val;
+                }else{
+                    input_data[name] = [val];
+                }
+            }
+            $this.prop('disabled',true);
+            $this.attr('data-temp_disabled','1');
+        });
+        $json_data_textarea.val( JSON.stringify(input_data) );
+    })(jQuery);
+    let str = $('#edit-form-main').serialize();
+    $.post('<mt:var name="script_uri">', str,
+        function ( data ) {
+            if ( data.status == 500 ) {
+                error_message = data.error;
+                setTimeout(ajax_failed, 1);
+                return;
+            }
+            $('#__validation').val('');
+            $('.__save').attr('disabled', true);
+            $('#edit-form-main').submit();
+            return false;
+        },
+        'json'
+    );
+    return false;
+});
+function ajax_failed () {
+    alert('<mt:trans phrase="An error occurred.">'+error_message);
+    $('[data-temp_disabled]').prop('disabled',false).removeAttr('data-temp_disabled');
+}
+</script>
+<mt:else>
+<script>
+$('.__save').click(function(){
+    $(this).attr('disabled', true);
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+});
+</script>
+  </mt:if>
+</mt:if>
+</form>
+<mt:if name="request.id">
+  <mt:if name="model" eq="table">
+<form action="<mt:var name="script_uri">" method="POST" id="export-form">
+  <input type="hidden" name="__mode" value="save" id="export-mode">
+  <input type="hidden" name="_model" value="<mt:var name="model">">
+  <input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+  <input type="hidden" name="_screen_id" value="<mt:var name="screen_id" escape>">
+  <input type="hidden" name="_type" value="edit" id="export_input">
+  <input type="hidden" name="name" value="" id="table-name">
+<script>
+$('#table-name').val( $('#name').val() );
+</script>
+</form>
+  </mt:if>
+</mt:if>
+<script>
+$('.badge-draggable').mouseenter(function() {
+    $(this).css('cursor','move');
+});
+$(function () {
+    let clipboard = new Clipboard('.copy-clipboard');
+    if (window.ontouchstart !== null) {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+});
+$(document).on('click','.close-sm', function() {
+    if ( $(this).hasClass('detach-field') ) {
+        if(!confirm('<mt:trans phrase="Are you sure you want to remove this field?">')){
+            return false;
+        }
+        var basename = $(this).attr('data-basename');
+        var fieldLabel = $('#field-' + basename + '-wrapper .row .col-label:first').html();
+        $(this).parent().parent().parent().parent().remove();
+        $('#field-' + basename + '-wrapper .row .col-label:first').html(fieldLabel);
+        $('#field-' + basename + '-wrapper .row:first').removeClass('multiple-field');
+        if ( $('#field-' + basename + '-wrapper .row').length == 0 ) {
+            $('#field-' + basename + '-wrapper').remove();
+            $('#_field_selector .' + basename ).removeAttr('hidden');
+        }
+    } else {
+        let confirm_msg = '<mt:trans phrase="Are you sure you want to detach this relation?">';
+        if ( $(this).hasClass('detach-file') ) {
+            confirm_msg = '<mt:trans phrase="Are you sure you want to remove this attachment file?">';
+        }
+        if(!confirm(confirm_msg)){
+            return false;
+        }
+        let session_id = $(this).attr('data-session');
+        if ( session_id ) {
+            $.get('<mt:var name="script_uri">?__mode=flush_session&id=' + session_id ,{})
+            .fail(function() {
+              window.alert('<mt:trans phrase="An error occurred while removing temporary data.">');
+            });
+        }
+        let id = $(this).prop('id');
+        if ( id ) {
+            var spl = id.split('-');
+            $('#' + spl[0] + '-label').html('<mt:trans phrase="(None selected)">&nbsp;');
+            $('#' + spl[0] + '-img').hide();
+            $('#' + spl[0] + '-view-asset-link').hide();
+            $('#' + spl[0] + '-view-asset-link-url').hide();
+            $('#_' + spl[0] + '-edit-defeult').hide();
+            let field_id = spl[0];
+            // Custom Fields or Type Int.
+            field_id = field_id.replace(/^asset_/, '');
+            if ( $('.attachment-download-btn-asset_files-' + field_id).length ) {
+                $('.attachment-download-btn-asset_files-' + field_id).hide();
+            }
+            if ( $('.attachment-download-btn-' + field_id).length ) {
+                $('.attachment-download-btn-' + field_id).hide();
+            }
+            $('#' + spl[0]).val('');
+            $(this).hide();
+            return false;
+        }
+        let name = $(this).attr('data-name');
+        counter = 0;
+        $('#'+name).children('li').each(function(){
+            if (! $(this).prop('id') ) {
+                counter++;
+            }
+        });
+        if ( counter == 1 ) {
+            $('#'+name+'-none').show();
+        }
+        $(this).parent().remove();
+    }
+});
+$('#__delete').click(async function(){
+    if(! confirm('<mt:trans phrase="Are you sure you want to remove %s?" params="$label">')){
+        return false;
+    }
+    $(this).attr('disabled', true);
+    $('#_preview').val('');
+    $('#edit-form-main').removeAttr('target');
+    $('#__mode').val('delete');
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+    return false;
+});
+<mt:if name="request.id">
+  <mt:if name="model" eq="table">
+$('#__export').click(async function(){
+    if(! confirm('<mt:trans phrase="Are you sure you want to export %s?" params="$label">')){
+        return false;
+    }
+    $('#export-mode').prop('value', 'export_scheme');
+    $(window).off('beforeunload');
+    $('#export-form').submit();
+    return false;
+});
+$('#__export_csv').click(async function(){
+    if(! confirm('<mt:trans phrase="Are you sure you want to export %s?" params="$label">')){
+        return false;
+    }
+    $('#export-mode').prop('value', 'export_scheme_csv');
+    $(window).off('beforeunload');
+    $('#export-form').submit();
+    return false;
+});
+  </mt:if>
+</mt:if>
+$('#modal').on('shown.bs.modal', function(event) {
+    $('#modal-iframe').focus();
+});
+</script>
+<mt:var name="add_footer">
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="assets/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="assets/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="assets/js/jquery.fileupload.js"></script>
+<script>
+<mt:if name="_field_sort_order">
+$(function() {
+    var field_sort_order = '<mt:var name="_field_sort_order" escape>';
+    var field_loop = field_sort_order.split(',');
+    var options_objects = [];
+    for ( var i = 0;  i < field_loop.length; i++ ) {
+        var label_name = 'label-' + field_loop[i];
+        options_objects.push( $('#' + label_name ) );
+    }
+    $('#_start_options').after(options_objects);
+    reorder_fields();
+});
+</mt:if>
+<mt:objectcontext>
+<mt:objectcols type="edit">
+  <mt:if name="name" ne="id">
+    <mt:setvar name="_checked" value="0">
+    <mt:if name="edit" eq="primary"><mt:setvar name="_checked" value="1"></mt:if>
+    <mt:ifinarray array="$display_options" value="$name">
+      <mt:setvar name="_checked" value="1">
+    </mt:ifinarray>
+    <mt:ifinarray array="disable_edit_options" value="$name">
+      <mt:setvar name="_checked" value="1">
+    </mt:ifinarray>
+    <mt:unless name="_checked">
+$('#<mt:var name="name">-wrapper').hide();
+    </mt:unless>
+  </mt:if>
+</mt:objectcols>
+</mt:objectcontext>
+<mt:fieldloop workspace_id="$workspace_id" model="$model" id="$object_id">
+<mt:setvar name="_field_display" value="0">
+<mt:setvarblock name="_fieldbasename">field-<mt:var name="field__basename" escape></mt:setvarblock>
+<mt:ifinarray array="$display_options" value="$_fieldbasename">
+<mt:setvar name="_field_display" value="1">
+</mt:ifinarray>
+<mt:if name="field__required">
+<mt:setvar name="_field_display" value="1">
+</mt:if>
+<mt:unless name="_field_display">
+$('#field-<mt:var name="field__basename">-wrapper').hide();
+$('.' + 'field-<mt:var name="field__basename" escape>-option' ).hide();
+</mt:unless>
+</mt:fieldloop>
+</script>
+<script>
+$(function() {
+    $('img.lazy').lazyload();
+    $('img.lazy').css('backgroundImage', 'url(<mt:var name="prototype_path">assets/img/layer-bg.png)');
+    $('img.lazy').css('backgroundRepeat', 'repeat');
+    $('img.lazy').css('backgroundSize', 'cover');
+});
+function setEditContentChangedTrue () {
+    editContentChanged = true;
+    $(window).on('beforeunload', function() {
+        if (! editContentChanged ) {
+            $(window).off('beforeunload');
+            return;
+        }
+        return '<mt:trans phrase="Are you sure you want to move from this page? The changes you made are not reflected.">';
+    });
+}
+(function(){
+    var event_type = 'mouseenter mousemove mouseleave';
+    if(/Android/.test(navigator.userAgent) || /(iPhone)|(iPad)|(iPod)/.test(navigator.userAgent)){
+        event_type = 'touchstart touchmove touchend';
+    }
+    $(document).on(event_type,'.assets-child-thumb',function(e){
+        var $preview = $('#asset-preview-popup');
+        var $this = $(this);
+        var dataModel = $(this).attr('data-model');
+        var type = e.type;
+        var e_orig = e;
+        if(e.originalEvent.touches){
+            e_orig = e.originalEvent.touches[0];
+        }
+        if($this.closest('.ui-sortable-helper').length){
+            $preview.hide();
+            return;
+        }
+        var set_position = function($preview,e_orig){
+            var size   = 200;
+            var offset = 10;
+            var pos_x = e_orig.clientX + offset;
+            var pos_y = e_orig.clientY + offset;
+            if((pos_x + size) > $(window).width()){
+                pos_x = e_orig.clientX - (size + offset);
+            }
+            if((pos_y + size) > $(window).height()){
+                pos_y = e_orig.clientY - (size + offset);
+            }
+            $preview.css({
+                left : pos_x + 'px',
+                top  : pos_y + 'px'
+            });
+        }
+        if(type == 'mouseenter' || type == 'touchstart'){
+            var thumb = '<mt:var name="script_uri">?__mode=get_thumbnail&_model=' + dataModel + '&id=';
+            if(!$preview.length){
+                $preview = $('<div>').attr('id','asset-preview-popup').appendTo('body');
+            }
+            var random = Math.random();
+            $preview.css('background-image','url(' + thumb + $(this).attr('data-id') +'rnd=' + random + ')');
+            $preview.show();
+            $this.css({
+                '-moz-user-select': 'none',  
+                '-webkit-user-select': 'none', 
+                '-ms-user-select': 'none',
+                'user-select': 'none'
+            });
+            set_position($preview,e_orig);
+        }else
+        if(type == 'mouseleave' || type == 'touchend'){
+            $preview.hide();
+        }else
+        if(type == 'mousemove' || type == 'touchmove'){
+            set_position($preview,e_orig);
+        }
+    });
+})();
+window.featureDetect = {};
+featureDetect.inputType = function (type) {
+    const input = document.createElement("input");
+    input.setAttribute("type", type);
+    return input.type == type;
+};
+if (!featureDetect.inputType('date')) {
+    $('input[type=date]').datepicker({
+      dateFormat: "yy-mm-dd",
+      closeText: "<mt:trans phrase="Close">",
+      prevText: "&#x3C;<mt:trans phrase="Previous">",
+      nextText: "<mt:trans phrase="Next">&#x3E;",
+      currentText: "<mt:trans phrase="Today">",
+      monthNames: [
+        "<mt:trans phrase="January">",
+        "<mt:trans phrase="February">",
+        "<mt:trans phrase="March">",
+        "<mt:trans phrase="April">",
+        "<mt:trans phrase="May">",
+        "<mt:trans phrase="June">",
+        "<mt:trans phrase="July">",
+        "<mt:trans phrase="August">",
+        "<mt:trans phrase="September">",
+        "<mt:trans phrase="October">",
+        "<mt:trans phrase="November">",
+        "<mt:trans phrase="December">"
+      ],
+      dayNamesMin: ["<mt:trans phrase="Sun">", "<mt:trans phrase="Mon">", "<mt:trans phrase="Tue">", "<mt:trans phrase="Wed">", "<mt:trans phrase="Thu">", "<mt:trans phrase="Fri">", "<mt:trans phrase="Sat">"],
+      isRTL: false,
+      showMonthAfterYear: true,
+      <mt:if name="language" eq="ja">yearSuffix: "<mt:trans phrase="Year">",</mt:if>
+      firstDay: 1,
+      showButtonPanel: true,
+      beforeShow: function (){
+          setTimeout(function (){
+              $('#ui-datepicker-div').css('z-index', 5);
+          }, 250);
+      }
+    });
+}
+var _field_selector_exists = false;
+$('#_field_selector option').each(function(i){
+    if ( i ) {
+        if ( $(this).attr('hidden') == 'hidden' ) {
+        } else {
+            if ( $(this).css('display') && $(this).css('display') != 'none' ) {
+                _field_selector_exists = true;
+            }
+        }
+    }
+});
+function updateFieldSelector () {
+    let _disp_field_selector = false;
+    $('#_field_selector option').each(function(i){
+        if ( i ) {
+            if ( $(this).attr('hidden') == 'hidden' ) {
+            } else {
+                if ( $(this).css('display') && $(this).css('display') != 'none' ) {
+                    _disp_field_selector = true;
+                }
+            }
+        }
+    });
+    if (! _disp_field_selector ) {
+        $('#_field_selector_wrapper').hide();
+    } else {
+        $('#_field_selector_wrapper').show();
+    }
+}
+updateFieldSelector();
+</script>
+<mt:setvarblock name="include_path">include/edit/<mt:var name="model">/footer.tmpl</mt:setvarblock>
+<mt:include file="$include_path">
+<mt:setvarblock name="include_path">include/edit/screen_footer.tmpl</mt:setvarblock>
+<mt:include file="$include_path">
+<mt:if name="request.dialog_view">
+<mt:if name="request.direct_edit">
+<mt:if name="request.saved">
+<script>
+    <mt:setvar name="model_type" value="model">
+    <mt:if name="request._model" eq="asset">
+      <mt:setvar name="model_type" value="asset">
+    <mt:elseif name="request._model" eq="attachmentfile">
+      <mt:setvar name="model_type" value="asset">
+    </mt:if>
+    var target_control = '<mt:var name="request.target" escape>';
+    var objExists = false;
+    <mt:if name="request.single_select">
+    window.parent.$("input[name='"+<mt:if name="request._field_name">'<mt:var name="request._field_name" escape>'<mt:else>target_control</mt:if>+"']").each(function(){
+        if ($(this).val() == <mt:var name="request.id" escape> ) {
+            var innerSpans = $(this).parent().find('span');
+            innerSpans[0].innerHTML = '<mt:var name="_primary">';
+            objExists = true;
+            if ( $(this).parent().children('.assets-child-thumb').length ) {
+                $(this).parent().children('.assets-child-thumb').attr('data-id',<mt:var name="request.id" escape>).css('background-image','url(\'<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>\')');
+                $(this).parent().children('.assets-child-thumb').show();
+            }
+        }
+    });
+    if (! objExists ) {
+        window.parent.$("input[name='"+<mt:if name="request._field_name">'<mt:var name="request._field_name" escape>'<mt:else>target_control</mt:if>+"']").each(function(){
+            var innerSpans = $(this).parent().find('span');
+            var newli = $(this).parent();
+            innerSpans[0].innerHTML = '<mt:var name="_primary">';
+            $(this).val(<mt:var name="request.id" escape>);
+            var innerButtons = newli.find('button');
+            var elementClass = innerButtons[0].getAttribute( 'class' );
+            elementClass = elementClass.replace('hidden', '');
+            innerButtons[0].setAttribute( 'class', elementClass );
+            var elementHref = innerButtons[0].getAttribute( 'data-href' );
+            elementHref = elementHref.replace( /&id=[0-9]*&/, '&id=<mt:var name="request.id" escape>&' );
+            innerButtons[0].setAttribute( 'data-href', elementHref );
+            innerButtons[0].setAttribute( 'href', elementHref );
+            innerButtons[0].style.display = 'inline';
+            innerButtons[1].style.display = 'inline';
+            let existingClass = innerButtons[1].getAttribute( 'class' );
+            existingClass = existingClass.replace( / hidden/, '' );
+            innerButtons[1].setAttribute( 'class', existingClass );
+            if ( newli.children('.assets-child-thumb').length ) {
+                newli.children('.assets-child-thumb').attr('class', 'assets-child-thumb');
+                newli.children('.assets-child-thumb').attr('data-id',<mt:var name="request.id" escape>).css('background-image','url(\'<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>\')');
+                newli.children('.assets-child-thumb').show();
+            }
+            <mt:if name="__permalink">
+            <mt:var name="request._field_name" escape split="_" setvar="_field_part">
+            let viewLink = window.parent.$('#asset__<mt:var name="_field_part[1]">-view-asset-link');
+            if (! viewLink.length ) {
+                //asset_id-view-asset-link
+                viewLink = window.parent.$('#<mt:var name="request.target">-view-asset-link');
+            }
+            if (! viewLink.length ) {
+                // attachment-download-btn-page_id
+                viewLink = window.parent.$('.attachment-download-btn-<mt:var name="request.target">');
+            }
+            let viewLinkURL = window.parent.$('.attachment-linkurl-btn-<mt:var name="request.target">');
+            if ( viewLink.length ) {
+                viewLink.removeClass('hidden');
+                viewLink.show();
+              <mt:if name="_show_both">
+                viewLink.attr( 'href', '<mt:var name="permalink">' );
+                if ( viewLinkURL.length ) {
+                    viewLinkURL.removeClass('hidden');
+                    viewLinkURL.show();
+                    viewLinkURL.attr( 'href', '<mt:var name="__permalink">' );
+                }
+              <mt:else>
+                viewLink.attr( 'href', '<mt:var name="__permalink">' );
+              </mt:if>
+            }
+            </mt:if>
+        });
+    }
+    <mt:else>
+    window.parent.$("input[name='"+<mt:if name="request._field_name">'<mt:var name="request._field_name" escape>'<mt:else>target_control</mt:if>+"[]']").each(function(){
+        if ($(this).val() == <mt:var name="request.id" escape> ) {
+            let innerSpans = $(this).parent().find('span');
+            innerSpans[0].innerHTML = '<mt:var name="_primary">';
+            objExists = true;
+            let newli = $(this).parent();
+            <mt:if name="model_type" eq="asset">
+            <mt:if name="request._model" eq="attachmentfile">
+            let obj_permalink = $('#clipboard-file').val();
+            <mt:else>
+            let obj_permalink = $('#__permalink-clipboard').val();
+            </mt:if>
+            newli.children('.asset-download-btn').attr( 'href', obj_permalink );
+            let fInfo = obj_permalink.split('.');
+            let fileExtension = fInfo[fInfo.length-1].toLowerCase();
+            let extensionsInline = ['csv', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx'];
+            if (extensionsInline.indexOf(fileExtension) < 0){
+                newli.children('.asset-download-btn').attr('target', '_blank');
+                newli.children('.asset-download-btn').children('i').removeClass('fa-download');
+                newli.children('.asset-download-btn').children('i').addClass('fa-external-link-square');
+                newli.children('.asset-download-btn').attr('aria-label','<mt:trans phrase="View">');
+            }
+            </mt:if>
+            if ( newli.children('.assets-child-thumb').length ) {
+                newli.children('.assets-child-thumb').attr('data-id',<mt:var name="request.id" escape>).css('background-image','url(\'<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=<mt:var name="request._model" escape>&ts=<mt:date format="YmdHis">&id=' + <mt:var name="request.id" escape> + '\')');
+            }
+        }
+    });
+    if (! objExists ) {
+        window.parent.$('#'+target_control+'-none').hide();
+        let _li = window.parent.$('#'+target_control+'-tmpl');
+        let newli = _li.clone( true ).appendTo('#'+target_control );
+        newli.removeClass('hidden');
+        let col_value = $('#_get_col_' + <mt:var name="request.id" escape> ).val();
+        newli.children('input').val( <mt:var name="request.id" escape> );
+        newli.children('span').html( '<mt:var name="_primary">' );
+        let innerButtons = newli.find('button');
+        let elementClass = innerButtons[0].getAttribute( 'class' );
+        elementClass = elementClass.replace('hidden', '');
+        innerButtons[0].setAttribute( 'class', elementClass );
+        let elementHref = innerButtons[0].getAttribute( 'data-href' );
+        elementHref = elementHref.replace( '__value__', <mt:var name="request.id" escape> );
+        innerButtons[0].setAttribute( 'data-href', elementHref );
+        newli.removeAttr('id');
+        <mt:if name="model_type" eq="asset">
+        <mt:if name="request._model" eq="attachmentfile">
+        let obj_permalink = $('#clipboard-file').val();
+        <mt:else>
+        let obj_permalink = '<mt:var name="__permalink">';
+        </mt:if>
+        let fInfo = obj_permalink.split('.');
+        let fileExtension = fInfo[fInfo.length-1].toLowerCase();
+        let extensionsInline = ['csv', 'xls', 'xlsx', 'doc', 'docx', 'ppt', 'pptx'];
+        if (extensionsInline.indexOf(fileExtension) < 0){
+            newli.children('.asset-download-btn').attr('target', '_blank');
+            newli.children('.asset-download-btn').children('i').removeClass('fa-download');
+            newli.children('.asset-download-btn').children('i').addClass('fa-external-link-square');
+            newli.children('.asset-download-btn').attr('aria-label','<mt:trans phrase="View">');
+        }
+        <mt:else>
+        let obj_permalink = '<mt:var name="__permalink">';
+        </mt:if>
+        if ( obj_permalink ) {
+          <mt:if name="_show_both">
+            newli.children('.asset-download-btn').attr( 'href', '<mt:var name="permalink">' );
+            let viewLinkURL = newli.children('.asset-linkurl-btn');
+            if ( viewLinkURL.length ) {
+                viewLinkURL.attr( 'href', '<mt:var name="__permalink">' );
+                viewLinkURL.removeClass( 'hidden' );
+                viewLinkURL.show();
+            }
+          <mt:else>
+            newli.children('.asset-download-btn').attr( 'href', '<mt:var name="__permalink">' );
+          </mt:if>
+            newli.children('.asset-download-btn').removeClass( 'hidden' );
+            newli.children('.asset-download-btn').show();
+        }
+        newli.addClass( target_control+'-child');
+        if ( newli.children('.assets-child-thumb').length ) {
+            newli.children('.assets-child-thumb').attr('data-id',<mt:var name="request.id" escape>).css('background-image','url(\'<mt:var name="script_uri">?__mode=get_thumbnail&square=1&_model=<mt:var name="request._model" escape>&id=' + <mt:var name="request.id" escape> + '\')');
+            newli.children('.assets-child-thumb').show();
+        }
+        newli.show();
+    }
+    </mt:if>
+    $(window).off('beforeunload');
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>
+</mt:if>
+</mt:if>
+<mt:include file="include/dialog_footer.tmpl">
+<mt:else>
+<mt:include file="include/footer.tmpl">
+</mt:if>

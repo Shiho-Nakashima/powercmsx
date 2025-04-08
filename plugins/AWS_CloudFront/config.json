@@ -1,0 +1,106 @@
+{
+    "label": "AWS_CloudFront",
+    "id": "aws_cloudfront",
+    "component": "AWS_CloudFront",
+    "description": "Purge the AWS CloudFront cache when update static files.",
+    "version": "2.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "config_settings": {
+        "aws_cloudfront_api_version": "2019-03-26",
+        "aws_cloudfront_api_interval" : 1000,
+        "aws_cloudfront_bulk_per" : 100,
+        "aws_cloudfront_min_delay" : 180,
+        "aws_cloudfront_job_delay" : 1800,
+        "aws_cloudfront_queue_delay" : 1800,
+        "aws_cloudfront_ts_job" : false,
+        "aws_cloudfront_maxpurge_per_once" : 15,
+        "aws_cloudfront_maxpurge_per_month" : 1000,
+        "aws_cloudfront_realtime_purge": false,
+        "aws_cloudfront_purge_dynamic" : true,
+        "aws_cloudfront_purge_directry_without_slash" : false,
+        "aws_cloudfront_inherit_S3_extensions" : true,
+        "aws_cloudfront_setting_by_scope": false
+    },
+    "settings": {
+        "aws_cloudfront_access_key_id" : "",
+        "aws_cloudfront_secret_access_key" : "",
+        "aws_cloudfront_region" : "ap-northeast-1",
+        "aws_cloudfront_update" : false,
+        "aws_cloudfront_delete" : false,
+        "aws_cloudfront_manually" : true,
+        "aws_cloudfront_distribution_id": "",
+        "aws_cloudfront_directory_index": "",
+        "aws_cloudfront_only_directry" : false,
+        "aws_cloudfront_purge_map": "",
+        "aws_cloudfront_exclude_patterns": "",
+        "aws_cloudfront_exclude_maps": "",
+        "aws_cloudfront_force_paths": "",
+        "aws_cloudfront_use_system_setting": false
+    },
+    "methods": {
+        "aws_cloudfront_invalidation": {
+            "component": "AWS_CloudFront",
+            "method": "aws_cloudfront_invalidation",
+            "permission": "manage_plugins"
+        }
+    },
+    "list_actions": {
+        "aws_cloudfront_urlinfo_invalidation": {
+            "urlinfo": {
+                "aws_cloudfront_urlinfo_invalidation": {
+                    "name": "aws_cloudfront_urlinfo_invalidation",
+                    "label": "AWS CloudFront Send Invalidation",
+                    "component": "AWS_CloudFront",
+                    "method": "aws_cloudfront_urlinfo_invalidation",
+                    "columns": "id,file_path,relative_url",
+                    "input": 0,
+                    "order": 600
+                }
+            }
+        }
+    },
+    "config_overwrite" : {
+        "publish_callbacks" : true
+    },
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system": 1,
+    "cfg_space": 1,
+    "hooks": {
+        "aws_cloudfront_take_down": {
+            "take_down": {
+                "component": "AWS_CloudFront",
+                "priority": 12,
+                "method": "take_down"
+            }
+        }
+    },
+    "callbacks": {
+        "aws_cloudfront_start_publish": {
+            "template" : {
+                "start_publish" : {
+                    "component" : "AWS_CloudFront",
+                    "priority"  : 10,
+                    "method" : "start_publish"
+                }
+            }
+        }
+    },
+    "tags": {
+        "function": {
+            "awscloudfrontpurgethismonth" : {
+                "component" : "AWS_CloudFront",
+                "method" : "hdlr_awscloudfrontpurgethismonth"
+            }
+        }
+    },
+    "tasks": {
+        "aws_cloudfront_purge_cache": {
+            "label": "Purge AWS CloudFront cache",
+            "component": "AWS_CloudFront",
+            "method": "purge_cloudfront_cache",
+            "frequency": 100,
+            "priority": 100
+        }
+    }
+}

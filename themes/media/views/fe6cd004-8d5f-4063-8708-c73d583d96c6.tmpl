@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <mt:include module="(Media) HTML Header">
+</head>
+<body>
+<mt:cacheblock cache_key="__header__" workspace_id="$website_id">
+  <section class="nav-section">
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+      <div class="container">
+        <div class="navbar-brand">
+          <span class="navbar-caption-wrap"><a class="navbar-caption text-black display-6" href="<mt:var name="website_url" escape>"><mt:var name="website_name" escape></a></span>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="<mt:trans phrase="Toggle Navigation">">
+          <div class="hamburger"><span></span><span></span><span></span><span></span></div>
+        </button>
+  <mt:menuitems basename="media_global_navigation" cols="id">
+    <mt:if name="__first__">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+    </mt:if>
+            <li class="nav-item"><a class="nav-link link text-black display-8" href="<mt:var name="__item_url__">"><mt:var name="__item_primary__" regex_replace="'/^\(Media\)\s/',''" language="$language" escape></a></li>
+    <mt:if name="__last__">
+          </ul>
+        </div>
+    </mt:if>
+  </mt:menuitems>
+      </div>
+    </nav>
+  </section>
+</mt:cacheblock>
+<mt:ignore>
+  <section class="new-section search-section">
+    <div class="container">
+      <form role="search" method="GET" action="<mt:var name="website_url">search.html" class="search-box">
+        <input type="text" name="query" aria-label="<mt:trans phrase="Keywords" language="$language">" class="form-control" value="<mt:if name="publish_type" eq="6"><mt:var name="request.query" escape></mt:if>">
+        <button type="submit" class="btn btn-secondary form-control"><mt:trans phrase="Search" language="$language"></button>
+      </form>
+    </div>
+  </section>
+</mt:ignore>
+<mt:if name="use_furigana_js">
+<mt:include module="(Furigana) Button HTML" />
+</mt:if>

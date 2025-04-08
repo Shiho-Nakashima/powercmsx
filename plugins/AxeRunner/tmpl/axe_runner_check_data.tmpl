@@ -1,0 +1,55 @@
+<mt:loop name="all_lines">
+<mt:if name="__first__">
+<mt:var name="alert_box">
+<div class="mb-2">
+<button type="button" id="_show_all" class="btn btn-secondary btn-sm ml-0"><mt:trans phrase="Show All" component="AxeRunner"></button>
+<button type="button" id="_show_violation" class="btn btn-secondary btn-sm"><mt:trans phrase="Violation Only" component="AxeRunner"></button>
+<button type="button" id="_show_incomplete" class="btn btn-secondary btn-sm"><mt:trans phrase="Incomplete Only" component="AxeRunner"></button>
+</div>
+<div class="table-responsive-lg" tabindex="0">
+  <table class="table table-striped axe-core-result <mt:var name="table_add_class">">
+    <thead>
+    <tr>
+    <th>No.</th>
+    <th><mt:trans phrase="Issue Type" component="AxeRunner"></th>
+    <th><mt:trans phrase="Rule ID" component="AxeRunner"></th>
+    <th><mt:trans phrase="Success Criterion" component="AxeRunner"></th>
+    <th><mt:trans phrase="Subject" component="AxeRunner"></th>
+    <th><mt:trans phrase="Detail" component="AxeRunner"></th>
+    <th><mt:trans phrase="Element" component="AxeRunner"></th>
+    <th><mt:trans phrase="Selector" component="AxeRunner"></th>
+    </tr>
+  </thead>
+  <tbody>
+</mt:if>
+    <tr class="<mt:var name="axe_row_css_class">">
+    <th><mt:var name="axe_line"></th>
+      <td class="text-nowrap"><mt:var name="axe_type"></td>
+      <td><a href="<mt:var name="axe_hint">" target="_blank"><mt:var name="axe_rule_id">
+      <i class="fa fa-external-link" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Open in new window"></span></a></td>
+      <td><mt:var name="axe_sc"></td>
+      <td class="subject"><mt:var name="axe_subject" escape></td>
+      <td class="detail"><mt:var name="axe_detail"></td>
+      <td class="element" style="word-break: break-word;"><code><mt:var name="axe_element" escape></code></td>
+      <td class="path"><mt:var name="axe_path" escape></td>
+    </tr>
+<mt:if name="__last__">
+  </tbody>
+</table>
+</div>
+</mt:if>
+</mt:loop>
+<script>
+$('#_show_all').click(function(){
+    $('.violation').show();
+    $('.incomplete').show();
+});
+$('#_show_violation').click(function(){
+    $('.violation').show();
+    $('.incomplete').hide();
+});
+$('#_show_incomplete').click(function(){
+    $('.violation').hide();
+    $('.incomplete').show();
+});
+</script>

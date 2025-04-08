@@ -1,0 +1,56 @@
+{
+    "autokeywords" : {
+        "description" : "Set links to the keywords contained in the text in the enclosed blocks.",
+        "attributes" : {
+            "case_sensitive" : "Keywords are case sensitive.",
+            "model" : "Specify when specifying a model other than 'keyword'.",
+            "name" : "Column name to get the 'name'.",
+            "url" : "Column name to get the 'url'.",
+            "title" : "Column name to get the 'title'.",
+            "class" : "Filter by class on a model with a class column.",
+            "tag" : "Build template tags instead of url columns.",
+            "no_title" : "Do not add the title attribute.",
+            "target_blank" : "Add attribute 'target=&quot;_blank&quot;'",
+            "add_attr" : "Specify the attribute to add to the a element.",
+            "replace_once" : "Replace only the first occurrence of the keyword.",
+            "word_boundary" : "Only keywords that are adjacent to word boundaries are considered.",
+            "min_length" : "Add link only those with more than the specified number of characters.",
+            "enclosure" : "Enclose the tag in the specified string.",
+            "prefix" : "Prepends the specified string to the tag.",
+            "postfix" : "Adds the specified string after the tag.",
+            "include_workspaces" : "Keywords matching the given workspace_ids(Comma separated values or 'this' or 'children').",
+            "exclude_workspaces" : "Keywords excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "keyword2link" : {
+        "description" : "Alias for 'mt:autokeywords'.",
+        "attributes" : {
+            "case_sensitive" : "Keywords are case sensitive.",
+            "model" : "Specify when specifying a model other than 'keyword'.",
+            "name" : "Column name to get the 'name'.",
+            "url" : "Column name to get the 'url'.",
+            "title" : "Column name to get the 'title'.",
+            "class" : "Filter by class on a model with a class column.",
+            "tag" : "Build template tags instead of url columns.",
+            "no_title" : "Do not add the title attribute.",
+            "target_blank" : "Add attribute 'target=&quot;_blank&quot;'",
+            "add_attr" : "Specify the attribute to add to the a element.",
+            "replace_once" : "Replace only the first occurrence of the keyword.",
+            "word_boundary" : "Only keywords that are adjacent to word boundaries are considered.",
+            "min_length" : "Add link only those with more than the specified number of characters.",
+            "enclosure" : "Enclose the tag in the specified string.",
+            "prefix" : "Prepends the specified string to the tag.",
+            "postfix" : "Adds the specified string after the tag.",
+            "include_workspaces" : "Keywords matching the given workspace_ids(Comma separated values or 'this' or 'children').",
+            "exclude_workspaces" : "Keywords excluding the specified workspace_ids(Comma separated values).",
+            "workspace_id" : "Specify when filtering by workspace_id.",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "modifier_summarize" : {
+        "description" : "Extract important sentences.",
+        "attribute" : "If you specify a number, the number of sentences, Specify \"(number),wantarray\" an array is returned."
+    }
+}

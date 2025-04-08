@@ -1,0 +1,478 @@
+        ed.addButton('pt-furigana', {
+            image: '<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/insert_furigana.png',
+            tooltip: '<mt:trans phrase="Put on Furigana" component="SimplifiedJapanese">',
+            icon: false,
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_helper&_type=insert_editor<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                let innerHTML = editor.selection.getNode().innerHTML;
+                let outerHTML = editor.selection.getNode().outerHTML;
+                let selectEqual = ( html === innerHTML || html === outerHTML );
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="SimplifiedJapanese">' );
+                    return;
+                }
+                if ( html.length > 1000 ) {
+                    $('#__loader-bg').show();
+                }
+                let agreement = 0;
+                <mt:if tag="property" name="confirm_web_service" eq="1">
+                if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to 伝えるウェブ?" component="SimplifiedJapanese">' ) ) {
+                    return;
+                }
+                <mt:elseif tag="property" name="confirm_web_service" eq="2">
+                <mt:getcookie name="pt-sj-agreement" setvar="pt_sj_agreement">
+                <mt:unless name="pt_sj_agreement">
+                if (! confirm( '<mt:trans phrase="Are you sure you want to send the selected text to 伝えるウェブ?" component="SimplifiedJapanese">' ) ) {
+                    return;
+                }
+                </mt:unless>
+                agreement = 1;
+                </mt:if>
+                let data = {
+                    text: html,
+                    shift_key : pressShiftKey,
+                    magic_token : '<mt:var name="magic_token">',
+                    agreement: agreement
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.message ) {
+                            alert( responce.message );
+                            $('#__loader-bg').hide();
+                        } else {
+                            editor.insertContent( responce.result );
+                            if ( selectEqual ) {
+                                editor.selection.select( editor.selection.getNode() );
+                            }
+                            $('.mce-tinymce').css('width', '99.9%');
+                            window.setTimeout( _reset_editor_width , 1 ); // Hide horizontal scroll bar.
+                        }
+                    },
+                    error: function(){
+                        $('#__loader-bg').hide();
+                        alert( '<mt:trans phrase="An error occurred while put on furigana." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });
+        ed.addButton('pt-remove-ruby', {
+            image: '<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/ruby_remove.png',
+            tooltip: '<mt:trans phrase="Remove Furigana" component="SimplifiedJapanese">',
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_helper&remove_furigana=1&_type=insert_editor<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                let innerHTML = editor.selection.getNode().innerHTML;
+                let outerHTML = editor.selection.getNode().outerHTML;
+                let selectEqual = ( html === innerHTML || html === outerHTML );
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="SimplifiedJapanese">' );
+                    return;
+                }
+                if ( html.length > 1000 ) {
+                    $('#__loader-bg').show();
+                }
+                let data = {
+                    text: html,
+                    shift_key : pressShiftKey,
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.message ) {
+                            alert( responce.message );
+                            $('#__loader-bg').hide();
+                        } else {
+                            editor.insertContent( responce.result );
+                            if ( selectEqual ) {
+                                editor.selection.select( editor.selection.getNode() );
+                            }
+                            $('.tox-tinymce').css('width', '99.9%');
+                            window.setTimeout( _reset_editor_width , 1 ); // Hide horizontal scroll bar.
+                        }
+                    },
+                    error: function(){
+                        $('#__loader-bg').hide();
+                        alert( '<mt:trans phrase="An error occurred while put on furigana." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });
+        ed.addButton('pt-break-with-clauses', {
+            image: '<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/break_with_clauses.png',
+            tooltip: '<mt:trans phrase="Break with Clauses" component="SimplifiedJapanese">',
+            icon: false,
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_helper&break_with_clauses=1&_type=insert_editor<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                let innerHTML = editor.selection.getNode().innerHTML;
+                let outerHTML = editor.selection.getNode().outerHTML;
+                let selectEqual = ( html === innerHTML || html === outerHTML );
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="SimplifiedJapanese">' );
+                    return;
+                }
+                let data = {
+                    text: html,
+                    shift_key : pressShiftKey,
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                if ( html.length > 500 ) {
+                    $('#__loader-bg').show();
+                }
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.message ) {
+                            alert( responce.message );
+                            $('#__loader-bg').hide();
+                        } else {
+                            editor.insertContent( responce.result );
+                            if ( selectEqual ) {
+                                editor.selection.select( editor.selection.getNode() );
+                            }
+                            $('.mce-tinymce').css('width', '99.9%');
+                            window.setTimeout( _reset_editor_width , 1 ); // Hide horizontal scroll bar.
+                        }
+                    },
+                    error: function(){
+                        $('#__loader-bg').hide();
+                        alert( '<mt:trans phrase="An error occurred while Break with Clauses." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });<mt:if name="can_tsutaeru_web">
+        ed.addButton('pt-simplified-japanese', {
+            image: '<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/simplified_japanese.png',
+            tooltip: '<mt:trans phrase="Make Simplified Japanese" component="SimplifiedJapanese">',
+            icon: false,
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_helper&simplified_japanese=1&_type=insert_editor<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                let innerHTML = editor.selection.getNode().innerHTML;
+                let outerHTML = editor.selection.getNode().outerHTML;
+                let selectEqual = ( html === innerHTML || html === outerHTML );
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="SimplifiedJapanese">' );
+                    return;
+                }
+                let data = {
+                    text: html,
+                    shift_key : pressShiftKey,
+                    option_key : pressOptKey,
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                if ( html.length > 500 ) {
+                    $('#__loader-bg').show();
+                }
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.message ) {
+                            alert( responce.message );
+                            $('#__loader-bg').hide();
+                        } else {
+                            editor.insertContent( responce.result );
+                            if ( selectEqual ) {
+                                editor.selection.select( editor.selection.getNode() );
+                            }
+                            $('.mce-tinymce').css('width', '99.9%');
+                            window.setTimeout( _reset_editor_width , 1 ); // Hide horizontal scroll bar.
+                        }
+                    },
+                    error: function(){
+                        $('#__loader-bg').hide();
+                        alert( '<mt:trans phrase="An error occurred while translating to Simplified Japanese." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });</mt:if><mt:if name="this_mode" eq="simplifiedjapanese_helper">
+        ed.addButton('pt-sj-tmp-save', {
+            icon: 'upload',
+            tooltip: '<mt:trans phrase="Temporarily Save" component="SimplifiedJapanese">',
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_tmp_save<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.getContent();
+                if ( maxTemporaryData ) {
+                    if (! confirm( '<mt:trans phrase="Since the number of temporary data saved has been reached, one old data will be deleted. Do you want to continue?" component="SimplifiedJapanese">' ) ) {
+                        return;
+                    }
+                } else {
+                    if (! confirm( '<mt:trans phrase="Are you sure you want to save the temporary data?" component="SimplifiedJapanese">' ) ) {
+                        return;
+                    }
+                }
+                let data = {
+                    text: html,
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.status == 200 ) {
+                            $('#tmp-save-alert').show();
+                            $('#tmp-save-alert').focus();
+                            editContentChanged = false;
+                            window.setTimeout( _hide_save_alert , 3000 );
+                        }
+                    },
+                    error: function(){
+                        alert( '<mt:trans phrase="An error occurred while save temporarily data." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });
+        ed.addButton('pt-sj-tmp-restore', {
+            icon: 'undo',
+            tooltip: '<mt:trans phrase="Restore from History(Backward)" component="SimplifiedJapanese">',
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_tmp_restore<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.getContent();
+                if ( editContentChanged ) {
+                    if (! confirm( '<mt:trans phrase="Are you sure you want to recover your data? The data you are currently editing will be lost." component="SimplifiedJapanese">' ) ) {
+                        return;
+                    }
+                }
+                let data = {
+                    text: html,
+                    kind: 'backward',
+                    number : $('#simplifiedjapanese_tmp_save_number').val(),
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.status == 200 ) {
+                            editor.setContent( responce.result );
+                            let number = responce.number;
+                            $('#simplifiedjapanese_tmp_save_number').val( number );
+                        } else if ( responce.status == 404 ) {
+                            alert( '<mt:trans phrase="There is no older temporary data." component="SimplifiedJapanese">' );
+                        }
+                    },
+                    error: function(){
+                        alert( '<mt:trans phrase="An error occurred while restore temporarily data." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });
+        ed.addButton('pt-sj-tmp-forward', {
+            icon: 'redo',
+            tooltip: '<mt:trans phrase="Restore from History(Forward)" component="SimplifiedJapanese">',
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_tmp_restore<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                let editor = tinymce.activeEditor;
+                let html = editor.getContent();
+                if ( editContentChanged ) {
+                    if (! confirm( '<mt:trans phrase="Are you sure you want to recover your data? The data you are currently editing will be lost." component="SimplifiedJapanese">' ) ) {
+                        return;
+                    }
+                }
+                let data = {
+                    text: html,
+                    kind: 'forward',
+                    number : $('#simplifiedjapanese_tmp_save_number').val(),
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.status == 200 ) {
+                            editor.setContent( responce.result );
+                            let number = responce.number;
+                            $('#simplifiedjapanese_tmp_save_number').val( number );
+                        } else if ( responce.status == 404 ) {
+                            alert( '<mt:trans phrase="There is no newer temporary data." component="SimplifiedJapanese">' );
+                        }
+                    },
+                    error: function(){
+                        alert( '<mt:trans phrase="An error occurred while restore temporarily data." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });
+        ed.addButton('pt-sj-tmp-delete', {
+            icon: 'remove',
+            tooltip: '<mt:trans phrase="Delete Temporarily Data" component="SimplifiedJapanese">',
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_tmp_delete<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>&from_mode=<mt:var name="request.__mode" escape>';
+                if (! confirm( '<mt:trans phrase="Are you sure you want to remove your data? This operation cannot be undone." component="SimplifiedJapanese">' ) ) {
+                    return;
+                }
+                let data = {
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.status == 200 ) {
+                            $('#tmp-delete-alert').show();
+                            $('#tmp-delete-alert').focus();
+                            window.setTimeout( _hide_delete_alert , 3000 ); 
+                        } else if ( responce.status == 404 ) {
+                            alert( '<mt:trans phrase="There is no temporary data." component="SimplifiedJapanese">' );
+                        }
+                    },
+                    error: function(){
+                        alert( '<mt:trans phrase="An error occurred while delete temporarily data." component="SimplifiedJapanese">' );
+                    }
+                });
+            }
+        });</mt:if>
+        ed.addButton('pt-ruby', {
+            image: '<mt:if name="simplifiedjapanese_assets_base"><mt:var name="simplifiedjapanese_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/SimplifiedJapanese/assets/img</mt:if>/ruby.png',
+            tooltip: '<mt:trans phrase="Edit Ruby" component="SimplifiedJapanese">',
+            onclick: function () {
+                let url = '<mt:var name="script_uri">?__mode=simplifiedjapanese_get_phonetic<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                let data = {
+                    text: html,
+                    shift_key : pressShiftKey,
+                    magic_token : '<mt:var name="magic_token">'
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data:JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    timeout: 10000,
+                    success: function( responce ){
+                        if ( responce.status == 200 ) {
+                            if ( pressShiftKey ) {
+                                editor.insertContent( responce.text );
+                                return;
+                            }
+                            _open_ruby_dialog( responce.text, responce.result );
+                        } else {
+                            _open_ruby_dialog( html, '' );
+                        }
+                    },
+                    error: function(){
+                        _open_ruby_dialog( html, '' );
+                    }
+                });
+            }
+        });
+        var _open_ruby_dialog = function( html, ruby )
+        {
+            ed.windowManager.open({
+                title: '<mt:trans phrase="Ruby" component="SimplifiedJapanese">',
+                width : 420,
+                height: 120,
+                body: [
+                    {
+                      type: 'textbox',
+                      label: '<mt:trans phrase="Text" component="SimplifiedJapanese">',
+                      name: 'html',
+                      value: html
+                    },
+                    {
+                      type: 'textbox',
+                      label: '<mt:trans phrase="Ruby" component="SimplifiedJapanese">',
+                      name: 'ruby',
+                      value: ruby
+                    }
+                ],
+                onsubmit: function (e) {
+                    <mt:pluginsetting component="SimplifiedJapanese" name="simplifiedjapanese_add_rt_style" workspace_id="$workspace_id" setvar="add_rt_style">
+                    <mt:if name="request.__mode" ne="simplifiedjapanese_helper">
+                      <mt:setvar name="add_rt_style" value="0">
+                    </mt:if>
+                    <mt:if name="add_rt_style">
+                      <mt:setvarblock name="rt_tag"><rt style="font-size:0.5em"></mt:setvarblock>
+                    <mt:else>
+                      <mt:setvarblock name="rt_tag"><rt></mt:setvarblock>
+                    </mt:if>
+                    <mt:if name="simplifiedjapanese_add_rp">
+                    content = '<ruby>' + e.data.html + '<rp> (</rp><mt:var name="rt_tag">' + e.data.ruby + '</rt><rp>) </rp></ruby>';
+                    <mt:else>
+                    content = '<ruby>' + e.data.html + '<mt:var name="rt_tag">' + e.data.ruby + '</rt></ruby>';
+                    </mt:if>
+                    var editor = tinymce.activeEditor;
+                    editor.insertContent( content );
+                    $('.mce-tinymce').css('width', '99.9%');
+                    window.setTimeout( _reset_editor_width , 1 );
+                }
+            });
+        }
+        var _reset_editor_width = function()
+        {
+            $('.mce-tinymce').css('width', '100%');
+            $('#__loader-bg').hide();
+        }
+        var _hide_save_alert = function()
+        {
+            $('#tmp-save-alert').hide( 300 );
+        }
+        var _hide_delete_alert = function()
+        {
+            $('#tmp-delete-alert').hide( 300 );
+        }
+        <mt:if name="request.__mode" eq="simplifiedjapanese_helper">
+        ed.on('ResizeEditor', function(e) {
+            let editor = tinymce.activeEditor;
+            editorClientHeight = editor.editorContainer.clientHeight;
+            let menuBarHeight = $('.mce-top-part').outerHeight();
+            let statusBarHeight = $('.mce-statusbar').outerHeight();
+            let barHeight = menuBarHeight + statusBarHeight;
+            editorClientHeight = editorClientHeight - barHeight;
+            $.cookie( 'pt-editor-client-height-<mt:var name="workspace_id" cast_to="int">', editorClientHeight, { path: '/' } );
+        });
+        ed.on('init', function(e) {
+            let editorClientHeight = $.cookie( 'pt-editor-client-height-<mt:var name="workspace_id" cast_to="int">' );
+            if ( editorClientHeight ) {
+                let editor = tinymce.activeEditor;
+                editor.theme.resizeTo(null, editorClientHeight);
+            }
+        });
+        </mt:if>

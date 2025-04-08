@@ -1,0 +1,67 @@
+<div id="email_from-wrapper">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="name" escape>">
+    <mt:var name="label" escape="1">
+    <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:var name="options" _eval setvar="_options">
+  <mt:var name="_options" split="," setvar="_options_loop">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="__col_value__"></mt:unless></mt:unless>
+    <mt:loop name="_options_loop">
+      <mt:if name="_options">
+      <label class="custom-control custom-radio">
+        <mt:setvar name="this_checked" value="0">
+        <input class="custom-control-input watch-changed" type="radio"
+          <mt:if name="object_email_from" eq="User's Email">
+            <mt:if name="__counter__" eq="1">checked</mt:if>
+          <mt:elseif name="object_email_from" eq="System Email">
+            <mt:if name="__counter__" eq="2">checked</mt:if>
+          <mt:elseif name="object_email_from" eq="Specify Individually">
+            <mt:if name="__counter__" eq="3">checked</mt:if>
+          </mt:if>
+          name="<mt:var name="__col_name__">" value="<mt:if name="_split_options"><mt:var name="__key__" escape><mt:else><mt:var name="__value__" escape></mt:if>"
+         <mt:unless name="this_checked"><mt:if name="readonly">disabled</mt:if></mt:unless>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:if name="translate"><mt:trans phrase="$__value__" escape><mt:else><mt:var name="__value__" escape></mt:if></span>
+      </label>
+      </mt:if>
+    </mt:loop>
+  </div>
+</div>
+<div class="row form-group" id="from_address-wrapper">
+  <div class="col-lg-2">
+    <label for="from_address">
+    <mt:trans phrase="From Address">
+    <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="from_address" type="text" class="form-control watch-changed short" name="from_address" value="<mt:var name="object_from_address" escape>">
+  </div>
+</div>
+</div>
+<script>
+$('#notify_changes').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#email_from-wrapper').css( 'display', 'block' );
+    } else {
+        $('#email_from-wrapper').hide( 200 );
+    }
+});
+$('input:radio[name="email_from"]').change(function(){
+    let selected_email_from = $('input:radio[name="email_from"]:checked').val();
+    if ( selected_email_from == 'Specify Individually' ) {
+        $('#from_address-wrapper').show( 200 );
+    } else {
+        $('#from_address-wrapper').hide( 200 );
+    }
+});
+<mt:if name="object_email_from" ne="Specify Individually">
+$('#from_address-wrapper').hide();
+</mt:if>
+<mt:unless name="object_notify_changes">
+$('#email_from-wrapper').hide();
+</mt:unless></script>

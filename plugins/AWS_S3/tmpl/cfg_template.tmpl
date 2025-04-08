@@ -1,0 +1,208 @@
+<mt:property name="aws_s3_setting_by_scope" setvar="aws_s3_setting_by_scope">
+<mt:if name="workspace_id">
+<mt:if name="aws_s3_setting_by_scope">
+  <mt:setvar name="aws_s3_has_setting" value="1">
+</mt:if>
+<mt:else>
+  <mt:setvar name="aws_s3_has_setting" value="1">
+</mt:if>
+<mt:unless name="aws_s3_has_setting">
+  <div class="row form-group mb-3">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_aws_s3_use_system_setting" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_aws_s3_use_system_setting" name="setting_aws_s3_use_system_setting" value="1"
+          <mt:if name="setting_aws_s3_use_system_setting">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use System Setting" component="AWS_S3"></span>
+      </label>
+    </div>
+  </div>
+<script>
+$('#setting_aws_s3_use_system_setting').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide( 100 );
+    } else {
+        $('#individual-setting-container').show( 100 );
+    }
+});
+</script>
+<mt:else>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_access_key_id">
+        <mt:trans phrase="Access Key" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="password" autocomplete="new-password" id="setting_aws_s3_access_key_id" name="setting_aws_s3_access_key_id" class="form-control" value="<mt:var name="setting_aws_s3_access_key_id" escape>">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_secret_access_key">
+        <mt:trans phrase="Secret Access Key" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="password" autocomplete="new-password" id="setting_aws_s3_secret_access_key" name="setting_aws_s3_secret_access_key" class="form-control" value="<mt:var name="setting_aws_s3_secret_access_key" escape>">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_region">
+        <mt:trans phrase="Region" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_s3_region" name="setting_aws_s3_region" class="form-control" value="<mt:var name="setting_aws_s3_region" escape>">
+    </div>
+  </div>
+<hr>
+</mt:unless>
+<div class="<mt:if name="setting_aws_s3_use_system_setting">hidden</mt:if>" id="individual-setting-container">
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_bucket">
+        <mt:trans phrase="Bucket Name" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_s3_bucket" name="setting_aws_s3_bucket" class="form-control" value="<mt:var name="setting_aws_s3_bucket" escape>">
+      <mt:if name="setting_aws_s3_bucket">
+      <a class="btn pl-0" href="<mt:var name="script_uri">?__mode=aws_s3_list_objects<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>" target="_blank"><mt:trans phrase="View all objects of bucket" component="AWS_S3">
+        <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+      </a>
+      </mt:if>
+    <mt:if name="setting_aws_s3_ext_bucket_map">
+      <mt:var name="setting_aws_s3_ext_bucket_map" regex_replace="'/\r/',''" split="\n" setvar="ext_bucket_map">
+      <mt:loop name="ext_bucket_map">
+        <mt:var name="__value__" split="," setvar="splitvar">
+        <mt:setvar name="buckets" function="push" value="$splitvar[1]">
+      </mt:loop>
+      <mt:var name="buckets" array_unique setvar="buckets">
+      <mt:loop name="buckets">
+      <div>
+      <a class="btn pl-0" href="<mt:var name="script_uri">?__mode=aws_s3_list_objects<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;bucket=<mt:var name="__value__">" target="_blank">
+        <mt:trans phrase="View all objects of bucket '%s'" params="$__value__" component="AWS_S3">
+        <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+      </a>
+      </div>
+      </mt:loop>
+    </mt:if>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_acl">
+        <mt:trans phrase="ACL" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+    <select class="form-control custom-select" id="setting_aws_s3_acl" name="setting_aws_s3_acl">
+      <option value="" <mt:unless name="setting_aws_s3_acl">selected</mt:unless>>none</option>
+      <option value="private" <mt:if name="setting_aws_s3_acl" eq="private">selected</mt:if>>private</option>
+      <option value="public-read" <mt:if name="setting_aws_s3_acl" eq="public-read">selected</mt:if>>public-read</option>
+      <option value="public-read-write" <mt:if name="setting_aws_s3_acl" eq="public-read-write">selected</mt:if>>public-read-write</option>
+      <option value="aws-exec-read" <mt:if name="setting_aws_s3_acl" eq="aws-exec-read">selected</mt:if>>aws-exec-read</option>
+      <option value="authenticated-read" <mt:if name="setting_aws_s3_acl" eq="authenticated-read">selected</mt:if>>authenticated-read</option>
+      <option value="bucket-owner-read" <mt:if name="setting_aws_s3_acl" eq="bucket-owner-read">selected</mt:if>>bucket-owner-read</option>
+      <option value="bucket-owner-full-control" <mt:if name="setting_aws_s3_acl" eq="bucket-owner-full-control">selected</mt:if>>bucket-owner-full-control</option>
+      <option value="log-delivery-write" <mt:if name="setting_aws_s3_acl" eq="log-delivery-write">selected</mt:if>>log-delivery-write</option>
+    </select>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_extensions">
+        <mt:trans phrase="Extensions" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_s3_extensions" name="setting_aws_s3_extensions" class="form-control" value="<mt:var name="setting_aws_s3_extensions" escape>">
+      <div class="text-muted hint-block mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify comma-separated text to limit the extension of files to be synchronized. If not specified, the ones other than those specified in the environment variables 'aws_s3_exclude_exts' or 'denied_exts' and not specified 'Exclude Extensions' will be synchronized. If * is specified, all files will be synchronized." component="AWS_S3">
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_exclude_exts">
+        <mt:trans phrase="Exclude Extensions" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_s3_exclude_exts" name="setting_aws_s3_exclude_exts" class="form-control" value="<mt:var name="setting_aws_s3_exclude_exts" escape>">
+      <div class="text-muted hint-block mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify comma-separated text to limit the extension of files that will not be synchronized." component="AWS_S3">
+      </div>
+    </div>
+  </div>
+  <mt:property name="aws_s3_use_custom_mapping" setvar="use_custom_mapping">
+  <mt:if name="use_custom_mapping">
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_ext_bucket_map">
+        <mt:trans phrase="Extensions and Bucket Mappings" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <textarea rows="4" id="setting_aws_s3_ext_bucket_map" name="setting_aws_s3_ext_bucket_map" class="form-control"><mt:var name="setting_aws_s3_ext_bucket_map" escape></textarea>
+      <div class="text-muted hint-block mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify comma-separated text extensions, buckets, one per line." component="AWS_S3">
+      </div>
+    </div>
+  </div>
+  </mt:if>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_cache_max_age">
+        <mt:trans phrase="Cache Expiration" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_s3_cache_max_age" name="setting_aws_s3_cache_max_age" class="form-control" value="<mt:var name="setting_aws_s3_cache_max_age" escape>">
+      <div class="text-muted hint-block mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specifies the cache expiration date in seconds. You can set the expiration date for each extension by separating the extensions=seconds with commas." component="AWS_S3">
+      </div>
+    </div>
+  </div>
+  <mt:property name="aws_s3_use_mediaconvert" setvar="aws_s3_use_mediaconvert">
+  <mt:if name="aws_s3_use_mediaconvert">
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_mediaconvert_endpoint">
+        <mt:trans phrase="AWS Elemental MediaConvert Custom API Endpoint" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" placeholder="https://endpoint-name.mediaconvert.ap-northeast-1.amazonaws.com" id="setting_aws_s3_mediaconvert_endpoint" name="setting_aws_s3_mediaconvert_endpoint" class="form-control" value="<mt:var name="setting_aws_s3_mediaconvert_endpoint" escape>">
+      <mt:if name="setting_aws_s3_mediaconvert_endpoint">
+      <a class="btn pl-0" href="<mt:var name="script_uri">?__mode=aws_s3_mediaconvert_jobs<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>" target="_blank"><mt:trans phrase="View Jobs in MediaConvert" component="AWS_S3">
+        <i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="Open in new window">"></i>
+      </a>
+      </mt:if>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_s3_mediaconvert_region">
+        <mt:trans phrase="AWS Elemental MediaConvert Region" component="AWS_S3">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_s3_mediaconvert_region" name="setting_aws_s3_mediaconvert_region" class="form-control short" value="<mt:var name="setting_aws_s3_mediaconvert_region" escape>">
+    </div>
+  </div>
+  </mt:if>
+</div>

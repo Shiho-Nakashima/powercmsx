@@ -1,0 +1,4 @@
+asset_label,asset_description,asset_file,asset_extra_path,asset_file_name,asset_file_ext,asset_mime_type,asset_size,asset_image_width,asset_image_height,asset_class,asset_status,asset_rev_note,asset_has_deadline,asset_published_on,asset_unpublished_on,asset_tags
+ogp-default,,%r/assets/ogp-default.png;ogp-default,assets/,ogp-default.png,png,image/png,952777,1200,630,image,4,,0,2021-07-01T10:00:00,0,"@ogp_image,@ogp_image_default"
+ogp-news,,%r/assets/ogp-news.png;ogp-news,assets/,ogp-news.png,png,image/png,1212380,1200,630,image,4,,0,2021-07-01T10:00:00,0,"@ogp_image,@ogp_image_news"
+ogp-pressrelease,,%r/assets/ogp-pressrelease.png;ogp-pressrelease,assets/,ogp-pressrelease.png,png,image/png,811932,1200,630,image,4,,0,2021-07-01T10:00:00,0,"@ogp_image,@ogp_image_press_release"

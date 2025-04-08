@@ -1,0 +1,44 @@
+<!doctype html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title><mt:var name="page_title" escape></title>
+<base href="<mt:var name="base_html">">
+<mt:if name="canvas_webfont">
+  <mt:if name="canvas_font_face" eq="RocknRoll One">
+    <link href="https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap" rel="stylesheet">
+  <mt:elseif name="canvas_font_face" eq="BIZ UDPMincho">
+    <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&display=swap" rel="stylesheet">
+  <mt:else>
+    <link href="https://fonts.googleapis.com/css2?family=<mt:var name="canvas_font_face" replace="' ','+'">:wght@<mt:var name="canvas_font_weight">&display=swap" rel="stylesheet">
+  </mt:if>
+</mt:if>
+<style>
+body {
+    font-size:<mt:var name="font_size">%;
+    line-height: <mt:var name="line_height">;
+    margin: 0px;
+    margin-bottom: -20px;
+    padding: 0px;
+    font-family: <mt:if name="canvas_font_face">"<mt:var name="canvas_font_face">",</mt:if><mt:var name="canvas_font" escape> !important;
+    font-weight: <mt:var name="canvas_font_weight"> !important;
+    background-color: #008;
+    color: <mt:var name="canvas_forecolor">;
+    text-align: center;
+    text-shadow:<mt:var name="text_shadow">px <mt:var name="text_shadow">px 0 <mt:var name="canvas_bgcolor">,
+    -<mt:var name="text_shadow">px -<mt:var name="text_shadow">px 0 <mt:var name="canvas_bgcolor">,
+    -<mt:var name="text_shadow">px <mt:var name="text_shadow">px 0 <mt:var name="canvas_bgcolor">,
+     <mt:var name="text_shadow">px -<mt:var name="text_shadow">px 0 <mt:var name="canvas_bgcolor">,
+     0px <mt:var name="text_shadow">px 0 <mt:var name="canvas_bgcolor">,
+     0-<mt:var name="text_shadow">px 0 <mt:var name="canvas_bgcolor">,
+    -<mt:var name="text_shadow">px 0 0 <mt:var name="canvas_bgcolor">,
+     <mt:var name="text_shadow">px 0 0 <mt:var name="canvas_bgcolor">;
+}
+<mt:if name="canvas_font_face" match="/^BIZ\sUD/">
+.ruby {
+    padding-bottom: 0.4rem !important;
+    letter-spacing: 2px;
+}
+</mt:if>
+img { max-width: 100% !important; height: auto; }
+</style>
+</head>
+<body <mt:if name="canvas_custom_style"> style="<mt:var name="canvas_custom_style">"</mt:if>><mt:var name="html">

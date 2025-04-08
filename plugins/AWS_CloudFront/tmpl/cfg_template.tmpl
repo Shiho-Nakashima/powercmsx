@@ -1,0 +1,286 @@
+<mt:property name="aws_cloudfront_setting_by_scope" setvar="aws_cloudfront_setting_by_scope">
+<mt:if name="aws_cloudfront_setting_by_scope">
+  <mt:include file="aws_cloudfront_cfg_template.tmpl">
+<mt:else>
+<div id="__loader-bg" class="hidden">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<mt:property name="aws_cloudfront_maxpurge_per_month" setvar="aws_cloudfront_maxpurge_per_month">
+<mt:if name="aws_cloudfront_maxpurge_per_month" gt="0">
+<mt:awscloudfrontpurgethismonth setvar="awscloudfrontpurgethismonth">
+<div class="alert alert-<mt:if name="awscloudfrontpurgethismonth" ge="$aws_cloudfront_maxpurge_per_month">danger<mt:else>info</mt:if>" role="alert" tabindex="0">
+<mt:trans phrase="Monthly cache invalidation requests for this month" component="AWS_CloudFront"> : <span id="purge-this-month"><mt:awscloudfrontpurgethismonth></span>
+( <a href="https://ap-northeast-3.console.aws.amazon.com/console/home" target="_blank"><mt:trans phrase="To see the exact number, go to the AWS Management Console." component="AWS_CloudFront"> <i class="fa fa-external-link" aria-hidden="true"></i></a> )
+</div>
+</mt:if>
+<mt:if name="workspace_id">
+  <div class="row form-group mb-1 mt-4">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_aws_cloudfront_use_system_setting" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_aws_cloudfront_use_system_setting" name="setting_aws_cloudfront_use_system_setting" value="1"
+          <mt:if name="setting_aws_cloudfront_use_system_setting">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use System Setting" component="AWS_CloudFront"></span>
+      </label>
+    </div>
+  </div>
+<script>
+$('#setting_aws_cloudfront_use_system_setting').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide( 100 );
+    } else {
+        $('#individual-setting-container').show( 100 );
+    }
+});
+</script>
+<mt:else>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_access_key_id">
+        <mt:trans phrase="Access Key" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="password" autocomplete="new-password" id="setting_aws_cloudfront_access_key_id" name="setting_aws_cloudfront_access_key_id" class="form-control" value="<mt:var name="setting_aws_cloudfront_access_key_id" escape>">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_secret_access_key">
+        <mt:trans phrase="Secret Access Key" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="password" autocomplete="new-password" id="setting_aws_cloudfront_secret_access_key" name="setting_aws_cloudfront_secret_access_key" class="form-control" value="<mt:var name="setting_aws_cloudfront_secret_access_key" escape>">
+    </div>
+  </div>
+<hr>
+</mt:if>
+<div class="<mt:if name="setting_aws_cloudfront_use_system_setting">hidden</mt:if>" id="individual-setting-container">
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_distribution_id">
+        <mt:trans phrase="Distribution ID" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_cloudfront_distribution_id" name="setting_aws_cloudfront_distribution_id" class="form-control" value="<mt:var name="setting_aws_cloudfront_distribution_id" escape>">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_region">
+        <mt:trans phrase="Region" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_cloudfront_region" name="setting_aws_cloudfront_region" class="form-control" value="<mt:var name="setting_aws_cloudfront_region" escape>">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_update">
+        <mt:trans phrase="Triggers" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_aws_cloudfront_update" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_aws_cloudfront_update" name="setting_aws_cloudfront_update" value="1"
+          <mt:if name="setting_aws_cloudfront_update">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Update" component="AWS_CloudFront"></span>
+      </label>
+      <input type="hidden" name="setting_aws_cloudfront_delete" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_aws_cloudfront_delete" name="setting_aws_cloudfront_delete" value="1"
+          <mt:if name="setting_aws_cloudfront_delete">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Delete" component="AWS_CloudFront"></span>
+      </label>
+      <input type="hidden" name="setting_aws_cloudfront_manually" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_aws_cloudfront_manually" name="setting_aws_cloudfront_manually" value="1"
+          <mt:if name="setting_aws_cloudfront_manually">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Create Invalidation by Specifying a Path" component="AWS_CloudFront"></span>
+      </label>
+    </div>
+  </div>
+  <div class="alert alert-success hidden" id="cache-purged-alert" role="alert" tabindex="0">
+    <button type="button" class="close" data-dismiss="alert" aria-label="<mt:trans phrase="Close">">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <mt:trans phrase="Purge AWS CloudFront cache." component="AWS_CloudFront">
+  </div>
+  <div id="invalidation-wrapper" class="row form-group<mt:unless name="setting_aws_cloudfront_manually"> hidden</mt:unless>">
+    <div class="col-lg-12">
+      <div class="card p-3" style="border-color:#aaa">
+      <table role="presentation" class="full " style="width:100%;"><tr>
+      <td width="90%"><input type="text" id="invalidation_path" name="invalidation_path" class="form-control" value="/*"></td>
+      <td><button id="invalidation-btn" class="btn btn-danger" type="button"><mt:trans phrase="Create Invalidation" component="AWS_CloudFront"></button></td>
+      </tr></table>
+    </div>
+    </div>
+  </div>
+<script>
+$('#invalidation-btn').on('click', function() {
+    var path = $('#invalidation_path').val();
+    if (! path ) {
+        alert( '<mt:trans phrase="No path specified." component="AWS_CloudFront">' );
+        return;
+    }
+    if (! $('#setting_aws_cloudfront_distribution_id').val() ) {
+        alert( '<mt:trans phrase="No Distribution ID specified." component="AWS_CloudFront">' );
+        return;
+    }
+    if (! confirm( '<mt:trans phrase="Are you sure you want to create invalidation for AWS CloudFront?" component="AWS_CloudFront">' ) ) {
+        return;
+    }
+    var url = '<mt:var name="script_uri">?__mode=aws_cloudfront_invalidation<mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if>';
+    $('#__loader-bg').show();
+    $(this).attr( 'disabled', 'disabled' );
+    var data = {
+        path: path,
+        distribution_id: $('#setting_aws_cloudfront_distribution_id').val(),
+        region: $('#setting_aws_cloudfront_region').val(),
+        magic_token: '<mt:var name="magic_token">'
+    };
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#__loader-bg').hide();
+                $('#invalidation-btn').removeAttr( 'disabled' );
+            } else {
+                $('#__loader-bg').hide();
+                $('#invalidation-btn').removeAttr( 'disabled' );
+                if ( responce.status == 201 ) {
+                    $('#cache-purged-alert').show( 100 );
+                    $('#cache-purged-alert').focus();
+                    var counter = Number( $('#purge-this-month').html() );
+                    counter++;
+                    $('#purge-this-month').html( counter );
+                }
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            $('#invalidation-btn').removeAttr( 'disabled' );
+            alert( '<mt:trans phrase="An error occues while purge AWS CloudFront cache." component="AWS_CloudFront">' );
+        }
+    });
+});
+</script>
+<script>
+$('#setting_aws_cloudfront_manually').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#invalidation-wrapper').show( 100 );
+    } else {
+        $('#invalidation-wrapper').hide( 100 );
+    }
+});
+</script>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_directory_index">
+        <mt:trans phrase="Directry Index" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10 form-inline">
+      <input type="text" id="setting_aws_cloudfront_directory_index" name="setting_aws_cloudfront_directory_index" class="form-control" value="<mt:var name="setting_aws_cloudfront_directory_index" escape>">
+      <input type="hidden" name="setting_aws_cloudfront_only_directry" value="0">
+      <label class="custom-control custom-checkbox ml-4">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_aws_cloudfront_only_directry" name="setting_aws_cloudfront_only_directry" value="1"
+          <mt:if name="setting_aws_cloudfront_only_directry">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Purge only Directry" component="AWS_CloudFront"></span>
+      </label>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_force_paths">
+        <mt:trans phrase="Paths to always purge" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <textarea rows="4" id="setting_aws_cloudfront_force_paths" name="setting_aws_cloudfront_force_paths" class="form-control"><mt:var name="setting_aws_cloudfront_force_paths" escape></textarea>
+      <div class="text-muted hint-block mt-3 mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify the root-relative path of the file that always sends invalidation requests, line by line." component="AWS_CloudFront">
+        <mt:trans phrase="Wildcards can be specified." component="AWS_CloudFront">
+        <mt:trans phrase="You can specify the waiting time (seconds) before starting execution of the queue by adding a comma-separated number." component="AWS_CloudFront"><br>
+        <mt:trans phrase="e.g." component="AWS_CloudFront"> /topics/*,600
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_purge_map">
+        <mt:trans phrase="Mappings of path and purge path mapping" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <textarea rows="4" id="setting_aws_cloudfront_purge_map" name="setting_aws_cloudfront_purge_map" class="form-control"><mt:var name="setting_aws_cloudfront_purge_map" escape></textarea>
+      <div class="text-muted hint-block mt-3 mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify the root-relative path of the updated file and the cache path to be purged, line by line, separated by commas." component="AWS_CloudFront"><br>
+        <mt:trans phrase="You can specify the waiting time (seconds) before starting execution of the queue by adding a comma-separated number." component="AWS_CloudFront"><br>
+        <mt:trans phrase="e.g." component="AWS_CloudFront"> /search.html,/search.html*,600 or /contents/*,/search.html*,600
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_exclude_patterns">
+        <mt:trans phrase="Exclude Patterns" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <textarea rows="4" id="setting_aws_cloudfront_exclude_patterns" name="setting_aws_cloudfront_exclude_patterns" class="form-control"><mt:var name="setting_aws_cloudfront_exclude_patterns" escape></textarea>
+      <div class="text-muted hint-block mt-3 mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify the exclude pattern, line by line." component="AWS_CloudFront"><br>
+        <mt:trans phrase="e.g." component="AWS_CloudFront"> ^/page_url.html or ^/dirname/* or .png$
+      </div>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <label for="setting_aws_cloudfront_exclude_maps">
+        <mt:trans phrase="Exclude URL Map IDs" component="AWS_CloudFront">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" id="setting_aws_cloudfront_exclude_maps" name="setting_aws_cloudfront_exclude_maps" class="form-control" value="<mt:var name="setting_aws_cloudfront_exclude_maps" escape>">
+      <div class="text-muted hint-block mt-3 mb-1">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Specify comma-separated URL Map Ids for exclude." component="AWS_CloudFront">
+      </div>
+    </div>
+  </div>
+</div>
+</mt:if>

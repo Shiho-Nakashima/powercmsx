@@ -1,0 +1,15 @@
+        ed.ui.registry.addIcon('pt-ogimage', '<span style="font-size:120%;padding:0">𝕏</span>');
+        ed.ui.registry.addButton('pt-ogimage', {
+            icon: 'pt-ogimage',
+            tooltip: '<mt:trans phrase="Generate og:image for SNS." component="Text2OgImage">',
+            onAction: function () {
+                let url = '<mt:var name="script_uri">?__mode=editor_ogimage<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>';
+                let editor = tinymce.activeEditor;
+                let html = editor.selection.getContent();
+                if (! html ) {
+                    alert( '<mt:trans phrase="No text selected." component="Text2OgImage">' );
+                    return;
+                }
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });

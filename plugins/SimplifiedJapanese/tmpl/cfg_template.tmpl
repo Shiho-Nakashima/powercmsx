@@ -1,0 +1,659 @@
+<style>
+.row{ margin-top:10px }
+</style>
+<mt:unless name="workspace_id">
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_whole_dictionary" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_whole_dictionary" name="setting_simplifiedjapanese_whole_dictionary" value="1"
+        <mt:if name="setting_simplifiedjapanese_whole_dictionary">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Make the whole dictionary" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Create the whole dictionary that contains dictionary data for all scopes." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<script>
+$('#setting_simplifiedjapanese_whole_dictionary').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $('#use_whole_dict-wrapper').show(100);
+    } else {
+        $('#use_whole_dict-wrapper').hide(100);
+    }
+});
+</script>
+</mt:unless>
+<mt:pluginsetting name="simplifiedjapanese_whole_dictionary" component="SimplifiedJapanese" workspace_id="0" setvar="has_whole_dictionary">
+<div id="use_whole_dict-wrapper" class="row<mt:unless name="has_whole_dictionary"> hidden</mt:unless>">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_use_whole_dict" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_use_whole_dict" name="setting_simplifiedjapanese_use_whole_dict" value="1"
+        <mt:if name="setting_simplifiedjapanese_use_whole_dict">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Use the whole dictionary" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_add_rp" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_add_rp" name="setting_simplifiedjapanese_add_rp" value="1"
+        <mt:if name="setting_simplifiedjapanese_add_rp">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Add Ruby Parentheses(&lt;rp&gt;~&lt;/rp&gt;) for unsupported browsers" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_add_rt_style" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_add_rt_style" name="setting_simplifiedjapanese_add_rt_style" value="1"
+        <mt:if name="setting_simplifiedjapanese_add_rt_style">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Specify font size style in &lt;rt&gt; tag" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Font size is retained when pasted into Microsoft Word." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_caching" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_caching" name="setting_simplifiedjapanese_caching" value="1"
+        <mt:if name="setting_simplifiedjapanese_caching">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Cache results" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Saving the settings clears the cache." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-3">
+    <label for="setting_simplifiedjapanese_separator">
+      <mt:trans phrase="Separation separator" component="SimplifiedJapanese">
+    </label>
+  </div>
+  <div class="col-lg-9">
+    <input style="width:200px !important" type="text" id="setting_simplifiedjapanese_separator" name="setting_simplifiedjapanese_separator" class="short form-control" value="<mt:var name="setting_simplifiedjapanese_separator" escape>">
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_editor_only" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_editor_only" name="setting_simplifiedjapanese_editor_only" value="1"
+        <mt:if name="setting_simplifiedjapanese_editor_only">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Use only richtext in Simplified Japanese editor" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Hide the 'Make Simplified Japanese' button." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_split_in_editor" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_split_in_editor" name="setting_simplifiedjapanese_split_in_editor" value="1"
+        <mt:if name="setting_simplifiedjapanese_split_in_editor">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Break with clauses when adding furigana in richtext" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Press the shift key and click the button for the opposite setting." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_split_in_editor_s" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_split_in_editor_s" name="setting_simplifiedjapanese_split_in_editor_s" value="1"
+        <mt:if name="setting_simplifiedjapanese_split_in_editor_s">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Break with clauses when translating to Simplified Japanese in richtext" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Press the shift key and click the button for the opposite setting." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_ruby_in_editor_s" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_ruby_in_editor_s" name="setting_simplifiedjapanese_ruby_in_editor_s" value="1"
+        <mt:if name="setting_simplifiedjapanese_ruby_in_editor_s">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Add ruby when translating to Simplified Japanese in richtext" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Press the option key and click the button for the opposite setting." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_add_button" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_add_button" name="setting_simplifiedjapanese_add_button" value="1"
+        <mt:if name="setting_simplifiedjapanese_add_button">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Add Button to Edit Screen" component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Furigana Helper dialog could be open from the object create or edit Screen." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_detect_chinese" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_detect_chinese" name="setting_simplifiedjapanese_detect_chinese" value="1"
+        <mt:if name="setting_simplifiedjapanese_detect_chinese">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Automatically detects Chinese." component="SimplifiedJapanese"></span>
+    </label>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Automatically distinguish consecutive Chinese characters and exclude Chinese from translation." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_summarize" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_summarize" name="setting_simplifiedjapanese_summarize" value="1"
+        <mt:if name="setting_simplifiedjapanese_summarize">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Enable summarization." component="SimplifiedJapanese"></span>
+    </label>
+    <label id="summarize_size-wrapper" <mt:unless name="setting_simplifiedjapanese_summarize">class="hidden"</mt:unless>><mt:trans phrase="Number of Sentences" component="SimplifiedJapanese"> : 
+      <select class="form-control custom-select very-short" id="setting_simplifiedjapanese_summarize_size" name="setting_simplifiedjapanese_summarize_size">
+        <mt:for from="1" to="10">
+        <option value="<mt:var name="__value__">" <mt:if name="setting_simplifiedjapanese_summarize_size" eq="$__value__">selected</mt:if>><mt:var name="__value__"></option>
+        </mt:for>
+      </select>
+    </label>
+<script>
+$('#setting_simplifiedjapanese_summarize').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $('#summarize_size-wrapper').show();
+    } else {
+        $('#summarize_size-wrapper').hide();
+    }
+});
+</script>
+    <div class="text-muted hint-block mt-0 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="When you run the summary, the HTML and formatting are removed." component="SimplifiedJapanese">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_mode_email" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_mode_email" name="setting_simplifiedjapanese_mode_email" value="1"
+        <mt:if name="setting_simplifiedjapanese_mode_email">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Add Furigana in parentheses instead of Ruby." component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_simplifiedjapanese_mode_email').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $('#bracket-setting-wrapper').show(100);
+    } else {
+        $('#bracket-setting-wrapper').hide(100);
+    }
+});
+</script>
+<div class="row form-inline mb-4<mt:unless name="setting_simplifiedjapanese_mode_email"> hidden</mt:unless>" id="bracket-setting-wrapper">
+  <div class="col-lg-12">
+    <label style="display:inline"><mt:trans phrase="Bracket Start" component="SimplifiedJapanese"> :<input type="text" style="width:60px !important" id="setting_simplifiedjapanese_bracket_start" name="setting_simplifiedjapanese_bracket_start" class="form-control" value="<mt:var name="setting_simplifiedjapanese_bracket_start" escape>"></label>
+    <label style="display:inline" class="ml-4"><mt:trans phrase="Bracket End" component="SimplifiedJapanese"> :<input type="text" style="width:60px !important" id="setting_simplifiedjapanese_bracket_end" name="setting_simplifiedjapanese_bracket_end" class="form-control" value="<mt:var name="setting_simplifiedjapanese_bracket_end" escape>"></label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_morphological" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_morphological" name="setting_simplifiedjapanese_morphological" value="1"
+        <mt:if name="setting_simplifiedjapanese_morphological">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Show results of morphological analysis." component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<hr>
+<h2><small><label for="setting_simplifiedjapanese_can_audio"><mt:trans phrase="Speech" component="SimplifiedJapanese"></label></small></h2>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_can_audio" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_can_audio" name="setting_simplifiedjapanese_can_audio" value="1"
+        <mt:if name="setting_simplifiedjapanese_can_audio">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Allow audio file export" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_simplifiedjapanese_can_audio').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $('#audio-settings-wrapper').show(100);
+    } else {
+        $('#audio-settings-wrapper').hide(100);
+    }
+});
+</script>
+<div id="audio-settings-wrapper" class="<mt:unless name="setting_simplifiedjapanese_can_audio"> hidden</mt:unless>">
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_pitch"><mt:trans phrase="Pitch" component="SimplifiedJapanese"></label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="setting_simplifiedjapanese_pitch"
+         name="setting_simplifiedjapanese_pitch" value="default" <mt:if name="setting_simplifiedjapanese_pitch" eq="default">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Default" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_pitch" value="x-low" <mt:if name="setting_simplifiedjapanese_pitch" eq="x-low">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Very Low" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_pitch" value="low" <mt:if name="setting_simplifiedjapanese_pitch" eq="low">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Low" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_pitch" value="medium" <mt:if name="setting_simplifiedjapanese_pitch" eq="medium">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Medium" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_pitch" value="high" <mt:if name="setting_simplifiedjapanese_pitch" eq="high">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="High" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_pitch" value="x-high" <mt:if name="setting_simplifiedjapanese_pitch" eq="x-high">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Very High" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_rate"><mt:trans phrase="Speed" component="SimplifiedJapanese"></label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="setting_simplifiedjapanese_rate"
+         name="setting_simplifiedjapanese_rate" value="default" <mt:if name="setting_simplifiedjapanese_rate" eq="default">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Default" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_rate" value="x-slow" <mt:if name="setting_simplifiedjapanese_rate" eq="x-slow">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Very Slow" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_rate" value="slow" <mt:if name="setting_simplifiedjapanese_rate" eq="slow">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Slow" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_rate" value="medium" <mt:if name="setting_simplifiedjapanese_rate" eq="medium">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Medium" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_rate" value="fast" <mt:if name="setting_simplifiedjapanese_rate" eq="fast">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Fast" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_rate" value="x-fast" <mt:if name="setting_simplifiedjapanese_rate" eq="x-fast">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Very Fast" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_voice"><mt:trans phrase="Voice" component="SimplifiedJapanese"></label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="setting_simplifiedjapanese_voice"
+         name="setting_simplifiedjapanese_voice" value="Mizuki" <mt:if name="setting_simplifiedjapanese_voice" eq="Mizuki">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Mizuki" component="SimplifiedJapanese"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_simplifiedjapanese_voice" value="Takumi" <mt:if name="setting_simplifiedjapanese_voice" eq="Takumi">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Takumi" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+</div>
+<hr>
+<h2><small><mt:trans phrase="Canvas Settings" component="SimplifiedJapanese"></small></h2>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_forecolor">
+      <mt:trans phrase="Color">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    &nbsp; &nbsp; &nbsp;<label><mt:trans phrase="Fore Color" component="SimplifiedJapanese"> <input type="color" id="setting_simplifiedjapanese_forecolor" name="setting_simplifiedjapanese_forecolor" class="form-control color-picker" value="<mt:var name="setting_simplifiedjapanese_forecolor" escape>"></label>
+    &nbsp; &nbsp; <label><mt:trans phrase="Back Color"> <input type="color" id="setting_simplifiedjapanese_bgcolor" name="setting_simplifiedjapanese_bgcolor" class="form-control color-picker" value="<mt:var name="setting_simplifiedjapanese_bgcolor" escape>"></label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_separator">
+      <mt:trans phrase="Font" component="SimplifiedJapanese">
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <select class="form-control custom-select short" style="width:160px !important" id="setting_simplifiedjapanese_font" name="setting_simplifiedjapanese_font">
+      <option value="sans-serif" <mt:if name="setting_simplifiedjapanese_font" eq="sans-serif">selected</mt:if>>sans-serif</option>
+      <option value="serif" <mt:if name="setting_simplifiedjapanese_font" eq="serif">selected</mt:if>>serif</option>
+    </select>
+  </div>
+  <div class="col-lg-8">
+    <input type="hidden" name="setting_simplifiedjapanese_google_font" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_google_font" name="setting_simplifiedjapanese_google_font" value="1"
+        <mt:if name="setting_simplifiedjapanese_google_font">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Use Google Fonts" component="SimplifiedJapanese"></span>
+    </label>
+    <mt:property name="simplifiedjapanese_wkhtmltoimage" setvar="image_on_server">
+    <mt:property name="simplifiedjapanese_fonts" split="," setvar="simplifiedjapanese_fonts">
+    <mt:loop name="simplifiedjapanese_fonts">
+      <mt:if name="__first__">
+      <select style="width:180px !important" class="form-control custom-select short" id="setting_simplifiedjapanese_font_face" name="setting_simplifiedjapanese_font_face">
+        <option value="" <mt:if name="setting_simplifiedjapanese_font_face" eq="">selected</mt:if>><mt:trans phrase="Unspecified"></option>
+      </mt:if>
+        <option value="<mt:var name="__value__" escape>" <mt:if name="setting_simplifiedjapanese_font_face" eq="$__value__">selected</mt:if>><mt:var name="__value__" escape></option>
+      <mt:if name="__last__">
+      </select>
+      </mt:if>
+    </mt:loop>
+    <select style="width:100px !important" class="form-control custom-select short" id="setting_simplifiedjapanese_font_weight" name="setting_simplifiedjapanese_font_weight">
+      <option id="weight_100" class="font-weight" value="100" <mt:if name="setting_simplifiedjapanese_font_weight" eq="100">selected</mt:if>>100</option>
+      <option id="weight_200" class="font-weight" value="200" <mt:if name="setting_simplifiedjapanese_font_weight" eq="200">selected</mt:if>>200</option>
+      <option id="weight_300" class="font-weight" value="300" <mt:if name="setting_simplifiedjapanese_font_weight" eq="300">selected</mt:if>>300</option>
+      <option id="weight_400" class="font-weight" value="400" <mt:if name="setting_simplifiedjapanese_font_weight" eq="400">selected</mt:if>>400</option>
+      <option id="weight_500" class="font-weight" value="500" <mt:if name="setting_simplifiedjapanese_font_weight" eq="500">selected</mt:if>>500</option>
+      <option id="weight_600" class="font-weight" value="600" <mt:if name="setting_simplifiedjapanese_font_weight" eq="600">selected</mt:if>>600</option>
+      <option id="weight_700" class="font-weight" value="700" <mt:if name="setting_simplifiedjapanese_font_weight" eq="700">selected</mt:if>>700</option>
+      <option id="weight_800" class="font-weight" value="800" <mt:if name="setting_simplifiedjapanese_font_weight" eq="800">selected</mt:if>>800</option>
+      <option id="weight_900" class="font-weight" value="900" <mt:if name="setting_simplifiedjapanese_font_weight" eq="900">selected</mt:if>>900</option>
+    </select>
+  </div>
+</div>
+<script>
+let canvas_font = $('#setting_simplifiedjapanese_font_face').val();
+let canvas_font_weight = $('#setting_simplifiedjapanese_font_weight').val();
+if ( canvas_font == 'Noto Sans JP' ) {
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+    $('#weight_800').hide();
+    if ( canvas_font_weight == 200 || canvas_font_weight == 600 || canvas_font_weight == 800 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    }
+} else if ( canvas_font == 'M PLUS 1p' ) {
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+    if ( canvas_font_weight == 200 || canvas_font_weight == 600 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    }
+} else if ( canvas_font == 'M PLUS Rounded 1c' ) {
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+    if ( canvas_font_weight == 200 || canvas_font_weight == 600 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    }
+} else if ( canvas_font == 'BIZ UDPGothic' ) {
+    $('.font-weight').hide();
+    $('#weight_400').show();
+    $('#weight_700').show();
+    if ( canvas_font_weight != 400 && canvas_font_weight != 700 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('400');
+    }
+} else if ( canvas_font == 'BIZ UDPMincho' ) {
+    $('#setting_simplifiedjapanese_font_weight').hide();
+} else if ( canvas_font == 'Zen Maru Gothic' ) {
+    $('#weight_100').hide();
+    $('#weight_200').hide();
+    $('#weight_600').hide();
+    $('#weight_800').hide();
+    if ( canvas_font_weight == 100 || canvas_font_weight == 200 || canvas_font_weight == 600 || canvas_font_weight == 800 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    }
+} else if ( canvas_font == 'Noto Serif JP' ) {
+    $('#weight_100').hide();
+    $('#weight_800').hide();
+    if ( canvas_font_weight != 100 || canvas_font_weight != 800 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    }
+} else if ( font == 'Kaisei Opti' ) {
+    $('.font-weight').hide();
+    $('#weight_400').show();
+    $('#weight_500').show();
+    $('#weight_700').show();
+    if ( canvas_font_weight != 400 && canvas_font_weight != 500 && canvas_font_weight != 700 ) {
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    }
+} else if ( canvas_font == 'RocknRoll One' ) {
+    $('#setting_simplifiedjapanese_font_weight').hide();
+}
+$('#setting_simplifiedjapanese_font_face').change(function(){
+    let font = $(this).val();
+    $('.font-weight').show();
+    $('#setting_simplifiedjapanese_font_weight').show();
+    if ( font == 'Noto Sans JP' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#weight_800').hide();
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    } else if ( font == 'M PLUS 1p' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    } else if ( font == 'M PLUS Rounded 1c' ) {
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    } else if ( font == 'BIZ UDPGothic' ) {
+        $('.font-weight').hide();
+        $('#weight_400').show();
+        $('#weight_700').show();
+        $('#setting_simplifiedjapanese_font_weight').val('400');
+    } else if ( font == 'BIZ UDPMincho' ) {
+        $('#setting_simplifiedjapanese_font_weight').hide();
+    } else if ( font == 'Zen Maru Gothic' ) {
+        $('#weight_100').hide();
+        $('#weight_200').hide();
+        $('#weight_600').hide();
+        $('#weight_800').hide();
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    } else if ( font == 'Noto Serif JP' ) {
+        $('#weight_100').hide();
+        $('#weight_800').hide();
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    } else if ( font == 'Kaisei Opti' ) {
+        $('.font-weight').hide();
+        $('#weight_400').show();
+        $('#weight_500').show();
+        $('#weight_700').show();
+        $('#setting_simplifiedjapanese_font_weight').val('500');
+    } else if ( font == 'RocknRoll One' ) {
+        $('#setting_simplifiedjapanese_font_weight').hide();
+    }
+});
+</script>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_custom_style">
+      <mt:trans phrase="Custom CSS" component="SimplifiedJapanese">
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <input type="text" id="setting_simplifiedjapanese_custom_style" name="setting_simplifiedjapanese_custom_style" class="form-control" value="<mt:var name="setting_simplifiedjapanese_custom_style" escape>">
+  <div class="text-muted hint-block mt-2 mb-1">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="The style of the rich text editor may not be reflected unless '!important' is specified." component="SimplifiedJapanese">
+  </div>
+  </div>
+</div>
+<mt:unless name="workspace_id">
+<hr>
+<h2><small><mt:trans phrase="Tsutaeru Web API" component="SimplifiedJapanese"></small></h2>
+<div class="text-muted hint-block mt-0 mb-3">
+  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Hint"></span>
+  <a href="https://tsutaeru.cloud/" target="_blank"><mt:trans phrase="Apply for an API key of Tsutaeru.cloud" component="SimplifiedJapanese"> &nbsp; <i class="fa fa-external-link" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Open in new window"></span></a>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_tsutaeru_client_id">
+      <mt:trans phrase="Client ID" component="SimplifiedJapanese">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" autocomplete="new-password" id="setting_tsutaeru_client_id" name="setting_tsutaeru_client_id" class="short form-control" value="<mt:var name="setting_tsutaeru_client_id" escape>">
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_tsutaeru_client_secret">
+      <mt:trans phrase="Client Secret" component="SimplifiedJapanese">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" autocomplete="new-password" id="setting_tsutaeru_client_secret" name="setting_tsutaeru_client_secret" class="short form-control" value="<mt:var name="setting_tsutaeru_client_secret" escape>">
+  </div>
+</div>
+<hr>
+<h2><small><mt:trans phrase="Amazon Polly API" component="SimplifiedJapanese"></small></h2>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_aws_id">
+      <mt:trans phrase="AWS Client ID" component="SimplifiedJapanese">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" autocomplete="new-password" id="setting_simplifiedjapanese_aws_id" name="setting_simplifiedjapanese_aws_id" class="form-control" value="<mt:var name="setting_simplifiedjapanese_aws_id" escape>">
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_aws_secret">
+      <mt:trans phrase="AWS Client Secret" component="SimplifiedJapanese">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" autocomplete="new-password" id="setting_simplifiedjapanese_aws_secret" name="setting_simplifiedjapanese_aws_secret" class="form-control" value="<mt:var name="setting_simplifiedjapanese_aws_secret" escape>">
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_simplifiedjapanese_aws_region">
+      <mt:trans phrase="AWS Region" component="SimplifiedJapanese">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_simplifiedjapanese_aws_region" name="setting_simplifiedjapanese_aws_region" class="form-control" value="<mt:var name="setting_simplifiedjapanese_aws_region" escape>">
+  </div>
+</div>
+</mt:unless>
+<mt:ifcomponent component="MachineTranslator">
+<hr>
+<h2><small><label for="setting_simplifiedjapanese_translate"><mt:trans phrase="Multilingual Translation" component="SimplifiedJapanese"></label></small></h2>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_simplifiedjapanese_translate" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_simplifiedjapanese_translate" name="setting_simplifiedjapanese_translate" value="1"
+        <mt:if name="setting_simplifiedjapanese_translate">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Display language selection button in Simplified Japanese editor" component="SimplifiedJapanese"></span>
+    </label>
+  </div>
+</div>
+</mt:ifcomponent>

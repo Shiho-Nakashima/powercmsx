@@ -1,0 +1,56 @@
+{
+    "label"       : "NuHtmlChecker",
+    "id"          : "nuhtmlchecker",
+    "component"   : "NuHtmlChecker",
+    "version"     : "1.0",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "It helps you catch unintended mistakes in your HTML.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "settings"    : {
+        "nuhtmlchecker_agree" : false,
+        "nuhtmlchecker_url" : "https://validator.w3.org/nu/",
+        "nuhtmlchecker_parse_result" : true,
+        "nuhtmlchecker_caching" : true
+    },
+    "config_settings" : {
+        "nuhtmlchecker_debug" : false,
+        "nuhtmlchecker_cache_expires" : 613200
+    },
+    "methods": {
+        "nuhtmlchecker_htmlcheck": {
+            "component" : "NuHtmlChecker",
+            "method"    : "nuhtmlchecker_htmlcheck"
+        }
+    },
+    "callbacks": {
+        "nuhtmlchecker_post_preview": {
+            "preview" : {
+                "post_preview" : {
+                    "component" : "NuHtmlChecker",
+                    "priority"  : 10,
+                    "method" : "nu_html_checker"
+                }
+            }
+        },
+        "nuhtmlchecker_template_source_edit": {
+            "edit" : {
+                "template_source" : {
+                    "component" : "NuHtmlChecker",
+                    "priority"  : 11,
+                    "method" : "insert_nu_html_checker"
+                }
+            }
+        }
+    },
+    "tasks": {
+        "nuhtmlchecker_remove_old_cache": {
+            "label"     : "Remove Old Cache for NuHtmlChecker",
+            "component" : "NuHtmlChecker",
+            "priority"  : 100,
+            "method"    : "remove_old_cache",
+            "frequency" : 86400
+        }
+    }
+}

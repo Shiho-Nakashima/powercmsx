@@ -1,0 +1,223 @@
+<mt:include file="include/header.tmpl">
+<script>
+if ( window.performance ) {
+    if ( performance.navigation.type === 1 ) {
+        var query = window.location.search.substring(1);
+        if ( query.match( /^ts=/ ) ) {
+            window.location.href = '<mt:var name="this_url">';
+        }
+    }
+}
+</script>
+<mt:if name="already_installed">
+  <div id="header-ok-message" class="alert alert-success" tabindex="0">
+    <mt:trans phrase="PowerCMS X already Installed.">
+  </div>
+</mt:if>
+<mt:unless name="do_not_show_result">
+<mt:unless name="already_installed">
+<mt:setvar name="install" value="">
+<mt:if name="error_messages">
+<mt:else>
+<mt:setvar name="install" value="1">
+  <div id="header-ok-message" class="alert alert-success" tabindex="0">
+  <mt:if name="warning_messages">
+    <mt:trans phrase="You can install PowerCMS X( although some recommended settings are not sufficient ).">
+  <mt:else>
+  <mt:trans phrase="You can install PowerCMS X.">
+  </mt:if>
+  </div>
+</mt:if>
+</mt:unless>
+<mt:if name="db_connect">
+  <div id="header-sql-message" class="alert alert-<mt:if name="db_connect">success<mt:else>danger</mt:if>" tabindex="0">
+  <mt:if name="db_connect">
+    <mt:if name="db_create">
+      <mt:trans phrase="The connection to MySQL was successful and database '%s' created." params="$dbname">
+    <mt:elseif name="db_exists">
+      <mt:trans phrase="The connection to MySQL was successful and database '%s' exists." params="$dbname">
+    <mt:elseif name="db_failed">
+      <mt:trans phrase="The connection to MySQL was successful but database '%s' create failed." params="$dbname">
+    </mt:if>
+  </mt:if>
+  </div>
+</mt:if>
+<mt:if name="send_email">
+  <div id="header-sql-message" class="alert alert-success" tabindex="0">
+    <mt:trans phrase="A test mail was sent to '%s'." params="$email">
+    <mt:trans phrase="To disable sending test email, specify false for the environment variable'pt_check_test_email'.">
+  </div>
+</mt:if>
+<mt:if name="upload_size_limit">
+  <div id="header-upload_size_limit-message" class="alert alert-<mt:if name="upload_size_limit" gt="16777215">info<mt:else>warning</mt:if>" tabindex="0">
+    <mt:var name="upload_size_limit" format_size="0" setvar="upload_size_limit">
+    <mt:trans phrase="The maximum file size that can be uploaded is %s." params="$upload_size_limit">
+  </div>
+</mt:if>
+<mt:if name="error_messages">
+  <mt:loop name="error_messages">
+  <mt:if name="__first__">
+  <div id="header-error-message" class="alert alert-danger" tabindex="0">
+  <ul style="margin-bottom:0px"></mt:if>
+    <li><mt:var name="__value__"></li>
+    <mt:if name="__last__">
+  </ul>
+  </div>
+  <div class="mb-3" style="margin-left:-5px;margin-right:5px">
+    <a href="https://powercmsx.jp/about/install.html" target="_blank" class="full btn btn-secondary"><mt:trans phrase="View document for install"> <i class="fa fa-external-link" aria-hidden="true"></i></a>
+  </div>
+  </mt:if>
+  </mt:loop>
+</mt:if>
+<mt:if name="warning_messages">
+  <mt:loop name="warning_messages">
+  <mt:if name="__first__"><div id="header-warnings-message" class="alert alert-warning" tabindex="0">
+  <ul style="margin-bottom:0px"></mt:if>
+    <li><mt:var name="__value__"></li>
+    <mt:if name="__last__">
+  </ul>
+  </div>
+  </mt:if>
+  </mt:loop>
+</mt:if>
+<mt:if name="plugin_messages">
+  <mt:loop name="plugin_messages">
+  <mt:if name="__first__">
+  <div id="header-plugin-message" class="alert alert-warning" tabindex="0">
+  <ul style="margin-bottom:0px"></mt:if>
+    <li><mt:var name="__value__"></li>
+    <mt:if name="__last__">
+  </ul>
+  </div></mt:if>
+  </mt:loop>
+</mt:if>
+<table class="table table-bordered">
+  <tr>
+    <th><mt:trans phrase="Setting Name"></th>
+    <th class="text-center"><mt:trans phrase="Version"> / <mt:trans phrase="Value"></th>
+    <th class="text-center"><mt:trans phrase="Required"></th>
+    <th class="text-center"><mt:trans phrase="Result"></th>
+  </tr>
+  <tr<mt:unless name="version_ok"> class="table-danger"</mt:unless>>
+    <th>PHP</th>
+    <td class="text-center"><mt:var name="php_version"></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="version_ok"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr class="table-active"><th colspan="4" class="text-center"><mt:trans phrase="PHP extensions"></th>
+  </tr>
+  <tr<mt:unless name="mbstring"> class="table-danger"</mt:unless>>
+    <th>mbstring</th>
+    <td class="text-center"><mt:if name="mbstring_version"><mt:var name="mbstring_version"></mt:if></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="mbstring"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="libxml_version_ok"> class="table-danger"</mt:unless>>
+    <th>libxml</th>
+    <td class="text-center"><mt:var name="libxml_version"></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="libxml_version_ok"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="pdo_mysql"> class="table-danger"</mt:unless>>
+    <th>PDO MySQL</th>
+    <td class="text-center"><mt:if name="pdo_mysql_version">MySQL ver.<mt:var name="pdo_mysql_version"></mt:if></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="pdo_mysql"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="json"> class="table-danger"</mt:unless>>
+    <th>json</th>
+    <td class="text-center"><mt:var name="json_version"></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="json"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="simplexml"> class="table-danger"</mt:unless>>
+    <th>SimpleXML</th>
+    <td class="text-center"></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="simplexml"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="gd"> class="table-danger"</mt:unless>>
+    <th>gd</th>
+    <td class="text-center"><mt:var name="gd_version"> / <mt:loop name="gd_supports" glue=", "><mt:if name="__first__">Supports : </mt:if><mt:var name="__value__"></mt:loop></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="gd"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="zip"> class="table-danger"</mt:unless>>
+    <th>zip</th>
+    <td class="text-center"><mt:var name="zip_version"></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="zip"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="curl"> class="table-danger"</mt:unless>>
+    <th>curl</th>
+    <td class="text-center"></td>
+    <td class="text-center"><mt:trans phrase="Required"></td>
+    <td class="text-center"><mt:if name="zip"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="normalizer"> class="table-warning"</mt:unless>>
+    <th>normalizer</th>
+    <td class="text-center"></td>
+    <td class="text-center"><mt:trans phrase="Option"></td>
+    <td class="text-center"><mt:if name="normalizer"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="memcached"> class="table-warning"</mt:unless>>
+    <th>memcached</th>
+    <td class="text-center"><mt:var name="memcached_version"></td>
+    <td class="text-center"><mt:trans phrase="Option"></td>
+    <td class="text-center"><mt:if name="memcached"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <tr<mt:unless name="opcache"> class="table-warning"</mt:unless>>
+    <th>OPCache</th>
+    <td class="text-center"></td>
+    <td class="text-center"><mt:trans phrase="Option"></td>
+    <td class="text-center"><mt:if name="opcache"><mt:trans phrase="Enabled"><mt:else><mt:trans phrase="Disabled"></mt:if></td>
+  </tr>
+  <mt:if name="xdebug">
+  <tr  class="table-warning">
+    <th>xdebug</th>
+    <td class="text-center"><mt:var name="xdebug_version"></td>
+    <td class="text-center"><mt:trans phrase="Not recommended"></td>
+    <td class="text-center"><mt:trans phrase="Enabled"></td>
+  </tr>
+  </mt:if>
+  <tr class="table-active"><th colspan="4" class="text-center">php.ini</th>
+  </tr>
+  <tr<mt:unless name="max_input_vars" gt="1999"> class="table-warning"</mt:unless>>
+    <th>max_input_vars</th>
+    <td class="text-center"><mt:var name="max_input_vars"></td>
+    <td class="text-center"><mt:trans phrase="Recommendation"></td>
+    <td class="text-center"><mt:if name="max_input_vars" gt="1999"><mt:trans phrase="OK"><mt:else><mt:trans phrase="Recommended value is %s or more" params="2000"></mt:if></td>
+  </tr>
+  <tr>
+    <th>post_max_size</th>
+    <td class="text-center"><mt:var name="post_max_size" format_size="0"></td>
+    <td class="text-center"><mt:trans phrase="Recommendation"></td>
+    <td class="text-center"><mt:if name="post_max_size" gt="16777215"><mt:trans phrase="OK"><mt:else><mt:trans phrase="Recommended value is %s or more" params="16MB"></mt:if></td>
+  </tr>
+  <tr>
+    <th>upload_max_filesize</th>
+    <td class="text-center"><mt:var name="upload_max_filesize" format_size="0"></td>
+    <td class="text-center"><mt:trans phrase="Recommendation"></td>
+    <td class="text-center"><mt:if name="upload_max_filesize" gt="16777215"><mt:trans phrase="OK"><mt:else><mt:trans phrase="Recommended value is %s or more" params="16MB"></mt:if></td>
+  </tr>
+  <tr class="table-active"><th colspan="4" class="text-center">MySQL</th>
+  </tr>
+  <tr<mt:unless name="max_allowed_packet" ge="16"> class="table-warning"</mt:unless>>
+    <th>max_allowed_packet</th>
+    <td class="text-center"><mt:var name="max_allowed_packet"><mt:if name="max_allowed_packet">MB</mt:if></td>
+    <td class="text-center"><mt:trans phrase="Recommendation"></td>
+    <td class="text-center"><mt:if name="max_allowed_packet" ge="16"><mt:trans phrase="OK"><mt:else><mt:trans phrase="Recommended value is %s or more" params="16MB"></mt:if></td>
+  </tr>
+</table>
+</mt:unless>
+<mt:unless name="already_installed">
+  <mt:unless name="error_messages">
+    <a href="<mt:var name="admin_url">?__mode=upgrade&_type=install" class="btn btn-primary"><mt:trans phrase="Start Install"></a>
+  </mt:unless>
+</mt:unless>
+          </main>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+<mt:include file="include/dialog_header.tmpl">
+
+<mt:include file="include/edit/component_blocks.tmpl" />
+<button id="dialog-cancel-btn" class="btn btn-secondary ml-0" type="button"><mt:trans phrase="Close"></button>
+<script>
+$('#dialog-cancel-btn').on('click', () => {
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+});
+</script>
+
+<mt:include file="include/dialog_footer.tmpl">

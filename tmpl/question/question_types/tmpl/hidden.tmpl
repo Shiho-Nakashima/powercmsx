@@ -1,0 +1,6 @@
+    <mt:setvarblock name="param_name">request.question_<mt:var name="question_basename" escape></mt:setvarblock>
+    <mt:var name="$param_name" setvar="question_value">
+    <input type="hidden" id="question_<mt:var name="question_basename" escape>"
+        class="watch-changed" name="question_<mt:var name="question_basename" escape>"
+        value="<mt:if name="question_value"><mt:var name="question_value" escape><mt:else><mt:var name="question_default_value" escape></mt:if>"<mt:if name="question_aria_label">
+        aria-label="<mt:var name="question_aria_label" language="$language" escape>"</mt:if>>

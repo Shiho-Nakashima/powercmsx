@@ -1,0 +1,79 @@
+<mt:setvarblock name="error_name">question_<mt:var name="question_basename" escape>_error</mt:setvarblock>
+<tr class="<mt:if name="$error_name"> has-danger</mt:if>">
+  <th scope="row" class="cell-form-question">
+    <label class="form-control-label" for="question_<mt:var name="question_basename" escape>">
+      <mt:var name="question_label" language="$language" eval="1" escape>
+      <mt:if name="question_required">
+      <small><i class="fa fa-asterisk required text-muted" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Required" language="$language"></span></small>
+      </mt:if>
+    </label>
+  </th>
+  <td class="cell-form-input">
+    <mt:setvarblock name="param_name">request.question_<mt:var name="question_basename" escape></mt:setvarblock>
+    <mt:var name="$param_name" setvar="question_value">
+    <mt:if name="confirm_ok">
+      <mt:var name="question_value" escape>
+    </mt:if>
+    <mt:unless name="request.__mode">
+    <mt:var name="question_default_value" setvar="question_value">
+    </mt:unless>
+    <mt:if name="question_placeholder">
+      <mt:var name="question_placeholder" split="," setvar="placeholders">
+      <mt:var name="placeholders" index="0" language="$language" escape setvar="placeholder1">
+      <mt:count name="placeholders" setvar="placeholders_count">
+      <mt:if name="placeholders_count" gt="1">
+        <mt:var name="placeholders" index="1" language="$language" escape setvar="placeholder2">
+      </mt:if>
+    </mt:if>
+    <mt:if name="question_aria_label">
+      <mt:var name="question_aria_label" split="," setvar="aria_labels">
+      <mt:var name="aria_labels" index="0" language="$language" escape setvar="aria_label1">
+      <mt:count name="aria_labels" setvar="aria_labels_count">
+      <mt:if name="aria_labels_count" gt="1">
+        <mt:var name="aria_labels" index="1" language="$language" escape setvar="aria_label2">
+      <mt:else>
+        <mt:var name="aria_labels" index="0" language="$language" escape setvar="aria_label2">
+      </mt:if>
+    </mt:if>
+    <input type="<mt:if name="confirm_ok">hidden<mt:else>text</mt:if>" id="question_<mt:var name="question_basename" escape>"
+        class="form-control watch-changed <mt:if name="$error_name"> form-control-danger</mt:if>" name="question_<mt:var name="question_basename" escape>" value="<mt:var name="question_value" escape>"<mt:if name="aria_label1"> aria-label="<mt:var name="aria_label1">"</mt:if><mt:if name="placeholder1"> placeholder="<mt:var name="placeholder1">"</mt:if>>
+  <mt:if name="question_hint">
+  <div class="text-muted">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint" language="$language"></span>
+    <mt:var name="question_hint" language="$language" eval="1">
+  </div>
+  </mt:if>
+  </td>
+</tr>
+<tr class="<mt:if name="$error_name"> has-danger</mt:if>">
+  <th scope="row" class="cell-form-question">
+    <label class="form-control-label" for="question_<mt:var name="question_basename" escape>_confirm">
+      <mt:var name="question_label" language="$language" eval="1" escape> <mt:trans phrase="(Confirm)">
+      <mt:if name="question_required">
+      <small><i class="fa fa-asterisk required text-muted" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Required" language="$language"></span></small>
+      </mt:if>
+    </label>
+  </th>
+  <td class="cell-form-input">
+    <mt:setvarblock name="param_name">request.question_<mt:var name="question_basename" escape>_confirm</mt:setvarblock>
+    <mt:var name="$param_name" setvar="question_value">
+    <mt:if name="confirm_ok">
+      <mt:var name="question_value" escape>
+    </mt:if>
+    <mt:unless name="request.__mode">
+    <mt:var name="question_default_value" setvar="question_value">
+    </mt:unless>
+    <input type="<mt:if name="confirm_ok">hidden<mt:else>text</mt:if>" id="question_<mt:var name="question_basename" escape>_confirm"
+        class="form-control watch-changed <mt:if name="$error_name"> form-control-danger</mt:if>" name="question_<mt:var name="question_basename" escape>_confirm" value="<mt:var name="question_value" escape>"<mt:if name="aria_label2"> aria-label="<mt:var name="aria_label2">"</mt:if><mt:if name="placeholder2"> placeholder="<mt:var name="placeholder2">"</mt:if>>
+  <mt:if name="$error_name">
+  <div class="form-control-feedback">
+    <mt:var name="$error_name" escape>
+  </div>
+  </mt:if>
+  </td>
+</tr>
+<mt:unset name="aria_label1">
+<mt:unset name="aria_label2">

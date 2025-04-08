@@ -1,0 +1,93 @@
+<mt:unless name="workspace_id">
+<h3><mt:trans phrase="Settings for Azure Cognitive Services" component="ImageInfo"></h3>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_region">
+      <mt:trans phrase="Region" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-5">
+    <input type="text" id="setting_imageinfo_region" name="setting_imageinfo_region" class="form-control very-short" value="<mt:var name="setting_imageinfo_region" escape>">
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Specify only when using multi-service resources(Resource types enable access to multiple Cognitive Services using a single API key and endpoint)." component="ImageInfo">
+  </p>
+  </div>
+</div>
+<h3><mt:trans phrase="Settings for Azure Computer Vision" component="ImageInfo"></h3>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_end_point">
+      <mt:trans phrase="Endpoint" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    &nbsp; &nbsp; https://<input type="text" id="setting_imageinfo_end_point" name="setting_imageinfo_end_point" class="form-control very-short" value="<mt:var name="setting_imageinfo_end_point" escape>">.cognitiveservices.azure.com/vision/
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_subscription_key">
+      <mt:trans phrase="Subscription Key" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" id="setting_imageinfo_subscription_key" name="setting_imageinfo_subscription_key" class="form-control" value="<mt:var name="setting_imageinfo_subscription_key" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_api_version">
+      <mt:trans phrase="API Version" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_imageinfo_api_version" name="setting_imageinfo_api_version" class="form-control" value="<mt:var name="setting_imageinfo_api_version" escape>">
+  </div>
+</div>
+</mt:unless>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_language">
+      <mt:trans phrase="Language" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_imageinfo_language" name="setting_imageinfo_language" class="form-control" value="<mt:var name="setting_imageinfo_language" escape>">
+  </div>
+</div>
+<mt:unless name="workspace_id">
+<hr>
+<h3><mt:trans phrase="Settings for Azure Translator" component="ImageInfo"></h3>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_mt_end_point">
+      <mt:trans phrase="Endpoint" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_imageinfo_mt_end_point" name="setting_imageinfo_mt_end_point" class="form-control" value="<mt:var name="setting_imageinfo_mt_end_point" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_mt_subscription_key">
+      <mt:trans phrase="Subscription Key" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" id="setting_imageinfo_mt_subscription_key" name="setting_imageinfo_mt_subscription_key" class="form-control" value="<mt:var name="setting_imageinfo_mt_subscription_key" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imageinfo_mt_api_version">
+      <mt:trans phrase="API Version" component="ImageInfo">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_imageinfo_mt_api_version" name="setting_imageinfo_mt_api_version" class="form-control" value="<mt:var name="setting_imageinfo_mt_api_version" escape>">
+  </div>
+</div>
+</mt:unless>

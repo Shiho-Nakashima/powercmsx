@@ -1,0 +1,47 @@
+{
+    "ifcookie" : {
+        "description" : "Evaluate a block when the specified cookie is set.",
+        "attributes" : {
+            "name" : "The name of the cookie.",
+            "key" : "Set the value of get cookie to variable(default value is 'cookie_val').",
+            "(note)" : "Tag attributes for comparison of mt:if tag can be used."
+        }
+    },
+    "getcookie" : {
+        "description" : "Get the cookie's value.",
+        "attributes" : {
+            "name" : "The name of the cookie."
+        }
+    },
+    "getenv" : {
+        "description" : "Get the server environment(Superglobals).",
+        "attributes" : {
+            "name" : "The name of the environment.",
+            "kind" : "'SERVER', 'COOKIE', 'ENV', 'REQUEST', 'POST', 'GET' or 'SESSION'."
+        }
+    },
+    "setcookie" : {
+        "description" : "Set the cookie value. When using https access, the secure flag is automatically assigned.",
+        "attributes" : {
+            "name" : "The name of the cookie.",
+            "value" : "The value of the cookie.",
+            "path" : "The path on the server in which the cookie will be available on(default value is '/').",
+            "expires" : "The time the cookie expires(default value is '86400' *the value of environment variable 'sess_timeout').",
+            "httponly" : "When specified the cookie will be made accessible only through the HTTP protocol(The cookie won't be accessible by JavaScript).",
+            "reload" : "Reload the page after setting the cookie."
+        }
+    },
+    "clearcookie" : {
+        "description" : "Clear the cookie.",
+        "attributes" : {
+            "name" : "The name of the cookie.",
+            "reload" : "Reload the page after clear the cookie."
+        }
+    },
+    "clearallcookies" : {
+        "description" : "Clear the all cookies.",
+        "attributes" : {
+            "reload" : "Reload the page after clear the cookies."
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<mt:block regex_replace="'/^%s+$/um',''" remove_blank="1">
+  <mt:include module="(Media) Site Config">
+  <mt:if name="async_parts_enabled">
+    <mt:setvar name="call_from_async_parts" value="1">
+    <mt:setvarblock name="_cache_key">__parts_latest_entries_by_category_<mt:categoryid>_<mt:var name="language" escape>__</mt:setvarblock>
+    <mt:cacheblock cache_key="$_cache_key" workspace_id="$website_id" cache_ttl="$dynamic_cache_ttl" triggers="entry">
+      <mt:include module="(Media) Latest Entries by Category">
+    </mt:cacheblock>
+  </mt:if>
+</mt:block>

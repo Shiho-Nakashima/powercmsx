@@ -1,0 +1,16 @@
+<?php $this->get_cache=array (
+  0 => 'meta_id',
+  1 => 'meta_object_id',
+  2 => 'meta_model',
+  3 => 'meta_kind',
+  4 => 'meta_type',
+  5 => 'meta_name',
+  6 => 'meta_key',
+  7 => 'meta_value',
+  8 => 'meta_text',
+  9 => 'meta_blob',
+  10 => 'meta_data',
+  11 => 'meta_metadata',
+  12 => 'meta_field_id',
+  13 => 'meta_number',
+);

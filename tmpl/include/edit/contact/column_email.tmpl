@@ -1,0 +1,64 @@
+<mt:objectvar name="subject" setvar="this_subject">
+<mt:unless name="this_subject">
+<mt:var name="object_subject" setvar="this_subject">
+</mt:unless>
+<mt:setvarblock name="greeting"><mt:trans phrase="Dear. %s" params="$object_name">
+
+</mt:setvarblock>
+<mt:objectcontext id="$object_id" from="contact">
+<mt:var name="object_question_map" from_json="question_mapping">
+<mt:objectvar name="data" from_json="contact_vars">
+<mt:setvarblock name="mail_body">
+<mt:for merge_linefeeds="1">
+<mt:loop name="contact_vars">
+<mt:var name="__key__" replace="'question_',''" setvar="question_id">
+<mt:getobjectlabel model="question" id="$question_id" setvar="question_label">
+<mt:unless name="question_label">
+<mt:var name="question_mapping" index="$__key__" setvar="question_label">
+</mt:unless>
+<mt:var name="question_label" translate> : <mt:isarray name="__value__"><mt:var name="__value__" setvar="__var_array__"><mt:for strip_linefeeds="1"><mt:getobjectlabel model="question" id="$question_id" column="connector" setvar="question_connector">
+<mt:unless name="question_connector"><mt:setvar name="question_connector" value=", "></mt:unless>
+<mt:loop name="__var_array__" glue="$question_connector">
+<mt:var name="__value__">
+</mt:loop>
+</mt:for>
+<mt:else><mt:var name="__value__"></mt:isarray>
+</mt:loop>
+</mt:for>
+</mt:setvarblock>
+
+<mt:setvarblock name="return_code">
+</mt:setvarblock>
+<mt:setvarblock name="quoted">
+>  </mt:setvarblock>
+<mt:setvarblock name="r_quoted">
+>  
+</mt:setvarblock>
+<mt:setvarblock name="r_return_code">
+
+</mt:setvarblock>
+<mt:property name="reply_trim_to" setvar="reply_trim_to">
+<mt:var name="mail_body" rtrim trim_to="$reply_trim_to" replace="'$return_code','$quoted'" setvar="mail_body">
+<mt:var name="mail_body" rtrim replace="'$r_quoted','$r_return_code'" setvar="mail_body">
+<mt:setvar name="mail_body" value="$greeting" prepend="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape="1">
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 input-group">
+    <input id="<mt:var name="__col_name__">" type="text" class="form-control watch-changed <mt:var name="ctrl_class">" name="<mt:var name="__col_name__">" value="<mt:var name="value">"
+      <mt:if name="readonly">readonly</mt:if>>
+<mt:var name="_object_primary" translate setvar="mail_subject">
+<div class="input-group-addon" style="border: 1px solid <mt:var name="user_control_border" escape>;border-left:none">
+<a href="mailto:<mt:var name="value">?subject=Re:%20 <mt:var name="this_subject" escape="url">%28<mt:trans phrase="The inquiry posted for '%s'" params="$mail_subject" escape="url">%29&amp;body=<mt:var name="mail_body" escape="url">">
+  <i class="fa fa-envelope" aria-hidden="true"></i>
+  <mt:trans phrase="Reply To">
+</a>
+</div>
+    <mt:var name="_hint">
+  </div>
+</div>
+</mt:objectcontext>

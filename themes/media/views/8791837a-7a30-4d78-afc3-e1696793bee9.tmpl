@@ -1,0 +1,21 @@
+<mt:includeblock module="(Media) Site Layout">
+  <mt:include module="(Media) Site Config">
+  <mt:if tag="categorydescription">
+    <mt:categorydescription setvar="page_description">
+  </mt:if>
+  <mt:categorylabel language="$language" setvar="archive_title">
+  <mt:categorybasename setvar="category_basename">
+  <mt:setvarblock name="ogp_image"><mt:include module="(Media) OGP Image URL" ogp_image_key="$category_basename"></mt:setvarblock>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <section class="new-section">
+        <h1 class="section-heading"><mt:var name="archive_title" escape="single"></h1>
+        <mt:include module="(Media) List of Entries" entries_image="1" entries_pagination="1">
+      </section>
+    </div>
+    <div class="col-lg-4">
+      <mt:include module="(Media) Side Bar">
+    </div>
+  </div>
+</mt:includeblock>

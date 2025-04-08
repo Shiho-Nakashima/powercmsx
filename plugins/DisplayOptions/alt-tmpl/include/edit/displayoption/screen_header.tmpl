@@ -1,0 +1,11 @@
+<mt:if name="request.is_new">
+<div id="alert-info" class="alert alert-info" role="alert" tabindex="0">
+<mt:trans phrase="The settings will not take effect until you save this." component="DisplayOptions">
+</div>
+<script>
+function alert_focus () {
+    $('#alert-info').focus();
+}
+setTimeout(alert_focus, 500);
+</script>
+</mt:if>

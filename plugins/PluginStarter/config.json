@@ -1,0 +1,59 @@
+{
+    "label"       : "PluginStarter",
+    "id"          : "pluginstarter",
+    "component"   : "PluginStarter",
+    "version"     : "1.2",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Provides skeleton creation for PowerCMS X plugins.",
+    "config_settings": {
+        "plugin_starter_check_default_plugins": true,
+        "plugin_starter_csv_encoding": "UTF-8",
+        "plugin_starter_can_existing": false
+    },
+    "methods": {
+        "plugin_starter": {
+            "component"  : "PluginStarter",
+            "permission" : "manage_plugin",
+            "method"     : "plugin_starter"
+        }
+    },
+    "cms_validations": {
+        "pluginstarter_component": {
+            "component"  : "PluginStarter",
+            "label"      : "Existing Class",
+            "method"     : "validation_existing_class",
+            "type"       : "text",
+            "order"      : 2000
+        }
+    },
+    "callbacks": {
+        "pluginstarter_pre_listing_table": {
+            "table" : {
+                "pre_listing" : {
+                    "component" : "PluginStarter",
+                    "priority"  : 10,
+                    "method" : "pre_listing_table"
+                }
+            }
+        },
+        "pluginstarter_pre_save_plugin_skeleton": {
+            "plugin_skeleton" : {
+                "pre_save" : {
+                    "component" : "PluginStarter",
+                    "priority"  : 10,
+                    "method" : "pre_save_plugin_skeleton"
+                }
+            }
+        },
+        "pluginstarter_template_source_edit": {
+            "edit" : {
+                "template_source" : {
+                    "component" : "PluginStarter",
+                    "priority"  : 10,
+                    "method" : "template_source_edit"
+                }
+            }
+        }
+    }
+}

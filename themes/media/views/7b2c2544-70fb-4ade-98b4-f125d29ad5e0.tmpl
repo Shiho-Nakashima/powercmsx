@@ -1,0 +1,26 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<link rel="shortcut icon" href="<mt:var name="theme_static">media/images/favicon.ico" type="image/x-icon">
+<title><mt:if name="archive_title"><mt:var name="archive_title" escape="single" strip_linefeeds><mt:var name="page_title_delimiter"></mt:if><mt:var name="page_title" escape="single" strip_linefeeds></title>
+<mt:if name="page_description"><meta name="description" content="<mt:var name="page_description" remove_html escape="single" strip_linefeeds>"></mt:if>
+<mt:if name="page_keywords"><meta name="keywords" content="<mt:var name="page_keywords" remove_html escape="single">"></mt:if>
+<link rel="alternate" type="application/rss+xml" href="<mt:var name="website_url">index.xml" title="RSS2.0">
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" as="style">
+<link rel="preconnect" href="//fonts.gstatic.com">
+<link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="<mt:var name="theme_static">media/css/bootstrap.min.css">
+<link rel="stylesheet" href="<mt:var name="theme_static">media/css/bootstrap-grid.min.css">
+<link rel="stylesheet" href="<mt:var name="theme_static">media/css/bootstrap-reboot.min.css">
+<link rel="stylesheet" href="<mt:var name="theme_static">media/css/dropdown.css">
+<link rel="stylesheet" href="<mt:var name="theme_static">media/css/tether.min.css">
+<link rel="stylesheet" href="<mt:var name="website_url">css/theme.css">
+<meta property="og:url" content="<mt:if name="website_link_url"><mt:var name="current_archive_url" replace="'$website_url','$website_link_url'"><mt:else><mt:var name="current_archive_url"></mt:if>">
+<meta property="og:title" content="<mt:if name="archive_title"><mt:var name="archive_title" escape="single" strip_linefeeds><mt:else><mt:var name="page_title" escape="single" strip_linefeeds></mt:if>">
+<meta property="og:type" content="<mt:if name="main_index">website<mt:else>article</mt:if>">
+<mt:if name="page_description"><meta property="og:description" content="<mt:var name="page_description" remove_html escape="single" strip_linefeeds>"></mt:if>
+<mt:if name="ogp_image"><meta property="og:image" content="<mt:if name="website_link_url"><mt:var name="ogp_image" replace="'$website_url','$website_link_url'"><mt:else><mt:var name="ogp_image"></mt:if>"></mt:if>
+<mt:var name="html_head">
+<mt:if name="use_furigana_js">
+<mt:include module="(Furigana) Head HTML" />
+</mt:if>

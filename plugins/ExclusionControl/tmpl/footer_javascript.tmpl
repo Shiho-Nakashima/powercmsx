@@ -1,0 +1,33 @@
+<mt:setvarblock name="exclusioncontrol_js">
+    $.ajax({
+        url: exclusion_mode,
+        type: 'GET',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ){
+            // responce.name;
+        },
+        error: function(){
+            // error
+        }
+    });</mt:setvarblock>
+<mt:if name="request.id">
+<mt:if name="request._type" eq="edit">
+<script>
+var exclusioncontrol_in_edit = function(){
+    var exclusion_mode = '<mt:var name="script_uri">?__mode=exclusioncontrol_in_edit<mt:if name="workspace_id"><mt:if name="request._model" ne="workspace">&workspace_id=<mt:var name="workspace_id"></mt:if></mt:if>&_model=<mt:var name="request._model" escape>&_type=edit&id=<mt:var name="request.id" escape>';
+    <mt:var name="exclusioncontrol_js">
+};
+setInterval( exclusioncontrol_in_edit, 10000 );
+</script>
+</mt:if>
+</mt:if>
+<mt:if name="request._type" eq="hierarchy">
+<script>
+var exclusioncontrol_in_edit = function(){
+    var exclusion_mode = '<mt:var name="script_uri">?__mode=exclusioncontrol_in_edit<mt:if name="workspace_id"><mt:if name="request._model" ne="workspace">&workspace_id=<mt:var name="workspace_id"></mt:if></mt:if>&_model=<mt:var name="request._model" escape>&_type=hierarchy';
+    <mt:var name="exclusioncontrol_js">
+};
+setInterval( exclusioncontrol_in_edit, 10000 );
+</script>
+</mt:if>

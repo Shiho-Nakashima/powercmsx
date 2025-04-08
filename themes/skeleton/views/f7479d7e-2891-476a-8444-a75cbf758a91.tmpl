@@ -1,0 +1,29 @@
+<mt:property name="apache_version" setvar="apache_version">
+Options -Indexes
+DirectoryIndex <mt:if tag="websitepublishtype" eq="6"><mt:websiteurl relative="1">pt-view.php<mt:else>index.html</mt:if>
+
+RewriteEngine On
+RewriteCond %{HTTP_COOKIE} pt-live-preview
+<mt:ifcomponent component="LivePreview">RewriteCond %{REQUEST_URI} !\.php$ [NC]
+<mt:else>RewriteCond %{REQUEST_URI} \.html$ [NC]
+</mt:ifcomponent>RewriteRule ^ <mt:websitepath><mt:constant name="DIRECTORY_SEPARATOR">pt-view.php [L]
+
+RewriteCond %{QUERY_STRING} . [OR]
+RewriteCond %{REQUEST_METHOD} !=GET [OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_URI} !\.php$ [NC]
+RewriteCond %{REQUEST_URI} \.html$ [NC]
+RewriteRule ^ <mt:websitepath><mt:constant name="DIRECTORY_SEPARATOR">pt-view.php [L]
+<mt:if name="apache_version" lt="24">
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ <mt:websitepath><mt:constant name="DIRECTORY_SEPARATOR">pt-view.php [L]
+</mt:if>
+ErrorDocument 404 <mt:websiteurl relative="1">pt-view.php
+ErrorDocument 403 <mt:websiteurl relative="1">pt-view.php
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+</IfModule>
+<Files ~ "^\.ht">
+  <mt:if name="apache_version" lt="24">deny from all<mt:else>Require all denied</mt:if>
+</Files>

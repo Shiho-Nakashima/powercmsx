@@ -1,0 +1,36 @@
+<script src="<mt:Var name="api_js_url" />?render=<mt:Var name="api_site_key" escape />"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.querySelector('<mt:Var name="form_class" escape />');
+  let recaptchaInput;
+  function appendInput(name, value) {
+    if (!contactForm) {
+      return;
+    }
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    contactForm.appendChild(input);
+    return input;
+  }
+  grecaptcha.ready(() => {
+    grecaptcha.execute('<mt:Var name="api_site_key" escape />', { action: 'contact' }).then((token) => {
+      recaptchaInput = document.querySelector('[name="<mt:Var name="token_hidden_name" escape />"]');
+      if (recaptchaInput) {
+        recaptchaInput.value = token;
+      } else {
+        recaptchaInput = appendInput('<mt:Var name="token_hidden_name" escape />', token);
+      }
+    });
+
+    setInterval(() => {
+      grecaptcha.execute('<mt:Var name="api_site_key" escape />', { action: 'contact' }).then((token) => {
+        if (recaptchaInput) {
+          recaptchaInput.value = token;
+        }
+      });
+    }, ((60 * 1000) * 3));
+  });
+});
+</script>

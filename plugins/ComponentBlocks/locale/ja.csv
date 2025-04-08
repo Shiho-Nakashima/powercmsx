@@ -1,0 +1,80 @@
+component_block,ブロック
+ComponentBlock,ブロック
+ComponentBlocks,ブロック
+Component Blocks,コンポーネントブロック
+Use Multi Block,マルチブロックを使用
+Component Name,コンポーネント名
+Enable Blocks,利用できるブロック
+Please enter in pascal case (upper camel case),パスカルケース（アッパーキャメルケース）で入力してください
+Write a method declaration (Advanced setting),メソッドの宣言を記述する（高度な設定）
+This field is an advanced setting. A component method can be specified.,このフィールドは上級者向けの設定です。コンポーネントのメソッドが指定できます。
+There is an error in the input contents of the %s.,%sの入力内容にエラーがあります。
+Add Field,フィールドを追加
+Repeat Fields,繰り返しフィールド
+Define fields with repetitions like dt+dd and th+td.,dt + ddやth + tdのような繰り返しのあるフィールドを定義します。
+Defines an input field to display only once.,1回だけ表示する入力フィールドを定義します。
+Write a template (Advanced setting),テンプレートを記述する（高度な設定）
+This field is an advanced setting. A template can be specified.,このフィールドは上級者向けの設定です。テンプレートが指定できます。
+Enter the model names separated by commas.,モデル名をカンマ区切りで入力してください。
+The field key contains a word that cannot be used.,フィールドのキーに使用できない単語が含まれています。
+The repeat field key contains a word that cannot be used.,繰り返しフィールドのキーに使用できない単語が含まれています。
+text,テキスト
+number,数値
+textarea,テキストエリア
+editor,エディタ
+radio,ラジオボタン
+checkbox,チェックボックス
+image,画像
+asset,アセット
+relation,リレーション
+${label} is required.,${label}は必須です。
+The ${edit} has not been entered (set).,${edit}が入力（設定）されていません。
+The component name you entered is not available. Please specify another component name.,入力したコンポーネント名は利用できません。他のコンポーネント名を指定してください。
+The component name you entered is already in use. Please specify another component name.,入力したコンポーネント名はすでに利用されています。他のコンポーネント名を指定してください。
+Add Block,ブロックを追加
+Add Container,コンテナを追加
+Block,ブロック
+Container,コンテナ
+Data saved,保存されるデータ
+Are you sure you want to delete the {type}?,{index}番目の{type}を削除しますか？
+Deselect,選択解除
+Down,下
+Edit Object,オブジェクトの編集
+Insert after th,番目の後ろに挿入
+Are you sure you want to disassociate the image or file?,画像やファイルの関連付けを解除してもよろしいですか？
+Up,上
+View object,オブジェクトを見る
+Text field,テキスト
+Text(Number),テキスト（数値）
+Editor,エディタ付テキスト
+Relation,リレーション
+Detail setting,詳細設定
+Add field,フィールドを追加
+Advanced Field Settings,フィールドの詳細設定
+Initial value,初期値
+Please select,選択してください
+PDF,PDF
+Relation Model,リレーションモデル
+Choice,選択肢
+Single choice,単一選択
+As needed,必要に応じて
+Duplicate field key. Please specify a unique key.,フィールドのキーに重複があります。一意のキーを指定して下さい。
+Duplicate repeat field key. Please specify a unique key.,繰り返しフィールドのキーに重複があります。一意のキーを指定して下さい。
+"When using radio buttons and check boxes, press the detailed setting button and set the options.",ラジオボタンやチェックボックスを使用する場合は、詳細設定ボタンを押して選択肢を設定してください。
+"When using relation, press the detailed setting button and choice the relation model.",リレーションを使用する場合は、詳細設定ボタンを押してリレーションモデルを選択してください。
+e.g. Heading,例）Heading
+Duplicate component names occur. (Component name: %s),コンポーネント名の重複が発生しています（%s）
+"When using Multiblock, please select an enable block.",マルチブロックを利用する場合は利用できるブロックを選択してください。
+Add Row,行を追加
+Add Column,列を追加
+Add Column To Right,右に列を追加
+Add Column To Left,左に列を追加
+Delete Column,列を削除
+Column width,列の幅
+Add Row Above,上に行を追加
+Add Row Below,下に行を追加
+Delete Row,行を削除
+Merge With Right Cell,右のセルと結合
+Merge With Left Cell,左のセルと結合
+Merge With Cell Above,上のセルと結合
+Merge With Cell Below,下のセルと結合

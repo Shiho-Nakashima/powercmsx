@@ -1,0 +1,296 @@
+<div style="width:99%">
+<mt:if name="workspace_id">
+<div class="row form-group">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_use_system_settings" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_use_system_settings" name="setting_uploadutilities_use_system_settings" value="1"
+        <mt:if name="setting_uploadutilities_use_system_settings">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Use system settings" component="UploadUtilities"></span>
+    </label>
+  </div>
+</div>
+<fieldset id="uploadutilities-settings-detail" style="border:1px solid #bbb;" class="mb-0 pt-3 pl-3 pr-3 rounded form-group <mt:if name="setting_uploadutilities_use_system_settings">hidden</mt:if>">
+</mt:if>
+<div class="row form-group">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_can_switches" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_switches" name="setting_uploadutilities_can_switches" value="1"
+        <mt:if name="setting_uploadutilities_can_switches">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Enable automatic path switching" component="UploadUtilities"></span>
+    </label>
+  </div>
+</div>
+<div style="margin-top: -10px" id="uploadutilities_settings-wrapper" class="mb-4 row form-group <mt:unless name="setting_uploadutilities_can_switches">hidden</mt:unless>">
+  <div class="col-lg-2">
+    <label for="setting_uploadutilities_settings" class="ml-1">
+      <mt:trans phrase="Settings">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea class="form-control" id="setting_uploadutilities_settings" name="setting_uploadutilities_settings" rows="7"><mt:var name="setting_uploadutilities_settings" escape></textarea>
+    <p class="text-muted hint-block ml-2">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Describe the settings for one directory per line(ex. Directory Name : extension, extension, extension)." component="UploadUtilities">
+    </p>
+  </div>
+</div>
+<script>
+$('#setting_uploadutilities_can_switches').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#uploadutilities_settings-wrapper').show();
+    } else {
+        $('#uploadutilities_settings-wrapper').hide();
+    }
+});
+</script>
+<div class="row form-group" style="margin-top:-10px">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_can_status" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_enabled" name="setting_uploadutilities_can_status" value="1"
+        <mt:if name="setting_uploadutilities_can_status">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Enable status specification" component="UploadUtilities"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group" style="margin-top:-10px">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_can_publish_date" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_publish_date" name="setting_uploadutilities_can_publish_date" value="1"
+        <mt:if name="setting_uploadutilities_can_publish_date">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Enable publish date specification" component="UploadUtilities"></span>
+    </label>
+    <input type="hidden" name="setting_uploadutilities_can_unpublish_date" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_unpublish_date" name="setting_uploadutilities_can_unpublish_date" value="1"
+        <mt:if name="setting_uploadutilities_can_unpublish_date">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Enable unpublish date specification" component="UploadUtilities"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group" style="margin-top:-10px">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_can_overwrite" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_overwrite" name="setting_uploadutilities_can_overwrite" value="1"
+        <mt:if name="setting_uploadutilities_can_overwrite">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Allow overwriting files with the same path" component="UploadUtilities"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group" style="margin-top:-10px">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_allow_multibyte" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_allow_multibyte" name="setting_uploadutilities_allow_multibyte" value="1"
+        <mt:if name="setting_uploadutilities_allow_multibyte">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Allow uploading file names containing multi-byte characters as is." component="UploadUtilities"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group" style="margin-top:-10px">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_can_add_tags" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_add_tags" name="setting_uploadutilities_can_add_tags" value="1"
+        <mt:if name="setting_uploadutilities_can_add_tags">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Enable add Tags" component="UploadUtilities"></span>
+    </label>
+    <input type="hidden" name="setting_uploadutilities_can_tag_helper" value="0">
+    <label class="custom-control custom-checkbox<mt:unless name="setting_uploadutilities_can_add_tags"> hidden</mt:unless>" id="can_tag_helper-wrapper">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_tag_helper" name="setting_uploadutilities_can_tag_helper" value="1"
+        <mt:if name="setting_uploadutilities_can_tag_helper">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Use Input Helper for Tags" component="UploadUtilities"></span>
+    </label>
+<script>
+$('#setting_uploadutilities_can_add_tags').on('change', function(){
+    if (! $(this).prop('checked')) {
+        $('#can_tag_helper-wrapper').fadeOut( 200 );
+    } else {
+        $('#can_tag_helper-wrapper').fadeIn( 200 );
+    }
+});
+</script>
+  </div>
+</div>
+<div class="row form-group mb-0" style="margin-top:-10px">
+  <div class="col-lg-12 ml-1">
+    <input type="hidden" name="setting_uploadutilities_can_extract_zip" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_can_extract_zip" name="setting_uploadutilities_can_extract_zip" value="1"
+        <mt:if name="setting_uploadutilities_can_extract_zip">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Allow ZIP file extraction" component="UploadUtilities"></span>
+    </label>
+      <p class="text-muted hint-block" style="margin-top:-3px">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="This feature is not available within a modal dialog." component="UploadUtilities">
+      </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-3 mb-2">
+    <mt:trans phrase="Sync object status and assets status" component="UploadUtilities">
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-9">
+    <mt:var name="setting_uploadutilities_sync_status" escape split="," setvar="uploadutilities_sync_status">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+    <mt:assetmodels workspace_id="$workspace_id">
+      <mt:tablehascolumn model="$name" column="status">
+      <mt:tablehascolumn model="$name" column="has_deadline">
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed uploadutilities_sync_status"
+          <mt:ifinarray array="uploadutilities_sync_status" value="$name">checked</mt:ifinarray>
+          type="checkbox" name="uploadutilities_sync_status" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="label" translate></span>
+        </label>
+      </mt:tablehascolumn>
+      </mt:tablehascolumn>
+    </mt:assetmodels>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="UploadUtilities"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_uploadutilities_sync_status" name="setting_uploadutilities_sync_status" value="<mt:var name="setting_uploadutilities_sync_status" escape>">
+<script>
+$('.uploadutilities_sync_status').change(function(){
+    var all_models = $('#setting_uploadutilities_sync_status').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_uploadutilities_sync_status').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_uploadutilities_sync_status').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <span id="sync-status-hint">
+    <mt:if name="setting_uploadutilities_sync_status_published">
+      <mt:if name="setting_uploadutilities_not_sync_published">
+        <mt:trans phrase="When an object is published, the status of the asset is set to published, but do not change the status of an assets once it has been published." component="UploadUtilities">
+      <mt:else>
+        <mt:trans phrase="When an object is published, the status of the asset is set to published, and when it is unpublished, the status of the asset is set to the highest value other than ended among the related objects." component="UploadUtilities">
+      </mt:if>
+    <mt:else>
+      <mt:if name="setting_uploadutilities_not_sync_published">
+        <mt:trans phrase="Assets associated with other objects will only sync if the status of all objects is the same, but do not change the status of an assets once it has been published." component="UploadUtilities">
+      <mt:else>
+        <mt:trans phrase="Assets associated with other objects will only sync if the status of all objects is the same." component="UploadUtilities">
+      </mt:if>
+    </mt:if>
+    </span>
+  </p>
+    <div>
+    <input type="hidden" name="setting_uploadutilities_sync_status_published" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_sync_status_published" name="setting_uploadutilities_sync_status_published" value="1"
+        <mt:if name="setting_uploadutilities_sync_status_published">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Force synchronization status of publish Object" component="UploadUtilities"></span>
+    </label>
+    </div>
+    <div>
+    <input type="hidden" name="setting_uploadutilities_not_sync_published" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_uploadutilities_not_sync_published" name="setting_uploadutilities_not_sync_published" value="1"
+        <mt:if name="setting_uploadutilities_not_sync_published">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Do not change the status of published assets" component="UploadUtilities"></span>
+    </label>
+    </div>
+  </div>
+</div>
+<mt:if name="workspace_id">
+</fieldset>
+<script>
+$('#setting_uploadutilities_use_system_settings').on('change', function(){
+    if (! $(this).prop('checked')) {
+        $('#uploadutilities-settings-detail').fadeIn( 200 );
+        $('#uploadutilities-settings-detail').css('display', 'block');
+    } else {
+        $('#uploadutilities-settings-detail').fadeOut( 200 );
+    }
+});
+</script>
+</mt:if>
+<script>
+$('#setting_uploadutilities_sync_status_published').on('change', function(){
+    if (! $(this).prop('checked') ) {
+        if ( $('#setting_uploadutilities_not_sync_published').prop('checked') ) {
+            $('#sync-status-hint').html( '<mt:trans phrase="Assets associated with other objects will only sync if the status of all objects is the same, but do not change the status of an assets once it has been published." component="UploadUtilities">' );
+        } else {
+            $('#sync-status-hint').html( '<mt:trans phrase="Assets associated with other objects will only sync if the status of all objects is the same." component="UploadUtilities">' );
+        }
+    } else {
+        if ( $('#setting_uploadutilities_not_sync_published').prop('checked') ) {
+            $('#sync-status-hint').html( '<mt:trans phrase="When an object is published, the status of the asset is set to published, but do not change the status of an assets once it has been published." component="UploadUtilities">' );
+        } else {
+            $('#sync-status-hint').html( '<mt:trans phrase="When an object is published, the status of the asset is set to published, and when it is unpublished, the status of the asset is set to the highest value other than ended among the related objects." component="UploadUtilities">' );
+        }
+    }
+});
+$('#setting_uploadutilities_not_sync_published').on('change', function(){
+    if ( $(this).prop('checked') ) {
+        if ( $('#setting_uploadutilities_sync_status_published').prop('checked') ) {
+            $('#sync-status-hint').html( '<mt:trans phrase="When an object is published, the status of the asset is set to published, but do not change the status of an assets once it has been published." component="UploadUtilities">' );
+        } else {
+            $('#sync-status-hint').html( '<mt:trans phrase="Assets associated with other objects will only sync if the status of all objects is the same, but do not change the status of an assets once it has been published." component="UploadUtilities">' );
+        }
+    } else {
+        if ( $('#setting_uploadutilities_sync_status_published').prop('checked') ) {
+            $('#sync-status-hint').html( '<mt:trans phrase="When an object is published, the status of the asset is set to published, and when it is unpublished, the status of the asset is set to the highest value other than ended among the related objects." component="UploadUtilities">' );
+        } else {
+            $('#sync-status-hint').html( '<mt:trans phrase="Assets associated with other objects will only sync if the status of all objects is the same." component="UploadUtilities">' );
+        }
+    }
+});
+</script>
+</div>

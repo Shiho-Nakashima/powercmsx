@@ -1,0 +1,23 @@
+<mt:for remove_blank="1"><mt:loop name="settings_loop">
+<mt:if name="__value__[only_space]">{mt:if name="workspace_id"/mt}<mt:elseif name="__value__[only_system]">{mt:unless name="workspace_id"/mt}</mt:if>
+<div class="row form-group">
+  <div class="col-lg-2"><mt:unless name="__value__[type]" eq="boolean">
+    <label for="setting_<mt:var name="__key__" escape>">
+      {mt:trans phrase="<mt:var name="__value__[label]" escape>" component="<mt:var name="name">"/mt}
+    </label></mt:unless>
+  </div>
+  <div class="col-lg-10"><mt:if name="__value__[type]" eq="boolean">
+    <input type="hidden" name="setting_<mt:var name="__key__" escape>" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_convert_urls" class="custom-control-input watch-changed"
+      type="checkbox" name="setting_<mt:var name="__key__" escape>" value="1" {mt:if name="setting_<mt:var name="__key__" escape>"/mt}checked{/mt:if/mt}>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      {mt:trans phrase="<mt:var name="__value__[label]" escape>" component="<mt:var name="name">"/mt}</span>
+    </label>
+  <mt:else>
+    <input type="<mt:if name="__value__[type]" eq="integer">number<mt:else>text</mt:if>" id="setting_<mt:var name="__key__" escape>" name="setting_<mt:var name="__key__" escape>" class="form-control<mt:if name="__value__[type]" eq="integer"> num</mt:if>" value="{mt:var name="setting_<mt:var name="__key__" escape>" escape/mt}">
+</mt:if>
+  </div>
+</div>
+<mt:if name="__value__[only_space]">{/mt:if/mt}<mt:elseif name="__value__[only_system]">{/mt:unless/mt}</mt:if></mt:loop></mt:for>

@@ -1,0 +1,11 @@
+user_dic,ユーザー辞書
+User Dictionary,ユーザー辞書
+User Dictionaries,ユーザー辞書
+Word,単語
+Phonetic,ふりがな
+Exception,例外
+Proper Noun,固有名詞
+Furigana Setting,ふりがな設定
+Generate JSON for Furigana,ふりがな用のJSONを生成する
+Furigana URL Map,ふりがなのURLマップ
+"If not specified, no JSON file will be generated.","指定がない時 JSONファイルは生成されません。"

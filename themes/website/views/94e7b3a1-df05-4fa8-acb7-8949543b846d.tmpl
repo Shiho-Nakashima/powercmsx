@@ -1,0 +1,17 @@
+<mt:include module="(Website) Site Config">
+<mt:if tag="categorydescription">
+<mt:categorydescription setvar="page_description">
+</mt:if>
+<mt:categorylabel language="$language" setvar="archive_title">
+<mt:include module="(Website) HTML Header">
+    <div class="full-band-dark page-top-item">
+      <div>
+        <h1 class="text-center"><mt:var name="archive_title"></h1>
+      </div>
+    </div>
+<mt:include module="(Website) Breadcrumbs">
+<mt:setvarblock name="page_content">
+<mt:include module="(Website) List of Entries">
+</mt:setvarblock>
+<mt:include module="(Website) Page Detail" page_content="$page_content">
+<mt:include module="(Website) HTML Footer" cache_key="$footer_cache_key">

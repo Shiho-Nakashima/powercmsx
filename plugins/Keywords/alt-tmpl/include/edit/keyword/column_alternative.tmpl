@@ -1,0 +1,34 @@
+
+<div class="row form-group mb-0">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline">
+    <input style="width:300px;" id="<mt:var name="__col_name__">" type="text" class="form-control watch-changed" name="<mt:var name="__col_name__">" value="<mt:var name="value">">
+    <label class="custom-control custom-checkbox ml-3">
+    <input id="show_path" class="custom-control-input"
+     type="checkbox" name="only_alt" value="1" <mt:if name="object_only_alt">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Used only to absorb notational fluctuations" component="Keywords"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group mt-0">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <p class="text-muted hint-block mb-0">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Enter an alternative phrase to deal with the notational fluctuations for the SearchEstraier plugin." component="Keywords">
+<mt:ifcomponent component="SearchEstraier">
+<mt:else>
+    <mt:trans phrase="* SearchEstraier plugin is disabled." component="Keywords">
+</mt:ifcomponent>
+    </p>
+  </div>
+</div>

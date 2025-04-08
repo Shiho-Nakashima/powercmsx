@@ -1,0 +1,30 @@
+{
+    "membercontext" : {
+        "description" : "Sets context of the current login member.",
+        "attributes" : {
+            "model" : "Specify' user', Sets context of the current login user on the management screen."
+        }
+    },
+    "iflogin" : {
+        "description" : "Evaluates a block when member is logged in.",
+        "attributes" : {
+            "setcontext" : "Sets context of the current login member. ",
+            "model" : "Specify' user', It will be judged whether the user is logged in on the management screen."
+        }
+    },
+    "ifmembersappurl" : {
+        "description" : "Evaluates a block when the URL of the member site application is set.",
+        "attributes" : {
+            "workspace_id" : "The 'id' of workspace or 'any' (Initial value: 'any')."
+        }
+    },
+    "membersappurl" : {
+        "description" : "Output the URL of the member site application.",
+        "attributes" : {
+            "workspace_id" : "The 'id' of workspace."
+        }
+    },
+    "memberssignuptoken" : {
+        "description" : "Generate a magic_token to skip the confirmation screen and perform the action."
+    }
+}

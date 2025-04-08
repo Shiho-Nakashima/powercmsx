@@ -1,0 +1,623 @@
+@use "variables";
+@use "sass:math";
+
+@font-face {
+    font-family: movieicons;
+    font-style: normal;
+    font-weight: normal;
+    src: url("data:application/font-woff;charset=utf-8;base64,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") format("woff");
+}
+
+.p-pcmsxVideoPlayer {
+    @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+        display: grid;
+        grid-template-columns: calc(100% - 330px) 320px;
+        grid-template-rows: auto;
+        gap: 10px;
+    }
+}
+
+.video-js {
+    position: relative;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    width: 100%;
+
+    &.vjs-controls-fixed {
+        .vjs-tech {
+            height: calc(100% - 6em);
+        }
+    }
+
+    .vjs-control-bar {
+        position: absolute;
+        bottom: 22px;
+        display: flex;
+        background-color: transparent;
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            position: absolute;
+            bottom: 0;
+            height: 3.8em;
+            padding: 0 10px 8px;
+            background-color: #1919194d;
+        }
+    }
+
+    .vjs-progress-control {
+        position: absolute;
+        bottom: -22px;
+        width: 100%;
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            bottom: 38px;
+            left: 0;
+            height: 22px;
+            background: linear-gradient(to top, #1919194d, #1919194d 75%, #19191900);
+        }
+
+        .vjs-progress-holder {
+            @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+                margin: 0 20px;
+            }
+        }
+    }
+
+    .vjs-big-play-button {
+        top: 50%;
+        left: 50%;
+        margin-top: 0;
+        margin-left: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    .vjs-controls-background {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: #1919194d;
+        opacity: 0;
+        transition: opacity 1s;
+    }
+
+    &.vjs-paused,
+    &.vjs-user-active {
+        .vjs-controls-background {
+            opacity: 1;
+            @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+                display: none;
+            }
+        }
+    }
+
+    // -----------------------------------
+    // アイコンカスタマイズ
+    // -----------------------------------
+    .vjs-control-bar .vjs-play-control .vjs-icon-placeholder::before,
+    .vjs-control-bar .vjs-play-control.vjs-playing .vjs-icon-placeholder::before,
+    .vjs-skip-backward-10 .vjs-icon-placeholder::before,
+    .vjs-skip-forward-10 .vjs-icon-placeholder::before,
+    .vjs-mute-control .vjs-icon-placeholder::before,
+    .vjs-icon-volume-mute::before,
+    .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before,
+    .vjs-icon-volume-low::before,
+    .vjs-mute-control.vjs-vol-1 .vjs-icon-placeholder::before,
+    .vjs-icon-volume-mid::before,
+    .vjs-mute-control.vjs-vol-2 .vjs-icon-placeholder::before,
+    .vjs-custom-setting-control .vjs-icon-placeholder::before,
+    .vjs-custom-setting-dialog-toggle .vjs-icon-placeholder::before,
+    .vjs-fullscreen-control .vjs-icon-placeholder::before,
+    .vjs-icon-fullscreen-exit::before,
+    &.vjs-fullscreen .vjs-fullscreen-control .vjs-icon-placeholder::before {
+        font-family: movieicons;
+    }
+
+    .vjs-control-bar .vjs-play-control .vjs-icon-placeholder::before {
+        content: "\f105";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.4em;
+            line-height: 1.25;
+        }
+    }
+
+    .vjs-control-bar .vjs-play-control.vjs-playing .vjs-icon-placeholder::before {
+        content: "\f107";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2em;
+            line-height: 1.5;
+        }
+    }
+
+    .vjs-skip-backward-10 .vjs-icon-placeholder::before {
+        content: "\f101";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.2em;
+            line-height: 1.3636;
+        }
+    }
+
+    .vjs-skip-forward-10 .vjs-icon-placeholder::before {
+        content: "\f103";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.2em;
+            line-height: 1.3636;
+        }
+    }
+
+    .vjs-mute-control .vjs-icon-placeholder::before {
+        content: "\f108";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.4em;
+            line-height: 1.25;
+        }
+    }
+
+    .vjs-icon-volume-mute::before,
+    .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before {
+        content: "\f10b";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.4em;
+            line-height: 1.25;
+        }
+    }
+
+    .vjs-icon-volume-low::before,
+    .vjs-mute-control.vjs-vol-1 .vjs-icon-placeholder::before {
+        content: "\f10a";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.4em;
+            line-height: 1.25;
+        }
+    }
+
+    .vjs-icon-volume-mid::before,
+    .vjs-mute-control.vjs-vol-2 .vjs-icon-placeholder::before {
+        content: "\f109";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.4em;
+            line-height: 1.25;
+        }
+    }
+
+    .vjs-custom-setting-control .vjs-icon-placeholder::before,
+    .vjs-custom-setting-dialog-toggle .vjs-icon-placeholder::before {
+        content: "\f106";
+    }
+
+    .vjs-custom-setting-control .vjs-icon-placeholder::before {
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2.4em;
+            line-height: 1.25;
+        }
+    }
+
+    .vjs-fullscreen-control .vjs-icon-placeholder::before {
+        content: "\f104";
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            font-size: 2em;
+            line-height: 1.5;
+        }
+    }
+
+    .vjs-icon-fullscreen-exit::before,
+    &.vjs-fullscreen .vjs-fullscreen-control .vjs-icon-placeholder::before {
+        content: "\f102";
+    }
+
+    .vjs-custom-setting-dialog-toggle .vjs-icon-placeholder::before {
+        line-height: 1;
+    }
+
+    // -----------------------------------
+    // ボタンの表示・非表示等
+    // -----------------------------------
+    .vjs-duration,
+    .vjs-time-divider {
+        display: block;
+    }
+
+    .vjs-playback-rate,
+    .vjs-remaining-time {
+        display: none;
+    }
+
+    &.pcmsx-expanded-chapter-list .vjs-chapters-button {
+        display: none;
+    }
+
+    .vjs-control-bar .vjs-play-control,
+    .vjs-skip-backward-10,
+    .vjs-skip-forward-10,
+    .vjs-volume-panel,
+    .vjs-custom-setting-control-wrapper {
+        display: none;
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            display: block;
+        }
+    }
+
+    .vjs-volume-panel .vjs-volume-control.vjs-volume-vertical,
+    .vjs-volume-panel.vjs-hover .vjs-volume-control.vjs-volume-vertical,
+    .vjs-volume-panel:active .vjs-volume-control.vjs-volume-vertical,
+    .vjs-volume-panel:focus .vjs-volume-control.vjs-volume-vertical,
+    .vjs-volume-panel .vjs-volume-control:active.vjs-volume-vertical,
+    .vjs-volume-panel.vjs-hover .vjs-mute-control ~ .vjs-volume-control.vjs-volume-vertical,
+    .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-vertical {
+        top: -110px;
+        left: 5px;
+    }
+
+    .vjs-volume-panel .vjs-volume-control.vjs-volume-vertical {
+        z-index: 2;
+        background-color: #191919cc;
+    }
+
+    .vjs-text-track-display {
+        bottom: 30px;
+    }
+
+    &.vjs-controls-enabled .vjs-text-track-display {
+        bottom: 50px;
+    }
+
+    .vjs-custom-setting-control-wrapper {
+        margin-left: auto;
+    }
+
+    .vjs-skip-forward-10 {
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            margin: 0 10px;
+        }
+    }
+
+    .vjs-current-time {
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            margin-left: 10px;
+        }
+    }
+
+    .vjs-duration {
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            margin-right: 10px;
+        }
+    }
+
+    .vjs-fullscreen-control {
+        margin-left: auto;
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            margin-left: 10px;
+        }
+    }
+
+    .vjs-additional-control {
+        display: flex;
+        gap: 10px;
+        padding-left: 0;
+        list-style: none;
+
+        button {
+          font-size: 1em;
+        }
+    }
+
+    // -----------------------------------
+    // 時間
+    // -----------------------------------
+    .vjs-current-time-display,
+    .vjs-time-divider span,
+    .vjs-duration-display,
+    .vjs-chapter-name button {
+        font-family: inherit;
+        font-size: 1.4em;
+    }
+
+    .vjs-current-time {
+        padding-right: 0;
+    }
+
+    .vjs-duration {
+        padding-left: 0;
+    }
+
+    .vjs-time-divider {
+        min-width: 0.5em;
+        padding: 0 0.5em;
+    }
+
+    &.vjs-controls-fixed.vjs-user-inactive.vjs-playing .vjs-control-bar {
+        pointer-events: auto;
+        opacity: 1;
+    }
+
+    .vjs-current-cue {
+        position: absolute;
+        top: 30px;
+        left: 0;
+        padding: 5px 10px;
+        font-size: 1.5em;
+        color: #fff;
+        background-color: #1d1d1dcc;
+    }
+
+    .vjs-slider {
+        background-color: #ffffff80;
+    }
+
+    .vjs-load-progress {
+        &,
+        div {
+            background-color: #ffffffcc;
+        }
+    }
+
+    .vjs-play-progress {
+        background-color: #ff0101;
+    }
+
+    .vjs-disable-miniplayer {
+        display: none;
+    }
+
+    // -----------------------------------
+    // 選択肢
+    // -----------------------------------
+    .vjs-menu {
+        .vjs-menu-content {
+            background-color: #191919cc;
+        }
+    }
+
+    // -----------------------------------
+    // ミニプレーヤー
+    // -----------------------------------
+    &.vjs-has-started.-enable-miniplayer {
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            position: fixed;
+            top: auto;
+            right: 10px;
+            bottom: 10px;
+            left: auto;
+            width: 480px;
+            height: 270px;
+            aspect-ratio: 480 / 270;
+        }
+
+        .vjs-disable-miniplayer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            visibility: visible;
+            opacity: 1;
+            transition: visibility .1s, opacity .1s;
+
+            .vjs-icon-placeholder {
+                position: relative;
+
+                &::before {
+                    display: block;
+                    width: 16px;
+                    height: 16px;
+                    content: "";
+                    background-image: url('data:image/svg+xml;charset=UTF-8,<svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="%23fff"><path d="m9.483 8 6.21-6.21a1.049 1.049 0 0 0 -1.483-1.483l-6.21 6.21-6.21-6.21a1.049 1.049 0 0 0 -1.483 1.483l6.21 6.21-6.21 6.21a1.049 1.049 0 0 0 1.483 1.483l6.21-6.21 6.21 6.21a1.049 1.049 0 0 0 1.483-1.483z" /></svg>');
+                    background-repeat: no-repeat;
+                    background-size: 16px auto;
+                }
+            }
+        }
+
+        .vjs-chapter-name,
+        .vjs-custom-setting-control-wrapper {
+            display: none;
+        }
+
+        .vjs-fullscreen-control {
+            margin-left: auto;
+        }
+    }
+
+    &.-enable-miniplayer.vjs-user-inactive {
+        .vjs-disable-miniplayer {
+            pointer-events: none;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 1s, opacity 1s;
+        }
+    }
+
+    // -----------------------------------
+    // スマートフォンのタッチ操作対応
+    // -----------------------------------
+    html[lang=ja] & .vjs-touch-overlay {
+        &.skip::after {
+            left: 73%;
+        }
+
+        &.reverse::after {
+            right: 73%;
+            left: unset;
+        }
+    }
+
+    .vjs-chapter-name {
+        button {
+            cursor: pointer;
+            @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+                max-width: none;
+            }
+
+            span {
+                position: relative;
+                top: -2px;
+                display: inline-block;
+                max-width: min(6em, 26vw);
+                margin-right: 0.25em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    // -----------------------------------
+    // 設定パネル①（dialog式と共通項は②に記載）
+    // -----------------------------------
+    .vjs-custom-setting-panel {
+        position: absolute;
+        right: 10px;
+        bottom: 60px;
+        display: none;
+        min-width: 120px;
+        max-width: 300px;
+        padding: 20px 10px;
+        background-color: #191919cc;
+        border-radius: 5px;
+
+        &.show {
+            display: block;
+        }
+    }
+
+    .vjs-custom-setting-control,
+    .vjs-custom-setting-dialog-toggle {
+        cursor: pointer;
+    }
+
+    .vjs-custom-setting-dialog-toggle {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: block;
+        width: 20px;
+        height: 20px;
+        opacity: 0;
+        transition: opacity 1s;
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            display: none;
+        }
+    }
+
+    &.vjs-has-started.vjs-paused,
+    &.vjs-has-started.vjs-user-active {
+        .vjs-custom-setting-dialog-toggle {
+            opacity: 1;
+            transition: opacity .1s;
+        }
+    }
+}
+
+// -----------------------------------
+// 設定パネル②
+// -----------------------------------
+.vjs-status-panel {
+    li {
+        margin-left: 0;
+        list-style: none;
+    }
+
+    button {
+        span {
+            margin-left: 1em;
+        }
+    }
+}
+
+.vjs-playback-rate-panel,
+.vjs-quality-panel {
+    li {
+        margin-left: 0;
+        list-style: none;
+    }
+
+    button {
+        padding-left: 21px;
+
+        &[aria-current=true] {
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg height="12.303" viewBox="0 0 17.414 12.303" width="17.414" xmlns="http://www.w3.org/2000/svg"><path d="m-10491.663-20576.09 5.818 5.818 10.182-10.182" fill="none" stroke="%23fff" stroke-width="2" transform="translate(10492.37 20581.16)"/></svg>');
+            background-repeat: no-repeat;
+            background-position: left 0.15em;
+            background-size: 11px auto;
+        }
+    }
+}
+
+.vjs-custom-setting-panel {
+    button {
+        width: 100%;
+        line-height: 1;
+        color: #fff;
+        text-align: left;
+        cursor: pointer;
+        border-width: 0;
+        appearance: none;
+        background-color: transparent;
+        font-size: 0.875rem;
+    }
+
+    div[aria-hidden=true] {
+        display: none;
+    }
+
+    .heading {
+        padding-bottom: 0.5em;
+        margin-bottom: 30px;
+        color: #fff;
+        border-bottom: 1px solid #fff;
+        font-size: 0.875rem;
+        font-family: sans-serif;
+        @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+            margin-bottom: 20px;
+        }
+    }
+
+    ul {
+        padding-left: 0;
+        font-size: 0.875rem;
+        line-height: 1;
+
+        li {
+            + li {
+                margin-top: 30px;
+                @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+                    margin-top: 20px;
+                }
+            }
+        }
+    }
+}
+
+.vjs-custom-settings-dialog {
+    padding: 0;
+    border-width: 0;
+
+    &::backdrop {
+        background-color: #19191966;
+    }
+
+    .vjs-custom-setting-panel {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 45px 30px 30px;
+        background-color: #191919cc;
+    }
+
+    .vjs-custom-setting-panel-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+
+        &,
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+}

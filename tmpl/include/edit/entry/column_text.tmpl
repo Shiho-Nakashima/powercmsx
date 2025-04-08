@@ -1,0 +1,160 @@
+<mt:var name="permalink" setvar="__permalink">
+<mt:if name="request.workspace_id">
+  <mt:if name="workspace_link_url">
+    <mt:var name="__permalink" replace="'$workspace_site_url','$workspace_link_url'" setvar="__permalink">
+  </mt:if>
+<mt:else>
+  <mt:if name="link_url">
+    <mt:var name="__permalink" replace="'$site_url','$link_url'" setvar="__permalink">
+  </mt:if>
+</mt:if>
+<div class="row form-group" style="margin-bottom:3px">
+  <div class="col-lg-8 input-group-lg">
+  <mt:if name="permalink">
+    <div class="input-group copy-url copy-url-permalink">
+    <input type="text" class="form-control form-control-sm clipboard-url" id="_permalink-clipboard"
+    value="<mt:var name="__permalink">" readonly>
+    <button type="button" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Copy to Clipboard">" type="button" class="input-group-addon copy-clipboard" data-clipboard-target="#_permalink-clipboard"><i class="fa fa-clipboard" aria-hidden="true" aria-label="<mt:trans phrase="Copy to Clipboard">"></i></button>
+    <button type="button" id="__view-permalink" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View">" type="button" class="input-group-addon"><i class="fa fa-external-link" aria-hidden="true" aria-label="<mt:trans phrase="View">"></i></button>
+<mt:if name="_show_both">
+    <button type="button" id="__view-published" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="View Published">" type="button" class="input-group-addon"><i class="fa fa-globe" aria-hidden="true" aria-label="<mt:trans phrase="View Published">"></i></button>
+</mt:if>
+    </div>
+    <input type="hidden" name="__permalink" id="_permalink" value="<mt:if name="_show_both"><mt:var name="permalink"><mt:else><mt:var name="__permalink"></mt:if>">
+  <mt:if name="_show_both">
+    <input type="hidden" name="__permalink_published" id="_permalink_published" value="<mt:var name="__permalink">">
+  </mt:if>
+    <script>
+    <mt:if name="request.saved">
+    $('#_permalink-clipboard').css( 'color', 'gray' );
+    $('#_permalink-clipboard').val( '<mt:trans phrase="Getting permalink...">' );
+    var __permalink_success = false;
+    var get_current_permalink = function(){
+        setTimeout( get_permalink_error, 2000 );
+        $.post("<mt:var name="script_uri">", {
+            '__mode' : 'get_current_permalink',
+            '_model' : '<mt:var name="model" escape>',
+            'id'     : <mt:var name="object_id">,
+            'workspace_id' : '<mt:var name="workspace_id" cast_to="int">',
+            'magic_token': '<mt:var name="magic_token">'
+        },
+        function ( data ) {
+            if( data.permalink ) {
+                __permalink_success = true;
+                $('#_permalink-clipboard').css( 'color', '#555555' );
+                $('#_permalink-clipboard').val( data.view_link );
+                <mt:unless name="_show_both">
+                if ( data.view_link ) {
+                    $('#__permalink').val( data.view_link );
+                }
+                </mt:unless>
+            } else {
+                $('#_permalink-clipboard').css( 'color', '#555555' );
+            }
+        },
+        "json"
+        );
+    }
+    var get_permalink_error = function(){
+        if ( __permalink_success == false ) {
+            $('#_permalink-clipboard').val( '<mt:var name="permalink">' );
+            $('#_permalink-clipboard').css( 'color', '#555555' );
+        } 
+    }
+    setTimeout( get_current_permalink, 2500 );
+    </mt:if>
+    $('#__view-permalink').click(function(){
+        var permalink = $('#_permalink').val();
+        window.open( permalink, '_blank');
+    });
+    $('#__view-published').click(function(){
+        var permalink = $('#_permalink_published').val();
+        window.open( permalink, '_blank');
+    });
+    </script>
+  </mt:if>
+  </div>
+  <mt:var name="object_text_format" setvar="object_text_format">
+  <mt:unless name="request.id">
+    <mt:if name="user_text_format">
+      <mt:var name="user_text_format" lower_case setvar="user_text_format">
+      <mt:setvar name="object_text_format" value="$user_text_format">
+    <mt:elseif name="__format_default">
+      <mt:var name="__format_default" lower_case setvar="user_text_format">
+      <mt:setvar name="object_text_format" value="$user_text_format">
+    <mt:else>
+      <mt:setvar name="object_text_format" value="richtext">
+    </mt:if>
+  </mt:unless>
+  <mt:if name="object_text_format" eq="convert line breaks">
+    <mt:setvar name="object_text_format" value="convert_breaks">
+  </mt:if>
+  <div class="col-lg-4">
+    <div class="text-format-box">
+    <span class="pull-right form-inline">
+    <label for="text_format-select"><span class="text-format-label"><mt:trans phrase="Format"> : </span></label>
+    <select id="text_format-select" name="text_format" class="custom-select form-control form-control-sm very-short">
+      <option value=""><mt:trans phrase="None"></option>
+      <option value="convert_breaks" <mt:if name="object_text_format" eq="convert_breaks">selected</mt:if>><mt:trans phrase="Convert Line Breaks"></option>
+      <option value="markdown" <mt:if name="object_text_format" eq="markdown">selected</mt:if>><mt:trans phrase="Markdown"></option>
+      <mt:ignore><option value="markdown_with_smartypants" <mt:if name="object_text_format" eq="markdown_with_smartypants">selected</mt:if>>Markdown + SmartyPants</option></mt:ignore>
+      <option value="richtext" <mt:if name="object_text_format" eq="richtext">selected</mt:if>><mt:trans phrase="RichText"></option>
+      <mt:ignore><option value="textile_2" <mt:if name="object_text_format" eq="textile_2">selected</mt:if>><mt:trans phrase="Textile 2"></option></mt:ignore>
+    </select>
+    </span>
+  </div>
+</div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-12">
+    <div id="input-helper" class="hidden">
+<button title="<mt:trans phrase="Heading %s" params="1">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('h1','<mt:var name="__col_name__">');">H1</button>
+<button title="<mt:trans phrase="Heading %s" params="2">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('h2','<mt:var name="__col_name__">');">H2</button>
+<button title="<mt:trans phrase="Heading %s" params="3">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('h3','<mt:var name="__col_name__">');">H3</button>
+<button title="<mt:trans phrase="Heading %s" params="4">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('h4','<mt:var name="__col_name__">');">H4</button>
+<button title="<mt:trans phrase="Bold">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('strong','<mt:var name="__col_name__">');"><i class="fa fa-bold"></i><span class="sr-only">STRONG</span></button>
+<button title="<mt:trans phrase="Italic">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('em','<mt:var name="__col_name__">');"><i class="fa fa-italic"></i><span class="sr-only">EM</span></button>
+<button title="<mt:trans phrase="Link">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('a','<mt:var name="__col_name__">');"><i class="fa fa-link"></i><span class="sr-only">A</span></button>
+<button title="<mt:trans phrase="Paragraph">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('p','<mt:var name="__col_name__">');"><i class="fa fa-paragraph"></i><span class="sr-only">P</span></button>
+<button title="<mt:trans phrase="Blockquote">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('blockquote','<mt:var name="__col_name__">');"><i class="fa fa-quote-left"></i><span class="sr-only">BLOCKQUOTE</span></button>
+<button title="<mt:trans phrase="Bullet list">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('ul','<mt:var name="__col_name__">');"><i class="fa fa-list-ul"></i><span class="sr-only">UL</span></button>
+<button title="<mt:trans phrase="Ordered list">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('ol','<mt:var name="__col_name__">');"><i class="fa fa-list-ol"></i><span class="sr-only">OL</span></button>
+<button title="<mt:trans phrase="list item">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('li','<mt:var name="__col_name__">');">LI</button>
+<button title="<mt:trans phrase="Line break">" type="button" class="btn btn-sm btn-secondary editor-btn" onclick="surroundHTML('br','<mt:var name="__col_name__">');">BR</button>
+<button type="button" class="btn btn-sm btn-secondary editor-btn" data-toggle="modal" data-target="#modal" title="<mt:trans phrase="Insert File">"
+data-href="" href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=asset<mt:if name="has_asset_workspace_id">&amp;workspace_id=<mt:var name="asset_workspace_id">&amp;_from_scope=<mt:var name="workspace_id" castto="int"><mt:elseif name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;dialog_view=1&amp;insert_editor=1&amp;insert=text"><i class="fa fa-file-o"></i><span class="sr-only"><mt:trans phrase="Insert File"></span></button>
+<button type="button" class="btn btn-sm btn-secondary editor-btn" data-toggle="modal" data-target="#modal" title="<mt:trans phrase="Insert Image">"
+data-href="" href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=asset<mt:if name="has_asset_workspace_id">&amp;workspace_id=<mt:var name="asset_workspace_id">&amp;_from_scope=<mt:var name="workspace_id" castto="int"><mt:elseif name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;dialog_view=1&amp;select_system_filters=filter_class_image&amp;_system_filters_option=image&amp;_filter=asset&amp;insert_editor=1&amp;insert=text"><i class="fa fa-image"></i><span class="sr-only"><mt:trans phrase="Insert Image"></span></button>
+<mt:var name="custom_html_insert_buttons" _eval="1">
+    </div>
+<mt:unless name="request.id"><mt:var name="default" escape setvar="value"></mt:unless>
+    <div id="editor-text-wrapper"><textarea area-label="<mt:var name="label" escape>" placeholder="<mt:var name="label" escape>" id="<mt:var name="__col_name__">" rows="<mt:if name="options"><mt:var name="options" escape><mt:else>20</mt:if>"
+    class="form-control richtext watch-changed" name="<mt:var name="__col_name__">">
+<mt:if name="forward_params"><mt:var name="request.text" escape><mt:else><mt:var name="value"></mt:if></textarea>
+<mt:if name="_hint">
+  <div class="ml-1">
+    <mt:var name="_hint">
+  </div>
+</mt:if>
+</div>
+  </div>
+</div>
+<script>
+<mt:unless name="object_text_format">
+  <mt:setvar name="object_text_format" value="none">
+  $('#input-helper').show();
+<mt:elseif name="object_text_format" ne="richtext">
+  $('#input-helper').show();
+</mt:unless>
+var editorMode = '<mt:var name="object_text_format" escape="js" regex_replace="'/\'/g','\\''">';
+$('#text_format-select').change(function(){
+    if ( $(this).val() == 'richtext' ) {
+        editorInit();
+        $('#input-helper').hide();
+    } else {
+        tinymce.EditorManager.remove();
+        $('#input-helper').show();
+    }
+    editorMode = $(this).val();
+});
+</script>

@@ -1,0 +1,177 @@
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="Set expiration date for password" component="PasswordExpired"></h2>
+  <div class="card-block">
+    <div class="container-fluid">
+
+      <mt:setvar name="prop_name" value="setting_password_expired_enabled">
+      <mt:setvar name="is_expired_enabled" value="0">
+      <mt:if name="$prop_name"><mt:setvar name="is_expired_enabled" value="1"></mt:if>
+      <div class="row form-group mb-3">
+        <div class="col-lg-12">
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-1" name="<mt:var name="prop_name">"
+                   value="1"
+                   <mt:if name="$prop_name" eq="1">checked</mt:if>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Enabled"></span>
+          </label>
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-0" name="<mt:var name="prop_name">"
+                   value="0"
+                   <mt:unless name="$prop_name">checked</mt:unless>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Disabled"></span>
+          </label>
+        </div>
+      </div>
+      <script>
+        $(function(){
+          const $switch = $('input[name="<mt:var name="prop_name">"]');
+          const $form   = $switch.parents('form');
+          const $wrap   = $switch.parents('fieldset');
+          const $input  = $wrap.find('input:not([type="hidden"]):not([type="submit"]):not([readonly])').not($switch);
+          $switch.on('change', function(){
+            const is_checked = $(this).val() == "1";
+            $input.prop('disabled', !is_checked);
+          });
+          $form.on('submit', function(){
+            $input.prop('disabled', false);
+          });
+        });
+      </script>
+
+      <mt:setvar name="prop_name" value="setting_password_expiration_days">
+      <div class="row form-group">
+        <div class="col-lg-2">
+          <label for="<mt:var name="prop_name">">
+            <mt:trans phrase="Password expiration days" component="PasswordExpired">
+          </label>
+        </div>
+        <div class="col-lg-10">
+            <input type="number" class="form-control num very-short" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>"
+                   <mt:unless name="is_expired_enabled"> disabled</mt:unless>>
+            <p class="text-muted hint-block mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Please set an integer value of 1 or more." component="PasswordExpired">
+            </p>
+        </div>
+      <!-- /.form-group --></div>
+
+      <mt:setvar name="prop_name" value="setting_password_expired_mode">
+      <div class="row form-group mb-0">
+        <div class="col-lg-2">
+          <label for="<mt:var name="prop_name">">
+            <mt:trans phrase="Behavior when the expiration date has passed" component="PasswordExpired">
+          </label>
+        </div>
+        <div class="col-lg-10">
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-1" name="<mt:var name="prop_name">"
+                   value="1"
+                   <mt:if name="$prop_name" eq="1">checked</mt:if>
+                   <mt:unless name="is_expired_enabled"> disabled</mt:unless>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Display a warning message on the dashboard" component="PasswordExpired"></span>
+          </label><br>
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-2" name="<mt:var name="prop_name">"
+                   value="2"
+                   <mt:if name="$prop_name" eq="2">checked</mt:if>
+                   <mt:unless name="is_expired_enabled"> disabled</mt:unless>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Force password change" component="PasswordExpired"></span>
+          </label><br>
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-0" name="<mt:var name="prop_name">"
+                   value="0"
+                   <mt:unless name="$prop_name">checked</mt:unless>
+                   <mt:unless name="is_expired_enabled"> disabled</mt:unless>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Do nothing" component="PasswordExpired"></span>
+          </label>
+        </div>
+      <!-- /.form-group --></div>
+
+    <!-- /.container-fluid --></div>
+  <!-- /.card-block --></div>
+<!-- /.card --></fieldset>
+
+
+<fieldset class="card mb-4">
+  <h2 class="card-header"><mt:trans phrase="Restrict updates with the same password" component="PasswordExpired"></h2>
+  <div class="card-block">
+    <div class="container-fluid">
+
+      <mt:setvar name="prop_name" value="setting_password_history_enabled">
+      <mt:setvar name="is_history_enabled" value="0">
+      <mt:if name="$prop_name"><mt:setvar name="is_history_enabled" value="1"></mt:if>
+      <div class="row form-group mb-3">
+        <div class="col-lg-12">
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-1" name="<mt:var name="prop_name">"
+                   value="1"
+                   <mt:if name="$prop_name" eq="1">checked</mt:if>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Enabled"></span>
+          </label>
+          <label class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input plugin-target-setting"
+                   id="<mt:var name="prop_name">-0" name="<mt:var name="prop_name">"
+                   value="0"
+                   <mt:unless name="$prop_name">checked</mt:unless>>
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">
+            <mt:trans phrase="Disabled"></span>
+          </label>
+        </div>
+      </div>
+      <script>
+        $(function(){
+          const $switch = $('input[name="<mt:var name="prop_name">"]');
+          const $form   = $switch.parents('form');
+          const $wrap   = $switch.parents('fieldset');
+          const $input  = $wrap.find('input:not([type="hidden"]):not([type="submit"]):not([readonly])').not($switch);
+          $switch.on('change', function(){
+            const is_checked = $(this).val() == "1";
+            $input.prop('disabled', !is_checked);
+          });
+          $form.on('submit', function(){
+            $input.prop('disabled', false);
+          });
+        });
+      </script>
+
+      <mt:setvar name="prop_name" value="setting_password_history_max">
+      <div class="row form-group mb-0">
+        <div class="col-lg-2">
+          <label for="<mt:var name="prop_name">">
+            <mt:trans phrase="Number of generations whose change is restricted" component="PasswordExpired">
+          </label>
+        </div>
+        <div class="col-lg-10">
+            <input type="number" class="form-control num very-short" id="<mt:var name="prop_name">" name="<mt:var name="prop_name">" value="<mt:var name="$prop_name" escape>"
+                   <mt:unless name="is_history_enabled"> disabled</mt:unless>>
+            <p class="text-muted hint-block mb-0">
+              <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Hint"></span>
+              <mt:trans phrase="Please set an integer value of 1 or more." component="PasswordExpired">
+            </p>
+        </div>
+      <!-- /.form-group --></div>
+
+    <!-- /.container-fluid --></div>
+  <!-- /.card-block --></div>
+<!-- /.card --></fieldset>

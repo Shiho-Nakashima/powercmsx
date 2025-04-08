@@ -1,0 +1,6 @@
+app_property,環境変数
+App Property,環境変数
+App Properties,環境変数
+"When the type is an array, please enter the comma separated text. If the value is omitted, the initial value is set for the property with the initial value specified.",タイプが配列の時カンマ区切りテキストを入力します。値を省略すると初期値の指定のあるプロパティの場合初期値がセットされます。
+String,文字列
+Array,配列

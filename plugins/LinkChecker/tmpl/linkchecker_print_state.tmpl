@@ -1,0 +1,9 @@
+<mt:trans phrase="Broken Link Check" component="LinkChecker" setvar="page_title">
+<mt:include file="include/popup_header.tmpl">
+<script>
+  const scrollBottom = () => {
+    var element = document.documentElement;
+    var bottom = element.scrollHeight - element.clientHeight;
+    window.scroll( 0, bottom );
+  }
+</script>

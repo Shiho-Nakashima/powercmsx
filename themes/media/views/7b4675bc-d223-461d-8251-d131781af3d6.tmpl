@@ -1,0 +1,7 @@
+<mt:for merge_linefeeds="1">
+<mt:var name="object_name" language="$language" setvar="object_name">
+<mt:trans phrase="(%s) The comment you posted for %s has been received." params="'$app_name','$object_name'">
+<mt:if name="comment_status" ne="2"><mt:trans phrase="Your comment has been received and held for review by administrator."></mt:if>
+
+<mt:include module="(Media) Mail Footer">
+</mt:for>

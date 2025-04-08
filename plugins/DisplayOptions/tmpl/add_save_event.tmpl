@@ -1,0 +1,6 @@
+
+    if($('#disp_options_form').length) {
+        $('.disp_option').removeAttr( 'disabled' );
+        var disp_options_params = encodeURIComponent($('#disp_options_form').serialize());
+        $('#__obj_display_opt').val( disp_options_params );
+    }

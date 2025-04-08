@@ -1,0 +1,86 @@
+{
+    "label": "TaxonomyUtils",
+    "id": "taxonomyutils",
+    "component": "TaxonomyUtils",
+    "description": "Provides various functions related to model Taxonomy.",
+    "version": "1.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net",
+    "config_settings": {
+        "searchestraier_count_by_object": true,
+        "taxonomyutils_use_estraier": false
+    },
+    "hooks": {
+        "taxonomyutils_pre_run": {
+            "pre_run": {
+                "component": "TaxonomyUtils",
+                "priority": 5,
+                "method": "pre_run"
+            }
+        }
+    },
+    "list_actions": {
+        "action_taxonomy_normalize": {
+            "taxonomy": {
+                "action_taxonomy_normalize": {
+                    "name": "action_taxonomy_normalize",
+                    "label": "Normalize",
+                    "component": "TaxonomyUtils",
+                    "method": "action_taxonomy_normalize",
+                    "columns": "id,name,normalize",
+                    "input": 0,
+                    "order": 1000
+                }
+            }
+        }
+    },
+    "tags": {
+        "block": {
+            "taxonomyobjects": {
+                "component": "TaxonomyUtils",
+                "method": "hdlr_taxonomyobjects"
+            }
+        },
+        "conditional": {
+            "iftaxonomyhaschild": {
+                "component": "TaxonomyUtils",
+                "method": "hdlr_iftaxonomyhaschild"
+            }
+        },
+        "function": {
+            "taxonomychildcount": {
+                "component": "TaxonomyUtils",
+                "method": "hdlr_taxonomychildcount"
+            }
+        }
+    },
+    "callbacks": {
+        "taxonomyutils_pre_listing_taxonomy": {
+            "taxonomy": {
+                "pre_listing": {
+                    "component": "TaxonomyUtils",
+                    "priority": 5,
+                    "method": "pre_listing_taxonomy"
+                }
+            }
+        },
+        "taxonomyutils_post_load_objects_taxonomy": {
+            "taxonomy": {
+                "post_load_objects": {
+                    "component": "TaxonomyUtils",
+                    "priority": 5,
+                    "method": "post_load_objects_taxonomy"
+                }
+            }
+        },
+        "taxonomyutils_mtml_reference": {
+            "mtml_reference" : {
+                "template_source" : {
+                    "component" : "TaxonomyUtils",
+                    "priority"  : 10,
+                    "method" : "template_source_mtml_reference"
+                }
+            }
+        }
+    }
+}

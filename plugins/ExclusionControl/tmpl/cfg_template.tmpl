@@ -1,0 +1,145 @@
+<div class="row form-group">
+  <div class="col-lg-2 mb-3">
+    <mt:trans phrase="Target Models" component="ExclusionControl">
+  </div>
+  <div class="col-lg-10">
+<mt:var name="setting_exclusioncontrol_target_models" split="," setvar="exclusioncontrol_target_models">
+<mt:setvar name="display_type" value="display_space">
+<mt:unless name="workspace_id">
+  <mt:setvar name="display_type" value="display_system">
+</mt:unless>
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      type="checkbox" id="exclusioncontrol_target_model_all" name="exclusioncontrol_target_model_all" value="">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="All"></span>
+    </label>
+    <mt:setvar name="all_chacked" value="1">
+    <mt:tables type="$display_type">
+      <mt:if name="menu_type" ne="3">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed tartget_models"
+          <mt:ifinarray array="exclusioncontrol_target_models" value="$name">checked<mt:else><mt:setvar name="all_chacked" value="0"></mt:ifinarray>
+          type="checkbox" name="exclusioncontrol_target_model" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:trans phrase="$name" language="default" translate></span>
+        </label>
+      </mt:if>
+    </mt:tables>
+  </div>
+</div>
+<input type="hidden" id="setting_exclusioncontrol_target_models" name="setting_exclusioncontrol_target_models" class="form-control" value="<mt:var name="setting_exclusioncontrol_target_models" escape>">
+<script>
+<mt:if name="all_chacked">
+$('#exclusioncontrol_target_model_all').prop('checked', true);
+</mt:if>
+$('#exclusioncontrol_target_model_all').change(function(){
+    if ( $(this).prop('checked') ) {
+        var checked_models = [];
+        $('input[name="exclusioncontrol_target_model"]').each(function() {
+            $(this).prop('checked', true);
+            checked_models.push( $(this).val() );
+        });
+        $('#setting_exclusioncontrol_target_models').val( checked_models.join(',') );
+    } else {
+        $('input[name="exclusioncontrol_target_model"]').each(function() {
+            $(this).prop('checked', false);
+        });
+        $('#setting_exclusioncontrol_target_models').val('');
+    }
+});
+$('.tartget_models').change(function(){
+    var target_models = $('#setting_exclusioncontrol_target_models').val();
+    var this_type = $(this).val();
+    target_models = target_models.split(',');
+    var result = $.inArray( this_type, target_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            target_models.push( this_type );
+            $('#setting_exclusioncontrol_target_models').val(target_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            target_models.splice(result, 1); 
+            $('#setting_exclusioncontrol_target_models').val(target_models.join(','));
+        }
+    }
+    exclusioncontrol_all_checked();
+});
+var exclusioncontrol_all_checked = function(){
+    var all_checked = true;
+    $('input[name="exclusioncontrol_target_model"]').each(function() {
+        if ( $(this).prop('checked') == false ) {
+            all_checked = false;
+            return false;
+        }
+    });
+    if ( all_checked ) {
+        $('#exclusioncontrol_target_model_all').prop('checked', true);
+    } else {
+        $('#exclusioncontrol_target_model_all').prop('checked', false);
+    }
+}
+</script>
+<div class="row">
+  <div class="col-lg-2 mb-3">
+    <mt:trans phrase="Manage Hierarchy">
+  </div>
+  <div class="col-lg-10 mb-3">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed"
+      type="checkbox" id="setting_exclusioncontrol_hierarchy" name="setting_exclusioncontrol_hierarchy" <mt:if name="setting_exclusioncontrol_hierarchy">checked </mt:if>value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Target hierarchy management screen" component="ExclusionControl"></span>
+    </label>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-lg-2 mb-3">
+    <mt:trans phrase="Error Handling" component="ExclusionControl">
+    <mt:var name="field_required">
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+        name="setting_exclusioncontrol_error" value="dashboard"<mt:if name="setting_exclusioncontrol_error" eq="dashboard"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Redirect to Dashboard" component="ExclusionControl"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+        name="setting_exclusioncontrol_error" value="error"<mt:if name="setting_exclusioncontrol_error" eq="error"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Show Error" component="ExclusionControl"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+        name="setting_exclusioncontrol_error" value="warning"<mt:if name="setting_exclusioncontrol_error" eq="warning"> checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Show warning only" component="ExclusionControl"></span>
+    </label>
+    <br>
+    <label class="custom-control custom-checkbox mt-2">
+    <input class="custom-control-input watch-changed"
+      type="checkbox" name="setting_exclusioncontrol_show_username" <mt:if name="setting_exclusioncontrol_show_username">checked</mt:if> value="1">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Show user's nickname in error message" component="ExclusionControl"></span>
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-2">
+    <label for="setting_exclusioncontrol_sess_expires">
+      <mt:trans phrase="Session Expires" component="ExclusionControl">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input style="display:inline !important" type="number" step="10" id="setting_exclusioncontrol_sess_expires" name="setting_exclusioncontrol_sess_expires" class="form-control very-short" value="<mt:var name="setting_exclusioncontrol_sess_expires" escape>">
+    &nbsp; <mt:trans phrase="seconds">
+  </div>
+</div>

@@ -1,0 +1,738 @@
+<mt:unless name="request.insert">
+<mt:if name="request.dialog_view">
+<mt:include file="include/dialog_header.tmpl">
+<mt:else>
+<mt:include file="include/header.tmpl">
+</mt:if>
+<style type="text/css">
+.dd { position: relative; display: block; margin: 0; padding: 0; max-width: 100%; list-style: none; font-size: 14px; line-height: 20px; }
+.dd-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
+.dd-list .dd-list { padding-left: 30px; }
+.dd-collapsed .dd-list { display: none; }
+.dd-item,
+.dd-empty,
+.dd-placeholder { display: block; position: relative; margin: 0; padding-left: 10px; min-height: 20px; font-size: 16px; line-height: 20px; }
+.dd-handle { display: block; height: 40px; margin: 5px 0; padding: 5px 19px; color: #333; text-decoration: none; font-weight: bold; border: 1px solid #ccc;
+    background: #fafafa;
+    background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:    -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+    background:         linear-gradient(top, #fafafa 0%, #eee 100%);
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.dd-handle:hover { color: #333; background: #ddd; }
+.dd-item > button { display: block; position: relative; cursor: move; float: left; width: 25px; height: 20px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 12px; line-height: 1; text-align: center; font-weight: bold; }
+.dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
+.dd-item > button[data-action="collapse"]:before { content: '-'; }
+.dd-placeholder,
+.dd-empty { margin: 5px 0; padding: 0; min-height: 40px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box; }
+.dd-empty { border: 1px dashed #bbb; min-height: 100px; background-color: #e5e5e5;
+    background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                      -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                         -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-image:         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
+                              linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+}
+.dd-dragel { position: absolute; pointer-events: none; z-index: 9999; }
+.dd-dragel > .dd-item .dd-handle { margin-top: 0; }
+.dd-dragel .dd-handle {
+    -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+            box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+}
+.nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; border: 0; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; }
+#nestable-menu { padding: 0; margin: 20px 0; }
+#nestable-output,
+@media only screen and (min-width: 700px) {
+    .dd { float: left; width: 100%; }
+    .dd + .dd { margin-left: 2%; }
+}
+.dd-hover > .dd-handle { background: #2ea8e5 !important; }
+.dd-content { display: block; min-height: 41px; margin: 5px 0; padding: 8px 10px 6px 40px; color: #333; text-decoration: none; border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+            border-radius: 3px;
+    line-height: 1.4rem !important;
+    box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.dd-content:hover { background: #ddd; }
+.dd-dragel > . > .dd-content { margin: 0; }
+. > button { margin-left: 30px; }
+.dd--handle {
+    position: absolute;
+    margin: 0; left: 0; top: 0;
+    cursor: move;
+    width: 30px;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 1px solid #777;
+    background: #777;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.dd--handle:before { content: '≡'; display: block; position: absolute; left: 0; top: 8px; width: 100%; text-align: center; text-indent: 0; color: #fff; font-size: 28px; font-weight: normal; }
+.dd--handle:hover { background: #333; }
+.socialite { display: block; float: left; height: 35px; }
+.editable { margin-left: 0rem !important; margin-top: -2rem; padding-left: 8px; padding-right: 8px; width: <mt:if name="request.dialog_view">150<mt:else>200</mt:if>px !important; }
+.add-btn, .edit-btn, .delete-btn, .save-btn, .cancel-btn { margin-top: -3px; padding:3px 6px; }
+.edit-btn { margin-left: 0.6rem; }
+#item-add-btn { width:100px; padding-left: 0; }
+.btn-success { background-color: #5D9058; border-color: transparent }
+.editable-label { margin-left: -0.3rem !important; }
+<mt:if name="workspace_id">
+  <mt:var name="workspace_show_both" setvar="_show_both">
+  <mt:var name="workspace_link_url" setvar="_link_url">
+  <mt:var name="workspace_site_url" setvar="_site_url">
+<mt:else>
+  <mt:var name="show_both" setvar="_show_both">
+  <mt:var name="link_url" setvar="_link_url">
+  <mt:var name="site_url" setvar="_site_url">
+</mt:if>
+.external-link { position: absolute; right: <mt:if name="_show_both">2.5<mt:else>1</mt:if>rem; }
+.external-link-pub { position: absolute; right: 1rem; }
+.form-control-sm { padding:0 5px; }
+</style>
+<mt:tablehascolumn model="$model" column="basename">
+<mt:setvar name="has_basename" value="1">
+</mt:tablehascolumn>
+<form action="<mt:var name="script_uri">" method="POST" id="edit-form-main">
+<textarea id="nestable-output" name="_nestable_output" class="hidden"></textarea>
+<textarea id="nestable-param" name="_nestable_param" class="hidden"></textarea>
+<input type="hidden" name="__mode" value="save_hierarchy">
+<input type="hidden" name="_model" value="<mt:var name="model">">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" name="hierarchy_changed" value="" id="hierarchy_changed">
+<input type="hidden" name="target" value="<mt:var name="request.target" escape>">
+<input type="hidden" name="dialog_type" value="<mt:var name="request.dialog_type" escape>">
+<mt:setvar name="_parent_id" value="0">
+<mt:modelproperty name="$model" property="primary" setvar="object_primary">
+<mt:trans phrase="$object_primary" language="default" setvar="object_primary">
+<mt:trans phrase="$object_primary" setvar="object_primary">
+<mt:ifusercan action="create" model="$model" workspace_id="$workspace_id">
+<button id="item-add-btn" type="button" class="ml-0 mt-0 mb-3 btn btn-success btn-sm">
+  <i class="fa fa-plus-circle" aria-hidden="true"></i> <mt:trans phrase="Add">
+</button>
+</mt:ifusercan>
+
+<mt:setvartemplate name="nestable_obj_list">
+<mt:nestableobjects model="$model" parent_id="$_parent_id" permalink="1">
+<mt:if name="__first__"><ol class="dd-list"<mt:unless name="_parent_id"> id="parent-ol"</mt:unless>></mt:if>
+  <li class="dd-item" data-id="<mt:var name="id">">
+    <div class="dd-handle dd--handle"><span class="sr-only"><mt:trans phrase="Drag"></span></div>
+    <div class="dd-content">
+      <mt:unless name="request.dialog_view">
+      <mt:ifusercan action="edit" model="$model" id="$id" workspace_id="$workspace_id"><a href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="model">&amp;id=<mt:var name="id"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>"></mt:ifusercan>
+      </mt:unless>
+        <span id="object_label-<mt:var name="id">" class="obj-label">
+        <mt:var name="object_label" escape>
+        </span>
+      <mt:unless name="request.dialog_view"><mt:ifusercan action="edit" model="$model" id="$id" workspace_id="$workspace_id"></a></mt:ifusercan></mt:unless>
+      <mt:if name="has_basename"><span id="object_basename-<mt:var name="id">" class="obj-basename"> ( <mt:var name="basename" escape> ) </span></mt:if>
+        <input placeholder="<mt:var name="object_primary">" id="label-<mt:var name="id">" name="label-<mt:var name="id">" type="text" class="add_param editable-label editable hidden form-control very-short form-control-sm" value="<mt:var name="object_label" escape>">
+      <mt:if name="has_basename">
+        <input placeholder="<mt:trans phrase="Basename">" id="basename-<mt:var name="id">" name="basename-<mt:var name="id">" type="text" class="add_param editable hidden form-control very-short form-control-sm" value="<mt:var name="basename" escape>">
+      </mt:if>
+        <mt:ifusercan action="edit" model="$model" id="$id" workspace_id="$workspace_id">
+        <button id="edit-<mt:var name="id">" type="button" class="edit-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Edit">">
+          <i class="fa fa-pencil-square" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Edit"></span>
+        </button>
+        </mt:ifusercan>
+        <mt:ifusercan action="create" model="$model" workspace_id="$workspace_id">
+        <button id="add-<mt:var name="id">" type="button" class="add-btn btn btn-success btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Add">">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Add"></span>
+        </button>
+        </mt:ifusercan>
+        <button id="save-<mt:var name="id">" type="button" class="hidden save-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Save">">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Save"></span>
+        </button>
+        <button id="cancel-<mt:var name="id">" type="button" class="hidden cancel-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Cancel">">
+          <i class="fa fa-ban" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Cancel"></span>
+        </button>
+        <mt:ifusercan action="delete" model="$model" id="$id" workspace_id="$workspace_id">
+        <button id="delete-<mt:var name="id">" type="button" class="delete-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Delete">">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Delete"></span>
+        </button>
+        </mt:ifusercan>
+        <mt:if name="object_permalink">
+          <mt:if name="_link_url">
+            <mt:var name="object_permalink" replace="'$_site_url','$_link_url'" setvar="__permalink">
+          <mt:else>
+            <mt:var name="object_permalink" setvar="__permalink">
+          </mt:if>
+          <mt:if name="_show_both">
+            <a class="external-link-pub" target="_blank" href="<mt:var name="__permalink">" data-toggle="tooltip" data-placement="bottom" title="<mt:trans phrase="View Published">">
+              <i class="fa fa-globe" aria-hidden="true"></i>
+              <span class="sr-only"><mt:trans phrase="Open in new window"></span>
+            </a>
+          </mt:if>
+          <a class="external-link" target="_blank" href="<mt:if name="_show_both"><mt:var name="object_permalink"><mt:else><mt:var name="__permalink"></mt:if>" data-toggle="tooltip" data-placement="bottom" title="<mt:trans phrase="View">">
+            <i class="fa fa-external-link" aria-hidden="true"></i>
+            <span class="sr-only"><mt:trans phrase="Open in new window"></span>
+          </a>
+        </mt:if>
+    </div>
+<mt:if name="has_children">
+<mt:var name="id" setvar="_parent_id">
+  <mt:var name="nestable_obj_list">
+</mt:if>
+  </li>
+<mt:if name="__last__">
+</ol>
+<mt:setvar name="__hierarchy_out" value="1">
+</mt:if>
+</mt:nestableobjects>
+</mt:setvartemplate>
+<div class="dd" id="nestable">
+<mt:var name="nestable_obj_list">
+<mt:unless name="__hierarchy_out">
+<ol class="dd-list" id="parent-ol">
+</ol>
+</mt:unless>
+</div>
+  <ol class="hidden">
+    <li class="dd-item" data-id="" id="item-template">
+      <div class="dd-handle dd--handle"><span class="sr-only"><mt:trans phrase="Drag"></span></div>
+      <div class="dd-content">
+         <span id="object_label-" class="obj-label"></span>
+         <mt:if name="has_basename"><span id="object_basename-" class="obj-basename"></span></mt:if>
+         <input placeholder="<mt:var name="object_primary">" style="display:inline" id="label-" name="label-" type="text" class="add_param editable-label editable form-control very-short form-control-sm" value="">
+       <mt:if name="has_basename">
+         <input placeholder="<mt:trans phrase="Basename">" style="display:inline" id="basename-" name="basename-" type="text" class="add_param editable form-control very-short form-control-sm" value="">
+       </mt:if>
+        <button id="edit-" type="button" class="hidden edit-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Edit">">
+          <i class="fa fa-pencil-square" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Edit"></span>
+        </button>
+        <mt:ifusercan action="create" model="$model" workspace_id="$workspace_id">
+        <button id="add-" type="button" class="add-btn btn btn-success btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Add">">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Add"></span>
+        </button>
+        </mt:ifusercan>
+        <button id="save-" type="button" class="save-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Save">">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Save"></span>
+        </button>
+        <button id="cancel-" type="button" class="cancel-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Cancel">">
+          <i class="fa fa-ban" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Cancel"></span>
+        </button>
+        <button id="delete-" type="button" class="delete-btn btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Delete">">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Delete"></span>
+        </button>
+      </div>
+    </li>
+  </ol>
+<hr>
+<div class="row form-group edit-action-bar">
+<mt:if name="request.dialog_view">
+  <button id="dialog-cancel-btn" class="<mt:if name="user_stickey_buttons">ml-3 </mt:if>btn btn-secondary mr-1" type="submit"><mt:trans phrase="Cancel"></button>
+  <button type="submit" id="__save" class="ml-2 btn btn-primary ml-0">
+  <mt:trans phrase="Save and Apply">
+  </button>
+<script>
+$('#dialog-cancel-btn').click(function(){
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    window.parent.$('#modal').modal('hide');
+    return false;
+});
+</script>
+<mt:else>
+  <button type="submit" id="__save" class="ml-3 btn btn-primary ml-0" disabled>
+  <mt:trans phrase="Save Changes">
+  </button>
+</mt:if>
+</div>
+</form>
+<script src="assets/js/jquery.nestable.js"></script>
+<script>
+window.addEventListener('load', function(){
+    $('#__save').removeAttr('disabled');
+});
+var editContentChanged  = false;
+var hierarchyChanged    = false;
+var inputContentChanged = false;
+$(document).ready(function() {
+    var updateOutput = function(e) {
+        var list   = e.length ? e : $(e.target),
+            output = list.data('output');
+        if ( window.JSON && output ) {
+            output.val(window.JSON.stringify(list.nestable('serialize')));
+            editContentChanged = true;
+            hierarchyChanged   = true;
+        }
+    };
+    <mt:property name="hierarchy_max_depth" setvar="hierarchy_max_depth" cast_to="int">
+    <mt:unless name="hierarchy_max_depth"><mt:setvar name="hierarchy_max_depth" value="100"></mt:unless>
+    $('#nestable').nestable( { maxDepth: <mt:var name="hierarchy_max_depth"> } )
+    .on('change', updateOutput);
+    updateOutput($('#nestable').data('output', $('#nestable-output')));
+});
+setTimeout(setEditContentChanged, 500);
+function setEditContentChanged () {
+    editContentChanged  = false;
+    hierarchyChanged    = false;
+    inputContentChanged = false;
+}
+var currentLabel = '';
+var currentBasename = '';
+var currentId = null;
+$('.edit-btn').click(function(){
+    inputContentChanged = false;
+    $('.ui-tooltip').hide();
+    $('.edit-btn').show();
+    $('.save-btn').hide();
+    $('.cancel-btn').hide();
+    $('.editable').hide();
+    $('.obj-label').show();
+    $('#label-').show();
+    $('#basename-').show();
+    $('#edit-').show();
+    $('#delete-').show();
+    $('#item-add-btn').attr('disabled', true);
+    $('.add-btn').attr('disabled', true);
+    $('.edit-btn').attr('disabled', true);
+    $('.delete-btn').attr('disabled', true);
+    let objId = $(this).attr('id');
+    objId = objId.replace( /^edit\-/, '' );
+    currentId = objId;
+    currentLabel = $('#label-' + objId ).val();
+    currentBasename = $('#basename-' + objId ).val();
+    $('#label-' + objId ).css('display', 'inline');
+    <mt:if name="has_basename">
+    $('#basename-' + objId ).css('display', 'inline');
+    $('#object_basename-' + objId ).hide();
+    </mt:if>
+    $('#label-' + objId ).show();
+    $('#label-' + objId ).focus();
+    $('#label-' + objId ).select();
+    $('#basename-' + objId ).show();
+    $('#save-' + objId ).show();
+    $('#save-' + objId ).css('display', 'inline');
+    $('#cancel-' + objId ).show();
+    $('#cancel-' + objId ).css('display', 'inline');
+    $('#object_label-' + objId ).hide();
+    $(this).hide();
+    $('#__save').attr('disabled', true);
+});
+$('.save-btn').click(function(){
+    $('.ui-tooltip').hide();
+    let objId = $(this).attr('id');
+    objId = objId.replace( /^save\-/, '' );
+    if (! $('#label-' + objId ).val() ) {
+        alert( '<mt:trans phrase="%s is required." params="$object_primary">' );
+        return true;
+    }
+<mt:if name="label_unique">
+    let this_id = 'label-' + objId;
+    let this_val = $('#label-' + objId ).val();
+    let error = '';
+    $('.editable-label').each(function(){
+        let comp_val = $(this).val();
+        let comp_id = $(this).prop('id');
+        if ( this_id != comp_id && this_val == comp_val ) {
+            error = '<mt:trans phrase="A %1$s with the same %2$s '%3$s' already exists." params="'$label','$object_primary','%%%%'">';
+        }
+    });
+    if ( error ) {
+        error = error.replace( /%%%%/, this_val );
+        alert( error );
+        return true;
+    }
+</mt:if>
+    $('#object_label-' + objId ).html( escape_html( $('#label-' + objId ).val() ) );
+    $('#object_label-' + objId ).show();
+    $('#label-' + objId ).hide();
+    <mt:if name="has_basename">
+    $('#basename-' + objId ).hide();
+    if ( $('#basename-' + objId ).val() ) {
+        $('#object_basename-' + objId ).html( '( ' + escape_html( $('#basename-' + objId ).val() ) + ' )' );
+        $('#object_basename-' + objId ).show();
+    }
+    </mt:if>
+    $('#edit-' + objId ).show();
+    $('#edit-' + objId ).css('display', 'inline');
+    $('#cancel-' + objId ).hide();
+    $(this).hide();
+    $('#__save').attr('disabled', false);
+    $('#item-add-btn').attr('disabled', false);
+    $('.add-btn').attr('disabled', false);
+    $('.edit-btn').attr('disabled', false);
+    $('.delete-btn').attr('disabled', false);
+    editContentChanged = true;
+});
+$('.external-link').click(function(){
+     $('.ui-tooltip').hide();
+});
+$('.cancel-btn').click(function(){
+    $('.ui-tooltip').hide();
+    if ( inputContentChanged ) {
+        if (! confirm( '<mt:trans phrase="Are you sure you want to discard the edited contents of the %s?" params="$label">' ) ) {
+            return;
+        }
+    }
+    let objId = $(this).attr('id');
+    objId = objId.replace( /^cancel\-/, '' );
+    if (! $('#label-' + objId ).val() ) {
+        alert( '<mt:trans phrase="%s is required." params="$object_primary">' );
+        return;
+    }
+    if (! currentLabel ) {
+        alert( '<mt:trans phrase="%s is required." params="$object_primary">' );
+        return;
+    }
+    $('#label-' + objId ).val( currentLabel );
+    $('#basename-' + objId ).val( currentBasename );
+    $('#object_label-' + objId ).show();
+    $('#label-' + objId ).hide();
+    <mt:if name="has_basename">
+    $('#basename-' + objId ).hide();
+    if ( currentBasename ) {
+        $('#object_basename-' + objId ).html( '( ' + currentBasename + ' )' );
+        $('#object_basename-' + objId ).show();
+    }
+    </mt:if>
+    $('#edit-' + objId ).show();
+    $('#save-' + objId ).hide();
+    $(this).hide();
+    $('#__save').attr('disabled', false);
+    $('#item-add-btn').attr('disabled', false);
+    $('.add-btn').attr('disabled', false);
+    $('.edit-btn').attr('disabled', false);
+    $('.delete-btn').attr('disabled', false);
+});
+var newItemId = 0;
+$('.add-btn').click(function(){
+    $('.ui-tooltip').hide();
+    $('.edit-btn').show();
+    $('.save-btn').hide();
+    $('.cancel-btn').hide();
+    $('.editable').hide();
+    $('.obj-label').show();
+    $('#label-').show();
+    $('#basename-').show();
+    $('#edit-').hide();
+    $('#save-').show();
+    // $('#cancel-').show();
+    $(this).attr('disabled', true);
+    $('#item-add-btn').attr('disabled', true);
+    $('.add-btn').attr('disabled', true);
+    $('.edit-btn').attr('disabled', true);
+    $('.delete-btn').attr('disabled', true);
+    let cloneObj = $('#item-template').clone( true );
+    newItemId--;
+    currentId = newItemId;
+    cloneObj.removeAttr('id');
+    cloneObj.attr('data-id', newItemId );
+    cloneObj.find('#object_label-').prop('id', 'object_label-' + newItemId );
+    <mt:if name="has_basename">
+    cloneObj.find('#object_basename-').prop('id', 'object_basename-' + newItemId );
+    </mt:if>
+    cloneObj.find('#label-').prop('name', 'label-' + newItemId );
+    cloneObj.find('#label-').prop('id', 'label-' + newItemId );
+    <mt:if name="has_basename">
+    cloneObj.find('#basename-').prop('name', 'basename-' + newItemId );
+    cloneObj.find('#basename-').prop('id', 'basename-' + newItemId );
+    </mt:if>
+    cloneObj.find('#edit-').prop('id', 'edit-' + newItemId );
+    cloneObj.find('#save-').prop('id', 'save-' + newItemId );
+    cloneObj.find('#cancel-').prop('id', 'cancel-' + newItemId );
+    cloneObj.find('#delete-').prop('id', 'delete-' + newItemId );
+    currentLabel = '';
+    currentBasename = '';
+    let parentNode = $(this).parent().parent();
+    let childList = parentNode.children( 'ol' );
+    if (! childList.length ) {
+        let childList = $('<ol>');
+        childList.addClass( 'dd-list' );
+        childList.append( cloneObj );
+        parentNode.append( childList );
+    } else {
+        childList.append( cloneObj );
+    }
+    $('#label-' + newItemId ).focus();
+    $('#delete-' + newItemId ).attr('disabled', false);
+    let addOutput = function(e) {
+        let list   = e.length ? e : $(e.target),
+            output = list.data('output');
+        if ( window.JSON && output ) {
+            output.val(window.JSON.stringify(list.nestable('serialize')));
+            editContentChanged = true;
+        }
+    };
+    addOutput($('#nestable').data('output', $('#nestable-output')));
+    $('#__save').attr('disabled', true);
+});
+$('.editable').change(function(){
+    inputContentChanged = true;
+});
+$('#item-add-btn').click(function(){
+    $('.edit-btn').show();
+    $('.save-btn').hide();
+    $('.cancel-btn').hide();
+    $('.editable').hide();
+    $('.obj-label').show();
+    $('#label-').show();
+    $('#basename-').show();
+    $('#edit-').hide();
+    $('#save-').show();
+    // $('#cancel-').show();
+    $(this).attr('disabled', true);
+    $('.add-btn').attr('disabled', true);
+    $('.edit-btn').attr('disabled', true);
+    $('.delete-btn').attr('disabled', true);
+    let cloneObj = $('#item-template').clone( true );
+    newItemId--;
+    currentId = newItemId;
+    cloneObj.removeAttr('id');
+    cloneObj.attr('data-id', newItemId );
+    cloneObj.find('#object_label-').prop('id', 'object_label-' + newItemId );
+    cloneObj.find('#label-').prop('name', 'label-' + newItemId );
+    cloneObj.find('#label-').prop('id', 'label-' + newItemId );
+    <mt:if name="has_basename">
+    cloneObj.find('#basename-').prop('name', 'basename-' + newItemId );
+    cloneObj.find('#basename-').prop('id', 'basename-' + newItemId );
+    cloneObj.find('#object_basename-').prop('id', 'object_basename-' + newItemId );
+    </mt:if>
+    cloneObj.find('#edit-').prop('id', 'edit-' + newItemId );
+    cloneObj.find('#save-').prop('id', 'save-' + newItemId );
+    cloneObj.find('#cancel-').prop('id', 'cancel-' + newItemId );
+    cloneObj.find('#delete-').prop('id', 'delete-' + newItemId );
+    currentLabel = '';
+    currentBasename = '';
+    $('#parent-ol').append( cloneObj );
+    $('#label-' + newItemId ).focus();
+    $('#delete-' + newItemId ).attr('disabled', false);
+    let addOutput = function(e) {
+        let list   = e.length ? e : $(e.target),
+            output = list.data('output');
+        if ( window.JSON && output ) {
+            output.val(window.JSON.stringify(list.nestable('serialize')));
+            editContentChanged = true;
+        }
+    };
+    addOutput($('#nestable').data('output', $('#nestable-output')));
+    $('#__save').attr('disabled', true);
+});
+$('.delete-btn').click(function(){
+    if (! confirm( '<mt:trans phrase="Are you sure you want to remove %s?" params="$label">' ) ) {
+        return;
+    }
+    $('.ui-tooltip').hide();
+    let objId = $(this).attr('id');
+    objId = objId.replace( /^delete\-/, '' );
+    let parentNode = $(this).parent().parent();
+    let wrapperNode = $(this).parent().parent().parent();
+    if ( parentNode.children( 'ol' ).length ) {
+        let children = parentNode.children( 'ol' );
+        children.each(function(){
+            let grandchild = $(this).children();
+            wrapperNode.append( grandchild );
+        });
+        parentNode.remove();
+    } else {
+        parentNode.remove();
+    }
+    let removeOutput = function(e) {
+        let list   = e.length ? e : $(e.target),
+            output = list.data('output');
+        if ( window.JSON ) {
+            output.val(window.JSON.stringify(list.nestable('serialize')));
+            editContentChanged = true;
+        }
+    };
+    removeOutput($('#nestable').data('output', $('#nestable-output')));
+    if ( objId < 0 ) {
+        $('#item-add-btn').attr('disabled', false);
+        $('.add-btn').attr('disabled', false);
+        $('.edit-btn').attr('disabled', false);
+        $('.delete-btn').attr('disabled', false);
+    }
+    if ( currentId == objId ) {
+        $('#__save').attr('disabled', false);
+        currentId = null;
+    }
+    editContentChanged = true;
+});
+<mt:unless name="request.dialog_view">
+$(function(){
+    $(window).on('beforeunload', function() {
+        if (! editContentChanged ) {
+            $(window).off('beforeunload');
+            return;
+        }
+        return '<mt:trans phrase="Are you sure you want to move from this page? The changes you made are not reflected.">';
+    });
+});
+</mt:unless>
+$('#__save').click(function(){
+    if ( hierarchyChanged ) {
+        $('#hierarchy_changed').val(1);
+    }
+    let input_data = {};
+    $('.add_param').each(function(){
+        let name = $(this).attr('name');
+        let value = $(this).val();
+        $(this).prop('disabled',true);
+        input_data[name] = value;
+    });
+    $('#nestable-param').val(JSON.stringify( input_data ));
+    $(this).attr('disabled', true);
+    $(window).off('beforeunload');
+    $('#edit-form-main').submit();
+    return false;
+});
+</script>
+<mt:if name="request.dialog_view">
+<mt:include file="include/dialog_footer.tmpl">
+<mt:else>
+<mt:include file="include/footer.tmpl">
+</mt:if>
+
+<mt:else>
+
+<mt:include file="include/dialog_header.tmpl">
+<mt:if name="request.dialog_type" eq="relation">
+<mt:unless name="insert_html">
+  <mt:setvarblock name="insert_html">
+  <mt:setvar name="rel_col" value="$primary_col">
+  <mt:var name="request.target" escape setvar="__col_name__">
+  <mt:setvartemplate name="nestable_obj_list">
+  <mt:nestableobjects model="$model" parent_id="$_parent_id">
+    <mt:if name="__first__"><ul class="nestableobjects-list"></mt:if>
+      <li>
+        <button style="padding:0px 5px" id="<mt:var name="__col_name__">_id_<mt:var name="id">" type="button" class="<mt:var name="__col_name__">_primary_chooser btn btn-sm btn-outline-secondary">
+          <i class="fa <mt:if name="id" eq="$relation_primary_id">fa fa-star<mt:else>fa-check</mt:if>" style="margin-right:3px;color:#777;font-size:70%" aria-hidden="true"></i>
+          <span class="sr-only"><mt:trans phrase="Unspecified"></span>
+        </button>
+        &nbsp;
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox"
+            id="<mt:var name="__col_name__">_cb_<mt:var name="id">"
+            class="custom-control-input watch-changed" name="<mt:var name="__col_name__">[]" value="<mt:var name="id">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if>
+          </span>
+        </label>
+        <mt:if name="has_children">
+          <mt:var name="id" setvar="_parent_id">
+          <mt:var name="nestable_obj_list">
+        </mt:if>
+      </li>
+    <mt:if name="__last__"></ul></mt:if>
+  </mt:nestableobjects>
+  </mt:setvartemplate>
+  <mt:setvar name="_parent_id" value="0">
+  <mt:var name="nestable_obj_list">
+  </mt:setvarblock>
+</mt:unless>
+<script>
+    var parent_list = window.parent.$('#nestableobjects-list-<mt:var name="__col_name__">');
+    var parent_primary = window.parent.$('#<mt:var name="__col_name__">_primary_id').val();
+    var selected_items = [];
+    parent_list.find('input').each(function(index, element){
+        if ( element.getAttribute('checked') !== null ) {
+            selected_items.push( element.getAttribute('id') );
+        }
+    });
+    var insert_html = "<mt:var name="insert_html" eval="1" escape="js">";
+    window.parent.$('#nestable_list-<mt:var name="__col_name__">').html( insert_html );
+    var parent_primary_btn = window.parent.$('#<mt:var name="__col_name__">_id_' + parent_primary );
+    if ( parent_primary_btn.length ) {
+        parent_primary_btn.css('color', '#00a');
+        let primary_icon = parent_primary_btn.children('i');
+        primary_icon.removeClass( 'fa-check' );
+        primary_icon.addClass( 'fa-star' );
+        primary_icon.css('color', '#00a');
+        primary_icon.css('font-size', '100%');
+        primary_icon.css('margin-right', '0px');
+        let primary_span = parent_primary_btn.children('span');
+        primary_span.css('color', '#000');
+        primary_span.html('<mt:trans phrase="Specified">');
+    }
+    var i = 0;
+    $.each(selected_items, function() {
+        let selected_cb = window.parent.$('#' + this );
+        if ( selected_cb.length ) {
+            if ( i == 0 && ! parent_primary_btn.length ) {
+                let item_id = this.replace( /^<mt:var name="__col_name__">_cb_/, '' );
+                parent_primary_btn = window.parent.$('#<mt:var name="__col_name__">_id_' + item_id );
+                if ( parent_primary_btn.length ) {
+                    parent_primary_btn.css('color', '#00a');
+                    let primary_icon = parent_primary_btn.children('i');
+                    primary_icon.removeClass( 'fa-check' );
+                    primary_icon.addClass( 'fa-star' );
+                    primary_icon.css('color', '#00a');
+                    primary_icon.css('font-size', '100%');
+                    primary_icon.css('margin-right', '0px');
+                    let primary_span = parent_primary_btn.children('span');
+                    primary_span.css('color', '#000');
+                    primary_span.html('<mt:trans phrase="Specified">');
+                    window.parent.$('#<mt:var name="__col_name__">_primary_id').val( item_id );
+                }
+            }
+            selected_cb.attr( 'checked', 'checked' );
+            i++;
+        }
+    });
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>
+<mt:else>
+<mt:unless name="insert_html">
+  <mt:setvarblock name="insert_html">
+  <mt:setvar name="rel_col" value="$primary_col">
+  <mt:var name="request.target" escape setvar="__col_name__">
+  <mt:setvartemplate name="nestable_obj_list">
+  <mt:nestableobjects model="$model" parent_id="$_parent_id">
+    <mt:if name="__first__"><ul>
+      <mt:unless name="_parent_id">
+      <li class="nestable-unspecified">
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input" type="radio" name="<mt:var name="__col_name__">" value="">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Unspecified"></span>
+      </label>
+      </li>
+      </mt:unless>
+    </mt:if>
+      <li <mt:unless name="__index__">class="nestable-first"</mt:unless>>
+        <label class="custom-control custom-radio">
+          <input class="custom-control-input watch-changed" type="radio" name="<mt:var name="__col_name__">" value="<mt:var name="id">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:if name="$rel_col" eq="">null(id:<mt:var name="id">)<mt:else><mt:if name="translate"><mt:var name="$rel_col" translate escape><mt:else><mt:var name="$rel_col" escape></mt:if></mt:if></span>
+        </label>
+        <mt:if name="has_children">
+          <mt:var name="id" setvar="_parent_id">
+          <mt:var name="nestable_obj_list">
+        </mt:if>
+      </li>
+    <mt:if name="__last__"></ul></mt:if>
+  </mt:nestableobjects>
+  </mt:setvartemplate>
+  <mt:setvar name="_parent_id" value="0">
+  <mt:var name="nestable_obj_list">
+  </mt:setvarblock>
+</mt:unless>
+<script>
+    var selected_id = window.parent.$('input:radio[name="<mt:var name="__col_name__">"]:checked').val();
+    var insert_html = "<mt:var name="insert_html" eval="1" escape="js">";
+    window.parent.$('#nestable_list-<mt:var name="__col_name__">').html( insert_html );
+    if ( selected_id ) {
+        window.parent.$('input:radio[name="<mt:var name="__col_name__">"]').val([ selected_id ]);
+    }
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>
+</mt:if>
+</mt:unless>

@@ -1,0 +1,134 @@
+<mt:setvar name="page_title" value="">
+<mt:trans phrase="Login" setvar="html_title">
+<mt:setvarblock name="recover_link">
+<a href="<mt:var name="script_uri" relative>?__mode=start_recover"><mt:trans phrase="Password Reset"></a>
+</mt:setvarblock>
+<mt:setvarblock name="html_head" append="1">
+<style>
+body { background-color: #efefef; }
+h1 { display: none; }
+.card-img-top { max-width: 15rem; }
+.card { margin:auto; width:60%; max-width: 640px; margin-top: 5rem; border-color: #ccc; border-radius: 10px; }
+.card-image-wrapper { border-radius: 10px 10px 0 0; }
+@media ( max-width: 991px ) {
+  .card-img-top { width: 37% !important; }
+  .card { width:70% !important; }
+}
+@media ( max-width: 769px ) {
+  .card-img-top { width: 40% !important; }
+  .card { width:88% !important; }
+}
+@media ( max-width: 576px ) {
+  .card { width:95% !important; }
+  .card-inner { padding: 1.5rem !important; }
+}
+@media ( max-height: 650px ) {
+  .card { margin-top: 1.5rem }
+}
+@media ( max-height: 500px ) {
+  .card { margin-top: -0.5rem }
+}
+.btn {
+  margin-left: 0;
+}
+.footer-btns {
+  margin-left: 0px;
+}
+</style>
+</mt:setvarblock>
+<mt:if name="request._lockout">
+  <mt:if name="request._type" eq="ip">
+    <mt:trans phrase="This IP address was locked out because you failed to log in continuously." setvar="lockout_error">
+  <mt:elseif name="request._type" eq="user">
+    <mt:trans phrase="This User was locked out because you failed to log in continuously." setvar="lockout_error">
+    <mt:setvar name="lockout_error" value="$recover_link" append="1">
+  </mt:if>
+</mt:if>
+<mt:if name="request.__mode" eq="logout">
+<mt:if name="request._type" eq="admin_ip">
+<mt:trans phrase="Administrator login from this IP address is not allowed." setvar="lockout_error">
+<mt:elseif name="request._type" eq="not_allowed_ip">
+<mt:trans phrase="Login from this IP address is not allowed." setvar="lockout_error">
+</mt:if>
+</mt:if>
+<mt:include file="include/dialog_header.tmpl">
+<div class="card">
+<div class="card-image-wrapper"><img class="card-img-top img-fluid" src="assets/brand/PowerCMSX.svg" alt="PowerCMS X"></div>
+<div class="col-md-12 form-group pt-5 pl-5 pr-5 card-inner">
+<mt:if name="lockout_error">
+  <div id="header-error-message" class="alert alert-danger" role="alert" tabindex="0">
+    <mt:var name="lockout_error">
+  </div>
+  <script>
+    $('#header-error-message').focus();
+  </script>
+<mt:elseif name="error">
+  <div id="header-error-message" class="alert alert-danger" role="alert" tabindex="0">
+    <mt:var name="error">
+  </div>
+  <script>
+    $('#header-error-message').focus();
+  </script>
+<mt:elseif name="request.recovered">
+  <div id="dialog-header-message" class="alert alert-success" role="alert" tabindex="0">
+    <mt:trans phrase="You have reset your password.">
+  </div>
+  <script>
+    $('#dialog-header-message').focus();
+  </script>
+<mt:elseif name="request.__mode" eq="logout">
+  <div id="dialog-header-message" class="alert alert-success" role="alert" tabindex="0">
+    <mt:trans phrase="Your %s session has ended. If you wish to login again, you can do so below." params="$appname">
+  </div>
+  <script>
+    $('#dialog-header-message').focus();
+  </script>
+</mt:if>
+<mt:property name="disallow_pwd_login" setvar="disallow_pwd_login">
+<mt:unless name="disallow_pwd_login">
+<form action="<mt:var name="script_uri" relative>" method="POST" id="login-form">
+  <input type="hidden" name="__mode" value="login">
+  <input type="hidden" name="return_url" value="<mt:var name="return_url" escape>">
+<mt:if name="request.__mode" ne="logout">
+  <input type="hidden" name="return_args" value="<mt:var name="query_string" escape>">
+</mt:if>
+<div class="form-group">
+  <label for="name"><mt:trans phrase="Username"> :</label>
+  <input id="name" type="text" class="form-control" name="name" value="<mt:var name="name">">
+</div>
+
+<div class="form-group">
+  <label for="password"><mt:trans phrase="Password"> :</label>
+  <input id="password" autocomplete="off" type="password" class="form-control" name="password" value="<mt:var name="password" escape>">
+</div>
+
+<div class="form-group mb-0">
+  <label class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" name="remember" value="1">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description"><mt:trans phrase="Remember me?"></span>
+  </label>
+</div>
+<div class="form-group mt-1">
+<a href="<mt:var name="script_uri" relative>?__mode=start_recover">
+<mt:trans phrase="Forgot your password?">
+</a>
+</div>
+<div class="row form-group footer-btns">
+  <button type="submit" id="__login" class="btn btn-primary"><mt:trans phrase="Login"></button>
+  <mt:var name="add_login_action_bar">
+</div>
+</form>
+<mt:else>
+  <mt:var name="alternative_login_screen">
+</mt:unless>
+</div>
+</div>
+<script>
+$('#__login').click(function(){
+    $(this).attr('disabled', true);
+    $('#login-form').submit();
+    return false;
+});
+</script>
+<mt:include file="include/dialog_footer.tmpl">

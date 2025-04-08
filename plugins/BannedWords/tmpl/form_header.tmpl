@@ -1,0 +1,162 @@
+<mt:if name="request._duplicate">
+<div class="alert alert-info" id="header-alert" role="alert" tabindex="0">
+  <button onclick="$('#header-alert').hide();" type="button" id="header-alert-close" class="close" aria-label="<mt:trans phrase="Close">">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <mt:trans phrase="Duplication has been canceled. Please save and try again." component="BannedWords">
+</div>
+</mt:if>
+<mt:if name="banned_words_hilight_ids">
+<mt:property name="error_bordercolor" setvar="error_bordercolor">
+<mt:unless name="error_bordercolor"><mt:setvar name="error_bordercolor" value="#B72C23"></mt:unless>
+<mt:loop name="banned_words_hilight_ids"><mt:if name="__first__"><style></mt:if><mt:var name="__value__"> { border: 2px solid #B72C23 !important; }
+<mt:if name="__last__"></style></mt:if>
+</mt:loop>
+</mt:if>
+<mt:loop name="banned_words_replace_map">
+<mt:if name="__first__">
+<table class="table mb-4">
+<thead class="dark-block">
+<tr>
+<th class="text-center"><mt:trans phrase="Actions for suggestions for proofreading" component="BannedWords"></th>
+</thead>
+</tr>
+<mt:if name="banned_words_prohibited_count" gt="1">
+<tr>
+  <td style="padding-top:9px !important;padding-bottom:0px !important">
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input watch-changed" id="banned_words_replace_all" name="banned_words_replace_all" value="">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">
+      <mt:trans phrase="Select all">
+    </span>
+  </label>
+  </td>
+</tr>
+</mt:if>
+</mt:if>
+  <mt:var name="__value__" setvar="column_replace_vars">
+  <mt:loop name="column_replace_vars">
+  <tr>
+  <td style="padding-top:9px !important;padding-bottom:0px !important">
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox" <mt:unless name="banned_words_replace_replace">disabled </mt:unless> class="custom-control-input watch-changed" name="banned_words_replace_columns[]" value="<mt:var name="__key__">,<mt:var name="banned_words_replace_rule" escape>,<mt:var name="banned_words_replace_replace" escape>">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">
+      <mt:var name="__value__" setvar="banned_words_replace_props">
+      <mt:if name="banned_words_invalid_kanji_char">
+        <mt:trans phrase="Other than Jōyōkanji" component="BannedWords" setvar="kanji_error">
+        <mt:if name="banned_words_invalid_kanji_char" eq="7">
+          <mt:trans phrase="Junior high schooler student level" component="BannedWords" setvar="kanji_error">
+        <mt:elseif name="banned_words_invalid_kanji_char" eq="6">
+          <mt:trans phrase="6th grade elementary school student level" component="BannedWords" setvar="kanji_error">
+        <mt:elseif name="banned_words_invalid_kanji_char" eq="5">
+          <mt:trans phrase="5th grade elementary school student level" component="BannedWords" setvar="kanji_error">
+        <mt:elseif name="banned_words_invalid_kanji_char" eq="4">
+          <mt:trans phrase="4th grade elementary school student level" component="BannedWords" setvar="kanji_error">
+        <mt:elseif name="banned_words_invalid_kanji_char" eq="3">
+          <mt:trans phrase="3rd grade elementary school student level" component="BannedWords" setvar="kanji_error">
+        <mt:elseif name="banned_words_invalid_kanji_char" eq="2">
+          <mt:trans phrase="2nd grade elementary school student level" component="BannedWords" setvar="kanji_error">
+        <mt:elseif name="banned_words_invalid_kanji_char" eq="1">
+          <mt:trans phrase="1st grade elementary school student level" component="BannedWords" setvar="kanji_error">
+        </mt:if>
+        <mt:setvarblock name="banned_words_replace_rule_add"><mt:var name="banned_words_replace_rule"> (<mt:var name="kanji_error">)</mt:setvarblock>
+        <mt:unless name="banned_words_replace_replace">
+          <mt:trans phrase="Found '%1$s' in the %2$s, but could not determine which character to replace." component="BannedWords" params="'$banned_words_replace_rule_add','$banned_words_replace_field_name'" escape>
+        <mt:else>
+          <mt:trans phrase="Replace '%1$s' in the %2$s with '%3$s'" component="BannedWords" params="'$banned_words_replace_rule_add','$banned_words_replace_field_name','$banned_words_replace_replace'" escape>
+        </mt:unless>
+      <mt:elseif name="banned_words_variante_char">
+        <mt:setvarblock name="banned_words_replace_rule_add"><mt:var name="banned_words_replace_rule"> (<mt:trans phrase="Variant Characters" component="BannedWords">)</mt:setvarblock>
+        <mt:trans phrase="Replace '%1$s' in the %2$s with '%3$s'" component="BannedWords" params="'$banned_words_replace_rule_add','$banned_words_replace_field_name','$banned_words_replace_replace'" escape>
+      <mt:else>
+        <mt:if name="banned_words_word_part">
+          <mt:setvarblock name="banned_words_replace_rule_add"><mt:var name="banned_words_replace_rule"> (<mt:trans phrase="$banned_words_word_part" component="BannedWords">)</mt:setvarblock>
+          <mt:unless name="banned_words_replace_replace">
+            <mt:trans phrase="Found '%1$s' in the %2$s, but could not determine which character to replace." component="BannedWords" params="'$banned_words_replace_rule_add','$banned_words_replace_field_name'" escape>
+          <mt:else>
+            <mt:trans phrase="Replace '%1$s' in the %2$s with '%3$s'" component="BannedWords" params="'$banned_words_replace_rule_add','$banned_words_replace_field_name','$banned_words_replace_replace'" escape>
+          </mt:unless>
+        <mt:else>
+          <mt:unless name="banned_words_replace_replace">
+            <mt:trans phrase="Found '%1$s' in the %2$s, but could not determine which character to replace." component="BannedWords" params="'$banned_words_replace_rule','$banned_words_replace_field_name'" escape>
+          <mt:else>
+            <mt:trans phrase="Replace '%1$s' in the %2$s with '%3$s'" component="BannedWords" params="'$banned_words_replace_rule','$banned_words_replace_field_name','$banned_words_replace_replace'" escape>
+          </mt:unless>
+        </mt:if>
+      </mt:if>
+    </span>
+  </label>
+  </td>
+  </tr>
+  </mt:loop>
+<mt:if name="__last__">
+<mt:unless name="banned_words_force">
+<tr>
+  <td style="padding-top:9px !important;padding-bottom:0px !important">
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input watch-changed" id="banned_words_ignore_uncheck" name="banned_words_ignore_uncheck" value="1">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">
+      <mt:trans phrase="Ignore the unchecked ones and save the object" component="BannedWords">
+    </span>
+  </label>
+  </td>
+</tr>
+</mt:unless>
+<tr>
+  <td style="padding-top:9px !important;padding-bottom:0px !important;padding-left:0px !important;padding-right:7px !important">
+  <mt:if name="request._apply_to_master">
+    <button type="button" id="apply_banned_words" disabled class="apply_banned_words disabled btn btn-secondary full __apply_to_master"><mt:trans phrase="Apply to Master"></button>
+  <mt:elseif name="request._save_as_revision">
+    <button type="button" id="apply_banned_words" disabled class="apply_banned_words disabled btn btn-secondary full __save_as_revision"><mt:trans phrase="Save as Revision"></button>
+  <mt:elseif name="request._change_to_master">
+    <button type="button" id="apply_banned_words" disabled class="apply_banned_words disabled btn btn-secondary full __change_to_master"><mt:trans phrase="Change to Master"></button>
+  <mt:elseif name="request.__save_and_publish">
+    <button type="button" id="apply_banned_words" disabled class="apply_banned_words disabled btn btn-secondary full __save_and_publish"><mt:trans phrase="Save &amp; Publish"></button>
+  <mt:else>
+    <button type="button" id="apply_banned_words" disabled class="apply_banned_words disabled btn btn-primary full"><mt:trans phrase="Apply"></button>
+  </mt:if>
+  </td>
+</tr>
+</table>
+<script>
+$('#banned_words_replace_all').change(function(){
+    var is_checked = $(this).prop('checked');
+    $("input[name='banned_words_replace_columns[]']").each(function(){
+        if ( is_checked ) {
+            $(this).prop('checked', true);
+            $('#banned_words_ignore_uncheck').prop('checked', true);
+        } else {
+            $(this).prop('checked', false);
+            $('#banned_words_ignore_uncheck').prop('checked', false);
+        }
+    });
+    __banned_words_button();
+});
+</script>
+</mt:if>
+</mt:loop>
+<mt:unless name="banned_words_replace_map">
+<table class="table mb-4">
+<mt:unless name="banned_words_force">
+<tr>
+  <td style="padding-top:9px !important;padding-bottom:0px !important">
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input watch-changed" id="banned_words_ignore_uncheck" name="banned_words_ignore_uncheck" value="1">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">
+      <mt:trans phrase="Ignore suggestions for proofreading and save the object" component="BannedWords">
+    </span>
+  </label>
+  </td>
+</tr>
+</mt:unless>
+<tr>
+  <td style="padding-top:9px !important;padding-bottom:0px !important;padding-left:0px !important;padding-right:7px !important">
+  <button type="button" id="save_ignore_banned_words" class="disabled apply_banned_words btn btn-primary full"><mt:trans phrase="Save"></button>
+  </td>
+</tr>
+</table>
+</mt:unless>

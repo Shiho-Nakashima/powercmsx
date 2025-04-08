@@ -1,0 +1,6 @@
+{
+    "modifier_abs2relconvert" : {
+        "description" : "Convert the URL to a relative path.",
+        "attribute" : "'relative_path' (convert to relative path), 'root_relative_path' (convert to root relative path), default refers to plugin settings"
+    }
+}

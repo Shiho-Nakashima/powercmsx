@@ -1,0 +1,336 @@
+<mt:setvarblock name="exclude_models">contact,emailsubscriber</mt:setvarblock>
+<mt:var name="exclude_models" split="," setvar="_exclude_models">
+<div class="row form-group">
+  <div class="col-lg-2 mb-2">
+    <b><mt:trans phrase="Auto Tagging" component="Keywords"></b>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_keywords_auto_tags" escape split="," setvar="keywords_auto_tags">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+    <mt:if name="request.workspace_id">
+      <mt:tables taggable="1" display_space="1">
+        <mt:ifinarray array="_exclude_models" value="$name">
+        <mt:else>
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed keywords_auto_tags"
+            <mt:ifinarray array="keywords_auto_tags" value="$name">checked</mt:ifinarray>
+            type="checkbox" name="keywords_auto_tags" value="<mt:var name="name">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:var name="label" translate></span>
+          </label>
+        </mt:ifinarray>
+      </mt:tables>
+    <mt:else>
+      <mt:tables taggable="1" display_system="1">
+        <mt:ifinarray array="_exclude_models" value="$name">
+        <mt:else>
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed keywords_auto_tags"
+            <mt:ifinarray array="keywords_auto_tags" value="$name">checked</mt:ifinarray>
+            type="checkbox" name="keywords_auto_tags" value="<mt:var name="name">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:var name="label" translate></span>
+          </label>
+        </mt:ifinarray>
+      </mt:tables>
+    </mt:if>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="Keywords"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_keywords_auto_tags" name="setting_keywords_auto_tags" value="<mt:var name="setting_keywords_auto_tags" escape>">
+<script>
+$('.keywords_auto_tags').change(function(){
+    var all_models = $('#setting_keywords_auto_tags').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_keywords_auto_tags').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_keywords_auto_tags').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2 mb-2">
+    <b><mt:trans phrase="Auto Taxonomies" component="Keywords"></b>
+  </div>
+  <div class="col-lg-10">
+    <mt:var name="setting_keywords_auto_taxonomies" escape split="," setvar="keywords_auto_taxonomies">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+    <mt:if name="request.workspace_id">
+      <mt:tables taxonomy="1" display_space="1">
+        <mt:ifinarray array="_exclude_models" value="$name">
+        <mt:else>
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed keywords_auto_taxonomies"
+            <mt:ifinarray array="keywords_auto_taxonomies" value="$name">checked</mt:ifinarray>
+            type="checkbox" name="keywords_auto_taxonomies" value="<mt:var name="name">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:var name="label" translate></span>
+          </label>
+        </mt:ifinarray>
+      </mt:tables>
+    <mt:else>
+      <mt:tables taxonomy="1" display_system="1">
+        <mt:ifinarray array="_exclude_models" value="$name">
+        <mt:else>
+          <mt:setvar name="count_target" value="1">
+          <label class="custom-control custom-checkbox">
+          <input class="custom-control-input watch-changed keywords_auto_taxonomies"
+            <mt:ifinarray array="keywords_auto_taxonomies" value="$name">checked</mt:ifinarray>
+            type="checkbox" name="keywords_auto_taxonomies" value="<mt:var name="name">">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"> 
+            <mt:var name="label" translate></span>
+          </label>
+        </mt:ifinarray>
+      </mt:tables>
+    </mt:if>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="Keywords"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_keywords_auto_taxonomies" name="setting_keywords_auto_taxonomies" value="<mt:var name="setting_keywords_auto_taxonomies" escape>">
+<script>
+$('.keywords_auto_taxonomies').change(function(){
+    var all_models = $('#setting_keywords_auto_taxonomies').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_keywords_auto_taxonomies').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_keywords_auto_taxonomies').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2 mb-2">
+    <b><mt:trans phrase="Auto Keywords" component="Keywords"></b>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_keywords_auto_keywords" escape split="," setvar="keywords_auto_keywords">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+    <mt:if name="request.workspace_id">
+      <mt:tables has_column="keywords" display_space="1">
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed keywords_auto_keywords"
+          <mt:ifinarray array="keywords_auto_keywords" value="$name">checked</mt:ifinarray>
+          type="checkbox" name="keywords_auto_keywords" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="label" translate></span>
+        </label>
+      </mt:tables>
+    <mt:else>
+      <mt:tables has_column="keywords" display_system="1">
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed keywords_auto_keywords"
+          <mt:ifinarray array="keywords_auto_keywords" value="$name">checked</mt:ifinarray>
+          type="checkbox" name="keywords_auto_keywords" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="label" translate></span>
+        </label>
+      </mt:tables>
+    </mt:if>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="Keywords"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_keywords_auto_keywords" name="setting_keywords_auto_keywords" value="<mt:var name="setting_keywords_auto_keywords" escape>">
+<script>
+$('.keywords_auto_keywords').change(function(){
+    var all_models = $('#setting_keywords_auto_keywords').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_keywords_auto_keywords').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_keywords_auto_keywords').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2 mb-2">
+    <b><mt:trans phrase="Model used for auto set" component="Keywords"></b>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_keywords_auto_tag_model" value="keyword" <mt:if name="setting_keywords_auto_tag_model" eq="keyword">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Keyword"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_keywords_auto_tag_model" value="tag" <mt:if name="setting_keywords_auto_tag_model" eq="tag">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Tag"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_keywords_auto_tag_model" value="taxonomy" <mt:if name="setting_keywords_auto_tag_model" eq="taxonomy">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Taxonomy"></span>
+    </label>
+  </div>
+</div>
+
+<mt:if name="class_simplified_japanese">
+<div class="row form-group mb-0">
+  <div class="col-lg-2 mb-2">
+    <b><mt:trans phrase="Auto Excerpt" component="Keywords"></b>
+  </div>
+  <mt:setvar name="count_target" value="0">
+  <div class="col-lg-10">
+    <mt:var name="setting_keywords_auto_excerpt" escape split="," setvar="keywords_auto_excerpt">
+    <mt:setvar name="menu_type" value="display_system">
+    <mt:if name="workspace_id">
+      <mt:setvar name="menu_type" value="display_space">
+    </mt:if>
+    <mt:if name="request.workspace_id">
+      <mt:tables has_column="excerpt" display_space="1">
+      <mt:tablehascolumn model="$name" column="text">
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed keywords_auto_excerpt"
+          <mt:ifinarray array="keywords_auto_excerpt" value="$name">checked</mt:ifinarray>
+          type="checkbox" name="keywords_auto_excerpt" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="label" translate></span>
+        </label>
+      </mt:tablehascolumn>
+      </mt:tables>
+    <mt:else>
+      <mt:tables has_column="excerpt" display_system="1">
+      <mt:tablehascolumn model="$name" column="text">
+        <mt:setvar name="count_target" value="1">
+        <label class="custom-control custom-checkbox">
+        <input class="custom-control-input watch-changed keywords_auto_excerpt"
+          <mt:ifinarray array="keywords_auto_excerpt" value="$name">checked</mt:ifinarray>
+          type="checkbox" name="keywords_auto_excerpt" value="<mt:var name="name">">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"> 
+          <mt:var name="label" translate></span>
+        </label>
+      </mt:tablehascolumn>
+      </mt:tables>
+    </mt:if>
+    <mt:unless name="count_target">
+    <div class="alert alert-success" id="header-alert" role="alert" tabindex="0">
+      <span><mt:trans phrase="There is no target model." component="Keywords"></span>
+    </div>
+    </mt:unless>
+    <input type="hidden" id="setting_keywords_auto_excerpt" name="setting_keywords_auto_excerpt" value="<mt:var name="setting_keywords_auto_excerpt" escape>">
+<script>
+$('.keywords_auto_excerpt').change(function(){
+    var all_models = $('#setting_keywords_auto_excerpt').val();
+    var this_model = $(this).val();
+    if ( all_models ) {
+        all_models = all_models.split(',');
+    } else {
+        all_models = [];
+    }
+    var result = $.inArray( this_model, all_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            all_models.push( this_model );
+            $('#setting_keywords_auto_excerpt').val(all_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            all_models.splice(result, 1); 
+            $('#setting_keywords_auto_excerpt').val(all_models.join(','));
+        }
+    }
+});
+</script>
+  </div>
+</div>
+<mt:if name="count_target">
+<div class="row form-group mt-0">
+  <div class="col-lg-12 form-inline form-inline-left-margin">
+    <label><mt:trans phrase="Excerpt Length" component="Keywords"> &nbsp; <input type="number" name="setting_keywords_excerpt_length" class="form-control very-short num" value="<mt:var name="setting_keywords_excerpt_length" escape>"></label>
+    <label><mt:trans phrase="Appended to Text" component="Keywords"> &nbsp; <input type="text" name="setting_keywords_trim_excerpt" class="form-control very-short num" value="<mt:var name="setting_keywords_trim_excerpt" escape>"></label>
+  </div>
+</div>
+</mt:if>
+</mt:if>
+<div class="text-muted hint-block">
+  <div>
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:if name="class_simplified_japanese">
+    <mt:trans phrase="The automatic setting supports only saving from the management screen." component="Keywords">
+    <mt:else>
+    <mt:trans phrase="The automatic setting of tags and keywords supports only saving from the management screen." component="Keywords">
+    </mt:if>
+  </div>
+  <div>
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="It is not automatically set when migrating or importing data." component="Keywords">
+  </div>
+</div>

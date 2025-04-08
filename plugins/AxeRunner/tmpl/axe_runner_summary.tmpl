@@ -1,0 +1,10 @@
+<mt:trans phrase="A11Y Check Summary" component="AxeRunner" setvar="page_title">
+<mt:setvarblock name="add_heading">
+<a class="btn btn-sm" href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=axe_core_result<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>">
+  <i class="hidden fa fa-list" data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Return to List">" aria-label="<mt:trans phrase="Return to List">"></i>
+  <span class="shrink-button"><mt:trans phrase="Return to List"></span>
+</a>
+</mt:setvarblock>
+<mt:include file="include/header.tmpl">
+<mt:include file="include/list/axe_core_result/list_header.tmpl">
+<mt:include file="include/footer.tmpl">

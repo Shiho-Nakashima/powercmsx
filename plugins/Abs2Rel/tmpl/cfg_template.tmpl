@@ -1,0 +1,240 @@
+<mt:setvar name="abs2rel_enabled" value="0">
+<mt:if name="setting_abs2rel_enabled"><mt:setvar name="abs2rel_enabled" value="1"></mt:if>
+<mt:if name="setting_abs2rel_target_dynamic"><mt:setvar name="abs2rel_enabled" value="1"></mt:if>
+<div class="row form-group mb-1">
+  <div class="col-lg-2">
+    <label for="setting_abs2rel_enabled">
+      <mt:trans phrase="Abs2Rel Enabled" component="Abs2Rel">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_abs2rel_enabled" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input plugin-target-setting"
+             id="setting_abs2rel_enabled" name="setting_abs2rel_enabled"
+             value="1"
+             <mt:if name="setting_abs2rel_enabled">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Static Contents" component="Abs2Rel"></span>
+    </label>
+    <input type="hidden" name="abs2rel_target_dynamic" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input plugin-target-setting"
+             id="setting_abs2rel_target_dynamic" name="setting_abs2rel_target_dynamic"
+             value="1"
+             <mt:if name="setting_abs2rel_target_dynamic">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Dynamic Contents" component="Abs2Rel"></span>
+    </label>
+    <mt:if name="workspace_id">
+      <p class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Can switch being enabled per Workspace." component="Abs2Rel">
+      </p>
+    </mt:if>
+  </div>
+</div>
+<h2><mt:trans phrase="Settings"></h2>
+<mt:setvar name="use_system_settings" value="0">
+<mt:if name="workspace_id">
+  <mt:if name="setting_abs2rel_use_system_settings">
+    <mt:setvar name="use_system_settings" value="1">
+  </mt:if>
+  <div class="row form-group mb-1">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_abs2rel_use_system_settings" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+               id="setting_abs2rel_use_system_settings" name="setting_abs2rel_use_system_settings"
+               value="1"
+               <mt:if name="setting_abs2rel_use_system_settings">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use system settings" component="Abs2Rel"></span>
+      </label>
+    </div>
+  </div>
+</mt:if>
+<div class="individual-setting-container"<mt:if name="use_system_settings"> style="display:none;"</mt:if>>
+  <div class="row form-group mb-1">
+    <div class="col-lg-2">
+      <label for="setting_abs2rel_target_extensions">
+        <mt:trans phrase="File extension" component="Abs2Rel">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" class="form-control individual-setting"
+             id="setting_abs2rel_target_extensions" name="setting_abs2rel_target_extensions"
+             value="<mt:var name="setting_abs2rel_target_extensions" escape>"
+             <mt:unless name="abs2rel_enabled"> disabled</mt:unless>>
+      <p class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Process the file output with the specified extension." component="Abs2Rel">
+        <mt:trans phrase="You can specify multiple items separated by commas." component="Abs2Rel">
+      </p>
+    </div>
+  </div>
+  <div class="row form-group mb-1">
+    <div class="col-lg-2">
+      <label for="setting_abs2rel_path_type">
+        <mt:trans phrase="Path conversion type" component="Abs2Rel">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <mt:if name="setting_abs2rel_path_type" eq="root_relative_path">
+        <mt:setvar name="abs2rel_path_type" value="root_relative_path">
+      <mt:else>
+        <mt:setvar name="abs2rel_path_type" value="relative_path">
+      </mt:if>
+      <label class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input individual-setting"
+               name="setting_abs2rel_path_type"
+               value="root_relative_path"
+               <mt:if name="setting_abs2rel_path_type" eq="root_relative_path">checked</mt:if>
+               <mt:unless name="abs2rel_enabled"> disabled</mt:unless>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Root Relative Path" component="Abs2Rel"></span>
+      </label>
+      <label class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input individual-setting"
+             name="setting_abs2rel_path_type"
+             value="relative_path"
+             <mt:if name="setting_abs2rel_path_type" eq="relative_path">checked</mt:if>
+             <mt:unless name="abs2rel_enabled"> disabled</mt:unless>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Relative Path" component="Abs2Rel"></span>
+      </label>
+      <p class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="The root relative path is a path starting with /." component="Abs2Rel">
+      </p>
+    </div>
+  </div>
+  <div class="row form-group mb-1">
+    <div class="col-lg-2">
+      <label for="setting_abs2rel_directory_index">
+        <mt:trans phrase="Directory index file name" component="Abs2Rel">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <input type="text" class="form-control individual-setting"
+             id="setting_abs2rel_directory_index" name="setting_abs2rel_directory_index"
+             value="<mt:var name="setting_abs2rel_directory_index" escape>"
+             <mt:unless name="abs2rel_enabled"> disabled</mt:unless>>
+      <p class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Complements the specified value if the targeted URL ends with /." component="Abs2Rel">
+      </p>
+    </div>
+  </div>
+  <h3><mt:trans phrase="Exclusion setting" component="Abs2Rel"></h3>
+  <div class="row form-group mb-1">
+    <div class="col-lg-12">
+    <input type="hidden" name="setting_abs2rel_exclude_base" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_abs2rel_exclude_base" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_abs2rel_exclude_base" value="1" <mt:if name="setting_abs2rel_exclude_base">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Ignore BASE element" component="Abs2Rel"></span>
+    </label>
+    </div>
+  </div>
+  <div class="row form-group mb-1">
+    <div class="col-lg-12">
+    <input type="hidden" name="setting_abs2rel_exclude_js" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_abs2rel_exclude_js" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_abs2rel_exclude_js" value="1" <mt:if name="setting_abs2rel_exclude_js">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Ignore SCRIPT elements" component="Abs2Rel"></span>
+    </label>
+    </div>
+  </div>
+  <div class="row form-group mt-1">
+    <div class="col-lg-12">
+    <input type="hidden" name="setting_abs2rel_exclude_comment" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_abs2rel_exclude_js" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_abs2rel_exclude_comment" value="1" <mt:if name="setting_abs2rel_exclude_comment">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Ignore HTML comments" component="Abs2Rel"></span>
+    </label>
+    </div>
+  </div>
+  <div class="row form-group mb-1">
+    <div class="col-lg-2">
+      <label for="setting_abs2rel_exclude_directries">
+        <mt:trans phrase="Directries" component="Abs2Rel">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <textarea class="form-control individual-setting" rows="6" id="setting_abs2rel_exclude_directries" name="setting_abs2rel_exclude_directries"<mt:unless name="abs2rel_enabled"> disabled</mt:unless>><mt:var name="setting_abs2rel_exclude_directries" escape></textarea>
+      <p class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Do not process files that are output to the specified directory." component="Abs2Rel">
+        <mt:trans phrase="It is possible to specify multiple lines by line feed." component="Abs2Rel">
+      </p>
+    </div>
+  </div>
+  <div class="row form-group mb-1">
+    <div class="col-lg-2">
+      <label for="setting_abs2rel_exclude_links">
+        <mt:trans phrase="Link URL" component="Abs2Rel">
+      </label>
+    </div>
+    <div class="col-lg-10">
+      <textarea class="form-control individual-setting" rows="6" id="setting_abs2rel_exclude_links" name="setting_abs2rel_exclude_links"<mt:unless name="abs2rel_enabled"> disabled</mt:unless>><mt:var name="setting_abs2rel_exclude_links" escape></textarea>
+      <p class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:trans phrase="Hint"></span>
+        <mt:trans phrase="Does not process the link URL to the backward matching file." component="Abs2Rel">
+        <mt:trans phrase="It is possible to specify multiple lines by line feed." component="Abs2Rel">
+      </p>
+    </div>
+  </div>
+</div>
+<script>
+  $(function(){
+    const $enableBtns = $('.plugin-target-setting');
+    const $form = $enableBtns.parents('form');
+    const $input = $form.find('.individual-setting');
+
+    $enableBtns.on('change', function(){
+      let is_checked = false;
+      $enableBtns.each(function(index, elm){
+        if ( $(elm).prop('checked') ) {
+          is_checked = true;
+          return;
+        }
+      });
+      $input.prop('disabled', !is_checked);
+    });
+
+    $form.submit(function(){
+      $input.prop('disabled', false);
+    });
+
+  <mt:if name="workspace_id">
+    const $btn = $('#setting_abs2rel_use_system_settings');
+    const $container = $('.individual-setting-container');
+    $btn.on('change', function(){
+      const is_checked = $(this).prop('checked');
+      if (is_checked) {
+        $container.hide();
+      } else {
+        $container.show();
+      }
+    });
+  </mt:if>
+  });
+</script>

@@ -1,0 +1,30 @@
+<mt:property name="can_open_theme_dir" setvar="can_open_theme_dir">
+<mt:if name="can_open_theme_dir">
+<button type="button" class="btn btn-secondary btn-sm branch-ctl" id="open_theme_folder">
+  <i data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Open Theme Folder" component="Theme_GitHub">" class="fa fa-folder-open-o" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Open Theme Folder" component="Theme_GitHub"></span>
+</button>
+<script>
+$('#open_theme_folder').click(function(){
+    var str = '__mode=open_theme_dir&workspace_id=<mt:var name="request.workspace_id" cast_to="int">';
+        str += '&magic_token=<mt:var name="magic_token" escape>';
+    $.post('<mt:var name="script_uri">', str,
+    function ( data ) {
+        if( data.result != true ) {
+            alert( data.message );
+        }
+    },
+    "json"
+    );
+});
+</script>
+</mt:if>
+<button type="button" class="btn btn-secondary btn-sm branch-ctl" id="move_to_commit">
+  <i data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Commit to GitHub" component="Theme_GitHub">" class="fa fa-git" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Commit to GitHub" component="Theme_GitHub"></span>
+</button>
+<script>
+$('#move_to_commit').click(function(){
+    window.location.href = '<mt:var name="script_uri">?__mode=theme_to_github<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" cast_to="int"></mt:if>';
+});
+</script>

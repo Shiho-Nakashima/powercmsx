@@ -1,0 +1,25 @@
+{
+    "label": "API Cache",
+    "plural": "API Caches",
+    "version": "1.2",
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "key": {
+            "type": "string",
+            "size": 50,
+            "not_null": 1
+        },
+        "value": {
+            "type": "blob"
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "key": "key"
+    }
+}

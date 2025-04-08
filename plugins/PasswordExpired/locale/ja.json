@@ -1,0 +1,39 @@
+{
+    "Set the password expiration settings."
+        : "パスワードの有効期限を設定します。",
+
+    "Set expiration date for password"
+        : "パスワードに有効期限を設ける",
+    "Password expiration days"
+        : "パスワード有効期限日数",
+    "Please set an integer value of 1 or more."
+        : "1以上の整数値を設定してください",
+    "Behavior when the expiration date has passed"
+        : "有効期限が過ぎた時の動作",
+    "Do nothing"
+        : "何もしない",
+    "Display a warning message on the dashboard"
+        : "ダッシュボードに警告メッセージを表示する",
+    "Force password change"
+        : "パスワード変更を強制する",
+
+    "Restrict updates with the same password"
+        : "同じパスワードによる更新を制限する",
+    "Number of generations whose change is restricted"
+        : "世代数",
+
+    "Your password was last changed at %s. Please <a href='%s?__mode=view&amp;_type=edit&amp;_model=user&amp;id=%s'>change your password</a> periodically."
+        : "ログインパスワードが最後に変更されたのは %s です。定期的に<a href='%s?__mode=view&amp;_type=edit&amp;_model=user&amp;id=%s'>パスワードを変更</a>してください。",
+    "Your password was last changed at %s."
+        : "パスワードが最後に変更されたのは %s です",
+
+    "Recently used passwords can not be set."
+        : "最近使ったパスワードは設定できません。",
+
+    "Condition tag provided by the 'PasswordExpired' plugin.<br>The block is evaluated when the password for the target object has expired."
+        : "'PasswordExpired'プラグインにより提供される条件タグです。<br>対象オブジェクトのパスワード有効期限が過ぎている場合にブロックが評価されます。",
+    "Model name to be checked (default value is 'user')."
+        : "対象のモデル名 ( 初期値は 'user' )",
+    "Object ID to be checked (If omitted, the object specified by the 'model' attribute that can be referenced in the current context will be checked)."
+        : "対象オブジェクトの ID ( 省略時は現在のコンテキストで参照可能な 'model' 属性で指定したオブジェクトを対象とします )"
+}

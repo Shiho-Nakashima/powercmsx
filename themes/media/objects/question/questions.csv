@@ -1,0 +1,174 @@
+question_label,question_description,question_questiontype_id,question_hint,question_required,question_is_primary,question_is_name,question_validation_type,question_normarize,question_delete_lb,question_format,question_maxlength,question_multi_byte,question_hide_in_email,question_aggregate,question_template,question_rows,question_count_fields,question_multiple,question_connector,question_options,question_unit,question_values,question_default_value,question_placeholder,question_attach_to_email,question_basename,question_rev_note
+"Your Name",,"Input Text",,1,1,0,,1,0,,0,0,0,0,"<mt:setvarblock name=""error_name"">question_<mt:var name=""question_basename"" escape>_error</mt:setvarblock>
+<tr class=""<mt:if name=""$error_name""> has-danger</mt:if>"">
+  <th scope=""row"" class=""cell-form-question"">
+    <label class=""form-control-label"" for=""question_<mt:var name=""question_basename"" escape>"">
+      <mt:var name=""question_label"" language=""$language"" eval=""1"" escape>
+      <mt:if name=""question_required"">
+      <small><span>(<mt:trans phrase=""Required"" language=""$language"">)</span></small>
+      </mt:if>
+    </label>
+  </th>
+  <td class=""cell-form-input"">
+    <mt:setvarblock name=""param_name"">request.question_<mt:var name=""question_basename"" escape></mt:setvarblock>
+    <mt:var name=""$param_name"" setvar=""question_value"">
+    <mt:if name=""confirm_ok"">
+      <mt:var name=""question_value"" escape>
+    </mt:if>
+    <mt:unless name=""request.__mode"">
+    <mt:var name=""question_default_value"" setvar=""question_value"">
+    </mt:unless>
+    <input type=""<mt:if name=""confirm_ok"">hidden<mt:else>text</mt:if>"" id=""question_<mt:var name=""question_basename"" escape>""
+        class=""form-control watch-changed <mt:if name=""$error_name""> form-control-danger</mt:if>"" name=""question_<mt:var name=""question_basename"" escape>"" value=""<mt:var name=""question_value"" escape>"" <mt:if name=""question_placeholder"">placeholder=""<mt:var name=""question_placeholder"" escape>""</mt:if>>
+  <mt:if name=""question_hint"">
+  <div class=""text-muted"">
+    <i class=""fa fa-question-circle-o"" aria-hidden=""true""></i>
+    <span class=""sr-only""><mt:trans phrase=""Hint"" language=""$language""></span>
+    <mt:var name=""question_hint"" language=""$language"" eval=""1"">
+  </div>
+  </mt:if>
+  <mt:if name=""$error_name"">
+  <div class=""form-control-feedback"">
+    <mt:var name=""$error_name"" escape>
+  </div>
+  </mt:if>
+  </td>
+</tr>
+",0,0,0,,,KB,,,,0,media_your_name,
+Email,,"Input Text",,1,0,0,Email,1,0,,0,0,0,0,"<mt:setvarblock name=""error_name"">question_<mt:var name=""question_basename"" escape>_error</mt:setvarblock>
+<tr class=""<mt:if name=""$error_name""> has-danger</mt:if>"">
+  <th scope=""row"" class=""cell-form-question"">
+    <label class=""form-control-label"" for=""question_<mt:var name=""question_basename"" escape>"">
+      <mt:var name=""question_label"" language=""$language"" eval=""1"" escape>
+      <mt:if name=""question_required"">
+      <small><span>(<mt:trans phrase=""Required"" language=""$language"">)</span></small>
+      </mt:if>
+    </label>
+  </th>
+  <td class=""cell-form-input"">
+    <mt:setvarblock name=""param_name"">request.question_<mt:var name=""question_basename"" escape></mt:setvarblock>
+    <mt:var name=""$param_name"" setvar=""question_value"">
+    <mt:if name=""confirm_ok"">
+      <mt:var name=""question_value"" escape>
+    </mt:if>
+    <mt:unless name=""request.__mode"">
+    <mt:var name=""question_default_value"" setvar=""question_value"">
+    </mt:unless>
+    <input type=""<mt:if name=""confirm_ok"">hidden<mt:else>text</mt:if>"" id=""question_<mt:var name=""question_basename"" escape>""
+        class=""form-control watch-changed <mt:if name=""$error_name""> form-control-danger</mt:if>"" name=""question_<mt:var name=""question_basename"" escape>"" value=""<mt:var name=""question_value"" escape>"" <mt:if name=""question_placeholder"">placeholder=""<mt:var name=""question_placeholder"" escape>""</mt:if>>
+  <mt:if name=""question_hint"">
+  <div class=""text-muted"">
+    <i class=""fa fa-question-circle-o"" aria-hidden=""true""></i>
+    <span class=""sr-only""><mt:trans phrase=""Hint"" language=""$language""></span>
+    <mt:var name=""question_hint"" language=""$language"" eval=""1"">
+  </div>
+  </mt:if>
+  <mt:if name=""$error_name"">
+  <div class=""form-control-feedback"">
+    <mt:var name=""$error_name"" escape>
+  </div>
+  </mt:if>
+  </td>
+</tr>
+",0,0,0,,,KB,,,,0,media_email,
+Message,,"Textarea",,1,0,0,,0,0,,0,0,0,0,"<mt:setvarblock name=""error_name"">question_<mt:var name=""question_basename"" escape>_error</mt:setvarblock>
+<tr class=""<mt:if name=""$error_name""> has-danger</mt:if>"">
+  <th scope=""row"" class=""cell-form-question"">
+    <label class=""form-control-label"" for=""question_<mt:var name=""question_basename"" escape>"">
+      <mt:var name=""question_label"" language=""$language"" eval=""1"" escape>
+      <mt:if name=""question_required"">
+      <small><span>(<mt:trans phrase=""Required"" language=""$language"">)</span></small>
+      </mt:if>
+    </label>
+  </th>
+  <td class=""cell-form-input"">
+    <mt:setvarblock name=""param_name"">request.question_<mt:var name=""question_basename"" escape></mt:setvarblock>
+    <mt:var name=""$param_name"" setvar=""question_value"">
+    <mt:if name=""confirm_ok"">
+      <mt:var name=""question_value"" escape nl2br>
+    </mt:if>
+    <mt:unless name=""request.__mode"">
+    <mt:var name=""question_default_value"" setvar=""question_value"">
+    </mt:unless>
+    <mt:if name=""confirm_ok"">
+      <input type=""hidden"" id=""question_<mt:var name=""question_basename"" escape>"" name=""question_<mt:var name=""question_basename"" escape>"" value=""<mt:var name=""question_value"" escape>"">
+    <mt:else>
+      <textarea class=""form-control watch-changed <mt:if name=""$error_name"">
+      form-control-danger</mt:if>""
+      id=""question_<mt:var name=""question_basename"" escape>""
+      name=""question_<mt:var name=""question_basename"" escape>""
+      rows=""<mt:if name=""question_options""><mt:var name=""question_options"" escape><mt:else>5</mt:if>""
+      <mt:if name=""question_placeholder"">placeholder=""<mt:var name=""question_placeholder"" escape>""</mt:if>><mt:var name=""question_value"" escape></textarea>
+    </mt:if>
+  <mt:if name=""question_hint"">
+  <div class=""text-muted"">
+    <i class=""fa fa-question-circle-o"" aria-hidden=""true""></i>
+    <span class=""sr-only""><mt:trans phrase=""Hint""></span>
+    <mt:var name=""question_hint"" language=""$language"" eval=""1"">
+  </div>
+  </mt:if>
+  <mt:if name=""$error_name"">
+  <div class=""form-control-feedback"">
+    <mt:var name=""$error_name"" escape>
+  </div>
+  </mt:if>
+  </td>
+</tr>
+",0,0,0,,,KB,,,,0,media_message,
+"Privacy Policy",,"Checkbox","&nbsp; <mt:pages basename=""privacy_policy"" limit=1><a href=""<mt:pagepermalink>"" target=""_blank""> <i class=""fa fa-external-link"" aria-hidden=""true""></i><span class=""sr-only""><mt:trans phrase=""View""></span> <mt:pagetitle language=""$language"" escape></a></mt:pages>",1,0,0,,0,0,,0,0,0,0,"<mt:setvarblock name=""error_name"">question_<mt:var name=""question_basename"" escape>_error</mt:setvarblock>
+<tr class=""<mt:if name=""$error_name""> has-danger</mt:if>"">
+  <th scope=""row"" class=""cell-form-question"">
+    <label class=""form-control-label"" for=""question_<mt:var name=""question_basename"" escape>"">
+      <mt:var name=""question_label"" language=""$language"" eval=""1"" escape>
+      <mt:if name=""question_required"">
+      <small><span>(<mt:trans phrase=""Required"" language=""$language"">)</span></small>
+      </mt:if>
+    </label>
+  </th>
+  <td class=""cell-form-input"">
+    <mt:setvarblock name=""param_name"">request.question_<mt:var name=""question_basename"" escape></mt:setvarblock>
+    <mt:var name=""$param_name"" setvar=""question_value"">
+    <mt:if name=""confirm_ok"">
+      <mt:if name=""question_options"">
+        <mt:var name=""question_options"" language=""$language"" escape>
+      <mt:else>
+        <mt:var name=""question_value"" language=""$language"" escape>
+      </mt:if>
+      <input type=""hidden"" name=""question_<mt:var name=""question_basename"" escape>"" value=""<mt:var name=""question_value"" escape>"">
+    <mt:else>
+      <mt:var name=""question_options"" setvar=""question_option_value"">
+      <mt:if name=""question_values"">
+        <mt:var name=""question_values"" setvar=""question_option_value"">
+      </mt:if>
+      <label class=""custom-control custom-checkbox"">
+      <input class=""watch-changed""
+        <mt:if name=""question_value"">checked
+        <mt:else>
+          <mt:if name=""question_default_value"">
+          <mt:if name=""question_default_value"" eq=""$question_option_value"">
+            checked
+          </mt:if>
+          </mt:if>
+        </mt:if>
+        type=""checkbox"" name=""question_<mt:var name=""question_basename"" escape>"" id=""question_<mt:var name=""question_basename"" escape>""
+        value=""<mt:if name=""question_option_value""><mt:var name=""question_option_value"" escape><mt:else>1</mt:if>"">
+          <span class=""custom-control-indicator""></span>
+          <span class=""custom-control-description""> 
+          <mt:var name=""question_options"" language=""$language"" escape></span>
+      </label>
+      <mt:if name=""question_hint"">
+      <div class=""text-muted"">
+        <i class=""fa fa-question-circle-o"" aria-hidden=""true""></i>
+        <span class=""sr-only""><mt:trans phrase=""Hint"" language=""$language""></span>
+        <mt:var name=""question_hint"" language=""$language"" eval=""1"">
+      </div>
+      </mt:if>
+      <mt:if name=""$error_name"">
+      <div class=""form-control-feedback"">
+        <mt:var name=""$error_name"" escape>
+      </div>
+      </mt:if>
+    </mt:if>
+  </td>
+</tr>
+",0,0,0,,"I have read and agree to the Privacy Policy.",KB,agree,,,0,media_privacy_policy,

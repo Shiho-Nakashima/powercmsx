@@ -1,0 +1,134 @@
+2025-04-07 14:40:53 JST	(ID:Prototype)Uncaught Error: Call to undefined function add_shortcode() in C:\xampp\htdocs\PowerCMSX\plugins\common\common.php:38
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(2257): include_once()
+#1 C:\xampp\htdocs\PowerCMSX\lib\Prototype\class.PTPlugin.php(471): Prototype->component('common')
+#2 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(5583): PTPlugin->manage_plugins(Object(Prototype))
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(2198): Prototype->manage_plugins(Object(Prototype))
+#4 C:\xampp\htdocs\PowerCMSX\index.php(11): Prototype->run()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\plugins\common\common.php 38 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=manage_plugins
+2025-04-07 14:42:16 JST	(ID:Prototype)Uncaught Error: Call to undefined function add_shortcode() in C:\xampp\htdocs\PowerCMSX\plugins\common\common.php:31
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(2257): include_once()
+#1 C:\xampp\htdocs\PowerCMSX\lib\Prototype\class.PTPlugin.php(471): Prototype->component('common')
+#2 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(5583): PTPlugin->manage_plugins(Object(Prototype))
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(2198): Prototype->manage_plugins(Object(Prototype))
+#4 C:\xampp\htdocs\PowerCMSX\index.php(11): Prototype->run()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\plugins\common\common.php 31 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=manage_plugins
+2025-04-07 14:43:31 JST	(ID:Prototype)Uncaught Error: Call to undefined function add_shortcode() in C:\xampp\htdocs\PowerCMSX\plugins\common\common.php:42
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(2257): include_once()
+#1 C:\xampp\htdocs\PowerCMSX\lib\Prototype\class.PTPlugin.php(471): Prototype->component('common')
+#2 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(5583): PTPlugin->manage_plugins(Object(Prototype))
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(2198): Prototype->manage_plugins(Object(Prototype))
+#4 C:\xampp\htdocs\PowerCMSX\index.php(11): Prototype->run()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\plugins\common\common.php 42 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=manage_plugins
+2025-04-07 16:35:43 JST	file_put_contents(C:\xampp\htdocs\PowerCMSX\cache\compile_cache\mt__bb38c22111f0431a9bd9519f26a7bff4.php.): Failed to open stream: Permission denied (2) occured( line 4289 of C:\xampp\htdocs\PowerCMSX\lib\PAML\class.paml4.php ).
+2025-04-07 16:36:21 JST	file_put_contents(C:\xampp\htdocs\PowerCMSX\cache\compile_cache\mt__3c5556c35e3b2339aa410a2f6e1e3626.php.): Failed to open stream: Permission denied (2) occured( line 4289 of C:\xampp\htdocs\PowerCMSX\lib\PAML\class.paml4.php ).
+2025-04-07 16:36:31 JST	file_put_contents(C:\xampp\htdocs\PowerCMSX\cache\compile_cache\mt__c4d584a8f7a8b2d282684e519680a978.php.): Failed to open stream: Permission denied (2) occured( line 4289 of C:\xampp\htdocs\PowerCMSX\lib\PAML\class.paml4.php ).
+2025-04-08 09:30:08 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=manage_plugins
+2025-04-08 09:30:11 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=manage_plugins
+2025-04-08 09:30:22 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=dashboard
+2025-04-08 09:30:35 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=dashboard
+2025-04-08 09:30:36 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=dashboard
+2025-04-08 09:33:19 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). 
+2025-04-08 09:33:24 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). 
+2025-04-08 09:37:10 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SHOW COLUMNS FROM `mt_option` (1024) occured( line 577 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 577 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2469 [function] => show_columns [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1345 [function] => has_column [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1270 [function] => __get [class] => PADOBaseModel [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:10 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SELECT * FROM mt_option WHERE ( option_kind = ?  AND  option_key = ?  AND  option_workspace_id = ? ) LIMIT 1 (1024) occured( line 2316 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2316 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2417 [function] => load [class] => PADOBaseModel [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 14109 [function] => get_by_key [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 4456 [function] => get_config [class] => Prototype [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:11 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SHOW COLUMNS FROM `mt_option` (1024) occured( line 577 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 577 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2469 [function] => show_columns [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1345 [function] => has_column [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1270 [function] => __get [class] => PADOBaseModel [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:11 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SHOW COLUMNS FROM `mt_option` (1024) occured( line 577 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 577 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2469 [function] => show_columns [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1345 [function] => has_column [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1426 [function] => __get [class] => PADOBaseModel [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:11 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SHOW COLUMNS FROM `mt_option` (1024) occured( line 577 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 577 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2469 [function] => show_columns [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1345 [function] => has_column [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1426 [function] => __get [class] => PADOBaseModel [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:12 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SHOW COLUMNS FROM `mt_option` (1024) occured( line 577 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 577 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2469 [function] => show_columns [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1345 [function] => has_column [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1426 [function] => __get [class] => PADOBaseModel [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:12 JST	PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_option' doesn't exist in engine, SHOW COLUMNS FROM `mt_option` (1024) occured( line 577 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 577 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 2469 [function] => show_columns [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 1345 [function] => has_column [class] => PADOBaseModel [type] => -> ) [3] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 14111 [function] => __get [class] => PADOBaseModel [type] => -> ))), ver.363000 ). ts=1744072630
+2025-04-08 09:37:12 JST	(ID:CheckScript)PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_log' doesn't exist in engine, INSERT INTO mt_log (log_message,log_category,log_level,log_remote_ip)VALUES(?,?,?,?) C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php 2697 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). ts=1744072630
+2025-04-08 09:51:30 JST	(ID:Prototype)Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'powercmsx.mt_session' doesn't exist in engine in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15171
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15171): PDO->query('SELECT COUNT(se...')
+#1 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1300): Prototype->magic()
+#2 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#3 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15171 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). 
+2025-04-08 10:24:35 JST	Connection failed: SQLSTATE[HY000] [2002] 対象のコンピューターによって拒否されたため、接続できませんでした。 (1024) occured( line 284 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 284 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 1137 [function] => init [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\index.php [line] => 5 [function] => init [class] => Prototype [type] => -> ))), ver.363000 ). __mode=view&_type=list&_model=template
+2025-04-08 10:24:35 JST	(ID:Prototype)Uncaught Error: Call to a member function model() on null in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15089
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15555): Prototype->log(Array)
+#1 [internal function]: Prototype->errorHandler(1024, 'Connection fail...', 'C:\\xampp\\htdocs...', 284)
+#2 C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(284): trigger_error('Connection fail...')
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1137): PADO->init()
+#4 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15089 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=view&_type=list&_model=template
+2025-04-08 10:24:53 JST	Connection failed: SQLSTATE[HY000] [2002] 対象のコンピューターによって拒否されたため、接続できませんでした。 (1024) occured( line 284 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 284 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 1137 [function] => init [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\index.php [line] => 5 [function] => init [class] => Prototype [type] => -> ))), ver.363000 ). __mode=view&_type=list&_model=template
+2025-04-08 10:24:53 JST	(ID:Prototype)Uncaught Error: Call to a member function model() on null in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15089
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15555): Prototype->log(Array)
+#1 [internal function]: Prototype->errorHandler(1024, 'Connection fail...', 'C:\\xampp\\htdocs...', 284)
+#2 C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(284): trigger_error('Connection fail...')
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1137): PADO->init()
+#4 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15089 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=view&_type=list&_model=template
+2025-04-08 10:24:58 JST	Connection failed: SQLSTATE[HY000] [2002] 対象のコンピューターによって拒否されたため、接続できませんでした。 (1024) occured( line 284 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 284 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 1137 [function] => init [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\index.php [line] => 5 [function] => init [class] => Prototype [type] => -> ))), ver.363000 ). __mode=dashboard
+2025-04-08 10:24:58 JST	(ID:Prototype)Uncaught Error: Call to a member function model() on null in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15089
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15555): Prototype->log(Array)
+#1 [internal function]: Prototype->errorHandler(1024, 'Connection fail...', 'C:\\xampp\\htdocs...', 284)
+#2 C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(284): trigger_error('Connection fail...')
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1137): PADO->init()
+#4 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15089 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=dashboard
+2025-04-08 10:25:00 JST	Connection failed: SQLSTATE[HY000] [2002] 対象のコンピューターによって拒否されたため、接続できませんでした。 (1024) occured( line 284 of C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php [line] => 284 [function] => trigger_error ) [1] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 1137 [function] => init [class] => PADO [type] => -> ) [2] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\index.php [line] => 5 [function] => init [class] => Prototype [type] => -> ))), ver.363000 ). __mode=manage_scheme
+2025-04-08 10:25:00 JST	(ID:Prototype)Uncaught Error: Call to a member function model() on null in C:\xampp\htdocs\PowerCMSX\class.Prototype.php:15089
+Stack trace:
+#0 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(15555): Prototype->log(Array)
+#1 [internal function]: Prototype->errorHandler(1024, 'Connection fail...', 'C:\\xampp\\htdocs...', 284)
+#2 C:\xampp\htdocs\PowerCMSX\lib\PADO\class.pado.php(284): trigger_error('Connection fail...')
+#3 C:\xampp\htdocs\PowerCMSX\class.Prototype.php(1137): PADO->init()
+#4 C:\xampp\htdocs\PowerCMSX\index.php(5): Prototype->init()
+#5 {main}
+  thrown C:\xampp\htdocs\PowerCMSX\class.Prototype.php 15089 (1024) occured( line 15609 of C:\xampp\htdocs\PowerCMSX\class.Prototype.php(Array( [0] => Array ( [file] => C:\xampp\htdocs\PowerCMSX\class.Prototype.php [line] => 15609 [function] => trigger_error ) [1] => Array ( [function] => {closure} ))), ver.363000 ). __mode=manage_scheme

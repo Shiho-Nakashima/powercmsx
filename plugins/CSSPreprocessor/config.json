@@ -1,0 +1,54 @@
+{
+    "label": "CSSPreprocessor",
+    "id": "csspreprocessor",
+    "component": "CSSPreprocessor",
+    "description": "Compiling preprocessor code to CSS.",
+    "version": "1.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "config_settings" : {
+        "csspreprocessor_use_sass" : true,
+        "csspreprocessor_minify_preview" : false,
+        "csspreprocessor_sass_cmd" : "Dart",
+        "csspreprocessor_sass_path" : "/usr/local/bin/sass",
+        "csspreprocessor_stylus_path" : ""
+    },
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "cfg_space"   : 1,
+    "settings": {
+        "csspreprocessor_compile": true,
+        "csspreprocessor_minify": false
+    },
+    "tags": {
+        "block": {
+            "csspreprocessor": {
+                "component": "CSSPreprocessor",
+                "method": "hdlr_csspreprocessor"
+            }
+        }
+    },
+    "config_overwrite": {
+        "publish_callbacks": true
+    },
+    "callbacks": {
+        "csspreprocessor_post_preview_template": {
+            "template": {
+                "post_preview": {
+                    "component": "CSSPreprocessor",
+                    "priority": 3,
+                    "method": "post_preview_template"
+                }
+            }
+        },
+        "csspreprocessor_post_rebuild_template": {
+            "template": {
+                "post_rebuild": {
+                    "component": "CSSPreprocessor",
+                    "priority": 3,
+                    "method": "post_rebuild_template"
+                }
+            }
+        }
+    }
+}

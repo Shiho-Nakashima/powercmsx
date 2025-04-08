@@ -1,0 +1,61 @@
+<mt:setvarblock name="html_head" append="1">
+<style>
+#progressbar {
+  font-size: 0.3em;
+  height: 4px;
+  border:1px solid #ccc;
+  border-radius: 0.5em;
+  width:100%;
+  background-image: repeating-linear-gradient( 50deg, #f6f6f6, #f6f6f6 20px, #ddd 20px, #ddd 40px );
+  background-size: 5000%;
+  animation: animatedBackground 400s linear infinite;
+}
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: -100% 0; }
+}
+</style>
+</mt:setvarblock>
+<mt:include file="include/popup_header.tmpl">
+<mt:if name="workspace_id">
+<mt:var name="workspace_name" setvar="scope_name">
+<mt:setvarblock name="scope_link">
+<a target="_blank" href="<mt:var name="workspace_url">" class="link-in-alert"><mt:var name="workspace_name" escape="single"></a>
+</mt:setvarblock>
+<mt:else>
+<mt:var name="appname" setvar="scope_name">
+<mt:var name="site_url" setvar="website_url">
+<mt:setvarblock name="scope_link">
+<a target="_blank" href="<mt:var name="site_url">" class="link-in-alert"><mt:var name="appname" escape="single"></a>
+</mt:setvarblock>
+</mt:if>
+<script src="assets/js/pace.min.js"></script>
+<link href="assets/css/pace.css" rel="stylesheet">
+<form action="<mt:var name="script_uri">" method="POST" id="rebuild_next">
+<input type="hidden" name="__mode" value="rebuild_action">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="return_args" value="<mt:var name="return_args" escape="url">">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<input type="hidden" name="request_id" value="<mt:var name="request_id" escape>">
+<input type="hidden" name="_model" value="<mt:var name="model" escape>">
+<input type="hidden" name="rebuild_ids" value="<mt:var name="rebuild_ids" escape>">
+<input type="hidden" name="count_object" value="<mt:var name="count_object">">
+<input type="hidden" name="start_rebuild" value="<mt:var name="start_rebuild">">
+</form>
+<p class="rebuilt_percent mt-2"><mt:if name="rebuilt_percent"><mt:var name="rebuilt_percent">%
+<mt:else>
+&nbsp;
+</mt:if></p>
+<mt:if name="rebuilt_percent">
+<div class="pt-progress-bar">
+<div class="pt-progress-bar-inner" style="width: <mt:var name="rebuilt_percent">%"></div>
+</div>
+<mt:else>
+<div id="progressbar"></div>
+</mt:if>
+<script>
+setTimeout(function(){
+    $('#rebuild_next').submit();
+} , <mt:var name="rebuild_interval">);
+</script>
+<mt:include file="include/popup_footer.tmpl">

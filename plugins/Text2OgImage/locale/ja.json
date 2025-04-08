@@ -1,0 +1,22 @@
+{
+    "Generate og:image from text.": "テキストからog:imageを生成します。",
+    "Generate og:image for SNS.": "SNS用のog:imageを作成する",
+    "Generate og:image for SNS": "SNS用のog:imageを作成",
+    "Re-Generate": "再生成する",
+    "No text selected.": "テキストが選択されていません。",
+    "Use System Setting": "システム設定を利用",
+    "Background Image Path": "背景画像のパス",
+    "Font": "フォント",
+    "Font Color": "文字色",
+    "Mask Color": "背景色",
+    "Ruby Color": "ふりがな色",
+    "Quality": "画質",
+    "Auto Size": "自動設定",
+    "Coefficient" : "係数",
+    "Use system settings": "システム設定を利用する",
+    "Use Google Fonts": "Google Webフォントを利用",
+    "The text to image.": "画像化するテキスト",
+    "Delete og:image of Unpublish Objects": "非公開オブジェクトのog:imageの削除",
+    "Specify '1' to add furigana, Specify '2' to add furigana and break with clauses and Specify '3' to only break with clauses."
+        : "'1'を指定するとふりがなを追加 '2'を指定すると分かち書きしたテキストにふりがなを追加 '3'を指定するとふりがなを追加せずに分かち書きのみを適用"
+}

@@ -1,0 +1,26 @@
+@uri=<mt:var name="url">
+@title=<mt:var name="title">
+@workspace_id=<mt:var name="workspace_id">
+@site_name=<mt:var name="site_name">
+@cdate=<mt:var name="cdate">
+@mdate=<mt:var name="mdate">
+@author=<mt:var name="author">
+@weight=<mt:var name="weight">
+@metadata=<mt:var name="metadata">
+@tags=<mt:var name="tags">
+@extracted=<mt:var name="extracted">
+@object_id=<mt:var name="object_id">
+@model=<mt:var name="model">
+@mime_type=<mt:var name="mime_type">
+@thumbnail=<mt:var name="thumbnail">
+@thumbnail_square=<mt:var name="thumbnail_square">
+<mt:loop name="meta_loop">@<mt:var name="__key__">=<mt:var name="__value__" remove_html>
+</mt:loop>
+<mt:var name="content">
+
+	<mt:var name="content" _notations="," normalize>
+	<mt:var name="metadata">
+<mt:if name="title_repeat">	<mt:for from="1" to="$title_repeat" glue=" "><mt:var name="title" remove_html></mt:if>
+	<mt:var name="body_title"><mt:loop name="meta_index_loop">
+	<mt:var name="__value__">
+</mt:loop>

@@ -1,0 +1,72 @@
+<mt:setvar name="no_disp" value="Model,Attachment File,Field,Field Type,IP Address,Contact,URL Map,Phrase,Role,Permission,Question Type,Question,Log,Workflow,Comment,URL,Boilerplate Snippet,User Dictionary,Display Option,Email Boilerplate">
+<mt:var name="no_disp" split="," setvar="no_disp">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="name" escape>">
+    <mt:var name="label" escape="1">
+    <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="__model_selector" name="<mt:var name="__col_name__">">
+    <mt:if name="workspace_id">
+      <mt:setvarblock name="table_option">'display_space','1'</mt:setvarblock>
+    <mt:else>
+      <mt:setvarblock name="table_option">'display','1'</mt:setvarblock>
+    </mt:if>
+    <mt:objectloop model="table" sort_by="order" options="$table_option">
+    <mt:if name="__first__">
+      <option value="">
+        <mt:trans phrase="Unspecified">
+      </option>
+      <option value="template" <mt:if name="__col_value__" eq="template">selected</mt:if>>
+        <mt:trans phrase="Index">
+      </option>
+    </mt:if>
+      <mt:ifinarray array="no_disp" value="$label">
+      <mt:else>
+      <mt:unless name="name" eq="template">
+    <mt:if name="menu_type" ne="3">
+      <option <mt:if name="__col_value__" eq="$name">selected</mt:if> value="<mt:var name="name">">
+      <mt:trans phrase="$label" escape>
+      </option>
+    </mt:if>
+      </mt:unless>
+      </mt:ifinarray>
+    </mt:objectloop>
+    <mt:if name="workspace_id">
+    <mt:tables global_relations="1" display_system="1">
+      <option <mt:if name="__col_value__" eq="$name">selected</mt:if> value="<mt:var name="name">">
+      <mt:trans phrase="$label">
+      </option>
+    </mt:tables>
+    </mt:if>
+    </select>
+    <mt:ifusercan action="list" model="urlinfo" workspace_id="$workspace_id">
+    <mt:if name="request.id">
+    &nbsp; <a target="_blank" href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=urlinfo<mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;_filter=urlinfo&amp;_filter_value_urlmapping_id[]=<mt:var name="object_name" escape="url">&amp;_filter_cond_urlmapping_id[]=eq">
+    ( <mt:trans phrase="List of %s" params="URL"> <i class="fa fa-external-link-square" aria-hidden="true"></i> )
+    </a>
+    </mt:if>
+    </mt:ifusercan>
+  </div>
+</div>
+<script>
+let $modelSelected = <mt:if name="request.id">$('#__model_selector > option:selected')<mt:else>null</mt:if>;
+$('#__model_selector').change(function(){
+<mt:if name="request.id">
+    if (! window.confirm('<mt:trans phrase="Changing the model will remove archives. Are you sure you want to change the model?">') ) {
+        $modelSelected.prop('selected', true);
+        return;
+    }
+    $modelSelected = $(this).find('option:selected');
+</mt:if>
+    var dateBased = $('#option-date_based').val();
+    if (! dateBased && ( $(this).val() == '' || $(this).val() == 'template' ) ) {
+        $('#is_preferred-wrapper').hide();
+    } else {
+        $('#is_preferred-wrapper').show();
+    }
+    toggleContainerOption(200);
+});
+</script>

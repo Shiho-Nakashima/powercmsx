@@ -1,0 +1,15 @@
+<mt:setvarblock name="html_tag"><mt:var name="video_tag">
+  <source src="<mt:var name="video_url">"<mt:if name="mime_type"> type="<mt:var name="mime_type">"</mt:if>><mt:if name="vtt_url">
+  <track kind="captions" src="<mt:var name="vtt_url">" srclang="<mt:var name="user_language">" label="<mt:if name="user_language" eq="ja">Japanese<mt:else>English</mt:if>" default="default"></mt:if>
+</video></mt:setvarblock>
+<script>
+    var html = "<mt:var name="html_tag" encode_js="1">";
+    var editor = window.parent.tinyMCE.activeEditor;
+    if ( editor ) {
+        editor.insertContent(html);
+    } else {
+        window.parent.surroundHTML('file', '<mt:if name="request.insert"><mt:var name="request.insert" escape><mt:else><mt:var name="request.target" escape></mt:if>', html );
+    }
+    window.parent.$('#modal').modal('hide');
+    window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</script>

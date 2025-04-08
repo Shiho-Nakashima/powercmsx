@@ -1,0 +1,361 @@
+{
+    "It helps you catch unintended mistakes in your HTML." : "HTMLソースコードの構文チェック機能を提供します。",
+    "Agree to the terms" : "免責事項への同意",
+    "I agree that this plugin may send the content being created to external services." : "作成中のコンテンツを外部サービスに送信することについて同意します",
+    "Are you sure you want to send the preview html to '%s'?" : "編集中のデータを'%s'に送信します。よろしいですか?",
+    "Remove Old Cache for NuHtmlChecker" : "HTML検証結果のキャッシュクリア",
+    "Cache results"    : "結果をキャッシュする",
+    "Error"            : "エラー",
+    "error"            : "エラー",
+    "errors"           : "エラー",
+    "Warning"          : "警告",
+    "warning"          : "警告",
+    "warnings"         : "警告",
+    "info"             : "情報",
+    "Info"             : "情報",
+    "Fatal Error"      : "深刻なエラー",
+    "Fatal Errors"     : "深刻なエラー",
+    "Reassessment"     : "再評価を実行する",
+    "Found no errors." : "エラーは見つかりませんでした。",
+    "Found 1 error."   : "1個のエラーが見つかりました。",
+    "Found %s errors." : "%s個のエラーが見つかりました。",
+    "HTML Check"       : "HTML検証",
+    "HTML Source"      : "HTMLソース",
+    "Re-Edit"          : "再評価",
+    "HTML Check Result": "HTML検証結果",
+    "At line"          : "行",
+    "From line"        : "行",
+    "to line"          : "〜行",
+    "column"           : "カラム",
+    "Type"             : "タイプ",
+    "Message"          : "メッセージ",
+    "Location"         : "行",
+    "Extract"          : "箇所",
+    "Found %s %s."     : "%s個の%sが見つかりました。",
+    "Found %s %s and %s %s." : "%s個の%sと%s個の%sが見つかりました。",
+    "Format and translate the result": "結果を翻訳・整形する",
+    "About Nu Html Checker" : "Nu Html Checker",
+    "Report an issue" : "Issueを登録",
+    "Report about translation" : "翻訳結果へのフィードバック",
+
+    "Afrikaans" : "アフリカーンス語",
+    "Amharic" : "アムハラ語",
+    "Arabic" : "アラビア語",
+    "Azerbaijani" : "アゼルバイジャン語",
+    "South Azerbaijani" : "南アゼルバイジャン語",
+    "Bashkir" : "バシキール語",
+    "Belarusian" : "ベラルーシ語",
+    "Bengali" : "ベンガル語",
+    "Bosnian" : "ボスニア語",
+    "Catalan" : "カタロニア語",
+    "Chechen" : "チェチェン",
+    "Cherokee" : "チェロキー語",
+    "Sorani Kurdish" : "ソラニクルド語",
+    "Cree" : "クリー語",
+    "Czech" : "チェコ人",
+    "Welsh" : "ウェールズ語",
+    "Danish" : "デンマーク語",
+    "German" : "ドイツ人",
+    "Divehi" : "ディベヒ語",
+    "Greek" : "ギリシャ語",
+    "English" : "英語",
+    "Spanish" : "スペイン語",
+    "Estonian" : "エストニア語",
+    "Basque" : "バスク人",
+    "Persian" : "ペルシア語",
+    "Finnish" : "フィンランド語",
+    "Faroese" : "フェロー語",
+    "French" : "フランス語",
+    "Irish" : "アイルランド語",
+    "Gujarati" : "グジャラート語",
+    "Hausa" : "ハウサ",
+    "Hebrew" : "ヘブライ語",
+    "Hindi" : "ヒンディー語",
+    "Croatian" : "クロアチア語",
+    "Hungarian" : "ハンガリー語",
+    "Armenian" : "アルメニア人",
+    "Indonesian" : "インドネシア語",
+    "Igbo" : "イボ語",
+    "Icelandic" : "アイスランド語",
+    "Italian" : "イタリア語",
+    "Inuktitut" : "イヌクティトゥット語",
+    "Japanese" : "日本語",
+    "Javanese" : "ジャワ語",
+    "Georgian" : "ジョージア語",
+    "Khmer" : "クメール語",
+    "Kazakh" : "カザフ語",
+    "Kannada" : "カンナダ語",
+    "Korean" : "韓国語",
+    "Kurdish" : "クルド語",
+    "Kyrgyz" : "キルギス語",
+    "Lao" : "ラオス語",
+    "Lithuanian" : "リトアニア語",
+    "Latvian" : "ラトビア語",
+    "Malagasy" : "マダガスカル語",
+    "Meadow Mari" : "メドウマリ語",
+    "Maori" : "マオリ語",
+    "Macedonian" : "マケドニア語",
+    "Malayalam" : "マラヤーラム語",
+    "Mongolian" : "モンゴル語",
+    "Marathi" : "マラーティー語",
+    "Hill Mari" : "ヒルマリ語",
+    "Malay" : "マレー語",
+    "Maltese" : "マルタ語",
+    "Burmese" : "ビルマ語",
+    "Nahuatl" : "ナワトル",
+    "Nepali" : "ネパール語",
+    "Dutch" : "オランダ語",
+    "Norwegian" : "ノルウェー語",
+    "Nyanja" : "ニャンジャ語",
+    "Occitan" : "オクシタン語",
+    "Oromo" : "オロモ語",
+    "Oriya" : "オリヤー語",
+    "Ossetian" : "オセチア人",
+    "Punjabi" : "パンジャブ語",
+    "Polish" : "ポーランド語",
+    "Western Panjabi" : "西パンジャビ語",
+    "Pashto" : "パシュトー語",
+    "Portuguese" : "ポルトガル語",
+    "Romanian" : "ルーマニア語",
+    "Russian" : "ロシア語",
+    "Kinyarwanda" : "キニアルワンダ語",
+    "Sakha" : "サハ語",
+    "Sindhi" : "シンド語",
+    "Sinhala" : "シンハラ語",
+    "Slovak" : "スロバキア語",
+    "Slovenian" : "スロベニア語",
+    "Shona" : "ショナ語",
+    "Somali" : "ソマリ語",
+    "Albanian" : "アルバニア語",
+    "Serbian" : "セルビア語",
+    "Serbian" : "セルビア語",
+    "Southern Sotho" : "南ソト語",
+    "Sundanese" : "スンダ語",
+    "Swedish" : "スウェーデン語",
+    "Swahili" : "スワヒリ語",
+    "Tamil" : "タミル語",
+    "Telugu" : "テルグ語",
+    "Tajik" : "タジク語",
+    "Thai" : "タイ語",
+    "Tibetan" : "チベット語",
+    "Tigrinya" : "ティグリニア語",
+    "Tagalog" : "タガログ語",
+    "Turkish" : "トルコ語",
+    "Tatar" : "タタール語",
+    "Uyghur" : "ウイグル語",
+    "Ukrainian" : "ウクライナ語",
+    "Urdu" : "ウルドゥー語",
+    "Uzbek" : "ウズベク語",
+    "Uzbek" : "ウズベク語",
+    "Vietnamese" : "ベトナム語",
+    "Xhosa" : "コーサ語",
+    "Simplied Chinese" : "簡体字中国語",
+    "Traditional Chinese" : "繁体字中国語",
+    "Zulu" : "ズールー語",
+
+    "CSS: %1$s: The first argument to the %2$s function should be %3$s, not %4$s."
+        : "CSS: %1$s: %2$s の最初の引数は %4$s ではなく %3$s であるべきです。",
+    "CSS: %1$s: Missing a semicolon before the property name %2$s."
+        : "CSS %1$s: プロパティ %2$s の前にセミコロンがありません。",
+    "CSS: unrecognized media %1$s." : "CSS: %1$s は media に認識されない値です。",
+    "CSS: %1$s: %2$s is not a %3$s value." : "CSS : %1$s : %2$s は %3$s の値として正しくありません。",
+    "CSS: too few values for the property %1$s" : "CSS: プロパティ %1$s の値が足りません。",
+    "CSS: %1$s: only %2$s can be a %3$s. You must put a unit after your number." : "CSS: %1$s: %2$s が指定されていますが、数値の後に単位が必要です。",
+    "CSS: %1$s: Property %2$s doesn't exist." : "CSS: %1$s: プロパティ %2$s は存在しません。",
+    "CSS: %1$s: Too many values or values are not recognized." : "CSS: %1$s: 値が多すぎるか、認識できません。",
+    "CSS: %1$s: Parse Error." : "CSS: %1$s: 解析に失敗しました。",
+    "CSS: %1$s: Unknown dimension." : "CSS %1$s: 不明なディメンションです。",
+
+    "Use CSS instead" : "CSSを使うべきです",
+    "Forbidden code point " : "利用できないコードポイント ",
+    "End of file seen without seeing a doctype first. Expected %1$s." : "%1$sがありません。",
+    "Consider adding a %1$s attribute to the %2$s start tag to declare the language of this document."
+        : "ドキュメントの言語を宣言するために %1$sの開始タグに %2$s 属性の追加を検討してください。",
+    "Potentially bad value %2$s for attribute %3$s on element %1$s: The language subtag %4$s is deprecated. Use %5$s instead."
+        : "%1$sタグの属性値 %2$s が不正です。言語 %4$s を指定することはできません。 %5$sを利用してください。",
+    "The document is not mappable to XML 1.0 due to two consecutive hyphens in a comment."
+        : "コメント内にハイフンが 2つ連続しています。",
+    "An IDREFS value must contain at least one non-whitespace character."
+        : "IDREFS 値には、空白以外の文字が少なくとも 1つ含まれている必要があります。",
+    "A numeric character reference expanded to carriage return."
+        : "数字参照が CRに展開されました。",
+    "Illegal character in scheme data: carriage return is not allowed."
+        : "CRはスキーマデータに利用できません。",
+    "The %1$s attribute is obsolete. Consider specifying %2$s in CSS instead."
+        : "%1$s 属性は廃止されました。CSSを利用して %2$s 指定することを検討してください。",
+    "A slash was not immediately followed by %1$s." : "スラッシュの後に %1$s がありません。",
+    "The %1$s attribute on the %2$s element is obsolete. Use a regular %3$s element to link to the description."
+        : "%2$s 要素の %1$s 属性は廃止されました。%3$s要素で概要文へのリンクを追加してください。",
+    "Illegal character in path segment: space is not allowed." : "セグメントに不正な文字があります: パスにスペースは利用できません。",
+    "Quote %1$s in attribute name. Probable cause: Matching quote missing somewhere earlier."
+        : "属性名に引用符 %1$s が含まれています。引用符がどこかで欠落しているのかもしれません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Must contain only %4$s or %5$s URLs."
+        : "%1$s 要素の %3$s 属性に不適切な値 %2$s が指定されています。%4$s か %5$s を含むURLでなければなりません。",
+    "The %1$s attribute is unnecessary for JavaScript resources." : "JavaScriptリソースには %1$s 属性は不要です。",
+    "Element %1$s is missing a required child element.": "%1$sタグの必要な子要素が見つかりません。",
+    "Table cell spans past the end of its row group established by a %1$s element; clipped to the end of the row group."
+        : "テーブルのセルが%1$s行グループの末尾を超えています。行グループの最後に揃えられます。",
+    "Section lacks heading. Consider using %1$s-%2$s elements to add identifying headings to all sections."
+        : "セクションに見出しがありません。%1$s-%2$s 要素を使用して、すべてのセクションに見出しを追加することを検討してください。",
+    "The %1$s attribute on the %2$s element is obsolete." : "%2$s 要素の %1$s 属性は廃止されました。",
+    "Possible misuse of %1$s. (If you disagree with this warning, file an issue report or send e-mail to www-validator@w3.org.)"
+        : "%1$s の利用方法が誤っている可能性があります(この警告に同意しない場合は、レポートを提出するか、www-validator@w3.org に電子メールを送信してください)。",
+    "Consider using the %1$s element as a top-level heading only (all %2$s elements are treated as top-level headings by many screen readers and other tools)."
+        : "%1$s 要素を最上位の見出しとしてのみ使用することを検討してください(すべての %2$s 要素は、多くのスクリーンリーダーやその他のツールによって最上位の見出しとして扱われます)。",
+    "The %1$s role is unnecessary for element %2$s." : "%2$s 要素にロール %1$s の指定は必要ありません。",
+    "A table row was %1$s columns wide, which is less than the column count established by the first row (%2$s)"
+        : "table の行のカラム数(%2$s)が最初の行のカラム数 %1$sを超えています。",
+    "Table columns in range %1$s established by element %2$s have no cells beginning in them."
+        : "要素 %2$s によって確立された範囲 %1$s のテーブル列には、それらで始まるセルがありません。",
+    "A table row was %1$s columns wide and exceeded the column count established using column markup (%2$s)."
+        : "表の行の幅が%1$s列で、行(%2$s)によって設定された列数を超えています。",
+    "Table column %1$s established by element <code>%2$s</code> has no cells beginning in it."
+        : "<code>%2$s</code>によって確立された表の列 %1$sにそこから始まるセルがありません。",
+    "Table column 2 established by element %1$s has no cells beginning in it."
+        : "%1$s 要素の2つめのセルがありません。",
+    "A table row was %1$s columns wide and exceeded the column count established by the first row (%2$s)."
+        : "表の行の幅が%1$s列で、最初の行(%2$s)によって設定された列数を超えています。",
+    "An element with the attribute %1$s must not appear as a descendant of an element with the attribute %2$s."
+        : "%1$s 属性を持つ要素は %2$s 属性を持つ要素の中に置いてはいけません",
+    "An ID must not be the empty string." : "ID属性値は空であってはいけません。",
+    "Text run is not in Unicode Normalization Form C." : "テキストは Unicode正規化形式C(合成)されていません。",
+    "The value of attribute %1$s on element %2$s from namespace %3$s is not in Unicode Normalization Form C."
+        : "(名前空間 %3$s の) %2$s 要素の %1$s 属性の値が Unicode正規化形式C(合成)されていません。",
+    "Attribute with the local name %1$s is not serializable as XML 1.0." : "%1$s ローカル属性名は XML1.0としてシリアライズされていません。",
+    "Attribute %1$s is not serializable as XML 1.0." : "%1$s 属性は XML1.0としてシリアライズされていません。",
+    "A document must not include more than one %1$s element with its %2$s attribute set to the value %3$s."
+        : "ドキュメントには、%2$s 属性が %3$s の複数の %1$s 要素を含めることはできません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: An ID must not be the empty string."
+        : "%1$s 要素の %3$s 属性が正しくありません。ID は空であるべきではありません。",
+    "Almost standards mode doctype. Expected %1$s." : "%1$s を推奨します。",
+    "Element %1$s must not have attribute %2$s unless attribute %3$s is also specified."
+        : "%1$s には %3$s 属性が指定されていない限り %2$s 属性を含むべきではありません。",
+    "Attribute %1$s not allowed here." : "%1$s 属性はここには指定できません。",
+    "Text not allowed in element %1$s in this context." : "%1$s 要素の中に直接テキストを置くことはできません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Must not be empty."
+        : "%1$s 要素の %3$s 属性に %2$s が指定されています。空文字であるべきではありません。",
+    "Bad start tag in %1$s in %2$s in %3$s." : "%3$s の中の %2$s に含まれる開始タグ %1$s が不正です。",
+    "The %1$s attribute on the %2$s element is obsolete. Use an HTTP Content-Type header on the linked resource instead."
+        : "%2$s 要素の %1$s 属性は廃止されました。代わりに、リンクされたリソースでHTTP Content-Typeヘッダーを指定してください。",
+    "Bad value %1$s for the attribute %2$s (only %3$s permitted here)." : "%2$s 属性に 不適切な値 %1$s が指定されています。指定できるのは %3$s です。",
+    "An element with %1$s must be contained in, or owned by, an element with %2$s."
+        : "%1$s が指定されている要素は、%2$s. の要素に含まれている必要があります。",
+    "Bad value %1$s for attribute %2$s on element %3$s." : "%3$s 要素の %2$s 属性の値 %1$s が不適切です。",
+    "Element %1$s without attribute %2$s must not be empty." : "%2$s 属性のない %1$s 要素の内容を空にすることはできません。",
+    "The %2$s element is obsolete. %1$s." : "%2$s 要素は廃止されました。 %1$s",
+    "Non-space character inside %1$s inside %2$s." : "%2$s の中の %1$s 要素にスペース以外の文字が含まれています。",
+    "The value of the %1$s attribute of the %2$s element must be the ID of a non-hidden form control."
+        : "%2$s 要素の %1$s 属性は非表示でないコントロールのIDでなければなりません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Illegal character in query: %4$s is not allowed."
+        : "%1$s 要素の %3$s 属性にクエリ文字列に許可されない値 %2$s が指定されています。%4$s は許可されません。",
+    "Saw %1$s. Probable cause: Attempt to use an XML processing instruction in HTML. (XML processing instructions are not supported in HTML.)"
+        : "XML宣言 %1$s が見つかりました。",
+    "A %1$s element with a %2$s attribute must have a %3$s attribute that contains the value %4$s or the value %5$s or the value %6$s."
+        : "%2$s 属性を持つ %1$s 要素には、%3$s 属性に %4$s, %5$s または %6$s を指定してください。",
+    "The only allowed value for the %1$s attribute for the %2$s element is %3$s. (But the attribute is not needed and should be omitted altogether.)"
+        : "%2$s 要素の %1$s 属性に指定できるのは %3$s で、これは省略できます。",
+    "Bad value %2$s for attribute %3$s on element %1$s: %4$s must be followed by %5$s."
+        : "%1$s 要素の %3$s 属性に不適切な値 %2$s が指定されています。%4$s は %5$s であるべきです。",
+    "Using the %1$s element to specify the document-wide default language is obsolete. Consider specifying the language on the root element instead."
+        : "%1$s 要素を使用してドキュメント全体のデフォルト言語を指定することは廃止されました。代わりに、ルート要素で言語を指定することを検討してください。",
+    "Bad value <code>%1$s</code> for attribute <code>%2$s</code> on element <a target=\"_blank\" href=\"%3$s\"><code>%4$s</code></a>: %5$s"
+        : "要素 %4$s の <code>%2$s</code>属性の値<code>%1$s</code>が正しくありません。<a target=\"_blank\" href=\"%3$s\"><code>%4$s</code></a>: %5$s",
+    "The empty string is not a valid non-negative integer." : "空の文字列は有効な整数ではありません。",
+    "Saw %1$s within a comment. Probable cause: Nested comment (not allowed)." : "コメントの中に %1$s が記述されています。ネストされたコメントは許可されません。",
+    "The %1$s attribute on the %2$s element is obsolete. Consider describing the structure of the %3$s in a %4$s  element or in a %5$s element  containing the %6$s; or, simplify the structure of the %7$s so that no description is needed."
+        : "%2$s 要素の %1$s 属性は廃止されました。%4$s 要素またはテーブルを含む %5$s 要素でテーブルの構造を説明することを検討してください。または、説明が不要になるように %7$s の構造を単純化します。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Expected a digit but saw %4$s instead."
+        : "%1$s 要素の %3$s 属性の 値 %2$s は適切ではありません。数字が必要ですが、 %4$s が指定されています。",
+    "Element %1$s must not be empty." : "%s 要素の内容は空であるべきではありません。",
+    "Bad character %1$s after %2$s. Probable cause: Unescaped %3$s. Try escaping it as %4$s."
+        : "%2$s の後に不適切な文字 %1$s が含まれています。%3$s は %4$s のようにエスケープしてください。",
+    "A %1$s element must not appear as a descendant of a %2$s element unless the %3$s element has an %4$s attribute or has a %5$s attribute whose value contains %6$s, %7$s, %8$s, %9$s, %10$s, %11$s, %12$s, or %13$s."
+        : "%1$s 要素は、%4$s 属性が指定されているか、%3$s 要素の %5$s 属性に %6$s, %7$s, %8$s, %9$s, %10$s, %11$s, %12$s, または %13$s が指定されていない限り、%2$s 要素の配下には置くことができません。",
+    "Bad value  for attribute %2$s on element %1$s: Illegal character in scheme data: space is not allowed."
+        : "%1$s 要素の %2$s 属性に不適切な値が指定されています。Data URI schemeには空白を含めることはできません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Illegal character in scheme data: space is not allowed."
+        : "%1$s 要素の %3$s 属性に不適切な値 %2$s が指定されています。Data URI schemeには空白を含めることはできません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Illegal character in query: space is not allowed."
+        : "%1$s 要素の %3$s 属性に不適切な値 %2$s が指定されています。空白は許可されません。",
+    "Bad value %1$s for attribute %2$s on element %3$s" : "%3$s 要素の %2$s 属性に不適切な値 %1$s が指定されています。",
+    "The %1$s attribute is obsolete. Consider putting an %2$s attribute on the nearest container instead."
+        : "%1$s 属性は廃止されました。代わりに %2$s 属性の利用を検討してください。",
+    "Self-closing syntax (%1$s) used on a non-void HTML element. Ignoring the slash and treating as a start tag."
+        : "自己終了タグ(%1$s)が不正に指定されていますので、スラッシュを無視して開始タグとして扱います。",
+    "The %1$s attribute was specified, but the element is not a property of any item."
+        : "%1$s 属性が指定されていますが、要素はどのアイテムにも属していません。",
+    "An element with the attribute %1$s must not appear as a descendant of the %2$s element."
+        : "%1$s 属性は %2$s 要素の子要素に対しては指定できません。",
+    "The %1$s role is not allowed for element %2$s without a %3$s attribute and without a %4$s attribute whose value is greater than 1."
+        : "ロール(role) %1$s を %2$s 要素に指定するには %3$s 属性と 1より大きな値が指定された %4$s 属性が必要です。",
+    "The element %1$s must not appear as a descendant of an element with the attribute %2$s."
+        : "%1$s 要素は属性 %2$s 指定のある要素の中には置くことができません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Must be non-empty." : "%1$s 要素の %3$s 属性に許可されない値 %2$s が指定されています。値は空ではいけません。",
+    "The %1$s attribute must point to an element in the same document." : "%s 属性は、同じドキュメント内の要素を指している必要があります。",
+    "A %1$s attribute on a %2$s element found after the first 1024 bytes." : "%2$s 要素の %1$s 属性指定は先頭の 1024バイト内に記述してください。",
+    "Bad value  for attribute %2$s on element %1$s: Illegal character in query: %3$s is not allowed."
+        : "%1$s 要素の %2$s 属性にクエリ文字列に許可されない値 %3$s が指定されています。",
+    "End tag %1$s seen, but there were open elements." : "終了タグ %1$s がありますが、要素内に閉じられていないタグがあります。",
+    "End tag %1$s violates nesting rules." : "終了タグ %1$s のネストが正しくありません。",
+    "The %1$s attribute must not be specified on elements that do not have both an %2$s attribute and an %3$s attribute specified."
+        : "%2$s 属性と %3$s 属性の両方の指定がない場合は %1$s 属性は指定されるべきではありません。",
+    "Element %1$s is missing one or more of the following attributes: %2$s."
+        : "%1$s 要素に %2$s 属性が不足しています。",
+    "Element %1$s is missing one or more of the following attributes: %2$s, %3$s."
+        : "%1$s 要素に複数の属性が不足しています。%2$s, %3$s",
+    "Element %1$s is missing one or more of the following attributes: %2$s, %3$s, %4$s."
+        : "%1$s 要素に複数の属性が不足しています。%2$s, %3$s, %4$s",
+    "Element %1$s is missing one or more of the following attributes: %2$s, %3$s, %4$s, %5$s."
+        : "%1$s 要素に複数の属性が不足しています。%2$s, %3$s, %4$s, %5$s",
+    "Element %1$s is missing required attribute %2$s." : "%1$s 要素の必須属性 %2$s が指定されていません。",
+    "Duplicate ID %1$s." : "ID %1$s が重複しています。",
+    "Duplicate attribute %1$s." : "%1$s 属性が複数回指定されています。",
+    "Expected a digit but saw <code>%s</code> instead." : "数値を指定すべきところに<code>%s</code>が見つかりました。",
+    "The %1$s attribute on a %2$s element must have an the same value as the %3$s attribute."
+        : "%2$s要素の%1$s属性には%3$s属性と同じ値を指定してください。",
+    "%1$s in an unquoted attribute value. Probable causes: Attributes running together or a URL query string in an unquoted attribute value."
+        : "引用符で囲まれていない「%1$s」。URLのクエリストリングなどはクオートで囲むようにしてください。",
+    "Bad value %2$s for attribute %3$s on element %1$s: Illegal character in fragment: %4$s is not allowed."
+        : "%1$s 要素の %3$s 属性値の値 %2$s が不適切です。文字「%4$s」は許可されていません。",
+    "Attribute %2$s not allowed on element %1$s at this point." : "%1$s 要素には %2$s 属性を指定することはできません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: The media %4$s has been deprecated"
+        : "%1$s 要素の %3$s 属性値 %2$s が不適切です。media %4$s は非推奨になりました。",
+    "No space between attributes." : "属性の間に空白がありません。",
+    "The only allowed value for the %1$s attribute for the %2$s element is %3$s."
+        : "%2$s 要素の %1$s 属性に適切な値は %3$s です。",
+    "Trailing slash on void elements has no effect and interacts badly with unquoted attribute values."
+        : "空要素の要素の末尾のスラッシュは効果がありません。",
+    "Internal encoding declaration %1$s disagrees with the actual encoding of the document (%2$s)."
+        : "指定されているエンコーディング %1$s は実際のエンコーディング %2$s と一致しません。",
+    "Bad value %2$s for attribute %3$s on element %1$s." : "%1$s 要素の %3$s 属性の値 %2$s が不適切です。",
+    "Quirky doctype. Expected %1$s." : "不正な doctypeです。正しくは %1$sを指定してください。",
+    "Start tag seen without seeing a doctype first. Expected %1$s." : "文書の先頭に %1$s を指定してください。",
+    "Element %1$s not allowed as child of element %2$s in this context. (Suppressing further errors from this subtree.)"
+        : "%1$s 要素は %2$s タグの直下に置くことはできません。",
+    "Stray start tag %1$s." : "開始タグ %1$s の位置が正しくありません。",
+    "Stray end tag %1$s." : "終了タグ %1$s の位置が正しくありません。",
+    "End of file after %1$s." : "ドキュメントが %1$s で終わっています。",
+    "A %1$s element with an %2$s attribute whose value is %3$s must have a %4$s attribute with the value %5$s."
+        : "%1$s 要素の %2$s 属性の値が %3$s である時 %4$s 属性は %5$s でなければなりません。",
+    "The text content of element %1$s was not in the required format: The literal did not satisfy the time-datetime format."
+        : "datetime 属性のない %1$s 要素内のテキストは正しい time-datetime 形式でなくてはいけません。",
+    "An %2$s element must have an %3$s attribute, except under certain conditions. For details, consult %1$s."
+        : "%2$s 要素には %3$s 属性が必要です。詳しくは %1$s を参照してください。",
+    "A numeric character reference expanded to the C1 controls range."
+        : "数字参照は Unicodeの C1コントロール範囲に拡張されました。",
+    "The element %1$s must not appear as a descendant of the %2$s element." : "%1$s 要素は %2$s 要素の子要素にはできません。",
+    "The %2$s attribute on the %3$s element is obsolete. %1$s." : "%3$s 要素の %2$s 属性は廃止されました。%1$s",
+    "Start tag %1$s seen but an element of the same type was already open." : "開始タグ %1$s が存在しますが、すでに同じタイプのタグが開始されています。",
+    "End tag %1$s implied, but there were open elements." : "終了タグ %1$s は省略可能ですが、開始タグのみが存在します。",
+    "Unclosed element %1$s." : "要素 %1$s が閉じられていません。",
+    "End tag for  %1$s seen, but there were unclosed elements." : "%1$s タグが見つかりましたが、閉じられていないタグがあります。",
+    "Element %2$s not allowed as child of element %1$s in this context. (Suppressing further errors from this subtree.)" : "%2$s 要素は %1$s の子要素として許可されていません。",
+    "Element %1$s is missing a required instance of child element %2$s." : "%1$s 要素の必須の子要素 %2$s がありません。",
+    "No %1$s element in scope but a %2$s end tag seen." : "%2$s 要素の閉じタグに対する %1$s 要素の開始タグがありません。",
+    "Bad value %2$s for attribute %3$s on element %1$s: The language subtag %4$s is not a valid language subtag." : "%1$s 要素の %3$s属性値 %2$s は正しい値はありません。: %4$sは正しい言語ではありません。",
+    "The %1$s attribute for the %2$s element is not needed and should be omitted." : "%2$s 要素の %1$s 属性は不要です。",
+    "The first occurrence of ID %1$s was here." : "最初に出現する ID %1$s の場所はここです。",
+    "This document appears to be written in %1$s but the %2$s start tag has %3$s. Consider using %4$s (or variant) instead."
+        : "このドキュメントは%1$sで書かれているようですが %2$s 開始タグに %3$s が含まれています。代わりに %4$s などの使用を検討してください。",
+    "Cannot recover after last error. Any further errors will be ignored." : "最後のエラー以降のエラーを評価できません。これ以降のエラーは無視されます。"
+}

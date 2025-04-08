@@ -1,0 +1,89 @@
+<mt:if name="request.revision_select">
+<mt:var name="_status_text">
+<mt:else>
+<mt:if name="status_published" eq="4">
+<mt:if name="status" eq="5">
+  <mt:setvar name="class_name" value="unpublished">
+  <mt:setvar name="filter_name" value="filter_unpublished">
+<mt:elseif name="status" eq="4">
+  <mt:setvar name="class_name" value="published">
+  <mt:setvar name="filter_name" value="filter_published">
+<mt:elseif name="status" eq="3">
+  <mt:setvar name="class_name" value="reserved">
+  <mt:setvar name="filter_name" value="filter_reserved">
+<mt:elseif name="status" eq="2">
+  <mt:setvar name="class_name" value="approval">
+  <mt:setvar name="filter_name" value="filter_approval">
+<mt:elseif name="status" eq="1">
+  <mt:setvar name="class_name" value="review">
+  <mt:setvar name="filter_name" value="filter_review">
+<mt:else>
+  <mt:setvar name="class_name" value="draft">
+  <mt:setvar name="filter_name" value="filter_draft">
+</mt:if>
+<mt:else>
+<mt:if name="status" eq="1">
+  <mt:setvar name="class_name" value="draft">
+  <mt:setvar name="filter_name" value="filter_review">
+<mt:elseif name="status" eq="2">
+  <mt:setvar name="class_name" value="published">
+  <mt:setvar name="filter_name" value="filter_approval">
+</mt:if>
+</mt:if>
+<mt:setvar name="add_params" value="">
+<mt:if name="request.dialog_view">
+<mt:setvar name="add_params" append="1" value="&amp;dialog_view=1">
+</mt:if>
+<mt:if name="request.select_add">
+  <mt:setvar name="add_params" append="1" value="&amp;select_add=1">
+</mt:if>
+<mt:if name="request.single_select">
+  <mt:setvar name="add_params" append="1" value="&amp;single_select=1">
+</mt:if>
+<mt:if name="request.target">
+  <mt:setvarblock name="add_param">&amp;target=<mt:var name="request.target" escape></mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+<mt:if name="request.from_obj">
+  <mt:setvarblock name="add_param">&amp;from_obj=<mt:var name="request.from_obj" escape></mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+<mt:if name="request.get_col">
+  <mt:setvarblock name="add_param">&amp;get_col=<mt:var name="request.get_col" escape></mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+<mt:if name="request.ref_model">
+  <mt:setvarblock name="add_param">&amp;ref_model=<mt:var name="request.ref_model" escape></mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+<mt:if name="request.insert_editor">
+  <mt:setvarblock name="add_param">&amp;insert_editor=1</mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+
+<mt:if name="request.insert">
+  <mt:setvarblock name="add_param">&amp;ref_model=<mt:var name="request.insert" escape></mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+<mt:var name="request._from_scope" setvar="_from_scope">
+<mt:if name="request._from_scope" ne="">
+  <mt:setvarblock name="add_param">&amp;_from_scope=<mt:var name="request._from_scope" escape></mt:setvarblock>
+  <mt:setvar name="add_params" append="1" value="$add_param">
+</mt:if>
+<a class="col-status-<mt:var name="class_name">" href="<mt:var name="script_uri">?__mode=view&amp;_model=<mt:var name="this_model" escape>&amp;_type=list&amp;_filter=<mt:var name="this_model" escape>&amp;select_system_filters=<mt:var name="filter_name"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id" escape></mt:if><mt:var name="add_params">">
+<mt:var name="_status_text">
+</a>
+</mt:if>
+<mt:if name="has_revision">
+  <mt:if name="can_revision">
+<mt:objectloop workspace_ids="all" ignore_filter="1" model="$this_model" cols="id,published_on" rev_type="2" status="3" rev_object_id="$id" limit="1" sort_by="published_on" sort_order="ascend">
+<a title="<mt:trans phrase="Reserved(Replace)">" data-toggle="tooltip" data-placement="top"
+  style="margin-top:-3px;font-size:0.95rem;"
+  href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="this_model" escape><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if>&amp;id=<mt:var name="id" escape>&amp;edit_revision=1"
+  class="col-status-reserved ml-1 pl-0 pr-0 pt-0 pb-0">
+  <i class="fa fa-code-fork"></i> <mt:statustext status="3" model="$this_model" no_title="1" icon_only="1" icon="1" revision="1">
+  '<mt:var name="published_on" format_ts="y-m-d H:i">
+</a>
+</mt:objectloop>
+  </mt:if>
+</mt:if>

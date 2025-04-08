@@ -1,0 +1,62 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tsutaeru_client_id">
+      <strong><mt:trans phrase="Agree to the terms" component="NuHtmlChecker"></strong>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_nuhtmlchecker_agree" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_nuhtmlchecker_agree" name="setting_nuhtmlchecker_agree" value="1"
+        <mt:if name="setting_nuhtmlchecker_agree">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="I agree that this plugin may send the content being created to external services." component="NuHtmlChecker"></span>
+    </label>
+  </div>
+</div>
+<div id="nuhtmlchecker-settings-wrapper"<mt:unless name="setting_nuhtmlchecker_agree"> class="hidden"</mt:unless>>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_nuhtmlchecker_url">
+      <mt:trans phrase="URL" component="NuHtmlChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_nuhtmlchecker_url" name="setting_nuhtmlchecker_url" class="form-control" value="<mt:var name="setting_nuhtmlchecker_url" escape>">
+  </div>
+</div>
+<div class="row form-group mt-4">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_nuhtmlchecker_parse_result" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_nuhtmlchecker_parse_result" name="setting_nuhtmlchecker_parse_result" value="1"
+        <mt:if name="setting_nuhtmlchecker_parse_result">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Format and translate the result" component="NuHtmlChecker"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_nuhtmlchecker_caching" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input"
+        id="setting_nuhtmlchecker_caching" name="setting_nuhtmlchecker_caching" value="1"
+        <mt:if name="setting_nuhtmlchecker_caching">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="Cache results" component="NuHtmlChecker"></span>
+    </label>
+  </div>
+</div>
+<script>
+$('#setting_nuhtmlchecker_agree').change(function(){
+    if ( $(this).prop( 'checked' ) ) {
+        $('#nuhtmlchecker-settings-wrapper').show(100);
+    } else {
+        $('#nuhtmlchecker-settings-wrapper').hide(100);
+    }
+});
+</script>
+</div>

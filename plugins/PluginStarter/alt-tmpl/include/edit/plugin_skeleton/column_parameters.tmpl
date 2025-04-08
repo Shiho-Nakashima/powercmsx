@@ -1,0 +1,2072 @@
+<style>
+thead{ background-color:black; color: white }
+.close-plugin{ padding:0 5px; margin-left:0;margin-right:0 }
+thead tr { border-bottom: 3px solid #444 !important}
+tr { border: 1px solid #444 !important}
+td { border-top: 1px solid #444 !important}
+/*
+input[type="text"]{ padding: 5px }
+*/
+</style>
+<mt:if name="user_language" ne="en">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="description_locale">
+      <mt:trans phrase="Description"> (<mt:var name="language" translate>)
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <input type="text" id="description_locale" name="description_locale" class="form-control watch-changed" value="<mt:var name="request.description_locale" escape>">
+  </div>
+</div>
+</mt:if>
+
+<hr>
+<div class="row form-group mt-4">
+  <div class="col-lg-2">
+    <label for="has_app">
+    <mt:trans phrase="Extended Apps">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="has_app" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="has_app" class="custom-control-input watch-changed"
+     type="checkbox" name="has_app" value="1" <mt:if name="object_has_app">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Export apps that extends class Prototype." component="PluginStarter"></span>
+    </label>
+  </div>
+</div>
+<hr>
+
+<mt:var name="request.config_key" setvar="config_keys">
+<mt:var name="request.config_value" setvar="config_values">
+<mt:arrayslice name="config_keys" offset="1">
+<mt:arrayslice name="config_values" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_config" class="btn btn-sm  pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Config Settings" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto" style="overflow: auto">
+    <table id="config_table" <mt:unless name="config_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:50%"><mt:trans phrase="Name"></th>
+          <th class="text-center" class="text-center" style="width:50%"><mt:trans phrase="Value"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="config_body">
+        <tr id="config_tmpl" style="display:none">
+          <td style="width:50%">
+            <input type="text" name="config_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:50%">
+            <input type="text" name="config_value[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="config_keys">
+        <tr>
+          <td>
+            <input type="text" name="config_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td>
+            <mt:setvarblock name="value_name">config_values[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="config_value[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.setting_key" setvar="setting_keys">
+<mt:var name="request.setting_value" setvar="setting_values">
+<mt:var name="request.setting_scope" setvar="setting_scopes">
+<mt:var name="request.setting_label" setvar="setting_labels">
+<mt:var name="request.setting_label_locale" setvar="setting_label_locales">
+<mt:arrayslice name="setting_keys" offset="1">
+<mt:arrayslice name="setting_values" offset="1">
+<mt:arrayslice name="setting_scopes" offset="1">
+<mt:arrayslice name="setting_labels" offset="1">
+<mt:arrayslice name="setting_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_setting" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Plugin Settings" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="setting_table" <mt:unless name="setting_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Name"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Value"></th>
+          <th class="text-center" class="text-center" style="width:16%"><mt:trans phrase="Scope" component="PluginStarter"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">22%<mt:else>44%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:22%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="setting_body">
+        <tr id="setting_tmpl" style="display:none">
+          <td style="width:20%">
+            <input type="text" name="setting_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:20%">
+            <input type="text" name="setting_value[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:16%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="setting_scope[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1"><mt:trans phrase="System"></option>
+              <option value="2"><mt:trans phrase="WorkSpace"></option>
+              <option value="3"><mt:trans phrase="Both" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:<mt:if name="user_language" ne="en">22%<mt:else>44%</mt:if>">
+            <input type="text" name="setting_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="width:22%">
+          <input type="text" name="setting_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="setting_keys">
+        <tr>
+          <td style="width:20%">
+            <input type="text" name="setting_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="width:20%">
+            <mt:setvarblock name="value_name">setting_values[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="setting_value[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td style="width:16%">
+            <mt:setvarblock name="value_name">setting_scopes[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="setting_scope[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>><mt:trans phrase="System"></option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>><mt:trans phrase="WorkSpace"></option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>><mt:trans phrase="Both" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:<mt:if name="user_language" ne="en">22%<mt:else>44%</mt:if>">
+            <mt:setvarblock name="value_name">setting_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="setting_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="width:22%">
+            <mt:setvarblock name="value_name">setting_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="setting_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.method_mode" setvar="method_modes">
+<mt:var name="request.method_permission" setvar="method_permissions">
+<mt:var name="request.method_menu" setvar="method_menus">
+<mt:var name="request.method_menu_order" setvar="method_menu_orders">
+<mt:var name="request.method_menu_label" setvar="method_menu_labels">
+<mt:var name="request.method_menu_label_locale" setvar="method_menu_label_locales">
+<mt:arrayslice name="method_modes" offset="1">
+<mt:arrayslice name="method_permissions" offset="1">
+<mt:arrayslice name="method_menus" offset="1">
+<mt:arrayslice name="method_menu_orders" offset="1">
+<mt:arrayslice name="method_menu_labels" offset="1">
+<mt:arrayslice name="method_menu_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_method" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Methods" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="method_table" <mt:unless name="method_modes">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:18%"><mt:trans phrase="Name"></th>
+          <th class="text-center" class="text-center" style="width:17%"><mt:trans phrase="Permission"></th>
+          <th class="text-center" class="text-center" style="width:15%"><mt:trans phrase="Menu"></th>
+          <th class="text-center" class="text-center" style="width:15%"><mt:trans phrase="Order"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">17%<mt:else>34%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:17%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="method_body">
+        <tr id="method_tmpl" style="display:none">
+          <td style="width:18%">
+            <input type="text" name="method_mode[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:17%">
+            <input type="text" name="method_permission[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:15%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="method_menu[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1"><mt:trans phrase="System"></option>
+              <option value="2"><mt:trans phrase="WorkSpace"></option>
+              <option value="3"><mt:trans phrase="Both" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:15%">
+            <input type="number" style="width:100%" name="method_menu_order[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td style="width:<mt:if name="user_language" ne="en">17%<mt:else>34%</mt:if>">
+            <input type="text" name="method_menu_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="width:17%">
+          <input type="text" name="method_menu_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="method_modes">
+        <tr>
+          <td style="width:18%">
+            <input type="text" name="method_mode[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="width:17%">
+            <mt:setvarblock name="value_name">method_permissions[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="method_permission[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td style="width:15%">
+            <mt:setvarblock name="value_name">method_menus[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="method_menu[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>><mt:trans phrase="System"></option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>><mt:trans phrase="WorkSpace"></option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>><mt:trans phrase="Both" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:15%">
+            <mt:setvarblock name="value_name">method_menu_orders[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" style="width:100%" name="method_menu_order[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td style="width:<mt:if name="user_language" ne="en">17%<mt:else>34%</mt:if>">
+            <mt:setvarblock name="value_name">method_menu_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="method_menu_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="width:17%">
+            <mt:setvarblock name="value_name">method_menu_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="method_menu_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.api_method_mode" setvar="api_method_modes">
+<mt:var name="request.api_method_version" setvar="api_method_versions">
+<mt:var name="request.api_method_login" setvar="api_method_logins">
+<mt:var name="request.api_method_permission" setvar="api_method_permissions">
+<mt:var name="request.api_method_allowed" setvar="api_method_alloweds">
+<mt:arrayslice name="api_method_modes" offset="1">
+<mt:arrayslice name="api_method_versions" offset="1">
+<mt:arrayslice name="api_method_logins" offset="1">
+<mt:arrayslice name="api_method_permissions" offset="1">
+<mt:arrayslice name="api_method_alloweds" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_api_method" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="RESTful API Method" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="api_method_table" <mt:unless name="api_method_modes">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Name"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Version"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Login"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Permission"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Methods" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="api_method_body">
+        <tr id="api_method_tmpl" style="display:none">
+          <td>
+            <input type="text" name="api_method_mode[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td>
+            <input type="text" name="api_method_version[]" class="form-control watch-changed form-control-sm" value="<mt:var name="api_version" escape>" placeholder="<mt:var name="api_version" escape>">
+          </td>
+          <td class="text-center">
+            <select class="form-control watch-changed form-control-sm custom-select" name="api_method_login[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1"><mt:trans phrase="Requires" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td>
+            <input type="text" name="api_method_permission[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td>
+            <input type="text" name="api_method_allowed[]" class="form-control watch-changed form-control-sm" value="GET,POST,PUT,DELETE" placeholder="GET,POST,PUT,DELETE">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="api_method_modes">
+        <tr>
+          <td>
+            <input type="text" name="api_method_mode[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td>
+            <mt:setvarblock name="value_name">api_method_versions[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" style="width:100%" name="api_method_version[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>" placeholder="<mt:var name="api_version" escape>">
+          </td>
+          <td class="text-center">
+            <mt:setvarblock name="value_name">api_method_logins[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="api_method_login[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1" <mt:if name="$value_name">selected</mt:if>><mt:trans phrase="Requires" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td>
+            <mt:setvarblock name="value_name">api_method_permissions[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="api_method_permission[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+            <mt:setvarblock name="value_name">api_method_alloweds[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="api_method_allowed[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>" placeholder="GET,POST,PUT,DELETE">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.tag_name" setvar="tag_names">
+<mt:var name="request.tag_kind" setvar="tag_kinds">
+<mt:var name="request.tag_description" setvar="tag_descriptions">
+<mt:var name="request.tag_description_locale" setvar="tag_description_locales">
+<mt:arrayslice name="tag_names" offset="1">
+<mt:arrayslice name="tag_kinds" offset="1">
+<mt:arrayslice name="tag_descriptions" offset="1">
+<mt:arrayslice name="tag_description_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_tag" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Template Tags" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="tag_table" <mt:unless name="tag_names">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Name"></th>
+          <th class="text-center" class="text-center" style="width:24%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">28%<mt:else>56%</mt:if>"><mt:trans phrase="Description"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:28%"><mt:trans phrase="Description"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tag_body">
+        <tr id="tag_tmpl" style="display:none">
+          <td style="width:20%">
+            <input type="text" name="tag_name[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:24%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="tag_kind[]"
+              style="height:31px;">
+              <option value="block"><mt:trans phrase="Block Tag" component="PluginStarter"></option>
+              <option value="conditional"><mt:trans phrase="Conditional Tag" component="PluginStarter"></option>
+              <option value="function"><mt:trans phrase="Function Tag" component="PluginStarter"></option>
+              <option value="modifier"><mt:trans phrase="Global Modifier" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:<mt:if name="user_language" ne="en">28%<mt:else>56%</mt:if>">
+            <input type="text" name="tag_description[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="width:28%">
+            <input type="text" name="tag_description_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="tag_names">
+        <tr>
+          <td style="width:20%">
+            <input type="text" name="tag_name[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="width:24%">
+            <mt:setvarblock name="value_name">tag_kinds[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="tag_kind[]"
+              style="height:31px;">
+              <option value="block" <mt:if name="$value_name" eq="block">selected</mt:if>><mt:trans phrase="Block Tag" component="PluginStarter"></option>
+              <option value="conditional" <mt:if name="$value_name" eq="conditional">selected</mt:if>><mt:trans phrase="Conditional Tag" component="PluginStarter"></option>
+              <option value="function" <mt:if name="$value_name" eq="function">selected</mt:if>><mt:trans phrase="Function Tag" component="PluginStarter"></option>
+              <option value="modifier" <mt:if name="$value_name" eq="modifier">selected</mt:if>><mt:trans phrase="Global Modifier" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:<mt:if name="user_language" ne="en">28%<mt:else>56%</mt:if>">
+            <mt:setvarblock name="value_name">tag_descriptions[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="tag_description[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="width:28%">
+            <mt:setvarblock name="value_name">tag_description_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="tag_description_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.hook_kind" setvar="hook_kinds">
+<mt:var name="request.hook_priority" setvar="hook_priorities">
+<mt:arrayslice name="hook_kinds" offset="1">
+<mt:arrayslice name="hook_priorities" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_hook" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Hooks" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="hook_table" <mt:unless name="hook_kinds">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:50%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:50%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="hook_body">
+        <tr id="hook_tmpl" style="display:none">
+          <td style="width:50%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="hook_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="start_app">start_app</option>
+              <option value="post_init">post_init</option>
+              <option value="pre_run">pre_run</option>
+              <option value="start_mode">start_mode</option>
+              <option value="pre_view">pre_view</option>
+              <option value="pre_save">pre_save</option>
+              <option value="post_run">post_run</option>
+              <option value="take_down">take_down</option>
+            </select>
+          </td>
+          <td style="width:50%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="hook_priority[]"
+              style="height:31px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="hook_kinds">
+        <tr>
+          <td style="width:50%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="hook_kind[]"
+              style="height:31px;">
+              <option value="" <mt:unless name="__value__">selected</mt:unless>><mt:trans phrase="Unspecified"></option>
+              <option value="start_app" <mt:if name="__value__" eq="start_app">selected</mt:if>>start_app</option>
+              <option value="post_init" <mt:if name="__value__" eq="post_init">selected</mt:if>>post_init</option>
+              <option value="pre_run" <mt:if name="__value__" eq="pre_run">selected</mt:if>>pre_run</option>
+              <option value="start_mode" <mt:if name="__value__" eq="start_mode">selected</mt:if>>start_mode</option>
+              <option value="pre_view" <mt:if name="__value__" eq="pre_view">selected</mt:if>>pre_view</option>
+              <option value="pre_save" <mt:if name="__value__" eq="pre_save">selected</mt:if>>pre_save</option>
+              <option value="post_run" <mt:if name="__value__" eq="post_run">selected</mt:if>>post_run</option>
+              <option value="take_down" <mt:if name="__value__" eq="take_down">selected</mt:if>>take_down</option>
+            </select>
+          </td>
+          <td style="width:50%">
+            <mt:setvarblock name="value_name">hook_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="hook_priority[]"
+              style="height:31px;">
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>>1</option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>>2</option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>>3</option>
+              <option value="4" <mt:if name="$value_name" eq="4">selected</mt:if>>4</option>
+              <option value="5" <mt:if name="$value_name" eq="5">selected</mt:if>>5</option>
+              <option value="6" <mt:if name="$value_name" eq="6">selected</mt:if>>6</option>
+              <option value="7" <mt:if name="$value_name" eq="7">selected</mt:if>>7</option>
+              <option value="8" <mt:if name="$value_name" eq="8">selected</mt:if>>8</option>
+              <option value="9" <mt:if name="$value_name" eq="9">selected</mt:if>>9</option>
+              <option value="10" <mt:if name="$value_name" eq="10">selected</mt:if>>10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.task_key" setvar="task_keys">
+<mt:var name="request.task_frequency" setvar="task_frequencies">
+<mt:var name="request.task_priority" setvar="task_priorities">
+<mt:var name="request.task_label" setvar="task_labels">
+<mt:var name="request.task_label_locale" setvar="task_label_locales">
+<mt:arrayslice name="task_keys" offset="1">
+<mt:arrayslice name="task_frequencies" offset="1">
+<mt:arrayslice name="task_priorities" offset="1">
+<mt:arrayslice name="task_labels" offset="1">
+<mt:arrayslice name="task_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_task" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Tasks" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="task_table" <mt:unless name="task_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:30%"><mt:trans phrase="Key"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:23%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th class="text-center" class="text-center" style="width:12%"><mt:trans phrase="Frequency" component="PluginStarter"></th>
+          <th class="text-center" class="text-center" style="width:12%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="task_body">
+        <tr id="task_tmpl" style="display:none">
+          <td style="width:30%">
+            <input type="text" name="task_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <input type="text" name="task_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <input type="text" name="task_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td style="width:12%">
+            <input type="number" style="width:100%" name="task_frequency[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td style="width:12%">
+            <input type="number" style="width:100%" name="task_priority[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="task_keys">
+        <tr>
+          <td style="width:30%">
+            <input type="text" name="task_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <mt:setvarblock name="value_name">task_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="task_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <mt:setvarblock name="value_name">task_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="task_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td style="width:12%">
+            <mt:setvarblock name="value_name">task_frequencies[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" style="width:100%" name="task_frequency[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td style="width:12%">
+            <mt:setvarblock name="value_name">task_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" style="width:100%" name="task_priority[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.edit_property_key" setvar="edit_property_keys">
+<mt:var name="request.edit_property_frequency" setvar="edit_property_frequencies">
+<mt:var name="request.edit_property_order" setvar="edit_property_orders">
+<mt:var name="request.edit_property_label" setvar="edit_property_labels">
+<mt:var name="request.edit_property_label_locale" setvar="edit_property_label_locales">
+<mt:arrayslice name="edit_property_keys" offset="1">
+<mt:arrayslice name="edit_property_orders" offset="1">
+<mt:arrayslice name="edit_property_labels" offset="1">
+<mt:arrayslice name="edit_property_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_edit_property" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Custom Edit Type" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="edit_property_table" <mt:unless name="edit_property_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:30%"><mt:trans phrase="Key"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:23%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th class="text-center" class="text-center" style="width:24%"><mt:trans phrase="Order"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="edit_property_body">
+        <tr id="edit_property_tmpl" style="display:none">
+          <td style="width:30%">
+            <input type="text" name="edit_property_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <input type="text" name="edit_property_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <input type="text" name="edit_property_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td style="width:24%">
+            <input type="number" step="100" style="width:100%" name="edit_property_order[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="edit_property_keys">
+        <tr>
+          <td style="width:30%">
+            <input type="text" name="edit_property_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <mt:setvarblock name="value_name">edit_property_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="edit_property_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <mt:setvarblock name="value_name">edit_property_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="edit_property_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td style="width:24%">
+            <mt:setvarblock name="value_name">edit_property_orders[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" step="100" style="width:100%" name="edit_property_order[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.system_filter_key" setvar="system_filter_keys">
+<mt:var name="request.system_filter_model" setvar="system_filter_models">
+<mt:var name="request.system_filter_order" setvar="system_filter_orders">
+<mt:var name="request.system_filter_label" setvar="system_filter_labels">
+<mt:var name="request.system_filter_label_locale" setvar="system_filter_label_locales">
+<mt:arrayslice name="system_filter_keys" offset="1">
+<mt:arrayslice name="system_filter_models" offset="1">
+<mt:arrayslice name="system_filter_orders" offset="1">
+<mt:arrayslice name="system_filter_labels" offset="1">
+<mt:arrayslice name="system_filter_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_system_filter" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="System Filters">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="system_filter_table" <mt:unless name="system_filter_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:22%"><mt:trans phrase="Key"></th>
+          <th class="text-center" class="text-center" style="width:22%"><mt:trans phrase="Model"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">22%<mt:else>44%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:22%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th class="text-center" class="text-center" style="width:12%"><mt:trans phrase="Order"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="system_filter_body">
+        <tr id="system_filter_tmpl" style="display:none">
+          <td style="width:22%">
+            <input type="text" name="system_filter_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:22%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="system_filter_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+          <mt:tables type="all">
+            <option value="<mt:var name="name" escape>"><mt:var name="label" escape></option>
+          </mt:tables>
+            </select>
+          </td>
+          <td style="<mt:if name="user_language" ne="en">22%<mt:else>44%</mt:if>">
+            <input type="text" name="system_filter_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="22%">
+            <input type="text" name="system_filter_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td style="width:12%">
+            <input type="number" style="width:100%" name="system_filter_order[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="system_filter_keys">
+        <tr>
+          <td style="width:22%">
+            <input type="text" name="system_filter_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="width:22%">
+            <mt:setvarblock name="value_name">system_filter_models[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="system_filter_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+          <mt:tables type="all">
+            <option value="<mt:var name="name" escape>" <mt:if name="$value_name" eq="$name">selected</mt:if>><mt:var name="label" escape></option>
+          </mt:tables>
+            </select>
+          </td>
+          <td style="<mt:if name="user_language" ne="en">22%<mt:else>44%</mt:if>">
+            <mt:setvarblock name="value_name">system_filter_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="system_filter_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="22%">
+            <mt:setvarblock name="value_name">system_filter_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="system_filter_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td style="width:15%">
+            <mt:setvarblock name="value_name">system_filter_orders[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" style="width:100%" name="system_filter_order[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.list_action_key" setvar="list_action_keys">
+<mt:var name="request.list_action_model" setvar="list_action_models">
+<mt:var name="request.list_action_input" setvar="list_action_inputs">
+<mt:var name="request.list_action_order" setvar="list_action_orders">
+<mt:var name="request.list_action_label" setvar="list_action_labels">
+<mt:var name="request.list_action_label_locale" setvar="list_action_label_locales">
+<mt:arrayslice name="list_action_keys" offset="1">
+<mt:arrayslice name="list_action_models" offset="1">
+<mt:arrayslice name="list_action_inputs" offset="1">
+<mt:arrayslice name="list_action_orders" offset="1">
+<mt:arrayslice name="list_action_labels" offset="1">
+<mt:arrayslice name="list_action_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_list_action" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Action" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="list_action_table" <mt:unless name="list_action_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:18%"><mt:trans phrase="Key"></th>
+          <th class="text-center" class="text-center" style="width:18%"><mt:trans phrase="Model"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">18%<mt:else>36%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:18%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th class="text-center" class="text-center" style="width:16%"><mt:trans phrase="Input" component="PluginStarter"></th>
+          <th class="text-center" class="text-center" style="width:12%"><mt:trans phrase="Order"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="list_action_body">
+        <tr id="list_action_tmpl" style="display:none">
+          <td style="width:18%">
+            <input type="text" name="list_action_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:18%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="list_action_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+          <mt:tables type="all">
+            <option value="<mt:var name="name" escape>"><mt:var name="label" escape></option>
+          </mt:tables>
+            </select>
+          </td>
+          <td style="<mt:if name="user_language" ne="en">18%<mt:else>36%</mt:if>">
+            <input type="text" name="list_action_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="18%">
+            <input type="text" name="list_action_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td style="width:16%; text-align:center">
+            <select class="form-control watch-changed form-control-sm custom-select" name="list_action_input[]"
+              style="height:31px;">
+              <option value="0"><mt:trans phrase="None"></option>
+              <option value="1"><mt:trans phrase="Specified" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:12%">
+            <input type="number" style="width:100%" name="list_action_order[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="list_action_keys">
+        <tr>
+          <td style="width:18%">
+            <input type="text" name="list_action_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="width:18%">
+            <mt:setvarblock name="value_name">list_action_models[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="list_action_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+          <mt:tables type="all">
+            <option value="<mt:var name="name" escape>" <mt:if name="$value_name" eq="$name">selected</mt:if>><mt:var name="label" escape></option>
+          </mt:tables>
+            </select>
+          </td>
+          <td style="<mt:if name="user_language" ne="en">18%<mt:else>36%</mt:if>">
+            <mt:setvarblock name="value_name">list_action_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="list_action_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="18%">
+            <mt:setvarblock name="value_name">list_action_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="list_action_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td style="width:16%; text-align:center">
+            <mt:setvarblock name="value_name">list_action_inputs[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="list_action_input[]"
+              style="height:31px;">
+              <option value="0" <mt:if name="$value_name" eq="0">selected</mt:if>><mt:trans phrase="None"></option>
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>><mt:trans phrase="Specified" component="PluginStarter"></option>
+            </select>
+          </td>
+          <td style="width:12%">
+            <mt:setvarblock name="value_name">list_action_orders[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" style="width:100%" name="list_action_order[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr>
+<h2><mt:trans phrase="Validations" component="PluginStarter"></h2>
+
+<mt:var name="request.validation_key" setvar="validation_keys">
+<mt:var name="request.validation_frequency" setvar="validation_frequencies">
+<mt:var name="request.validation_order" setvar="validation_orders">
+<mt:var name="request.validation_label" setvar="validation_labels">
+<mt:var name="request.validation_label_locale" setvar="validation_label_locales">
+<mt:arrayslice name="validation_keys" offset="1">
+<mt:arrayslice name="validation_orders" offset="1">
+<mt:arrayslice name="validation_labels" offset="1">
+<mt:arrayslice name="validation_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_validation" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="CMS" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="validation_table" <mt:unless name="validation_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:30%"><mt:trans phrase="Key"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:23%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th class="text-center" class="text-center" style="width:24%"><mt:trans phrase="Order"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="validation_body">
+        <tr id="validation_tmpl" style="display:none">
+          <td style="width:30%">
+            <input type="text" name="validation_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <input type="text" name="validation_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <input type="text" name="validation_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td style="width:24%">
+            <input type="number" step="100" style="width:100%" name="validation_order[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="validation_keys">
+        <tr>
+          <td style="width:30%">
+            <input type="text" name="validation_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <mt:setvarblock name="value_name">validation_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="validation_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <mt:setvarblock name="value_name">validation_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="validation_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td style="width:24%">
+            <mt:setvarblock name="value_name">validation_orders[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" step="100" style="width:100%" name="validation_order[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.f_validation_key" setvar="f_validation_keys">
+<mt:var name="request.f_validation_frequency" setvar="f_validation_frequencies">
+<mt:var name="request.f_validation_order" setvar="f_validation_orders">
+<mt:var name="request.f_validation_label" setvar="f_validation_labels">
+<mt:var name="request.f_validation_label_locale" setvar="f_validation_label_locales">
+<mt:arrayslice name="f_validation_keys" offset="1">
+<mt:arrayslice name="f_validation_orders" offset="1">
+<mt:arrayslice name="f_validation_labels" offset="1">
+<mt:arrayslice name="f_validation_label_locales" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_f_validation" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Form">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="f_validation_table" <mt:unless name="f_validation_keys">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:30%"><mt:trans phrase="Key"></th>
+          <th class="text-center" class="text-center" style="width:<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>"><mt:trans phrase="Label"></th>
+          <mt:if name="user_language" ne="en">
+          <th class="text-center" class="text-center" style="width:23%"><mt:trans phrase="Label"> (<mt:var name="language" translate>)</th>
+          </mt:if>
+          <th class="text-center" class="text-center" style="width:24%"><mt:trans phrase="Order"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="f_validation_body">
+        <tr id="f_validation_tmpl" style="display:none">
+          <td style="width:30%">
+            <input type="text" name="f_validation_key[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <input type="text" name="f_validation_label[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <input type="text" name="f_validation_label_locale[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          </mt:if>
+          <td style="width:24%">
+            <input type="number" step="100" style="width:100%" name="f_validation_order[]" class="form-control watch-changed num form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="f_validation_keys">
+        <tr>
+          <td style="width:30%">
+            <input type="text" name="f_validation_key[]" class="form-control watch-changed form-control-sm" value="<mt:var name="__value__" escape>">
+          </td>
+          <td style="<mt:if name="user_language" ne="en">23%<mt:else>46%</mt:if>">
+            <mt:setvarblock name="value_name">f_validation_labels[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="f_validation_label[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <mt:if name="user_language" ne="en">
+          <td style="23%">
+            <mt:setvarblock name="value_name">f_validation_label_locales[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="f_validation_label_locale[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          </mt:if>
+          <td style="width:24%">
+            <mt:setvarblock name="value_name">f_validation_orders[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="number" step="100" style="width:100%" name="f_validation_order[]" class="form-control watch-changed num form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr>
+<h2><mt:trans phrase="Callbacks" component="PluginStarter"></h2>
+
+<mt:var name="request.callback_key" setvar="callback_keys">
+<mt:var name="request.callback_model" setvar="callback_models">
+<mt:var name="request.callback_kind" setvar="callback_kinds">
+<mt:var name="request.callback_priority" setvar="callback_priorities">
+<mt:arrayslice name="callback_keys" offset="1">
+<mt:arrayslice name="callback_models" offset="1">
+<mt:arrayslice name="callback_kinds" offset="1">
+<mt:arrayslice name="callback_priorities" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_callback" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Object">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="callback_table" <mt:unless name="callback_models">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Model"></th>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="callback_body">
+        <tr id="callback_tmpl" style="display:none">
+          <td style="width:40%">
+            <select class="callback_model-selector form-control watch-changed form-control-sm custom-select" name="callback_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+            <mt:tables type="all">
+              <option value="<mt:var name="name" escape>"><mt:var name="label" escape></option>
+            </mt:tables>
+            </select>
+          </td>
+          <td style="width:40%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="start_listing">start_listing</option>
+              <option value="pre_listing">pre_listing</option>
+              <option value="pre_archive_count">pre_archive_count</option>
+              <option value="post_load_objects">post_load_objects</option>
+              <option value="save_filter">save_filter</option>
+              <option value="pre_save">pre_save</option>
+              <option value="before_save">before_save</option>
+              <option value="post_save">post_save</option>
+              <option value="post_save_clone">post_save_clone</option>
+              <option value="post_save_revision">post_save_revision</option>
+              <option value="publish_date_based">publish_date_based</option>
+              <option value="pre_preview">pre_preview</option>
+              <option value="post_preview">post_preview</option>
+              <option value="delete_filter">delete_filter</option>
+              <option value="pre_delete">pre_delete</option>
+              <option value="post_delete">post_delete</option>
+              <option value="pre_import">pre_import</option>
+              <option value="post_import">post_import</option>
+              <option value="scheduled_published">scheduled_published</option>
+              <option value="scheduled_unpublish">scheduled_unpublish</option>
+              <option value="scheduled_replacement">scheduled_replacement</option>
+              <option value="404-error" class="hidden 404-error">404-error</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="callback_priority[]"
+              style="height:31px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="callback_models">
+        <tr>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">callback_models[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="callback_model-selector form-control watch-changed form-control-sm custom-select" name="callback_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+            <mt:tables type="all">
+              <option value="<mt:var name="name" escape>" <mt:if name="$value_name" eq="$name">selected</mt:if>><mt:var name="label" escape></option>
+            </mt:tables>
+            </select>
+          </td>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">callback_kinds[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="start_listing" <mt:if name="$value_name" eq="start_listing">selected</mt:if>>start_listing</option>
+              <option value="pre_listing" <mt:if name="$value_name" eq="pre_listing">selected</mt:if>>pre_listing</option>
+              <option value="pre_archive_count" <mt:if name="$value_name" eq="pre_archive_count">selected</mt:if>>pre_archive_count</option>
+              <option value="post_load_objects" <mt:if name="$value_name" eq="post_load_objects">selected</mt:if>>post_load_objects</option>
+              <option value="save_filter" <mt:if name="$value_name" eq="save_filter">selected</mt:if>>save_filter</option>
+              <option value="pre_save" <mt:if name="$value_name" eq="pre_save">selected</mt:if>>pre_save</option>
+              <option value="before_save" <mt:if name="$value_name" eq="before_save">selected</mt:if>>before_save</option>
+              <option value="post_save" <mt:if name="$value_name" eq="post_save">selected</mt:if>>post_save</option>
+              <option value="post_save_clone" <mt:if name="$value_name" eq="post_save_clone">selected</mt:if>>post_save_clone</option>
+              <option value="post_save_revision" <mt:if name="$value_name" eq="post_save_revision">selected</mt:if>>post_save_revision</option>
+              <option value="publish_date_based" <mt:if name="$value_name" eq="publish_date_based">selected</mt:if>>publish_date_based</option>
+              <option value="pre_preview" <mt:if name="$value_name" eq="pre_preview">selected</mt:if>>pre_preview</option>
+              <option value="post_preview" <mt:if name="$value_name" eq="post_preview">selected</mt:if>>post_preview</option>
+              <option value="delete_filter" <mt:if name="$value_name" eq="delete_filter">selected</mt:if>>delete_filter</option>
+              <option value="pre_delete" <mt:if name="$value_name" eq="pre_delete">selected</mt:if>>pre_delete</option>
+              <option value="post_delete" <mt:if name="$value_name" eq="post_delete">selected</mt:if>>post_delete</option>
+              <option value="pre_import" <mt:if name="$value_name" eq="pre_import">selected</mt:if>>pre_import</option>
+              <option value="post_import" <mt:if name="$value_name" eq="post_import">selected</mt:if>>post_import</option>
+              <option value="scheduled_published" <mt:if name="$value_name" eq="scheduled_published">selected</mt:if>>scheduled_published</option>
+              <option value="scheduled_unpublish" <mt:if name="$value_name" eq="scheduled_unpublish">selected</mt:if>>scheduled_unpublish</option>
+              <option value="scheduled_replacement" <mt:if name="$value_name" eq="scheduled_replacement">selected</mt:if>>scheduled_replacement</option>
+              <option value="404-error" class="<mt:if name="$value_name" ne="404-error">hidden</mt:if> 404-error" <mt:if name="$value_name" eq="404-error">selected</mt:if>>404-error</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <mt:setvarblock name="value_name">callback_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="callback_priority[]"
+              style="height:31px;">
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>>1</option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>>2</option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>>3</option>
+              <option value="4" <mt:if name="$value_name" eq="4">selected</mt:if>>4</option>
+              <option value="5" <mt:if name="$value_name" eq="5">selected</mt:if>>5</option>
+              <option value="6" <mt:if name="$value_name" eq="6">selected</mt:if>>6</option>
+              <option value="7" <mt:if name="$value_name" eq="7">selected</mt:if>>7</option>
+              <option value="8" <mt:if name="$value_name" eq="8">selected</mt:if>>8</option>
+              <option value="9" <mt:if name="$value_name" eq="9">selected</mt:if>>9</option>
+              <option value="10" <mt:if name="$value_name" eq="10">selected</mt:if>>10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.b_callback_key" setvar="b_callback_keys">
+<mt:var name="request.b_callback_model" setvar="b_callback_models">
+<mt:var name="request.b_callback_kind" setvar="b_callback_kinds">
+<mt:var name="request.b_callback_priority" setvar="b_callback_priorities">
+<mt:arrayslice name="b_callback_keys" offset="1">
+<mt:arrayslice name="b_callback_models" offset="1">
+<mt:arrayslice name="b_callback_kinds" offset="1">
+<mt:arrayslice name="b_callback_priorities" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_b_callback" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Publish">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="b_callback_table" <mt:unless name="b_callback_models">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Model"></th>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="b_callback_body">
+        <tr id="b_callback_tmpl" style="display:none">
+          <td style="width:40%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="b_callback_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="template"><mt:trans phrase="View"></option>
+              <option value="blob"><mt:trans phrase="Blob"></option>
+            </select>
+          </td>
+          <td style="width:40%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="b_callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="start_publish">start_publish</option>
+              <option value="pre_publish">pre_publish</option>
+              <option value="post_rebuild">post_rebuild</option>
+              <option value="post_publish">post_publish</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="b_callback_priority[]"
+              style="height:31px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="b_callback_models">
+        <tr>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">b_callback_models[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="b_callback_model[]"
+              style="height:31px;">
+            <option value=""><mt:trans phrase="Unspecified"></option>
+            <option value="template" <mt:if name="$value_name" eq="template">selected</mt:if>>Template</option>
+            <option value="blob" <mt:if name="$value_name" eq="blob">selected</mt:if>>Blob</option>
+            </select>
+          </td>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">b_callback_kinds[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="b_callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="start_publish" <mt:if name="$value_name" eq="start_publish">selected</mt:if>>start_publish</option>
+              <option value="pre_publish" <mt:if name="$value_name" eq="pre_publish">selected</mt:if>>pre_publish</option>
+              <option value="post_rebuild" <mt:if name="$value_name" eq="post_rebuild">selected</mt:if>>post_rebuild</option>
+              <option value="post_publish" <mt:if name="$value_name" eq="post_publish">selected</mt:if>>post_publish</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <mt:setvarblock name="value_name">b_callback_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="b_callback_priority[]"
+              style="height:31px;">
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>>1</option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>>2</option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>>3</option>
+              <option value="4" <mt:if name="$value_name" eq="4">selected</mt:if>>4</option>
+              <option value="5" <mt:if name="$value_name" eq="5">selected</mt:if>>5</option>
+              <option value="6" <mt:if name="$value_name" eq="6">selected</mt:if>>6</option>
+              <option value="7" <mt:if name="$value_name" eq="7">selected</mt:if>>7</option>
+              <option value="8" <mt:if name="$value_name" eq="8">selected</mt:if>>8</option>
+              <option value="9" <mt:if name="$value_name" eq="9">selected</mt:if>>9</option>
+              <option value="10" <mt:if name="$value_name" eq="10">selected</mt:if>>10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.l_callback_key" setvar="l_callback_keys">
+<mt:var name="request.l_callback_model" setvar="l_callback_models">
+<mt:var name="request.l_callback_kind" setvar="l_callback_kinds">
+<mt:var name="request.l_callback_priority" setvar="l_callback_priorities">
+<mt:arrayslice name="l_callback_keys" offset="1">
+<mt:arrayslice name="l_callback_models" offset="1">
+<mt:arrayslice name="l_callback_kinds" offset="1">
+<mt:arrayslice name="l_callback_priorities" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_l_callback" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Login">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="l_callback_table" <mt:unless name="l_callback_models">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Model"></th>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="l_callback_body">
+        <tr id="l_callback_tmpl" style="display:none">
+          <td style="width:40%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="l_callback_model[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="user"><mt:trans phrase="User"></option>
+              <option value="member"><mt:trans phrase="Member"></option>
+            </select>
+          </td>
+          <td style="width:40%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="l_callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="pre_login">pre_login</option>
+              <option value="post_login">post_login</option>
+              <option value="post_logout">post_logout</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="l_callback_priority[]"
+              style="height:31px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="l_callback_models">
+        <tr>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">l_callback_models[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="l_callback_model[]"
+              style="height:31px;">
+            <option value=""><mt:trans phrase="Unspecified"></option>
+            <option value="user" <mt:if name="$value_name" eq="user">selected</mt:if>>User</option>
+            <option value="member" <mt:if name="$value_name" eq="member">selected</mt:if>>Member</option>
+            </select>
+          </td>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">l_callback_kinds[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="l_callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="pre_login" <mt:if name="$value_name" eq="pre_login">selected</mt:if>>pre_login</option>
+              <option value="post_login" <mt:if name="$value_name" eq="post_login">selected</mt:if>>post_login</option>
+              <option value="post_logout" <mt:if name="$value_name" eq="post_logout">selected</mt:if>>post_logout</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <mt:setvarblock name="value_name">l_callback_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="l_callback_priority[]"
+              style="height:31px;">
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>>1</option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>>2</option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>>3</option>
+              <option value="4" <mt:if name="$value_name" eq="4">selected</mt:if>>4</option>
+              <option value="5" <mt:if name="$value_name" eq="5">selected</mt:if>>5</option>
+              <option value="6" <mt:if name="$value_name" eq="6">selected</mt:if>>6</option>
+              <option value="7" <mt:if name="$value_name" eq="7">selected</mt:if>>7</option>
+              <option value="8" <mt:if name="$value_name" eq="8">selected</mt:if>>8</option>
+              <option value="9" <mt:if name="$value_name" eq="9">selected</mt:if>>9</option>
+              <option value="10" <mt:if name="$value_name" eq="10">selected</mt:if>>10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.t_callback_basename" setvar="t_callback_basenames">
+<mt:var name="request.t_callback_kind" setvar="t_callback_kinds">
+<mt:var name="request.t_callback_priority" setvar="t_callback_priorities">
+<mt:arrayslice name="t_callback_basenames" offset="1">
+<mt:arrayslice name="t_callback_kinds" offset="1">
+<mt:arrayslice name="t_callback_priorities" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_t_callback" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Template" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="t_callback_table" <mt:unless name="t_callback_basenames">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Basename"></th>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="t_callback_body">
+        <tr id="t_callback_tmpl" style="display:none">
+          <td style="width:40%">
+            <input type="text" name="t_callback_basename[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:40%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="t_callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="template_source">template_source</option>
+              <option value="template_output">template_output</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="t_callback_priority[]"
+              style="height:31px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="t_callback_basenames">
+        <tr>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">t_callback_basenames[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="t_callback_basename[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">t_callback_kinds[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="t_callback_kind[]"
+              style="height:31px;">
+              <option value=""><mt:trans phrase="Unspecified"></option>
+              <option value="template_source" <mt:if name="$value_name" eq="template_source">selected</mt:if>>template_source</option>
+              <option value="template_output" <mt:if name="$value_name" eq="template_output">selected</mt:if>>template_output</option>
+            </select>
+          </td>
+          <td style="width:20%">
+            <mt:setvarblock name="value_name">t_callback_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="t_callback_priority[]"
+              style="height:31px;">
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>>1</option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>>2</option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>>3</option>
+              <option value="4" <mt:if name="$value_name" eq="4">selected</mt:if>>4</option>
+              <option value="5" <mt:if name="$value_name" eq="5">selected</mt:if>>5</option>
+              <option value="6" <mt:if name="$value_name" eq="6">selected</mt:if>>6</option>
+              <option value="7" <mt:if name="$value_name" eq="7">selected</mt:if>>7</option>
+              <option value="8" <mt:if name="$value_name" eq="8">selected</mt:if>>8</option>
+              <option value="9" <mt:if name="$value_name" eq="9">selected</mt:if>>9</option>
+              <option value="10" <mt:if name="$value_name" eq="10">selected</mt:if>>10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:var name="request.o_callback_key" setvar="o_callback_keys">
+<mt:var name="request.o_callback_model" setvar="o_callback_models">
+<mt:var name="request.o_callback_kind" setvar="o_callback_kinds">
+<mt:var name="request.o_callback_priority" setvar="o_callback_priorities">
+<mt:arrayslice name="o_callback_keys" offset="1">
+<mt:arrayslice name="o_callback_models" offset="1">
+<mt:arrayslice name="o_callback_kinds" offset="1">
+<mt:arrayslice name="o_callback_priorities" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_o_callback" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Other" component="PluginStarter">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="o_callback_table" <mt:unless name="o_callback_models">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Model"></th>
+          <th class="text-center" class="text-center" style="width:40%"><mt:trans phrase="Kind"></th>
+          <th class="text-center" class="text-center" style="width:20%"><mt:trans phrase="Priority" component="PluginStarter"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="o_callback_body">
+        <tr id="o_callback_tmpl" style="display:none">
+          <td style="width:40%">
+            <input type="text" name="o_callback_model[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:40%">
+            <input type="text" name="o_callback_kind[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:20%">
+            <select class="form-control watch-changed form-control-sm custom-select" name="o_callback_priority[]"
+              style="height:31px;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="o_callback_models">
+        <tr>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">o_callback_models[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="o_callback_model[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+            </select>
+          </td>
+          <td style="width:40%">
+            <mt:setvarblock name="value_name">o_callback_kinds[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="o_callback_kind[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td style="width:20%">
+            <mt:setvarblock name="value_name">o_callback_priorities[<mt:var name="__index__">]</mt:setvarblock>
+            <select class="form-control watch-changed form-control-sm custom-select" name="o_callback_priority[]"
+              style="height:31px;">
+              <option value="1" <mt:if name="$value_name" eq="1">selected</mt:if>>1</option>
+              <option value="2" <mt:if name="$value_name" eq="2">selected</mt:if>>2</option>
+              <option value="3" <mt:if name="$value_name" eq="3">selected</mt:if>>3</option>
+              <option value="4" <mt:if name="$value_name" eq="4">selected</mt:if>>4</option>
+              <option value="5" <mt:if name="$value_name" eq="5">selected</mt:if>>5</option>
+              <option value="6" <mt:if name="$value_name" eq="6">selected</mt:if>>6</option>
+              <option value="7" <mt:if name="$value_name" eq="7">selected</mt:if>>7</option>
+              <option value="8" <mt:if name="$value_name" eq="8">selected</mt:if>>8</option>
+              <option value="9" <mt:if name="$value_name" eq="9">selected</mt:if>>9</option>
+              <option value="10" <mt:if name="$value_name" eq="10">selected</mt:if>>10</option>
+            </select>
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<mt:if name="user_language" ne="en">
+<hr>
+<mt:var name="request.translate_phrase" setvar="translate_phrases">
+<mt:var name="request.translate_translate" setvar="translate_translates">
+<mt:arrayslice name="translate_phrases" offset="1">
+<mt:arrayslice name="translate_translates" offset="1">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label>
+    <button id="add_translate" class="btn btn-sm pt-0 pb-0 pl-0 pr-0 mb-1 ml-0" type="button">
+      <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only"><mt:trans phrase="Add"></span>
+    </button>
+    <mt:trans phrase="Phrase">
+    </label>
+  </div>
+  <div class="col-lg-10" style="overflow: auto">
+    <table id="translate_table" <mt:unless name="translate_phrases">style="display:none"</mt:unless> class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+      <thead>
+        <tr>
+          <th class="text-center" class="text-center" style="width:50%"><mt:trans phrase="Phrase"></th>
+          <th class="text-center" class="text-center" style="width:50%"><mt:trans phrase="Translate"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="translate_body">
+        <tr id="translate_tmpl" style="display:none">
+          <td style="width:50%">
+            <input type="text" name="translate_phrase[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td style="width:50%">
+            <input type="text" name="translate_translate[]" class="form-control watch-changed form-control-sm" value="">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        <mt:loop name="translate_phrases">
+        <tr>
+          <td style="width:50%">
+            <mt:setvarblock name="value_name">translate_phrases[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="translate_phrase[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+            </select>
+          </td>
+          <td style="width:50%">
+            <mt:setvarblock name="value_name">translate_translates[<mt:var name="__index__">]</mt:setvarblock>
+            <input type="text" name="translate_translate[]" class="form-control watch-changed form-control-sm" value="<mt:var name="$value_name" escape>">
+          </td>
+          <td>
+          <button class="btn btn-secondary btn-sm close-plugin mt-1 mr-2" type="button" aria-label="<mt:trans phrase="Detach">">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </td>
+        </tr>
+        </mt:loop>
+      </tbody>
+    </table>
+  </div>
+</div>
+</mt:if>
+<script>
+$('#config_body').sortable ({
+});
+$('#setting_body').sortable ({
+});
+$('#method_body').sortable ({
+});
+$('#tag_body').sortable ({
+});
+$('#hook_body').sortable ({
+});
+$('#task_body').sortable ({
+});
+$('#edit_property_body').sortable ({
+});
+$('#validation_body').sortable ({
+});
+$('#f_validation_body').sortable ({
+});
+$('#system_filter_body').sortable ({
+});
+$('#list_action_body').sortable ({
+});
+$('#callback_body').sortable ({
+});
+$('#b_callback_body').sortable ({
+});
+$('#l_callback_body').sortable ({
+});
+$('#t_callback_body').sortable ({
+});
+$('#o_callback_body').sortable ({
+});
+$('#translate_body').sortable ({
+});
+$('#add_config').click(function(){
+    var row_tmpl = $('#config_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#config_body');
+    newline.removeAttr('id');
+    $('#config_table').show();
+    newline.show();
+});
+$('#add_setting').click(function(){
+    var row_tmpl = $('#setting_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#setting_body');
+    newline.removeAttr('id');
+    $('#setting_table').show();
+    newline.show();
+});
+$('#add_method').click(function(){
+    var row_tmpl = $('#method_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#method_body');
+    newline.removeAttr('id');
+    $('#method_table').show();
+    newline.show();
+});
+$('#add_api_method').click(function(){
+    var row_tmpl = $('#api_method_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#api_method_body');
+    newline.removeAttr('id');
+    $('#api_method_table').show();
+    newline.show();
+});
+$('#add_tag').click(function(){
+    var row_tmpl = $('#tag_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#tag_body');
+    newline.removeAttr('id');
+    $('#tag_table').show();
+    newline.show();
+});
+$('#add_hook').click(function(){
+    var row_tmpl = $('#hook_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#hook_body');
+    newline.removeAttr('id');
+    $('#hook_table').show();
+    newline.show();
+});
+$('#add_task').click(function(){
+    var row_tmpl = $('#task_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#task_body');
+    newline.removeAttr('id');
+    $('#task_table').show();
+    newline.show();
+});
+$('#add_edit_property').click(function(){
+    var row_tmpl = $('#edit_property_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#edit_property_body');
+    newline.removeAttr('id');
+    $('#edit_property_table').show();
+    newline.show();
+});
+$('#add_validation').click(function(){
+    var row_tmpl = $('#validation_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#validation_body');
+    newline.removeAttr('id');
+    $('#validation_table').show();
+    newline.show();
+});
+$('#add_f_validation').click(function(){
+    var row_tmpl = $('#f_validation_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#f_validation_body');
+    newline.removeAttr('id');
+    $('#f_validation_table').show();
+    newline.show();
+});
+$('#add_system_filter').click(function(){
+    var row_tmpl = $('#system_filter_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#system_filter_body');
+    newline.removeAttr('id');
+    $('#system_filter_table').show();
+    newline.show();
+});
+$('#add_list_action').click(function(){
+    var row_tmpl = $('#list_action_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#list_action_body');
+    newline.removeAttr('id');
+    $('#list_action_table').show();
+    newline.show();
+});
+$('#add_callback').click(function(){
+    var row_tmpl = $('#callback_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#callback_body');
+    newline.removeAttr('id');
+    $('#callback_table').show();
+    newline.show();
+});
+$('#add_b_callback').click(function(){
+    var row_tmpl = $('#b_callback_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#b_callback_body');
+    newline.removeAttr('id');
+    $('#b_callback_table').show();
+    newline.show();
+});
+$('#add_l_callback').click(function(){
+    var row_tmpl = $('#l_callback_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#l_callback_body');
+    newline.removeAttr('id');
+    $('#l_callback_table').show();
+    newline.show();
+});
+$('#add_t_callback').click(function(){
+    var row_tmpl = $('#t_callback_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#t_callback_body');
+    newline.removeAttr('id');
+    $('#t_callback_table').show();
+    newline.show();
+});
+$('#add_o_callback').click(function(){
+    var row_tmpl = $('#o_callback_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#o_callback_body');
+    newline.removeAttr('id');
+    $('#o_callback_table').show();
+    newline.show();
+});
+$('#add_translate').click(function(){
+    var row_tmpl = $('#translate_tmpl');
+    var newline = row_tmpl.clone( true ).appendTo('#translate_body');
+    newline.removeAttr('id');
+    $('#translate_table').show();
+    newline.show();
+});
+$('.close-plugin').click(function(){
+    if( !confirm('<mt:trans phrase="Are you sure you want to remove this item?" component="PluginStarter">') ) {
+        return false;
+    }
+    var childCnt = $(this).parent().parent().parent().children().length;
+    if ( childCnt == 2 ) {
+        $(this).parent().parent().parent().parent().hide();
+    }
+    $(this).parent().parent().remove();
+});
+$('.callback_model-selector').change(function(){
+    let selModel   = $(this).val();
+    let parentNode = $(this).parent().next();
+    let selector   = parentNode.children( 'select' );
+    let selOption  = selector.children( '.404-error' );
+    if ( selModel == 'template' ) {
+        selOption.show();
+    } else {
+        selOption.hide();
+    }
+});
+$('.hook_kind').change(function(){
+    var selected_kind = $(this).val();
+    var same_kind = 0;
+    $('.hook_kind').each(function(){
+        if ( $(this).val() == selected_kind ) {
+            same_kind++;
+        }
+    });
+    if ( same_kind > 1 ) {
+        alert( '<mt:trans phrase="You cannot register the same type of hook within a Plug in."  component="PluginStarter">' );
+        $(this).val('');
+    }
+});
+</script>
+<mt:ignore>
+<div class="mt-5 mb-3">
+<button type="button" class="btn btn-primary" id="export">
+  <mt:trans phrase="Export">
+</button>
+</div>
+</mt:ignore>
+</form>
+<mt:property name="request_method" setvar="request_method">
+<script>
+$('#export').click(function(){
+    if(!confirm('<mt:trans phrase="Are you sure you want to export this Plugin?" component="PluginStarter">')){
+        return false;
+    }
+    editContentChanged = false;
+    $('#export-form').submit();
+    return false;
+});
+var editContentChanged;
+<mt:if name="request_method" eq="POST">
+editContentChanged = true;
+</mt:if>
+$('.watch-changed').change(function(){
+    editContentChanged = true;
+});
+$(function(){
+    $(window).on('beforeunload', function() {
+        if (! editContentChanged ) {
+            $(window).off('beforeunload');
+            return;
+        }
+        return '<mt:trans phrase="Are you sure you want to move from this page? The changes you made are not reflected.">';
+    });
+});
+</script>
+<hr>

@@ -1,0 +1,9 @@
+{
+    "ifpasswordexpired" : {
+        "description" : "Condition tag provided by the 'PasswordExpired' plugin.<br>The block is evaluated when the password for the target object has expired.",
+        "attributes" : {
+            "model" : "Model name to be checked (default value is 'user').",
+            "id" : "Object ID to be checked (If omitted, the object specified by the 'model' attribute that can be referenced in the current context will be checked)."
+        }
+    }
+}

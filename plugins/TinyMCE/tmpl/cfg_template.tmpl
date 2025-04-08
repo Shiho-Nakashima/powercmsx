@@ -1,0 +1,306 @@
+<mt:setvar name="use_system_settings" value="0">
+<mt:if name="workspace_id">
+  <mt:if name="setting_tinymce_use_system_settings">
+    <mt:setvar name="use_system_settings" value="1">
+  </mt:if>
+  <div class="row form-group mb-1">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_tinymce_use_system_settings" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_tinymce_use_system_settings" name="setting_tinymce_use_system_settings" value="1"
+          <mt:if name="setting_tinymce_use_system_settings">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use system settings" component="TinyMCE"></span>
+      </label>
+    </div>
+  </div>
+<script>
+$('#setting_tinymce_use_system_settings').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide();
+    } else {
+        $('#individual-setting-container').show();
+    }
+});
+</script>
+</mt:if>
+<div id="individual-setting-container"<mt:if name="use_system_settings"> style="display:none;"</mt:if>>
+<mt:ignore>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_use_cdn">
+      <mt:trans phrase="Use CDN" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" placeholder="https://cdn.tiny.cloud/path_to_your_code/tinymce/5/tinymce.min.js" id="setting_tinymce_use_cdn" name="setting_tinymce_use_cdn" class="form-control" value="<mt:var name="setting_tinymce_use_cdn" escape>">
+  </div>
+</div>
+</mt:ignore>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_menubar">
+      <mt:trans phrase="Menu Bar" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_tinymce_menubar" name="setting_tinymce_menubar" class="form-control" value="<mt:var name="setting_tinymce_menubar" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_toolbar">
+      <mt:trans phrase="Tool Bar" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_tinymce_toolbar" name="setting_tinymce_toolbar" class="form-control" value="<mt:var name="setting_tinymce_toolbar" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_plugins">
+      <mt:trans phrase="Plugins" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_tinymce_plugins" name="setting_tinymce_plugins" class="form-control" value="<mt:var name="setting_tinymce_plugins" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_content_css">
+      <mt:trans phrase="Content CSS" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_tinymce_content_css" name="setting_tinymce_content_css" class="form-control" value="<mt:var name="setting_tinymce_content_css" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_advanced_settings">
+      <mt:trans phrase="Advanced Settings" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea rows="5" id="setting_tinymce_advanced_settings" name="setting_tinymce_advanced_settings" class="form-control"><mt:var name="setting_tinymce_advanced_settings" escape></textarea>
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Be sure to add a comma at the end." component="TinyMCE">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_advanced_setup">
+      <mt:trans phrase="Advanced Settings" component="TinyMCE"> (setup)
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea rows="5" id="setting_tinymce_advanced_setup" name="setting_tinymce_advanced_setup" class="form-control"><mt:var name="setting_tinymce_advanced_setup" escape></textarea>
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Be sure to add a semicolon at the end." component="TinyMCE">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_convert_urls" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_convert_urls" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_convert_urls" value="1" <mt:if name="setting_tinymce_convert_urls">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Convert URLs" component="TinyMCE"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group<mt:unless name="setting_tinymce_convert_urls"> hidden</mt:unless>" id="tinymce_relative_urls-wrapper">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_relative_urls">
+      <mt:trans phrase="Relative URLs" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_tinymce_relative_urls" name="setting_tinymce_relative_urls">
+      <option value="none" <mt:if name="setting_tinymce_relative_urls" eq="none">selected</mt:if>>none</option>
+      <option value="true" <mt:if name="setting_tinymce_relative_urls" eq="true">selected</mt:if>>true</option>
+      <option value="false" <mt:if name="setting_tinymce_relative_urls" eq="false">selected</mt:if>>false</option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_content_css">
+      <mt:trans phrase="Document Base URL" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_tinymce_document_base_url" name="setting_tinymce_document_base_url" class="form-control" value="<mt:var name="setting_tinymce_document_base_url" escape>" placeholder="&lt;mt:websiteurl&gt;">
+  </div>
+</div>
+<script>
+$('#setting_tinymce_convert_urls').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#tinymce_relative_urls-wrapper').show();
+    } else {
+        $('#tinymce_relative_urls-wrapper').hide();
+    }
+});
+</script>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_element_format">
+      <mt:trans phrase="Empty Element Format" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio" id="setting_tinymce_element_format"
+         name="setting_tinymce_element_format" value="default" <mt:if name="setting_tinymce_element_format" eq="xhtml">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="xhtml"></span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input" type="radio"
+         name="setting_tinymce_element_format" value="html" <mt:if name="setting_tinymce_element_format" eq="html">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"><mt:trans phrase="html"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_paste_as_text" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_paste_as_text" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_paste_as_text" value="1" <mt:if name="setting_tinymce_paste_as_text">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Paste as Text" component="TinyMCE"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_use_mobile">
+      <mt:trans phrase="Mobile" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_use_mobile" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_use_mobile" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_use_mobile" value="1" <mt:if name="setting_tinymce_use_mobile">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use Mobile mode" component="TinyMCE"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_paste_from_excel">
+      <mt:trans phrase="Table Settings" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_table_resize_bars" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_table_resize_bars" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_table_resize_bars" value="1" <mt:if name="setting_tinymce_table_resize_bars">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Allow cell resizing" component="TinyMCE"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_paste_from_excel" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_paste_from_excel" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_paste_from_excel" value="1" <mt:if name="setting_tinymce_paste_from_excel">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Remove styles with table paste from Microsoft Excel" component="TinyMCE">
+        </span>
+    </label>
+  </div>
+</div>
+<div id="tinymce_excel_class-wrapper" class="<mt:unless name="setting_tinymce_paste_from_excel"> hidden</mt:unless>">
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_style_all_table" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_style_all_table" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_style_all_table" value="1" <mt:if name="setting_tinymce_style_all_table">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Apply settings to tables you create" component="TinyMCE"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_tinymce_equalize_cell_width" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_tinymce_equalize_cell_width" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_tinymce_equalize_cell_width" value="1" <mt:if name="setting_tinymce_equalize_cell_width">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Equalize width of table cells" component="TinyMCE"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_table_border">
+      <mt:trans phrase="Border attribute value" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <select class="form-control custom-select short" id="setting_tinymce_table_border" name="setting_tinymce_table_border">
+      <option value="none" <mt:if name="setting_tinymce_table_border" eq="none">selected</mt:if>>none</option>
+      <option value="true" <mt:if name="setting_tinymce_table_border" eq="0">selected</mt:if>>0</option>
+      <option value="false" <mt:if name="setting_tinymce_table_border" eq="1">selected</mt:if>>1</option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_tinymce_paste_table_class">
+      <mt:trans phrase="Add class for table" component="TinyMCE">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" style="width:50%" id="setting_tinymce_paste_table_class" name="setting_tinymce_paste_table_class" class="form-control" value="<mt:var name="setting_tinymce_paste_table_class" escape>">
+  </div>
+</div>
+</div>
+<script>
+$('#setting_tinymce_paste_from_excel').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#tinymce_excel_class-wrapper').show();
+    } else {
+        $('#tinymce_excel_class-wrapper').hide();
+    }
+});
+</script>
+</div>

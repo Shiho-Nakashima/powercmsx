@@ -1,0 +1,24 @@
+<div id="plugin-postontwitter-wrapper">
+  <div class="row form-group">
+    <div class="col-lg-2">
+      <mt:trans phrase="Post" component="PostOnTwitter">
+    </div>
+    <div class="col-lg-10">
+      <mt:if name="tweeted_on">
+        <mt:var name="tweeted_on" format_ts="Y-m-d H:i:s" setvar="tweeted_on_formated">
+        <mt:trans phrase="Poster 𝕏 on %s" params="$tweeted_on_formated" component="PostOnTwitter"><br>
+      <mt:else>
+        <input type="hidden" name="do_tweet" value="0">
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" name="do_tweet" id="do_tweet" value="1"<mt:if name="do_tweet"> checked</mt:if>>
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description"><mt:trans phrase="Post on 𝕏 when published" component="PostOnTwitter"></span>
+        </label>
+      </mt:if>
+    </div>
+  </div>
+</div>
+<script>
+  $('#plugin-postontwitter-wrapper').prev('hr').hide();
+</script>
+<hr>

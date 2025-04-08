@@ -1,0 +1,12 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <mt:var name="label" escape />
+  </div>
+  <div class="col-lg-10">
+    <div id="<mt:var name="__col_name__">_app"></div>
+    <mt:var name="_hint">
+  </div>
+  <mt:setvarblock name="saved_data_var_name">component_blocks_<mt:var name="__col_name__"></mt:setvarblock>
+  <textarea style="display: none;" readonly id="_saved_<mt:var name="__col_name__">"><mt:var name="value"></textarea>
+</div>
+<mt:include file="field_definition.tmpl" />

@@ -1,0 +1,38 @@
+<mt:if name="chapters_json">
+<div class="p-pcmsxVideoPlayer">
+  <div class="p-pcmsxVideoPlayer__video">
+</mt:if>
+
+<mt:var name="video_tag">
+  <source src="<mt:var name="video_url">"<mt:if name="mime_type"> type="<mt:var name="mime_type">"</mt:if>><mt:if name="vtt_url">
+  <track kind="captions" src="<mt:var name="vtt_url">" srclang="<mt:var name="language">" label="<mt:if name="language" eq="ja">Japanese<mt:else>English</mt:if>" default="default"></mt:if><mt:if name="chapter_url">
+  <track kind="chapters" src="<mt:var name="chapter_url">" srclang="<mt:var name="language">" default="default"></mt:if>
+</<mt:var name="class_type">>
+
+<mt:if name="chapters_json">
+  </div>
+  <div class="p-pcmsxVideoPlayer__chapter">
+    <dialog class="p-chapters">
+      <div class="p-chapters__inner" data-chapter-json="<mt:var name="chapters_json" escape />">
+        <div class="p-chapters__headingContainer">
+          <div class="p-chapters__heading">チャプター</div>
+          <button class="p-chapters__close" type="button"><img src="<mt:var name="theme_static" escape />common/images/icon_close.svg" alt="チャプターリストを閉じる" width="12" height="12" loading="lazy"></button>
+        </div>
+        <div class="p-chapters__content">
+          <ul class="p-chapters__list"></ul>
+          <template class="p-chapters__template">
+            <li>
+              <button class="p-chapters__button" type="button"><img class="p-chapters__thumbnail" src="" alt="" width="120" height="68" loading="lazy">
+                <div class="p-chapters__text">
+                  <div class="p-chapters__name"></div>
+                  <div class="p-chapters__time"></div>
+                </div>
+              </button>
+            </li>
+          </template>
+        </div>
+      </div>
+    </dialog>
+  </div>
+</div>
+</mt:if>

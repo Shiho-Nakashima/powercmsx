@@ -1,0 +1,13 @@
+RewriteEngine off
+AcceptPathInfo Off
+<Files ~ "\.(log|json)$">
+  deny from all
+</Files>
+<Files ~ "^\.ht">
+deny from all
+</Files>
+php_value upload_max_filesize "16M"
+php_value post_max_size "16M"
+ErrorDocument 403 'Forbidden'
+ErrorDocument 404 'Not Found'
+AddType application/javascript .mjs

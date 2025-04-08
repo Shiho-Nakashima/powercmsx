@@ -1,0 +1,9 @@
+# Generate from HTTPAuth plugin.
+AuthUserFile <mt:var name="htpasswd_path">
+AuthName "<mt:var name="htpasswd_authname">"
+AuthType <mt:var name="auth_type">
+require valid-user
+<Files ~ "^\.ht">
+  <mt:if name="apache_version" lt="24">deny from all<mt:else>Require all denied</mt:if>
+</Files>
+# /Generate from HTTPAuth plugin.

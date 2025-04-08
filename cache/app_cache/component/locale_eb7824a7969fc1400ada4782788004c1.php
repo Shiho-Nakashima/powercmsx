@@ -1,0 +1,13 @@
+<?php $this->get_cache=array (
+  'Support two-step authentication using Twilio SMS.' => 'Twilio SMSを利用した2段階認証をサポートします。',
+  'Account SID' => 'アカウントSID',
+  'AUTHTOKEN' => '認証トークン',
+  'Email' => 'メール',
+  'Send an email as well' => '電子メールでも送信する',
+  'Caller Phone Number' => '発信元電話番号',
+  'International Calling Code' => '国際電話コード',
+  'Enter a phone number that you can send from Twilio in international cell phone number(ex. +122XXXXXXXX).' => 'Twilioから送信できる送信元の国際電話番号を入力してください(例:+122XXXXXXXX)。',
+  '%s Confirmation Code is \'%s\'.' => '%sの確認用コードは「%s」です。',
+  'An error occurred while sending the SMS.' => 'SMSの送信中にエラーが発生しました。',
+  'An error occurred while sending the SMS(%s).' => 'SMSの送信中にエラーが発生しました(%s)。',
+);

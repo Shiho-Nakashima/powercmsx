@@ -1,0 +1,13 @@
+<mt:commentcontributortype setvar="commenter_model">
+<mt:commentcontributorid setvar="commenter_id">
+<mt:if name="commenter_model">
+  <mt:if name="commenter_model" eq="user">
+    <mt:users id="$commenter_id" limit="1">
+      <mt:assetthumbnailurl model="user" name="photo" square="1" width="200" setvar="commenter_thumbnailurl">
+    </mt:users>
+  <mt:elseif name="commenter_model" eq="member">
+    <mt:members id="$commenter_id" limit="1">
+      <mt:assetthumbnailurl model="member" name="photo" square="1" width="200" setvar="commenter_thumbnailurl">
+    </mt:members>
+  </mt:if>
+</mt:if>

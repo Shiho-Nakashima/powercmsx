@@ -1,0 +1,47 @@
+{
+    "label": "DynamicCaching",
+    "id": "dynamiccaching",
+    "component": "DynamicCaching",
+    "description": "Conditionally caches dynamic content.",
+    "version": "1.0",
+    "author": "Alfasado Inc.",
+    "author_link": "https://alfasado.net",
+    "config_settings": {
+        "dynamiccaching_extensions": ["html", "json"],
+        "dynamiccaching_request_methods": ["GET"],
+        "dynamiccaching_exclude_logged_in": ["member"],
+        "dynamiccaching_cache_with_query": false
+    },
+    "config_overwrite" : {
+        "publish_callbacks" : true
+    },
+    "callbacks": {
+        "dynamiccaching_post_load_object_urlinfo": {
+            "urlinfo": {
+                "post_load_object": {
+                    "component": "DynamicCaching",
+                    "priority": 1,
+                    "method": "post_load_object_urlinfo"
+                }
+            }
+        },
+        "dynamiccaching_dynamic_view_urlinfo": {
+            "urlinfo": {
+                "dynamic_view": {
+                    "component": "DynamicCaching",
+                    "priority": 10,
+                    "method": "dynamic_view_urlinfo"
+                }
+            }
+        },
+        "dynamiccaching_start_publish_template": {
+            "template": {
+                "start_publish": {
+                    "component": "DynamicCaching",
+                    "priority": 1,
+                    "method": "start_publish_template"
+                }
+            }
+        }
+    }
+}

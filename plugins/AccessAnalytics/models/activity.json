@@ -1,0 +1,140 @@
+{
+    "label": "Activity",
+    "plural": "Activities",
+    "version": "1.26",
+    "primary": "url",
+    "order": 520,
+    "menu_type": 3,
+    "max_revisions": 20,
+    "display_system": 1,
+    "display_space": 1,
+    "show_activity": 1,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "url": {
+            "type": "string",
+            "size": 255,
+            "not_null": 1
+        },
+        "query_string": {
+            "type": "text"
+        },
+        "referrer": {
+            "type": "string",
+            "size": 255
+        },
+        "class": {
+            "type": "string",
+            "size": 50
+        },
+        "model": {
+            "type": "string",
+            "size": 50
+        },
+        "object_id": {
+            "type": "int",
+            "size": 11
+        },
+        "language": {
+            "type": "string",
+            "size": 50
+        },
+        "created_on": {
+            "type": "datetime",
+            "default": null
+        },
+        "user_agent": {
+            "type": "text"
+        },
+        "remote_ip": {
+            "type": "string",
+            "size": 50,
+            "not_null": 1
+        },
+        "member_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "url": "url",
+        "referrer": "referrer",
+        "class": "class",
+        "model": "model",
+        "object_id": "object_id",
+        "language": "language",
+        "remote_ip": "remote_ip",
+        "member_id": "member_id",
+        "workspace_id": "workspace_id",
+        "created_on": "created_on"
+    },
+    "relations": [],
+    "options": {
+        "class": "Page View,Search,Contact,Comment,Login,Logout,Download"
+    },
+    "extras": [],
+    "translate": [
+        "class",
+        "model"
+    ],
+    "sort_by": {
+        "id": "descend"
+    },
+    "autoset": [
+        "workspace_id",
+        "created_on"
+    ],
+    "unchangeable": [
+        "workspace_id"
+    ],
+    "disp_edit": {
+        "class": "radio"
+    },
+    "edit_properties": {
+        "id": "hidden",
+        "url": "primary",
+        "query_string": "text",
+        "referrer": "text",
+        "class": "selection",
+        "model": "text_short",
+        "object_id": "number",
+        "language": "text_short",
+        "member_id": "reference:member:nickname",
+        "user_agent": "text",
+        "remote_ip": "text",
+        "created_on": "datetime"
+    },
+    "list_properties": {
+        "id": "number",
+        "url": "primary",
+        "query_string": "text",
+        "referrer": "text",
+        "class": "text_short",
+        "model": "text_short",
+        "language": "text_short",
+        "created_on": "datetime",
+        "user_agent": "text",
+        "remote_ip": "text",
+        "member_id": "reference:member:nickname",
+        "workspace_id": "reference:workspace:name"
+    },
+    "column_labels": {
+        "object_id": "Object ID",
+        "member_id": "Member",
+        "remote_ip": "Remote IP",
+        "workspace_id": "WorkSpace"
+    },
+    "hide_edit_options": []
+}

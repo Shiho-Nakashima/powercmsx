@@ -1,0 +1,33 @@
+<mt:includeblock module="(Media) Site Layout">
+  <mt:include module="(Media) Site Config">
+  <mt:trans phrase="Access Ranking" language="$language" setvar="archive_title">
+
+  <div class="row">
+    <div class="col-lg-8">
+      <section class="ranking-section pt-0">
+        <h1 class="section-heading"><mt:var name="archive_title" escape="single"></h1>
+  <mt:if name="ranking_enabled">
+    <mt:rankedobjects models="entry" include_workspaces="this" period="$ranking_period">
+      <mt:if name="__first__">
+        <div class="container counter-container">
+          <div class="row mt-4">
+            <div class="text fonts-style">
+              <ol>
+      </mt:if>
+                <li><a href="<mt:var name="object_url">" class="text-primary"><mt:trans language="$language" phrase="$object_label" escape="single"></a></li>
+      <mt:if name="__last__">
+              </ol>
+            </div>
+          </div>
+        </div>
+      </mt:if>
+    </mt:rankedobjects>
+  </mt:if>
+      </section>
+    </div>
+    <div class="col-lg-4">
+      <mt:include module="(Media) Widget : Category Archives">
+      <mt:include module="(Media) Widget : Date Based Archives">
+    </div>
+  </div>
+</mt:includeblock>

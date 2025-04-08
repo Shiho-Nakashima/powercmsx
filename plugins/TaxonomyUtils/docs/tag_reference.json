@@ -1,0 +1,50 @@
+{
+    "iftaxonomyhaschild": {
+        "description": "Outputs the value if there is a related object.",
+        "attributes": {
+            "models": "Comma-separated text or array of model names. If omitted, all models are targeted.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "workspace_id" : "The 'id' of workspace.",
+            "include_workspaces" : "The permission matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "The permission excluding the specified workspace_ids(Comma separated values).",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "taxonomychildcount": {
+        "description": "Outputs the number of related objects.",
+        "attributes": {
+            "models": "Comma-separated text or array of model names. If omitted, all models are targeted.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "workspace_id" : "The 'id' of workspace.",
+            "include_workspaces" : "The permission matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "The permission excluding the specified workspace_ids(Comma separated values).",
+            "workspace_ids" : "Alias for 'include_workspaces'."
+        }
+    },
+    "taxonomyobjects": {
+        "description": "Loop output objects related to the Taxonomy.",
+        "set_loop_vars": true,
+        "set_loop_vars" : true,
+        "variables" : {
+            "__url__" : "URL of loop item.",
+            "__primary__" : "Primary column value of loop object.",
+            "__model__" : "Model name.",
+            "__id__" : "The 'id' of object.",
+            "__date__" : "The 'date' of object(Publish Date takes priority).",
+            "(The Column Name)" : "Column value."
+        },
+        "attributes" : {
+            "sort_by" : "Sort objects by value(Specify a column that exists in all models).",
+            "sort_order" : "'ascend' or 'descend'.",
+            "cols" : "Column name for SELECT(Comma separated values or array, Specify a column that exists in all models).",
+            "limit" : "A positive integer to limit results.",
+            "models": "Comma-separated text or array of model names. If omitted, all models are targeted.",
+            "include_draft" : "If object has column 'status', Whether to include not published objects.",
+            "workspace_id" : "The 'id' of workspace.",
+            "include_workspaces" : "The permission matching the given workspace_ids(Comma separated values or 'this' or 'all' or 'children').",
+            "exclude_workspaces" : "The permission excluding the specified workspace_ids(Comma separated values).",
+            "workspace_ids" : "Alias for 'include_workspaces'.",
+            "glue" : "When specified, the string will be placed in between each row."
+        }
+    }
+}

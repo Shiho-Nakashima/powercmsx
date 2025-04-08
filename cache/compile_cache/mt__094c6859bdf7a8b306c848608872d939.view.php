@@ -1,0 +1,524 @@
+<?php ob_start();?>window.__SJFurigana = {
+  config: {
+    exclusion_class: 'tsutaeruRuby tsutaeruRuby__phrase tsutaeruRuby__translation no-tsutaeruRuby',
+    complete: function(){
+      window.dispatchEvent(new Event('resize'));
+    },
+  },
+  dictionary: [],
+  enable: false,
+  removeHTML: function(str){
+    if(!str){
+      return str;
+    }
+    let doc = new DOMParser().parseFromString(str, 'text/html');
+    str = doc.documentElement.textContent;
+    return str.replace(/<.*?>/g,'');
+  },
+  escapeHTML: function(str){
+    if(!str){
+      return str;
+    }
+    return str
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+  },
+  hasClass: function(element,class_names){
+    let has_class = false;
+    if(element && element.className && (typeof element.className === 'string' || element.className instanceof String)){
+      let p_class_names = element.className.split(' ');
+      class_names = class_names.split(' ');
+      p_class_names.forEach(function(p_class_name){
+        class_names.forEach(function(class_name){
+          if(p_class_name == class_name){
+            has_class = true;
+          }
+        });
+      });
+    }
+    return has_class;
+  },
+  cookie: {
+    bake: function(options){
+      document.cookie = options.name + '=' + options.value + '; path=/;'
+    },
+    get: function(name){
+      let _cookie = document.cookie;
+      if(!_cookie){
+        return '';
+      }
+      let _cookie_data = {};
+      let regex = /(.+?)=(.*)/;
+      _cookie.split(';').forEach(function(c){
+        c = c.replace(/(^\s+)|(\s+$)/g,'');
+        if(regex.test(c)){
+          _cookie_data[c.replace(regex,'$1')] = c.replace(regex,'$2');
+        }else
+        if(c){
+          _cookie_data[c] = c;
+        }
+      });
+      if(_cookie_data[name]){
+        return _cookie_data[name];
+      }
+    },
+    remove: function(name){
+      document.cookie = name + '=; max-age=0; path=/;';
+    }
+  },
+  getAllTextNodes: function(nodes){
+    let __rp = __SJFurigana;
+    let textNodes = [];
+
+    let parentNodesHasClass = function(node,class_names){
+      let parent = node.parentNode;
+      let has_class = false;
+      if(parent){
+        has_class = __rp.hasClass(parent,class_names);
+        if(!has_class){
+          has_class = parentNodesHasClass(parent,class_names);
+        }
+      }
+      return has_class;
+    }
+
+    nodes.forEach(function(node){
+      // console.log(node);
+      if(node.nodeType == 3){
+        if((/\S/).test(node.nodeValue) && !( node.parentNode && (/script|ruby|rb|rt|option/i).test(node.parentNode.tagName) )){
+          if(!parentNodesHasClass(node,__rp.config.exclusion_class)){
+            textNodes.push(node);
+          }
+        }
+      }else{
+        let _textNodes = __SJFurigana.getAllTextNodes(node.childNodes);
+        if(_textNodes){
+          _textNodes.forEach(function(_textNode){
+            if((/\S/).test(_textNode.nodeValue) && !( _textNode.parentNode && (/script|ruby|rb|rt|option/i).test(_textNode.parentNode.tagName) )){
+              if(!parentNodesHasClass(_textNode,__rp.config.exclusion_class)){
+                textNodes.push(_textNode);
+              }
+            }
+          });
+        }
+      }
+    });
+    return textNodes.length ? textNodes : false;
+  },
+  observe: {
+    config: {
+      // characterData: true,
+      // characterDataOldValue: true,
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['title','alt','summary']
+    },
+    callback: function(mutations){
+      if(!mutations.length){
+        return;
+      }
+
+      // console.log('mutations',mutations);
+
+      let __rp = __SJFurigana;
+      let newTextNodes = [];
+      let newAttrTags = [];
+
+      mutations.forEach(function(mutation){
+        let textNodes;
+        if(mutation.type == 'characterData'){
+          textNodes = __rp.getAllTextNodes([mutation.target]);
+        }else if(mutation.type == 'childList'){
+          if(!mutation.addedNodes.length){
+            return;
+          }
+
+          textNodes = __rp.getAllTextNodes(mutation.addedNodes);
+        }else if(mutation.type == 'attributes'){
+          newAttrTags.push({
+            target: mutation.target,
+            attributeName: mutation.attributeName
+          });
+        }
+
+        if(textNodes){
+          textNodes.forEach(function(textNode){
+            newTextNodes.push(textNode);
+          });
+        }
+      });
+
+      if(newTextNodes.length){
+        // console.log('newTextNodes',newTextNodes);
+        __rp.cue.create(newTextNodes);
+      }
+      if(newAttrTags.length){
+        __rp.cue.create_attr(newAttrTags);
+      }
+
+      if (__rp.enable) {
+        __rp.trans();
+      }
+    },
+    create: function(elements){
+      let ob = __SJFurigana.observe;
+
+      if(!elements){
+        // elements = document.getElementsByTagName('html')[0];
+        elements = [document.getElementsByTagName('title')[0],document.body];
+      }else{
+        if(!elements.length){
+          elements = [elements];
+        }
+      }
+
+      let observer;
+      if(ob.observer){
+        observer = ob.stop();
+      }else{
+        observer = new MutationObserver(ob.callback);
+      }
+
+      elements.forEach(function(element){
+        observer.observe(element,ob.config);
+      });
+
+      __SJFurigana.observe.observer = observer;
+      __SJFurigana.observe.targets = elements;
+    },
+    stop: function(){
+      let ob = __SJFurigana.observe;
+      // MutationObserver が既に存在する場合は停止後 ob.callback 実行
+      if(ob.observer){
+        let mutations = ob.observer.takeRecords();
+        ob.observer.disconnect();
+        if (mutations) {
+          ob.callback(mutations);
+        }
+      }
+      return ob.observer;
+    },
+    resume: function(){
+      let ob = __SJFurigana.observe;
+      if(ob.observer){
+        __SJFurigana.observe.targets.forEach(function(element){
+          ob.observer.observe(element,ob.config);
+        });
+      }
+      return ob.observer;
+    }
+  },
+  cue: {
+    nodes: [],
+    attrs: [],
+    htmls: [],
+    create: function(newTextNodes){
+      if(!newTextNodes){
+        return false;
+      }
+      let __rp = __SJFurigana;
+      let dictionary = __rp.dictionary;
+
+      let regex = /[^a-zA-Z0-9!-/:-@\[-`{-~\s]/; // 半角英数字のみの場合はスルーする`
+
+      newTextNodes.forEach(function(newTextNode){
+        let text = newTextNode.textContent;
+        text = __rp.escapeHTML(text);
+
+        if(!regex.test(text)){
+          return;
+        }
+
+        let exist = false;
+        // 既に辞書に登録が無いか確認する
+        dictionary.forEach(function(trans){
+          if(trans.phrase == text){
+            exist = true;
+          }
+        });
+
+        if(!exist){
+          // 辞書に登録（この時点では訳文なし）
+          __rp.dictionary.push({
+            phrase: text,
+            translation: false
+          });
+        }
+
+        __rp.cue.nodes.push({
+          target: newTextNode,
+          parentTag: newTextNode.parentNode ? newTextNode.parentNode.tagName : null,
+          parentClass: newTextNode.parentNode ? newTextNode.parentNode.className : null,
+          text: text
+        });
+      });
+
+      // console.log(__rp.cue.nodes);
+      // console.log(__rp.dictionary);
+      return __rp.cue.nodes;
+    },
+    create_attr: function(newAttrTags){
+      if(!newAttrTags || !newAttrTags.length){
+        return false;
+      }
+      let __rp = __SJFurigana;
+      let dictionary = __rp.dictionary;
+
+      let regex = /[^a-zA-Z0-9!-/:-@\[-`{-~\s]/; // 半角英数字のみの場合はスルーする`
+
+      newAttrTags.forEach(function(newAttrTag){
+        let text = newAttrTag.target.getAttribute(newAttrTag.attributeName);
+
+        if(!regex.test(text)){
+          return;
+        }
+
+        let exist = false;
+        // 既に辞書に登録が無いか確認する
+        dictionary.forEach(function(trans){
+          if(trans.phrase == text){
+            exist = true;
+          }
+        });
+
+        if(!exist){
+          // 辞書に登録（この時点では訳文なし）
+          __SJFurigana.dictionary.push({
+            phrase: text,
+            translation: false
+          });
+        }
+        __SJFurigana.cue.attrs.push({
+          target: newAttrTag,
+          text: text
+        });
+      });
+      // console.log(__SJFurigana.dictionary);
+      return __SJFurigana.cue.attrs;
+    }
+  },
+  trans: function(){
+    let __rp = __SJFurigana;
+    let ob = __rp.observe;
+    let dictionary = __rp.dictionary;
+    ob.stop();
+
+    // console.time('trans');
+
+    // テキストノードの処理
+    (function(){
+      let nodes = __rp.cue.nodes;
+      let delete_reserve = [];
+      nodes.forEach(function(node,i){
+        if(!node.target.isConnected){
+          // テキストノードが isConnected ではない場合
+          delete_reserve.push(i);
+        }else{
+          let text = node.text;
+          dictionary.forEach(function(trans){
+            if(trans.phrase == text && ( trans.translation && (/\S/).test(trans.translation))){
+              // テキストノードのみをテキストで書き換える想定
+              // node.target.replaceData(0, node.target.length, trans.translation);
+
+              if(node.target.parentNode && node.target.parentNode.tagName.toLowerCase() === 'title'){
+                // <title> の場合
+                document.title = __rp.removeHTML(trans.translation);
+              }else{
+                let trans_ele = document.createElement('span');
+                // console.log(node);
+                if (node.parentTag === 'OPTION') {
+                  trans_ele.innerHTML = trans.translation.replace('ruby', 'ruby class="plainRuby"');
+                  // trans_ele.innerHTML = '<!-- #TTER -->' + trans.translation + '<!-- /#TTER -->';
+                  // trans_ele.innerHTML = '<span class="tsutaeruRuby"><span class="tsutaeruRuby__phrase" aria-hidden="true"><!-- #TTER -->' + trans.phrase + '<!-- /#TTER --></span><span class="tsutaeruRuby__translation" aria-hidden="false"><!-- #TTER -->' + trans.translation + '<!-- /#TTER --></span></span>';
+                } else {
+                  trans_ele.innerHTML = '<span class="tsutaeruRuby"><span class="tsutaeruRuby__phrase" aria-hidden="true">' + trans.phrase + '</span><span class="tsutaeruRuby__translation" aria-hidden="false">' + trans.translation + '</span></span>';
+                }
+
+                let parent_ele = node.target.parentNode;
+                if (parent_ele) {
+                  parent_ele.insertBefore(trans_ele,node.target);
+                  parent_ele.removeChild(node.target);
+                }
+
+                if (trans_ele.parentNode) {
+                  while(trans_ele.firstChild){
+                    trans_ele.parentNode.insertBefore(trans_ele.firstChild, trans_ele);
+                  };
+                  trans_ele.parentNode.removeChild(trans_ele);
+                }
+              }
+
+              delete_reserve.push(i);
+            }
+          });
+        }
+      });
+
+      // キューを削除
+      let newNodes = nodes.filter(function(node,i){
+        let match_delete = false;
+
+        delete_reserve.forEach(function(reserve){
+          if(reserve == i){
+            match_delete = true;
+          }
+        });
+        return match_delete ? false : true;
+      });
+
+      __SJFurigana.cue.nodes = newNodes;
+    })();
+
+    // アトリビュートの処理
+    (function(){
+      let attrs = __rp.cue.attrs;
+      let delete_reserve = [];
+      attrs.forEach(function(attr,i){
+        if(!attr.target.target.isConnected){
+          // テキストノードが isConnected ではない場合
+          delete_reserve.push(i);
+        }else{
+          let text = attr.text;
+          dictionary.forEach(function(trans){
+            if(trans.phrase == text && ( trans.translation && (/\S/).test(trans.translation))){
+              attr.target.target.setAttribute(attr.target.attributeName, __rp.removeHTML(trans.translation));;
+              delete_reserve.push(i);
+            }
+          });
+        }
+      });
+
+      // キューを削除
+      let newAttrs = attrs.filter(function(attr,i){
+        let match_delete = false;
+
+        delete_reserve.forEach(function(reserve){
+          if(reserve == i){
+            match_delete = true;
+          }
+        });
+        return match_delete ? false : true;
+      });
+      __SJFurigana.cue.attrs = newAttrs;
+    })();
+
+    /*
+    console.log('dictionary',dictionary);
+    console.log('__SJFurigana.cue.nodes', __SJFurigana.cue.nodes);
+    console.log('__SJFurigana.cue.htmls', __SJFurigana.cue.htmls);
+    console.log('__SJFurigana.cue.attrs', __SJFurigana.cue.attrs);
+    */
+    // console.timeEnd('trans');
+
+    ob.resume();
+
+    __rp.config.complete();
+  },
+  startAll: function(){
+    let __rp = __SJFurigana;
+    let mutations = [];
+
+    // すべてのtitle要素内テキストノード
+    /*
+    let title_ele = document.querySelector('title');
+    mutations.push({
+      addedNodes: title_ele.childNodes,
+      type: 'childList',
+      target: title_ele
+    });
+    */
+
+    // すべてのbody要素内テキストノード
+    mutations.push({
+      addedNodes: document.body.childNodes,
+      type: 'childList',
+      target: document.body
+    });
+
+    // すべての対象属性ノード
+    let attr_eles = [];
+    (__rp.observe.config.attributeFilter).forEach(function(attr){
+      attr_eles = document.querySelectorAll('*[' + attr + ']');
+      if(attr_eles.length){
+        attr_eles.forEach(function(attr_ele){
+          mutations.push({
+            addedNodes: [],
+            type: 'attributes',
+            attributeName: attr,
+            target: attr_ele
+          });
+        });
+      }
+    });
+
+    if(mutations.length){
+      __rp.observe.callback(mutations);
+    }
+  },
+  check: function(){
+    let __rp = __SJFurigana;
+
+    // 監視を作成する
+    __SJFurigana.observe.create();
+
+    // 実行する
+    __rp.startAll();
+  },
+  init: function(options){
+    let __rp = __SJFurigana;
+
+    if(!options){
+      options = {};
+    }
+
+    if(options.exclusion_class){
+      let _excs = [];
+      if(options.exclusion_class.match(',')){
+        _excs = options.exclusion_class.split(',');
+      }else
+      if(options.exclusion_class.match(' ')){
+        _excs = options.exclusion_class.split(' ');
+      }else{
+        _excs.push(options.exclusion_class);
+      }
+      if(_excs.length){
+        __rp.config.exclusion_class = __rp.config.exclusion_class + ' ' + _excs.join(' ');
+      }
+    }
+
+    __rp.start();
+  },
+  start: function(){
+    let __rp = __SJFurigana;
+
+    // 既存の辞書を読み込む
+    if(window.textnode_ruby_map){
+      let _map = textnode_ruby_map;
+      let dictionary = [];
+      Object.keys(_map).map(function(key){
+        dictionary.push({
+          phrase: key,
+          translation: _map[key]
+        });
+      });
+      __rp.dictionary = dictionary;
+    }
+
+    // 実行
+    if (document.readyState === 'loading'){
+      window.addEventListener('DOMContentLoaded',function(event){
+        __SJFurigana.check();
+      });
+    }else{
+      __SJFurigana.check();
+    }
+  }
+}<?php $this->out=ob_get_clean();$this->meta=array (
+  'template_paths' => 
+  array (
+  ),
+  'version' => '4.0',
+  'advanced' => true,
+  'time' => 1744005690,
+);?>

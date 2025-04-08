@@ -1,0 +1,153 @@
+<mt:if name="workspace_id">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="imagewebp_use_system_settings">
+      <mt:trans phrase="Settings">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="imagewebp_use_system_settings" value="0">
+    <label class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input individual-setting"
+          id="imagewebp_use_system_settings" name="setting_imagewebp_use_system_settings"
+          value="1" <mt:if name="setting_imagewebp_use_system_settings">checked</mt:if>>
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description"> 
+      <mt:trans phrase="Use system settings" component="ImageWebP"></span>
+    </label>
+  </div>
+</div>
+</mt:if>
+<div id="imagewebp-settings-container" class="mb-0 pt-3 pl-3 pr-3 rounded" style="border:1px solid #bbb;<mt:if name="setting_imagewebp_use_system_settings">display:none;</mt:if>">
+<mt:var name="setting_imagewebp_file_types" split="," setvar="imagewebp_file_types">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="imagewebp_file_types">
+      <mt:trans phrase="File Types" component="ImageWebP">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed imagewebp_file_types"
+      <mt:ifinarray array="imagewebp_file_types" value="image/png">checked</mt:ifinarray>
+      type="checkbox" id="imagewebp_file_types" name="imagewebp_file_types" value="image/png">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      png
+      </span>
+    </label>
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed imagewebp_file_types"
+      <mt:ifinarray array="imagewebp_file_types" value="image/jpeg">checked</mt:ifinarray>
+      type="checkbox" name="imagewebp_file_types" value="image/jpeg">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      jpeg
+      </span>
+    </label>
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed imagewebp_file_types"
+      <mt:ifinarray array="imagewebp_file_types" value="image/gif">checked</mt:ifinarray>
+      type="checkbox" name="imagewebp_file_types" value="image/gif">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      gif
+      </span>
+    </label>
+  </div>
+</div>
+<input type="hidden" id="setting_imagewebp_file_types" name="setting_imagewebp_file_types" value="<mt:var name="setting_imagewebp_file_types" escape>">
+<script>
+$('.imagewebp_file_types').change(function(){
+    var file_types = $('#setting_imagewebp_file_types').val();
+    var this_type = $(this).val();
+    if ( file_types ) {
+        file_types = file_types.split(',');
+    } else {
+        file_types = [];
+    }
+    var result = $.inArray( this_type, file_types );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            file_types.push( this_type );
+            $('#setting_imagewebp_file_types').val(file_types.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            file_types.splice(result, 1); 
+            $('#setting_imagewebp_file_types').val(file_types.join(','));
+        }
+    }
+});
+</script>
+<mt:var name="setting_imagewebp_models" split="," setvar="imagewebp_target_models">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="imagewebp_models">
+      <mt:trans phrase="Models">
+      <mt:var name="field_required">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:loop name="imagewebp_models">
+    <label class="custom-control custom-checkbox">
+    <input class="custom-control-input watch-changed imagewebp_models"
+      <mt:ifinarray array="imagewebp_target_models" value="$name">checked</mt:ifinarray>
+      type="checkbox" <mt:if name="__first__">id="imagewebp_models" </mt:if>name="imagewebp_models" value="<mt:var name="name" escape>">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">
+      <mt:var name="label" escape>
+      </span>
+    </label>
+    </mt:loop>
+  </div>
+</div>
+<input type="hidden" id="setting_imagewebp_models" name="setting_imagewebp_models" value="<mt:var name="setting_imagewebp_models" escape>">
+<script>
+$('.imagewebp_models').change(function(){
+    var imagewebp_models = $('#setting_imagewebp_models').val();
+    var this_model = $(this).val();
+    if ( imagewebp_models ) {
+        imagewebp_models = imagewebp_models.split(',');
+    } else {
+        imagewebp_models = [];
+    }
+    var result = $.inArray( this_model, imagewebp_models );
+    if ( $(this).prop('checked') ) {
+        if ( result == -1 ) {
+            imagewebp_models.push( this_model );
+            $('#setting_imagewebp_models').val(imagewebp_models.join(','));
+        }
+    } else {
+        if ( result != -1 ) {
+            imagewebp_models.splice(result, 1); 
+            $('#setting_imagewebp_models').val(imagewebp_models.join(','));
+        }
+    }
+});
+</script>
+<mt:if name="imagewebp_can_function">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_imagewebp_quality">
+      <mt:trans phrase="Quality" component="ImageWebP">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" min="0" max="100" step="10" id="setting_imagewebp_quality" name="setting_imagewebp_quality" class="form-control num" value="<mt:var name="setting_imagewebp_quality" escape>">
+  </div>
+</div>
+</mt:if>
+</div>
+<mt:if name="workspace_id">
+<script>
+$('#imagewebp_use_system_settings').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#imagewebp-settings-container').hide();
+    } else {
+        $('#imagewebp-settings-container').show();
+    }
+});
+</script>
+</mt:if>

@@ -1,0 +1,137 @@
+{
+    "label": "Keyword",
+    "plural": "Keywords",
+    "version": "1.65",
+    "primary": "name",
+    "auditing": 1,
+    "order": 360,
+    "sortable": 1,
+    "menu_type": 2,
+    "display_space": 1,
+    "has_status": 1,
+    "max_revisions": 20,
+    "default_status": 2,
+    "display_system": 1,
+    "column_defs": {
+        "id": {
+            "type": "int",
+            "size": 11,
+            "not_null": 1
+        },
+        "name": {
+            "type": "string",
+            "size": 255
+        },
+        "url": {
+            "type": "string",
+            "size": 255
+        },
+        "title": {
+            "type": "string",
+            "size": 255
+        },
+        "alternative": {
+            "type": "string",
+            "size": 255
+        },
+        "only_alt": {
+            "type": "tinyint",
+            "size": 4,
+            "not_null": 1,
+            "default": 0
+        },
+        "order": {
+            "type": "int",
+            "size": 11
+        },
+        "status": {
+            "type": "int",
+            "size": 11,
+            "default": "2"
+        },
+        "workspace_id": {
+            "type": "int",
+            "size": 11,
+            "default": "0"
+        },
+        "created_on": {
+            "type": "datetime"
+        },
+        "modified_on": {
+            "type": "datetime"
+        },
+        "created_by": {
+            "type": "int",
+            "size": 11
+        },
+        "modified_by": {
+            "type": "int",
+            "size": 11
+        }
+    },
+    "indexes": {
+        "PRIMARY": "id",
+        "id": "id",
+        "name": "name",
+        "alternative": "alternative",
+        "only_alt": "only_alt",
+        "order": "order",
+        "status": "status",
+        "workspace_id": "workspace_id",
+        "created_on": "created_on",
+        "modified_on": "modified_on",
+        "created_by": "created_by",
+        "modified_by": "modified_by"
+    },
+    "relations": [],
+    "options": {
+        "status": "Disable,Enable"
+    },
+    "extras": [],
+    "sort_by": {
+        "order": "ascend"
+    },
+    "autoset": [
+        "workspace_id",
+        "created_on",
+        "modified_on",
+        "created_by",
+        "modified_by"
+    ],
+    "unique": [
+        "name"
+    ],
+    "unchangeable": [
+        "workspace_id"
+    ],
+    "disp_edit": {
+        "status": "select"
+    },
+    "edit_properties": {
+        "id": "hidden",
+        "name": "primary",
+        "url": "url",
+        "title": "text_short",
+        "alternative": "text_short",
+        "order": "number",
+        "status": "selection"
+    },
+    "list_properties": {
+        "id": "number",
+        "name": "primary",
+        "url": "url",
+        "title": "text_short",
+        "alternative": "text_short",
+        "order": "number",
+        "status": "number",
+        "workspace_id": "reference:workspace:name",
+        "modified_on": "datetime",
+        "modified_by": "reference:user:name"
+    },
+    "column_labels": {
+        "title": "Title Attribute"
+    },
+    "hide_edit_options": [
+        "status"
+    ]
+}

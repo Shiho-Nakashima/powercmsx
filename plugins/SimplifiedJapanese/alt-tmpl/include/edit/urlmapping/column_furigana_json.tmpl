@@ -1,0 +1,64 @@
+<div class="row form-group ">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:trans phrase="Put on Furigana" component="SimplifiedJapanese">
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline form-inline-left-margin" id="furigana_setting-all-wrapper">
+    <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="value"></mt:unless></mt:unless>
+    <input type="hidden" name="<mt:var name="__col_name__">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">" class="custom-control-input watch-changed"
+    <mt:if name="readonly">onclick="return false;"</mt:if>
+     type="checkbox" name="<mt:var name="__col_name__">" value="1" <mt:if name="value">checked</mt:if>>
+        <span class="custom-control-indicator<mt:if name="readonly"> disabled-cb</mt:if>"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape></span>
+    </label>
+    <span id="furigana_setting-wrapper" <mt:unless name="value">class="hidden"</mt:unless>>
+    <select id="furigana_setting" class="form-control custom-select watch-changed" name="furigana_setting" aria-label="<mt:trans phrase="Furigana Setting" component="SimplifiedJapanese">">
+      <option <mt:if name="object_furigana_setting" eq="1">selected</mt:if> value="1"><mt:trans phrase="Add Ruby" component="SimplifiedJapanese"></option>
+      <option <mt:if name="object_furigana_setting" eq="2">selected</mt:if> value="2"><mt:trans phrase="Break with Clauses and add Ruby" component="SimplifiedJapanese"></option>
+      <option <mt:if name="object_furigana_setting" eq="3">selected</mt:if> value="3"><mt:trans phrase="Break with Clauses only" component="SimplifiedJapanese"></option>
+    </select>
+    </span>
+    <mt:var name="_hint">
+  </div>
+  <div class="col-lg-10 hidden text-muted" id="furigana-json-url-hint">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="During dynamic publishing, call the &lt;mt:furiganajsonurl&gt; tag to generate Furigana JSON." component="SimplifiedJapanese">
+  </div>
+</div>
+<script>
+$('#furigana_json').change(function(){
+    $('#furigana_setting-wrapper').toggle(100);
+    $('#furigana_urlmap-wrapper').toggle(100);
+});
+<mt:unless name="value">
+$(function () {
+    $('#furigana_urlmap-wrapper').hide();
+});
+</mt:unless>
+$(function () {
+  <mt:if name="object_publish_file" eq="6">
+    $('#furigana_setting-all-wrapper').hide();
+    $('#furigana_urlmap-wrapper').hide();
+    $('#furigana-json-url-hint').show();
+  </mt:if>
+    $('#__publish_file_selector').change(function(){
+        if ( $('#furigana_json').prop( 'checked' ) ) {
+            if ( $(this).val() == 6 ) {
+                $('#furigana_setting-all-wrapper').hide();
+                $('#furigana_urlmap-wrapper').hide();
+                $('#furigana-json-url-hint').show();
+            }  else {
+                $('#furigana_setting-all-wrapper').show();
+                $('#furigana_urlmap-wrapper').show();
+                $('#furigana-json-url-hint').hide();
+            }
+        }
+    });
+});
+</script>

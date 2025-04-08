@@ -1,0 +1,5 @@
+<?php $this->get_cache=array (
+  'Notify users with the same permissions at the same time for workflow emails.' => 'ワークフローのメールを同じ権限を持ったユーザーに同時に送信します。',
+  'MultipleNotifications Enabled' => '機能の有効化',
+  'Enabled' => '有効',
+);

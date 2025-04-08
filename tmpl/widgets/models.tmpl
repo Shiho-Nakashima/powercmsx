@@ -1,0 +1,37 @@
+<mt:tables type="display_dashboard" permission="1" workspace_perm="1">
+  <mt:if name="__first__">
+<div class="card dashboard-widget" id="widget-models">
+  <h2 class="card-header"><mt:trans phrase="Models">
+    <button  type="button" class="detatch-widget" aria-label="<mt:trans phrase="Detach">" data-name="widget-models">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </h2>
+  <div class="card-block card-group">
+  </mt:if>
+    <mt:trans phrase="$plural" setvar="object_plural">
+    <mt:trans phrase="$label" setvar="object_label">
+    <div class="card widget-card mr-1 ml-1 mb-1 mt-1" style="min-width:200px;border:1px solid gray;border-radius:5px;">
+      <mt:ignore><img class="card-img-top" src="..." alt="Card image cap"></mt:ignore>
+      <div class="card-block">
+        <h3 class="card-title mt-2"><mt:var name="object_plural"></h3>
+        <p class="card-text"><mt:var name="description" eval="1"></p>
+        <small class="text-muted"></small>
+      </div>
+      <div class="card-footer" style="border-radius:0 0 5px 5px;">
+      <mt:ifusercan model="$name" action="list" workspace_id="$workspace_id">
+        <a href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="name" escape>&amp;workspace_id=<mt:var name="workspace_id">" class="btn btn-sm btn-primary">
+          <mt:trans phrase="List" params="$object_plural">
+        </a>
+      </mt:ifusercan>
+      <mt:ifusercan model="$name" action="create" workspace_id="$workspace_id">
+        <a href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="name" escape>&amp;workspace_id=<mt:var name="workspace_id">" class="btn btn-sm btn-primary">
+          <mt:trans phrase="New" params="$object_label">
+        </a>
+      </mt:ifusercan>
+      </div>
+    </div>
+  <mt:if name="__last__">
+  </div>
+</div>
+  </mt:if>
+</mt:tables>

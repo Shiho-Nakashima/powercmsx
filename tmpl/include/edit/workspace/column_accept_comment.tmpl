@@ -1,0 +1,62 @@
+<mt:property name="use_comment" setvar="use_comment">
+<mt:if name="use_comment">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:trans phrase="Comments">
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="<mt:var name="__col_name__">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">" class="custom-control-input watch-changed"
+    <mt:if name="readonly">onclick="return false;"</mt:if>
+     type="checkbox" name="<mt:var name="__col_name__">" value="1" <mt:if name="value">checked</mt:if>>
+        <span class="custom-control-indicator<mt:if name="readonly"> disabled-cb</mt:if>"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape></span>
+    </label>
+    <input type="hidden" name="anonymous_comment" value="0">
+    <label id="anonymous_comment" class="custom-control custom-checkbox <mt:unless name="value">hidden</mt:unless>">
+    <input class="custom-control-input watch-changed"
+     type="checkbox" name="anonymous_comment" value="1" <mt:if name="object_anonymous_comment" eq="1">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Accept Anonymous Comment"></span>
+    </label>
+    <input type="hidden" name="comment_thanks" value="0">
+    <label id="comment_thanks" class="custom-control custom-checkbox <mt:unless name="value">hidden</mt:unless>">
+    <input class="custom-control-input watch-changed"
+     type="checkbox" name="comment_thanks" value="1" <mt:if name="object_comment_thanks" eq="1">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Thanks email"></span>
+    </label>
+    <span <mt:unless name="value">class="hidden"</mt:unless>" id="comment_status"><mt:trans phrase="Status"> &nbsp; : &nbsp;
+    <select class="form-control custom-select short" name="comment_status">
+      <option value="1" <mt:if name="object_comment_status" eq="1">selected</mt:if>><mt:trans phrase="Disabled"></option>
+      <option value="2" <mt:if name="object_comment_status" eq="2">selected</mt:if>><mt:trans phrase="Enabled"></option>
+    </select>
+    </span>
+    <mt:var name="_hint">
+  </div>
+</div>
+<script>
+$('#<mt:var name="__col_name__">').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#anonymous_comment').css('display', 'inline');
+        $('#comment_thanks').css('display', 'inline');
+        $('#comment_status').css('display', 'inline');
+        $('#anonymous_comment').show();
+        $('#comment_thanks').show();
+        $('#comment_status').show();
+    } else {
+        $('#anonymous_comment').hide();
+        $('#comment_thanks').hide();
+        $('#comment_status').hide();
+    }
+});
+</script>
+</mt:if>
+<!--Dummy Comment-->

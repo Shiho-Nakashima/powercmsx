@@ -1,0 +1,292 @@
+<mt:unless name="workspace_id">
+<div class="row form-group">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_linkchecker_all_scope" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_linkchecker_dynamic" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_linkchecker_all_scope" value="1" <mt:if name="setting_linkchecker_all_scope">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Check links on all WorkSpaces" component="LinkChecker"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_email_separator">
+      <mt:trans phrase="Email Separator" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_linkchecker_email_separator" name="setting_linkchecker_email_separator" class="form-control" value="<mt:var name="setting_linkchecker_email_separator" escape>">
+  </div>
+</div>
+<hr>
+</mt:unless>
+<div class="row form-group">
+  <div class="col-lg-12">
+    <input type="hidden" name="setting_linkchecker_only_errors" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_linkchecker_only_errors" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_linkchecker_only_errors" value="1" <mt:if name="setting_linkchecker_only_errors">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Report errors only" component="LinkChecker"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_sunday">
+      <mt:trans phrase="Day of Week" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:setvar name="prop_name" value="setting_linkchecker_sunday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Sunday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_linkchecker_monday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Monday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_linkchecker_tuesday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Tuesday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_linkchecker_wednesday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Wednesday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_linkchecker_thursday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Thursday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_linkchecker_friday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Friday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_linkchecker_saturday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Saturday"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_time">
+      <mt:trans phrase="Execution Time" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="time" id="setting_linkchecker_time" name="setting_linkchecker_time" class="very-short form-control" value="<mt:var name="setting_linkchecker_time" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_email_from">
+      <mt:trans phrase="Email From" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_linkchecker_email_from" name="setting_linkchecker_email_from" class="form-control" value="<mt:var name="setting_linkchecker_email_from" escape>">
+    <div class="text-muted hint-block mt-3 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="If omitted, the system email will be used." component="LinkChecker">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_email_to">
+      <mt:trans phrase="Email To" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_linkchecker_email_to" name="setting_linkchecker_email_to" class="form-control" value="<mt:var name="setting_linkchecker_email_to" escape>">
+    <div class="text-muted hint-block mt-3 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="If omitted, no email will be sent." component="LinkChecker">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_email_subject">
+      <mt:trans phrase="Email Subject" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_linkchecker_email_subject" name="setting_linkchecker_email_subject" class="form-control" value="<mt:var name="setting_linkchecker_email_subject" escape>">
+    <div class="text-muted hint-block mt-3 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Template tags are available." component="LinkChecker">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_email_body">
+      <mt:trans phrase="Email Body" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea class="form-control" rows="6" id="setting_linkchecker_email_body" name="setting_linkchecker_email_body"><mt:var name="setting_linkchecker_email_body" escape></textarea>
+    <div class="text-muted hint-block mt-3 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Template tags are available." component="LinkChecker">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_email_footer">
+      <mt:trans phrase="Body Footer" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <textarea class="form-control" rows="2" id="setting_linkchecker_email_footer" name="setting_linkchecker_email_footer"><mt:var name="setting_linkchecker_email_footer" escape></textarea>
+    <div class="text-muted hint-block mt-3 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Template tags are available." component="LinkChecker">
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_username">
+      <mt:trans phrase="HTTP Authentication" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline form-inline-left-margin">
+    <label><mt:trans phrase="Username"> : &nbsp;<input type="text" value="<mt:var name="setting_linkchecker_username" escape>" class="form-control watch-changed very-short" name="setting_linkchecker_username" id="setting_linkchecker_username"></label>
+    <label><mt:trans phrase="Password"> : &nbsp;<input type="password" value="<mt:var name="setting_linkchecker_password" escape>" class="form-control watch-changed very-short" name="setting_linkchecker_password" id="setting_linkchecker_password"></label>
+    <input type="hidden" name="setting_linkchecker_digest" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_linkchecker_dynamic" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_linkchecker_digest" value="1" <mt:if name="setting_linkchecker_digest">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Digest Access Authentication" component="LinkChecker"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_member_name">
+      <mt:trans phrase="Member">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline form-inline-left-margin">
+    <label><mt:trans phrase="Member Name" component="LinkChecker"> : &nbsp;<input type="text" value="<mt:var name="setting_linkchecker_member_name" escape>" class="form-control watch-changed very-short" name="setting_linkchecker_member_name" id="setting_linkchecker_member_name"></label>
+  </div>
+</div>
+<hr>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_dynamic">
+      <mt:trans phrase="Dynamic Contents" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_linkchecker_dynamic" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_linkchecker_dynamic" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_linkchecker_dynamic" value="1" <mt:if name="setting_linkchecker_dynamic">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Perform dynamic contents link check" component="LinkChecker"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_outer_link">
+      <mt:trans phrase="External Contents" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_linkchecker_outer_link" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_linkchecker_outer_link" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_linkchecker_outer_link" value="1" <mt:if name="setting_linkchecker_outer_link">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Check links on external websites" component="LinkChecker"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_exclude_nofollow">
+      <mt:trans phrase="rel=&quot;nofollow&quot;" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_linkchecker_exclude_nofollow" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_linkchecker_exclude_nofollow" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_linkchecker_exclude_nofollow" value="1" <mt:if name="setting_linkchecker_exclude_nofollow">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Ignore rel=&quot;nofollow&quot;" component="LinkChecker"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_linkchecker_exclude_paths">
+      <mt:trans phrase="Exclude Paths" component="LinkChecker">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_linkchecker_exclude_paths" name="setting_linkchecker_exclude_paths" class="form-control" value="<mt:var name="setting_linkchecker_exclude_paths" escape>">
+    <div class="text-muted hint-block mt-3 mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Comma separated text. Partial match or Regular Expression(Delimiter is '!')." component="LinkChecker">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+/*! @name videojs-mobile-ui @version 1.0.1 @license MIT */
+@use "variables";
+
+@keyframes fadeAndScale {
+    0%, to {
+      opacity: 0
+  }
+
+    25% {
+      opacity: 1
+  }
+
+}
+
+.video-js.vjs-has-started .vjs-touch-overlay {
+    position: absolute;
+    pointer-events: auto;
+    top: 0
+}
+
+.video-js .vjs-touch-overlay {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none
+}
+
+.video-js .vjs-touch-overlay.skip {
+    opacity: 0;
+    animation: fadeAndScale .8s linear;
+    background-repeat: no-repeat;
+    background-position: 80% center;
+    background-size: 18px auto;
+    background-image: url('data:image/svg+xml;utf8,<svg height="18" viewBox="0 0 18.771 18" width="18.771" xmlns="http://www.w3.org/2000/svg"><g fill="%23fff"><path d="m14.936 8.076-13.311-7.924a1.075 1.075 0 0 0 -1.625.925v15.846a1.075 1.075 0 0 0 1.625.924l13.311-7.923a1.075 1.075 0 0 0 0-1.848"/><path d="m131.717 18h-1.377a.34.34 0 0 1 -.34-.34v-17.32a.34.34 0 0 1 .34-.34h1.377a.34.34 0 0 1 .34.34v17.32a.34.34 0 0 1 -.34.34" transform="translate(-113.286)"/></g></svg>')
+}
+
+.video-js .vjs-touch-overlay.skip:after {
+    content: attr(data-skip-text);
+    position: absolute;
+    top: 60%;
+    left: 70%
+}
+
+.video-js .vjs-touch-overlay.skip.reverse {
+    background-position: 20% center;
+    background-image: url('data:image/svg+xml;utf8,<svg height="18" viewBox="0 0 18.771 18" width="18.771" xmlns="http://www.w3.org/2000/svg"><g fill="%23fff"><path d="m.525 8.076 13.311-7.924a1.075 1.075 0 0 1 1.625.924v15.847a1.075 1.075 0 0 1 -1.625.924l-13.311-7.923a1.075 1.075 0 0 1 0-1.848" transform="translate(3.31)"/><path d="m130.34 18h1.377a.34.34 0 0 0 .34-.34v-17.32a.34.34 0 0 0 -.34-.34h-1.377a.34.34 0 0 0 -.34.34v17.32a.34.34 0 0 0 .34.34" transform="translate(-130)"/></g></svg>')
+}
+
+.video-js .vjs-touch-overlay.skip.reverse:after {
+    right: 70%;
+    left: unset
+}
+
+.video-js .vjs-touch-overlay .vjs-play-control {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    width: 30%;
+    height: 80%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .3s ease
+}
+
+.video-js .vjs-touch-overlay .vjs-play-control .vjs-icon-placeholder::before {
+    content: '';
+    background-size: 40px auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;utf8,<svg height="70" viewBox="0 0 70 70" width="70" xmlns="http://www.w3.org/2000/svg"><g fill="%23fff"><path d="m35 70a35 35 0 1 1 35-35 35.04 35.04 0 0 1 -35 35m0-63.778a28.778 28.778 0 1 0 28.778 28.778 28.81 28.81 0 0 0 -28.778-28.778"/><path d="m73.556 67h-3.889a1.167 1.167 0 0 0 -1.167 1.167v15.555a1.167 1.167 0 0 0 1.167 1.167h3.889a1.167 1.167 0 0 0 1.167-1.167v-15.555a1.167 1.167 0 0 0 -1.167-1.167" transform="translate(-41.861 -40.944)"/><path d="m100.556 67h-3.889a1.167 1.167 0 0 0 -1.167 1.167v15.555a1.167 1.167 0 0 0 1.167 1.167h3.889a1.167 1.167 0 0 0 1.167-1.167v-15.555a1.167 1.167 0 0 0 -1.167-1.167" transform="translate(-58.361 -40.944)"/></g></svg>');
+    @media screen and (min-width: #{variables.$majorBreakpointMiddle}px) {
+        background-size: 70px auto;
+    }
+}
+
+.video-js .vjs-big-play-button {
+    border-width: 0;
+    width: 70px;
+    height: 70px;
+    background-color: transparent !important; // NOTE: video領域にマウスオーバー時に色が変わるためimportant利用
+
+    .vjs-icon-placeholder:before {
+        content: "";
+        background-position: center center;
+        background-size: 70px auto;
+        background-repeat: no-repeat;
+    }
+}
+
+.video-js .vjs-big-play-button .vjs-icon-placeholder:before,
+.video-js .vjs-touch-overlay .vjs-play-control.vjs-paused .vjs-icon-placeholder::before {
+    content: '';
+    background-image: url('data:image/svg+xml;utf8,<svg height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="%23fff"><path d="m20 40a20 20 0 1 1 20-20 20.023 20.023 0 0 1 -20 20m0-36.444a16.444 16.444 0 1 0 16.444 16.444 16.463 16.463 0 0 0 -16.444-16.444"/><path d="m81.693 69.9-8.252-4.912a.667.667 0 0 0 -1.008.573v9.824a.667.667 0 0 0 1.008.573l8.252-4.912a.667.667 0 0 0 0-1.146" transform="translate(-56.337 -50.471)"/></g></svg>')
+}
+
+.video-js .vjs-touch-overlay .vjs-play-control.vjs-ended .vjs-icon-placeholder::before {
+    content: '';
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>')
+}
+
+.video-js .vjs-touch-overlay.show-play-toggle .vjs-play-control {
+    opacity: 1;
+    pointer-events: auto
+}
+
+.video-js.vjs-mobile-ui-disable-end.vjs-ended .vjs-touch-overlay {
+    display: none
+}
+

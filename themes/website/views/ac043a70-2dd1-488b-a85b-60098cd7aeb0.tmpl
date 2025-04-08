@@ -1,0 +1,48 @@
+.-hideRuby rt {
+  display: none;
+}
+
+.tsutaeruRuby__translation {
+  line-height: 2.5;
+}
+
+.tsutaeruRuby__phrase[aria-hidden=true],
+.tsutaeruRuby__translation[aria-hidden=true] {
+  display: none !important;
+}
+
+.tsutaeruRuby__phrase[aria-hidden=false],
+.tsutaeruRuby__translation[aria-hidden=false] {
+  display: inline;
+}
+
+ruby {
+  line-height: 2.5;
+}
+
+ruby rt {
+  font-size: 55%;
+  margin-bottom: 0.3em;
+}
+
+h1 ruby rt,
+h2 ruby rt {
+  font-size: 45%;
+}
+
+.ua-firefox ruby rt {
+  transform: translateY(0);
+}
+
+.ua-win.ua-firefox ruby rt {
+  margin-bottom: 0;
+}
+
+.ua-mac.ua-firefox ruby rt {
+  margin-bottom: 0.3em;
+}
+
+.ua-iphone.ua-safari ruby rt,
+.ua-ipad.ua-safari ruby rt {
+  transform: translateY(-0.3em);
+}

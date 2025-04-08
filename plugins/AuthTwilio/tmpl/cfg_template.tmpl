@@ -1,0 +1,89 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_authtwilio_account_sid">
+      <mt:trans phrase="Account SID" component="AuthTwilio">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_authtwilio_account_sid" name="setting_authtwilio_account_sid" class="form-control" value="<mt:var name="setting_authtwilio_account_sid" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_authtwilio_authtoken">
+      <mt:trans phrase="AUTHTOKEN" component="AuthTwilio">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="password" id="setting_authtwilio_authtoken" name="setting_authtwilio_authtoken" class="form-control" value="<mt:var name="setting_authtwilio_authtoken" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_authtwilio_from_number">
+      <mt:trans phrase="Caller Phone Number" component="AuthTwilio">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_authtwilio_from_number" name="setting_authtwilio_from_number" class="form-control" value="<mt:var name="setting_authtwilio_from_number" escape>">
+  <p class="text-muted hint-block">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Enter a phone number that you can send from Twilio in international cell phone number(ex. +122XXXXXXXX)." component="AuthTwilio">
+  </p>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_authtwilio_country_code">
+      <mt:trans phrase="International Calling Code" component="AuthTwilio">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="number" id="setting_authtwilio_country_code" name="setting_authtwilio_country_code" class="form-control num" value="<mt:var name="setting_authtwilio_country_code" escape>">
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_authtwilio_user">
+      <mt:trans phrase="Model">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_authtwilio_user" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_authtwilio_user" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_authtwilio_user" value="1" <mt:if name="setting_authtwilio_user">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="User"></span>
+    </label>
+  <mt:ifcomponent component="Members">
+    <input type="hidden" name="setting_authtwilio_member" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_authtwilio_member" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_authtwilio_member" value="1" <mt:if name="setting_authtwilio_member">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Member"></span>
+    </label>
+  </mt:ifcomponent>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_authtwilio_send_email">
+      <mt:trans phrase="Email" component="AuthTwilio">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="hidden" name="setting_authtwilio_send_email" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_authtwilio_send_email" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_authtwilio_send_email" value="1" <mt:if name="setting_authtwilio_send_email">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Send an email as well" component="AuthTwilio"></span>
+    </label>
+  </div>
+</div>

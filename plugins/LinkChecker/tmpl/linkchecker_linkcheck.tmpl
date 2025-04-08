@@ -1,0 +1,21 @@
+<mt:trans phrase="Broken Link Check" component="LinkChecker" setvar="page_title">
+<mt:include file="include/header.tmpl">
+<mt:if name="all_msg">
+  <div id="__all_msg" style="margin-left:1px;margin-right:1px;" class="mb-4 alert alert-<mt:if name="total_error">danger<mt:else>success</mt:if>" tabindex="0">
+    <mt:var name="all_msg">
+  </div>
+<script>
+  $('#__all_msg').focus();
+</script>
+</mt:if>
+<mt:loop name="errors">
+<mt:if name="__first__"><div class="alert alert-warning" role="alert"><ul class="mb-0 ml-0 pl-3"></mt:if>
+<li><mt:var name="__value__" escape></li>
+<mt:if name="__last__"></ul></div></mt:if>
+</mt:loop>
+<mt:loop name="result_loop">
+  <mt:var name="__value__">
+</mt:loop>
+<br class="mb-5">
+<br class="mb-3">
+<mt:include file="include/footer.tmpl">

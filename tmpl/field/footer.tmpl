@@ -1,0 +1,43 @@
+<mt:if name="field__multiple"><script>
+$('#field-<mt:var name="field_basename">-wrapper').on('ksortupdate', function(event, element){
+    let self = this;
+    $(this).children('.row').each(function(index){
+        if (index == 0) {
+            $(this).removeClass('multiple-field');
+            let label = $(self).find('.col-label label').eq(0).parent().html();
+            $(this).find('.col-label').html(label);
+            if ($(this).find('.custom-field-content-inner').hasClass( 'field__display' ) ) {
+                $(this).find('.detach-button-wrapper').hide();
+            }
+        } else {
+            $(this).addClass('multiple-field');
+            $(this).find('.col-label').html('');
+            $(this).find('.detach-button-wrapper').show();
+        }
+    });
+    if ( element ) {
+        const richtext_id = $( element ).find( '.richtext' ).attr( 'id' );
+        if ( richtext_id ) {
+            let oldTextFormat = null;
+            if ( $('#text_format-select').length ){
+                oldTextFormat = $('#text_format-select').val();
+            }
+            if( tinymce && ( oldTextFormat == null || oldTextFormat == 'richtext' ) ){
+                tinymce.EditorManager.remove('textarea.richtext');
+                editorInit();
+            }
+        }
+    }
+}).ksortable({
+    update: function ( event, ui ) {
+        $(this).trigger('ksortupdate');
+    },
+    stop: function ( event, ui ) {
+        const element = ui.item[0] || null;
+        $(this).trigger('ksortupdate', [ element ]);
+    }
+});
+$('#field-<mt:var name="field_basename">-wrapper').on('mouseenter', '> .row', function() {
+    $(this).css('cursor','move');
+});
+</script></mt:if>

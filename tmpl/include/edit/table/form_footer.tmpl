@@ -1,0 +1,1412 @@
+<input type="hidden" name="__validation" id="__validation">
+<mt:var name="request.id" setvar="table_id">
+<mt:objectloop model="column" sort_by="order" direction="ascend" table_id="$table_id" cols="*">
+<mt:setvarblock name="column_header">
+<tr>
+<th><mt:trans phrase="Name"></th>
+<th><mt:trans phrase="Label"></th>
+<th><mt:trans phrase="Type"></th>
+<mt:ignore><th><mt:trans phrase="Size"></th></mt:ignore>
+<th><mt:trans phrase="Order"></th>
+<th><mt:trans phrase="NOT NULL"></th>
+<th><mt:trans phrase="Index"></th>
+<th><mt:trans phrase="Unique"></th>
+<th><mt:trans phrase="Uneditable"></th>
+<th><mt:trans phrase="List Type"></th>
+<th><mt:trans phrase="Edit Type"></th>
+<th><mt:trans phrase="Delete"></th>
+<th><mt:trans phrase="Detail"></th>
+</tr>
+</mt:setvarblock>
+
+<mt:if name="__first__">
+<h2><mt:trans phrase="Columns">
+<button type="button" id="add_col" class="add_col btn btn-secondary"><mt:trans phrase="Add">
+</h2>
+
+<table id="column_data" class="table table-striped table-sm table-hover mb-1" style="min-width:800px; overflow: auto;">
+<thead>
+<mt:var name="column_header">
+</thead>
+<tbody id="cols_tbl">
+</mt:if>
+<tr id="_column_<mt:var name="id">">
+<td>
+<input type="hidden" name="_column_id[]" value="<mt:var name="id">">
+<input id="_name_<mt:var name="id">" name="_name_<mt:var name="id">" type="text" class="form-control" value="<mt:var name="name" escape>" readonly></td>
+<td><input id="_label_<mt:var name="id">" name="_label_<mt:var name="id">" type="text" class="form-control" value="<mt:var name="label" escape>"<mt:if name="is_primary"> readonly</mt:if>></td>
+<td>
+<mt:if name="develop">
+  <mt:setvar name="_not_delete" value="0">
+<mt:else>
+  <mt:var name="not_delete" setvar="_not_delete">
+</mt:if>
+<mt:if name="type" eq="tinyint">
+<mt:setvar name="column_type" value="boolean">
+<mt:elseif name="type" eq="int">
+<mt:setvar name="column_type" value="integer">
+<mt:elseif name="type" eq="datetime">
+<mt:setvar name="column_type" value="datetime">
+<mt:elseif name="type" eq="double">
+<mt:setvar name="column_type" value="double">
+<mt:elseif name="type" eq="decimal">
+<mt:setvar name="column_type" value="decimal">
+<mt:elseif name="type" eq="string">
+  <mt:if name="size" eq="50">
+    <mt:setvar name="column_type" value="tinystr">
+  <mt:elseif name="size" eq="768">
+    <mt:setvar name="column_type" value="longstr">
+  <mt:else>
+    <mt:setvar name="column_type" value="string">
+  </mt:if>
+<mt:elseif name="type" eq="text">
+<mt:setvar name="column_type" value="text">
+<mt:elseif name="type" eq="blob">
+<mt:setvar name="column_type" value="blob">
+<mt:elseif name="type" eq="relation">
+<mt:setvar name="column_type" value="relation">
+</mt:if>
+
+<select id="_type_<mt:var name="id">" name="_type_<mt:var name="id">" class="form-control custom-select col_types<mt:if name="_not_delete"> readonly</mt:if>"<mt:if name="is_primary"> disabled</mt:if><mt:if name="_not_delete"> onmousedown="return false;"</mt:if>>
+  <option value="integer"<mt:if name="column_type" eq="integer"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Integer"></option>
+  <option value="boolean"<mt:if name="column_type" eq="boolean"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Boolean"></option>
+  <option value="tinystr"<mt:if name="column_type" eq="tinystr"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="String(50)"></option>
+  <option value="string"<mt:if name="column_type" eq="string"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="String(255)"></option>
+  <option value="longstr"<mt:if name="column_type" eq="longstr"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="String(768)"></option>
+  <option value="text"<mt:if name="column_type" eq="text"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Large Text"></option>
+  <option value="datetime"<mt:if name="column_type" eq="datetime"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="DateTime"></option>
+  <option value="blob"<mt:if name="column_type" eq="blob"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Blob"></option>
+  <option value="relation"<mt:if name="column_type" eq="relation"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Relation"></option>
+  <option value="double"<mt:if name="column_type" eq="double"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Float(DOUBLE)"></option>
+  <option value="decimal"<mt:if name="column_type" eq="decimal"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Decimal(DECIMAL)"></option>
+</select>
+</td>
+<mt:ignore><td><input id="_size_<mt:var name="id">" name="_size_<mt:var name="id">" type="number" class="form-control num" value="<mt:var name="size" escape>"<mt:if name="_not_delete"> readonly</mt:if><mt:if name="is_primary"> disabled</mt:if>></td></mt:ignore>
+<td><input id="_order_<mt:var name="id">" name="_order_<mt:var name="id">" type="number" class="form-control order_col" value="<mt:var name="order" escape>"></td>
+<td>
+<input id="_size_<mt:var name="id">" name="_size_<mt:var name="id">" type="hidden" value="<mt:var name="size" escape>">
+<input id="_options_<mt:var name="id">" name="_options_<mt:var name="id">" type="hidden" value="<mt:var name="options" escape>">
+<input id="_extra_<mt:var name="id">" name="_extra_<mt:var name="id">" type="hidden" value="<mt:var name="extra" escape>">
+<input id="_validation_type_<mt:var name="id">" name="_validation_type_<mt:var name="id">" type="hidden" value="<mt:var name="validation_type" escape>">
+<input id="_maxlength_<mt:var name="id">" name="_maxlength_<mt:var name="id">" type="hidden" value="<mt:var name="maxlength" escape>">
+<input id="_disp_edit_<mt:var name="id">" name="_disp_edit_<mt:var name="id">" type="hidden" value="<mt:var name="disp_edit" escape>">
+<input id="_autoset_<mt:var name="id">" name="_autoset_<mt:var name="id">" type="hidden" value="<mt:var name="autoset" escape>">
+<input id="_default_<mt:var name="id">" name="_default_<mt:var name="id">" type="hidden" value="<mt:var name="default" escape>">
+<mt:unless name="is_primary"><input id="_not_null_<mt:var name="id">" name="_not_null_<mt:var name="id">" type="checkbox" class="form-control" value="1"<mt:if name="not_null"> checked</mt:if><mt:if name="_not_delete"> tabindex="-1" onclick="return false;" onkeydown="return false;"</mt:if>><mt:else><input type="checkbox" checked disabled></mt:unless></td>
+<td><mt:unless name="is_primary"><input id="_index_<mt:var name="id">" name="_index_<mt:var name="id">" type="checkbox" class="form-control specify_idx" value="1"<mt:if name="index"> checked</mt:if><mt:if name="_not_delete"> tabindex="-1" onclick="return false;" onkeydown="return false;"</mt:if>><mt:else><input type="checkbox" checked disabled><input name="index_<mt:var name="id">" type="hidden" value="PRIMARY"></mt:unless></td>
+<td><mt:unless name="is_primary"><input id="_unique_<mt:var name="id">" name="_unique_<mt:var name="id">" type="checkbox" class="form-control" value="1"<mt:if name="unique"> checked</mt:if><mt:if name="_not_delete"> tabindex="-1" onclick="return false;" onkeydown="return false;"</mt:if>><mt:else><input type="checkbox" checked disabled></mt:unless></td>
+<td><mt:unless name="is_primary"><input id="_unchangeable_<mt:var name="id">" name="_unchangeable_<mt:var name="id">" type="checkbox" class="form-control" value="1"<mt:if name="unchangeable"> checked</mt:if><mt:if name="_not_delete"> tabindex="-1" onclick="return false;" onkeydown="return false;"</mt:if>><mt:else><input type="checkbox" checked disabled></mt:unless></td>
+<td><mt:unless name="is_primary">
+<select id="_list_<mt:var name="id">" name="_list_<mt:var name="id">" class="form-control custom-select<mt:if name="_not_delete"> readonly</mt:if>"<mt:if name="_not_delete"> onmousedown="return false;"</mt:if>>
+  <option value=""<mt:unless name="list"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:unless>><mt:trans phrase="None"></option>
+  <option value="checkbox"<mt:if name="list" eq="checkbox"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Checkbox"></option>
+  <option value="number"<mt:if name="list" eq="number"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Number"></option>
+  <option id="_list_primary_<mt:var name="id">" value="primary"<mt:if name="list" eq="primary"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Primary"></option>
+  <option value="text"<mt:if name="list" eq="text"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Text Box"></option>
+  <option value="text_short"<mt:if name="list" eq="text_short"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Short Text"></option>
+  <option value="password"<mt:if name="list" eq="password"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Password"></option>
+  <option id="_list_datetime_<mt:var name="id">" value="datetime"<mt:if name="list" eq="datetime"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="DateTime"></option>
+  <option id="_list_date_<mt:var name="id">" value="date"<mt:if name="list" eq="date"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Date"></option>
+  <option id="_list_popover_<mt:var name="id">" value="popover"<mt:if name="list" eq="popover"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Popover"></option>
+  <option id="_list_url_<mt:var name="id">" value="url"<mt:if name="list" eq="url"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="URL"></option>
+<mt:if name="list" like=":">
+  <option value="<mt:var name="list" escape>" class="custom" selected><mt:trans phrase="Custom"></option>
+<mt:else>
+  <option value="custom" class="custom"<mt:if name="_not_delete"> style="display:none"</mt:if>><mt:trans phrase="Custom"></option>
+</mt:if>
+</select>
+
+<input type="hidden" id="_trans_<mt:var name="id">" name="_trans_<mt:var name="id">" value="<mt:var name="translate" escape>">
+<input type="hidden" id="_hint_<mt:var name="id">" name="_hint_<mt:var name="id">" value="<mt:var name="hint" escape>">
+
+<mt:else><input type="checkbox" name="_list_<mt:var name="id">" value="1" <mt:if name="list">checked</mt:if>></mt:unless></td>
+
+<td><mt:unless name="is_primary">
+<select id="_edit_<mt:var name="id">" name="_edit_<mt:var name="id">" class="list_edit_prop form-control custom-select<mt:if name="_not_delete"> readonly</mt:if>"<mt:if name="_not_delete"> onmousedown="return false;"</mt:if>>
+  <option value=""<mt:unless name="edit"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:unless>><mt:trans phrase="None"></option>
+  <option value="hidden"<mt:if name="edit" eq="hidden"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Hidden"></option>
+  <option value="checkbox"<mt:if name="edit" eq="checkbox"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Checkbox"></option>
+  <option value="number"<mt:if name="edit" eq="number"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Number"></option>
+  <option id="_edit_primary_<mt:var name="id">" value="primary"<mt:if name="edit" eq="primary"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Primary"></option>
+  <option value="text"<mt:if name="edit" eq="text"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Text Box"></option>
+  <option value="text_short"<mt:if name="edit" eq="text_short"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Short Text"></option>
+  <option id="_edit_selection_<mt:var name="id">" value="selection"<mt:if name="edit" eq="selection"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Selection"></option>
+  <option value="password"<mt:if name="edit" eq="password"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Password"></option>
+  <option value="password(hash)"<mt:if name="edit" eq="password(hash)"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Password(Hashed)"></option>
+  <option value="textarea"<mt:if name="edit" eq="textarea"> selected</mt:if>><mt:trans phrase="Textarea"></option>
+  <option id="_edit_richtext_<mt:var name="id">" value="richtext"<mt:if name="edit" eq="richtext"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="RichText"></option>
+  <option id="_edit_datetime_<mt:var name="id">" value="datetime"<mt:if name="edit" eq="datetime"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="DateTime"></option>
+  <option id="_edit_date_<mt:var name="id">" value="date"<mt:if name="edit" eq="date"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Date"></option>
+  <option id="_edit_color_<mt:var name="id">" value="color"<mt:if name="edit" eq="color"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Color"></option>
+  <option id="_edit_url_<mt:var name="id">" value="url"<mt:if name="edit" eq="url"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="URL"></option>
+  <option value="languages"<mt:if name="edit" eq="languages"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="Languages"></option>
+  <option id="_edit_file_<mt:var name="id">" value="file"<mt:if name="edit" eq="file"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="File"></option>
+<mt:if name="edit" like=":">
+  <option value="<mt:var name="edit" escape>" class="custom" selected><mt:trans phrase="Custom"></option>
+<mt:else>
+  <option value="custom" class="custom"<mt:if name="_not_delete"> style="display:none"</mt:if>><mt:trans phrase="Custom"></option>
+</mt:if>
+<mt:loop name="edit_properties">
+  <option id="_edit_<mt:var name="key">_<mt:var name="id">" value="<mt:var name="key">"<mt:if name="edit" eq="$key"> selected<mt:else><mt:if name="_not_delete"> style="display:none"</mt:if></mt:if>><mt:trans phrase="$label" component="$component"></option>
+</mt:loop>
+</select>
+<mt:else><input type="checkbox" checked disabled></mt:unless></td>
+<td>
+  <mt:unless name="_not_delete">
+  <mt:unless name="is_primary"><mt:if name="name" ne="$_primary_"><button type="button" class="btn btn-outline-danger tr-delete"><mt:trans phrase="Delete"></button></mt:if></mt:unless>
+  </mt:unless>
+</td>
+<td>
+  <mt:unless name="_not_delete">
+  <mt:unless name="is_primary">
+  <button name="_detail-<mt:var name="id">" type="button" class="btn btn-outline-primary detail-btn" data-toggle="modal" data-target="#_col_options">
+    <mt:trans phrase="Detail">
+  </button>
+  </mt:unless>
+  </mt:unless>
+</td>
+</tr>
+<mt:if name="__last__">
+<tr id="col_tmpl" style="display:none">
+<td>
+<input type="hidden" name="_new_column[]" value="">
+<input name="_new_name_" type="text" class="form-control col-input" value=""></td>
+<td><input name="_new_label_" type="text" class="form-control label-input" value=""></td>
+<td>
+<select name="_new_type_" class="form-control col_types custom-select">
+  <option value="integer"><mt:trans phrase="Integer"></option>
+  <option value="boolean"><mt:trans phrase="Boolean"></option>
+  <option value="tinystr"><mt:trans phrase="String(50)"></option>
+  <option value="string"><mt:trans phrase="String(255)"></option>
+  <option value="longstr"><mt:trans phrase="String(768)"></option>
+  <option value="text"><mt:trans phrase="Large Text"></option>
+  <option value="datetime"><mt:trans phrase="DateTime"></option>
+  <option value="blob"><mt:trans phrase="Blob"></option>
+  <option value="relation"><mt:trans phrase="Relation"></option>
+  <option value="double"><mt:trans phrase="Float(DOUBLE)"></option>
+  <option value="decimal"><mt:trans phrase="Decimal(DECIMAL)"></option>
+</select>
+</td>
+<mt:ignore><td><input name="_new_size_" type="number" class="form-control num" value=""></td></mt:ignore>
+<td><input name="_new_order_" type="number" class="form-control" value=""></td>
+<td>
+<input id="_new_extra_" name="_new_extra_" type="hidden" value="">
+<input id="_new_validation_type_" name="_new_validation_type_" type="hidden" value="">
+<input id="_new_maxlength_" name="_new_maxlength_" type="hidden" value="">
+<input id="_new_options_" name="_new_options_" type="hidden" value="">
+<input id="_new_disp_edit_" name="_new_disp_edit_" type="hidden" value="">
+<input id="_new_size_" name="_new_size_" type="hidden" value="">
+<input id="_new_autoset_" name="_new_autoset_" type="hidden" value="">
+<input id="_new_trans_" name="_new_trans_" type="hidden" value="">
+<input id="_new_hint_" name="_new_hint_" type="hidden" value="">
+<input id="_new_default_" name="_new_default_" type="hidden" value="">
+<input name="_new_not_null_" type="checkbox" class="form-control" value="1"></td>
+<td><input name="_new_index_" type="checkbox" class="form-control specify_idx" value="1"></td>
+<td><input name="_new_unique_" type="checkbox" class="form-control" value="1"></td>
+<td><input name="_new_unchangeable_" type="checkbox" class="form-control" value="1"></td>
+<td>
+<select name="_new_list_" class="form-control custom-select">
+  <option value=""><mt:trans phrase="None"></option>
+  <option value="checkbox"><mt:trans phrase="Checkbox"></option>
+  <option value="number"><mt:trans phrase="Number"></option>
+  <option id="_new_list_primary_" value="primary"><mt:trans phrase="Primary"></option>
+  <option value="text"><mt:trans phrase="Text Box"></option>
+  <option value="text_short"><mt:trans phrase="Short Text"></option>
+  <option value="password"><mt:trans phrase="Password"></option>
+  <option id="_new_list_datetime_" value="datetime"><mt:trans phrase="DateTime"></option>
+  <option id="_new_list_date_" value="date"><mt:trans phrase="Date"></option>
+  <option id="_new_list_popover_" value="popover"><mt:trans phrase="Popover"></option>
+  <option id="_new_list_url_" value="url"><mt:trans phrase="URL"></option>
+  <option value="custom" class="custom"><mt:trans phrase="Custom"></option>
+</select>
+</td>
+<td>
+<select name="_new_edit_" class="list_edit_prop form-control custom-select">
+  <option value=""><mt:trans phrase="None"></option>
+  <option value="hidden"><mt:trans phrase="Hidden"></option>
+  <option value="checkbox"><mt:trans phrase="Checkbox"></option>
+  <option value="number"><mt:trans phrase="Number"></option>
+  <option id="_new_edit_primary_" value="primary"><mt:trans phrase="Primary"></option>
+  <option value="text"><mt:trans phrase="Text Box"></option>
+  <option value="text_short"><mt:trans phrase="Short Text"></option>
+  <option id="_new_edit_selection_" value="selection"><mt:trans phrase="Selection"></option>
+  <option value="password"><mt:trans phrase="Password"></option>
+  <option value="password(hash)"><mt:trans phrase="Password(Hashed)"></option>
+  <option value="textarea"><mt:trans phrase="Textarea"></option>
+  <option id="_new_edit_richtext_" value="richtext"><mt:trans phrase="RichText"></option>
+  <option id="_new_edit_datetime_" value="datetime"><mt:trans phrase="DateTime"></option>
+  <option id="_new_edit_date_" value="date"><mt:trans phrase="Date"></option>
+  <option id="_new_edit_color_" value="color"><mt:trans phrase="Color"></option>
+  <option id="_new_edit_url_" value="url"><mt:trans phrase="URL"></option>
+  <option value="languages"><mt:trans phrase="Languages"></option>
+  <option id="_new_edit_file_" value="file"><mt:trans phrase="File"></option>
+  <option value="custom" class="custom"><mt:trans phrase="Custom"></option>
+<mt:loop name="edit_properties">
+  <option id="_new_edit_<mt:var name="key">_" value="<mt:var name="key">"><mt:trans phrase="$label" component="$component"></option>
+</mt:loop>
+</select>
+</td>
+<td>
+  <button type="button" class="btn btn-outline-danger tr-delete"><mt:trans phrase="Delete"></button>
+</td>
+<td>
+  <button name="_new_detail-" type="button" class="btn btn-outline-primary detail-btn" data-toggle="modal" data-target="#_col_options">
+    <mt:trans phrase="Detail">
+  </button>
+</td>
+</tr>
+</tbody>
+<tfoot>
+<mt:var name="column_header">
+</tfoot>
+</table>
+<hr class="mt-0">
+<h2><mt:trans phrase="Columns">
+<button type="button" class="add_col btn btn-secondary"><mt:trans phrase="Add">
+</h2>
+<hr class="mb-5">
+</mt:if>
+</mt:objectloop>
+<div class="modal fade" id="_col_options" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="ModalLongTitle"><mt:trans phrase="Column Detail"></h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row form-group">
+          <div class="col-md-2"><label for="_detail_name"><b><mt:trans phrase="Name"></b></label></div>
+          <div class="col-md-4">
+          <input id="_detail_id" type="hidden" value="">
+          <input id="_detail_name" type="text" class="form-control" value="" readonly>
+          </div>
+          <div class="col-md-2"><label for="_detail_label"><b><mt:trans phrase="Label"></b></label></div>
+          <div class="col-md-4">
+          <input id="_detail_label" type="text" class="form-control" value="">
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2"><label for="_detail_type"><b><mt:trans phrase="Type"></b></label></div>
+          <div class="col-md-4">
+            <select id="_detail_type" name="_detail_type" class="form-control custom-select">
+              <option value="integer"><mt:trans phrase="Integer"></option>
+              <option value="boolean"><mt:trans phrase="Boolean"></option>
+              <option value="tinystr"><mt:trans phrase="String(50)"></option>
+              <option value="string"><mt:trans phrase="String(255)"></option>
+              <option value="longstr"><mt:trans phrase="String(768)"></option>
+              <option value="text"><mt:trans phrase="Large Text"></option>
+              <option value="datetime"><mt:trans phrase="DateTime"></option>
+              <option value="blob"><mt:trans phrase="Blob"></option>
+              <option value="relation"><mt:trans phrase="Relation"></option>
+              <option value="double"><mt:trans phrase="Float(DOUBLE)"></option>
+              <option value="decimal"><mt:trans phrase="Decimal(DECIMAL)"></option>
+            </select>
+          </div>
+          <div class="col-md-2"><label for="_detail_order"><b><mt:trans phrase="Order"></b></label></div>
+          <div class="col-md-4">
+          <input id="_detail_order" type="number" class="form-control" value="">
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <div class="col-md-2"><label for="_detail_validation_type"><b><mt:trans phrase="Validation"></b></label></div>
+          <div class="col-md-4">
+          <mt:loop name="cms_validations">
+            <mt:if name="__first__">
+            <select id="_detail_validation_type" name="_detail_validation_type" class="form-control custom-select">
+              <option value=""><mt:trans phrase="None"></option>
+            </mt:if>
+              <mt:if name="component" eq="PTValidator">
+                <mt:setvar name="trans_component" value="Core">
+              <mt:else>
+                <mt:setvar name="trans_component" value="$component">
+              </mt:if>
+              <option value="<mt:var name="key">" class="_detail_validation_<mt:var name="type">"> <mt:trans phrase="$label" component="$trans_component" escape></option>
+            <mt:if name="__last__">
+            </select>
+            </mt:if>
+          </mt:loop>
+          </div>
+        <mt:ignore><input id="_detail_maxlength" type="hidden" class="form-control" value=""></mt:ignore>
+          <div class="col-md-2 _detail_maxlength-wrapper"><label for="_detail_maxlength"><b id="_maxlength_label"><mt:trans phrase="Max Length"></b></label></div>
+          <div class="col-md-4 _detail_maxlength-wrapper">
+            <input id="_detail_maxlength" type="text" class="form-control" value="">
+            <small id="_detail_maxlength_range_hint" class="font-italic"><mt:trans phrase="Minimum,Maximum"></small>
+          </div>
+        </div>
+
+        <div id="_detail_default-wrapper" class="row form-group column-detail-conpact">
+          <div class="col-md-2 detail_decimal hidden"><b><mt:trans phrase="M,D"></b></div>
+          <div class="col-md-4 detail_decimal hidden">
+          <input id="_detail_options_decimal" type="text" class="form-control" value="">
+          <small id="_detail_options_decimal_hint" class="font-italic"><mt:trans phrase="The ranges of values(Comma separated values)."></small>
+          </div>
+          <div class="col-md-2"><b><mt:trans phrase="Default Value"></b></div>
+          <div class="col-md-4">
+          <input id="_detail_default" type="text" class="form-control" value="">
+          </div>
+        </div>
+        <div class="row form-group column-detail-conpact">
+          <div class="col-md-2"><label for="_detail_not_null"><b><mt:trans phrase="NOT NULL"></b></label></div>
+          <div class="col-md-4">
+            <label class="custom-control custom-checkbox">
+              <input id="_detail_not_null" type="checkbox" class="custom-control-input" name="" value="1">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="NOT NULL"></span>
+            </label>
+          </div>
+          <div class="col-md-2"><label for="_detail_index"><b><mt:trans phrase="Index"></b></label></div>
+          <div class="col-md-4">
+            <label class="custom-control custom-checkbox">
+              <input id="_detail_index" type="checkbox" class="custom-control-input" name="" value="1">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Index"></span>
+            </label>
+          </div>
+        </div>
+        <div class="row form-group column-detail-conpact">
+          <div class="col-md-2"><label for="_detail_unique"><b><mt:trans phrase="Unique"></b></label></div>
+          <div class="col-md-4">
+            <label class="custom-control custom-checkbox">
+              <input id="_detail_unique" type="checkbox" class="custom-control-input" name="" value="1">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Unique"></span>
+            </label>
+          </div>
+          <div class="col-md-2"><label for="_detail_unchangeable"><b><mt:trans phrase="Uneditable"></b></label></div>
+          <div class="col-md-4">
+            <label class="custom-control custom-checkbox">
+              <input id="_detail_unchangeable" type="checkbox" class="custom-control-input" name="" value="1">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Uneditable"></span>
+            </label>
+          </div>
+        </div>
+        <div class="row form-group column-detail-conpact">
+          <div class="col-md-2"><label for="_detail_trans"><b><mt:trans phrase="Display"></b></label></div>
+          <div class="col-md-4">
+            <label class="custom-control custom-checkbox">
+              <input id="_detail_trans" type="checkbox" class="custom-control-input" name="" value="1">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><mt:trans phrase="Translate"></span>
+            </label>
+          </div>
+        </div>
+        <hr>
+        <div class="row form-group">
+          <div class="col-md-2"><label for="_detail_list"><b><mt:trans phrase="List Type"></b></label></div>
+          <div class="col-md-10">
+            <select id="_detail_list" name="_detail_list" class="form-control custom-select">
+              <option value=""><mt:trans phrase="None"></option>
+              <option value="checkbox"><mt:trans phrase="Checkbox"></option>
+              <option value="number"><mt:trans phrase="Number"></option>
+              <option value="primary"><mt:trans phrase="Primary"></option>
+              <option value="text"><mt:trans phrase="Text Box"></option>
+              <option value="text_short"><mt:trans phrase="Short Text"></option>
+              <option value="password"><mt:trans phrase="Password"></option>
+              <option value="datetime"><mt:trans phrase="DateTime"></option>
+              <option value="date"><mt:trans phrase="Date"></option>
+              <option value="popover"><mt:trans phrase="Popover"></option>
+              <option value="url"><mt:trans phrase="URL"></option>
+              <option id="_detail_list_reference" value="reference"><mt:trans phrase="Reference"></option>
+            </select>
+          <div class="sub-col row form-group hidden" id="_detail_list_table_wrapper">
+            <div class="col-md-3"><label for="_detail_list_table"><b><mt:trans phrase="Model"></b></label></div>
+            <div class="col-md-9">
+            <select id="_detail_list_table" class="form-control custom-select">
+              <mt:objectloop model="table" sort_by="order">
+              <mt:if name="__first__">
+              <option value=""><mt:trans phrase="(None selected)"></option>
+              <option value="__any__" class="relation__any"><mt:trans phrase="Any"></option>
+              </mt:if>
+              <mt:var name="label" setvar="table_label">
+              <option id="_detail_list_table_<mt:var name="id" escape>" value="<mt:var name="name" escape>"><mt:trans phrase="$table_label" escape></option>
+              </mt:objectloop>
+            </select>
+            </div>
+            <div class="col-md-3"><label for="_detail_list_column"><b><mt:trans phrase="Column"></b></label></div>
+            <div class="col-md-9">
+            <select id="_detail_list_column" class="form-control custom-select">
+            </select>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-2"><label for="_detail_edit"><b><mt:trans phrase="Edit Type"></b></label></div>
+          <div class="col-md-10">
+            <select id="_detail_edit" name="_detail_edit" class="form-control custom-select">
+              <option value=""><mt:trans phrase="None"></option>
+              <option value="hidden"><mt:trans phrase="Hidden"></option>
+              <option value="checkbox" selected><mt:trans phrase="Checkbox"></option>
+              <option value="number"><mt:trans phrase="Number"></option>
+              <option value="primary"><mt:trans phrase="Primary"></option>
+              <option value="text"><mt:trans phrase="Text Box"></option>
+              <option value="text_short"><mt:trans phrase="Short Text"></option>
+              <option id="_detail_edit_selection" value="selection"><mt:trans phrase="Selection"></option>
+              <option value="password"><mt:trans phrase="Password"></option>
+              <option value="password(hash)"><mt:trans phrase="Password(Hashed)"></option>
+              <option value="textarea"><mt:trans phrase="Textarea"></option>
+              <option id="_detail_edit_richtext" value="richtext"><mt:trans phrase="RichText"></option>
+              <option value="datetime"><mt:trans phrase="DateTime"></option>
+              <option value="date"><mt:trans phrase="Date"></option>
+              <option value="color"><mt:trans phrase="Color"></option>
+              <option value="url"><mt:trans phrase="URL"></option>
+              <option value="languages"><mt:trans phrase="Languages"></option>
+              <option id="_detail_edit_file" value="file"><mt:trans phrase="File"></option>
+              <option id="_detail_edit_relation" value="relation"><mt:trans phrase="Relation"></option>
+              <option id="_detail_edit_reference" value="reference"><mt:trans phrase="Reference"></option>
+            <mt:loop name="edit_properties">
+              <option id="_detail_edit_<mt:var name="key">" value="<mt:var name="key">"><mt:trans phrase="$label" component="$component"></option>
+            </mt:loop>
+            </select>
+          <div class="sub-col row form-group hidden" id="_detail_edit_table_wrapper">
+            <div class="col-md-3"><label for="_detail_edit_table"><b><mt:trans phrase="Model"></b></label></div>
+            <div class="col-md-9">
+          <mt:setvarblock name="relation_excludes">api_cache</mt:setvarblock>
+            <mt:var name="relation_excludes" split="," setvar="relation_excludes">
+            <select id="_detail_edit_table" class="form-control custom-select">
+              <mt:objectloop model="table" sort_by="order">
+              <mt:if name="__first__">
+              <option value=""><mt:trans phrase="(None selected)"></option>
+              <option value="__any__" class="relation__any"><mt:trans phrase="Any"></option>
+              </mt:if>
+              <mt:ifinarray array="relation_excludes" value="$name">
+              <mt:else>
+                <mt:var name="label" setvar="table_label">
+                <option id="_detail_edit_table_<mt:var name="id" escape>" value="<mt:var name="name" escape>"><mt:trans phrase="$table_label" escape></option>
+              </mt:ifinarray>
+              </mt:objectloop>
+            </select>
+            </div>
+            <div class="col-md-3"><label for="_detail_edit_column"><b><mt:trans phrase="Column"></b></label></div>
+            <div class="col-md-9">
+            <select id="_detail_edit_column" class="form-control custom-select">
+            </select>
+            </div>
+            <div class="col-md-3 _detail_edit_type_wrapper"><label for="_detail_edit_type"><b><mt:trans phrase="Type"></b></label></div>
+            <div class="col-md-9 _detail_edit_type_wrapper">
+            <select id="_detail_edit_type" class="form-control custom-select">
+              <option value="dialog" id="_detail_edit_type_dialog"><mt:trans phrase="Dialog"></option>
+              <option value="radio"><mt:trans phrase="Radio Buttons"></option>
+              <option value="select"><mt:trans phrase="Dropdown"></option>
+              <option value="checkbox" class="_detail_edit_type_relation _detail_edit_type_relation_cb"><mt:trans phrase="Checkbox"></option>
+              <option value="hierarchy" class="_detail_edit_type_relation"><mt:trans phrase="Hierarchy"></option>
+            </select>
+            </div>
+          </div>
+          <div class="sub-col _detail_edit_options_wrapper">
+            <div class="col-md-3">
+              <label for="_detail_options"><b id="detail_options_label"><mt:trans phrase="Option"></b></label>
+            </div>
+            <div class="col-md-9">
+              <input id="_detail_options" type="text" class="form-control" value="">
+              <small id="_detail_edit_options_hint" class="font-italic"></small>
+            </div>
+            <div class="col-md-3 _detail_edit_selections_wrapper hidden">
+              <label for="_detail_disp_edit"><b><mt:trans phrase="Type"></b></label>
+            </div>
+            <div class="col-md-9 _detail_edit_selections_wrapper hidden">
+            <select id="_detail_disp_edit" class="form-control custom-select">
+              <option value="radio"><mt:trans phrase="Radio Buttons"></option>
+              <option value="select"><mt:trans phrase="Dropdown"></option>
+              <option value="checkbox"><mt:trans phrase="Checkboxes"></option>
+            </select>
+            </div>
+          </div>
+          <div class="sub-col row form-group _detail_file_wrapper hidden">
+            <div class="col-md-3"><label for="_detail_file_type"><b><mt:trans phrase="File Type"></b></label></div>
+            <div class="col-md-9">
+            <select id="_detail_file_type" class="form-control custom-select">
+              <option value=""><mt:trans phrase="Any"></option>
+              <option value="image"><mt:trans phrase="Image"></option>
+              <option value="video"><mt:trans phrase="Video"></option>
+              <option value="audio"><mt:trans phrase="Audio"></option>
+              <option value="pdf"><mt:trans phrase="PDF"></option>
+            </select>
+            </div>
+            <div id="_detail_options_extensions_wrapper" class="hidden">
+              <div class="col-md-2"><label for="_detail_options_extensions"><b><mt:trans phrase="Extensions"></b></label></div>
+              <div class="col-md-9">
+              <input id="_detail_options_extensions" type="text" class="form-control" value="">
+              <small id="_detail_options_decimal_hint" class="font-italic"><mt:trans phrase="Comma separated values(Lowercase)."></small>
+              </div>
+            </div>
+            <div class="col-md-2"><label for="_detail_file_size"><b><mt:trans phrase="Size Limit"></b></label></div>
+            <div style="margin-left:16px">
+              <input style="display:inline" id="_detail_file_size" type="number" class="form-control very-short" value=""> <mt:trans phrase="Bytes">
+              <input style="display:inline" id="_detail_image_size" type="number" class="form-control very-short" value=""> <mt:trans phrase="Pixel">
+              &nbsp;
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" name="_detail_image_option" value="resize">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="Resize"></span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" name="_detail_image_option" value="error">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="Error"></span>
+                </label>
+            </div>
+          </div>
+          <div class="sub-col row form-group _detail_readonly_wrapper">
+            <div class="col-md-3"><label for="_detail_autoset"><b><mt:trans phrase="Read-Only"></b></label></div>
+            <div class="col-md-9">
+                <label class="custom-control custom-checkbox">
+                  <input id="_detail_autoset" type="checkbox" class="custom-control-input" name="<mt:var name="name" escape>" value="1">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><mt:trans phrase="Read-Only"></span>
+                </label>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="row form-group column-detail-hint">
+          <div class="col-md-2"><label for="_detail_hint"><b><mt:trans phrase="Hint"></b></label></div>
+          <div class="col-md-10">
+          <input id="_detail_hint" type="text" class="form-control col-input" value="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal"><mt:trans phrase="Cancel"></button>
+      <button type="button" class="btn btn-primary" id="_save_detail_button" data-dismiss="modal"><mt:trans phrase="Save Changes"></button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+$('.specify_idx').change( function() {
+    if ( $(this).prop('checked') ) {
+        var name = $(this).prop('id');
+        var term = name.split('_');
+        var number;
+        var select;
+        if ( term[1]=='new') {
+            number = term[3];
+            select = '_new_type_' + number;
+        } else {
+            number = term[2];
+            select = '_type_' + number;
+        }
+        var type = $('#' + select ).val();
+        if ( type != 'longstr' && type != 'boolean' && type != 'integer' && type != 'double' && type != 'decimal' && type != 'tinystr' && type != 'string' && type != 'datetime' ) {
+            var label = $('#' + select + ' option:selected').text();
+            alert( '<mt:trans phrase="Can not specify an index for this type.">' + '(' + label + ')' );
+            $(this).prop('checked', false);
+        }
+    }
+});
+$('#_detail_type').change( function(){
+    toggle_detail_custom( $(this).val() );
+    var _col_type = $('#_detail_type' ).val();
+    var _col_name = $('#_detail_name' ).val();
+    toggleDefault( _col_name, _col_type );
+});
+$('.list_edit_prop').change( function() {
+    var options = '';
+    var name = $(this).prop('id');
+    var term = name.split('_');
+    var number;
+    if ( term[1]=='edit') {
+        number = term[2];
+    } else {
+        number = term[3];
+    }
+    var prefix = '_';
+    var postfix = '_';
+    if ( term[1] != 'edit') {
+        prefix = '_new_';
+    }
+    var current_val = $('#' + prefix + 'options' + postfix + number).val();
+    if ($(this).val() == 'selection') {
+        options = prompt('<mt:trans phrase="Please enter options for this field as a comma delimited list.">', current_val);
+    } else if ($(this).val() == 'richtext' || $(this).val() == 'textarea') {
+        if (! current_val || ( current_val.indexOf(',') != -1 ) ) {
+            current_val = 10;
+        }
+        options = prompt('<mt:trans phrase="Please specify the height of the editor.">', current_val );
+    }
+    if ( options ){
+        $('#' + prefix + 'options' + postfix + number).val(options);
+        if ($(this).val() == 'selection') {
+            var disp_edit = $('#'+prefix + 'disp_edit' + postfix + number).val();
+            if (! disp_edit ) {
+                disp_edit = 'radio';
+            }
+            options = prompt('<mt:trans phrase="Please specify the type of selection. You can specify radio, checkbox, or select.">', disp_edit );
+            if ( options ) {
+                $('#' + prefix + 'disp_edit' + postfix + number).val(options);
+            }
+        }
+    }
+});
+function toggle_detail_custom( type ) {
+    if ( type == 'integer' ) {
+        $('.relation__any').hide();
+    } else {
+        $('.relation__any').show();
+    }
+    $('#_detail_edit_options_hint').html('');
+    $('._detail_readonly_wrapper').show();
+    if ( type == 'text') {
+        $('#_detail_edit_richtext').show();
+        $('._detail_edit_options_wrapper').show();
+        if ( $('#_detail_edit_richtext').prop('selected') ) {
+            $('._detail_readonly_wrapper').hide();
+        }
+    } else if ( type == 'blob') {
+        $('._detail_edit_options_wrapper').show();
+    } else {
+        if ( $('#_detail_edit_richtext').prop('selected') ) {
+            $('#_detail_edit').val('');
+        }
+        $('#_detail_edit_richtext').hide();
+    }
+    if ( type == 'text' || type == 'blob') {
+        $('#_detail_index').prop('disabled', 'disabled');
+        $('#_detail_index').prop('checked', false);
+    } else {
+        $('#_detail_index').removeAttr('disabled');
+    }
+    if ( type == 'integer' || type == 'double' || type == 'decimal' ) {
+        if ( $('#_detail_edit').val() == 'relation' && type == 'integer' ) {
+            $('._detail_edit_type_relation').show();
+            $('._detail_edit_type_relation_cb').hide();
+        } else {
+            $('._detail_edit_type_relation').hide();
+        }
+    } else {
+        $('._detail_edit_type_relation').show();
+    }
+    if ( type == 'string' || type == 'integer' || type == 'double'
+        || type == 'decimal' || type == 'text' || type == 'tinystr' ) {
+        $('#_detail_edit_selection').show();
+    } else {
+        if ( $('#_detail_edit_selection').prop('selected') ) {
+            $('#_detail_edit').val('');
+        }
+        $('#_detail_edit_selection').hide();
+    }
+    if ( $('#_detail_edit').val() == 'selection' || $('#_detail_edit').val() == 'richtext' 
+         || $('#_detail_edit').val() == 'textarea') {
+        if ( $('#_detail_edit').val() != 'selection') {
+            $('#detail_options_label').html('<mt:trans phrase="Editor Height">');
+            $('#_detail_options').prop('type', 'number');
+            $('._detail_edit_selections_wrapper').hide();
+        } else {
+            $('#detail_options_label').html('<mt:trans phrase="Option">');
+            $('#_detail_options').prop('type', 'text');
+            $('._detail_edit_selections_wrapper').show();
+            $('._detail_edit_options_wrapper').show();
+            $('#_detail_edit_options_hint').html('<mt:trans phrase="Please enter options for this field as a comma delimited list.">');
+        }
+    } else {
+        $('._detail_edit_options_wrapper').hide();
+        $('._detail_edit_selections_wrapper').hide();
+    }
+    if ( type == 'integer' || type == 'relation' ){
+        if ( type == 'integer' ) {
+            $('#_detail_edit_reference').show();
+        }
+        $('#_detail_edit_relation').show();
+        $('#_detail_list_reference').show();
+    } else {
+        $('#_detail_edit_reference').hide();
+        $('#_detail_edit_relation').hide();
+        $('#_detail_list_reference').hide();
+        if ($('#_detail_edit_relation').prop('selected') || $('#_detail_edit_reference').prop('selected') ) {
+          $('#_detail_edit').val('');
+          $('#_detail_edit_table_wrapper').hide();
+          $('._detail_edit_type_wrapper').hide();
+        }
+        if ( $('#_detail_list_reference').prop('selected') ) {
+          $('#_detail_list').val('');
+          $('#_detail_list_table_wrapper').hide();
+        }
+    }
+    if ( type == 'blob') {
+        $('#_detail_edit_file').show();
+        if ( $('#_detail_edit_file').prop('selected') ){
+            $('._detail_file_wrapper').show();
+            $('._detail_readonly_wrapper').hide();
+            if ( $('#_detail_file_type').val() == '' ) {
+                $('#_detail_options_extensions_wrapper').show();
+            } else {
+                $('#_detail_options_extensions_wrapper').hide();
+            }
+        }
+    } else if ( type == 'integer' && $('#_detail_edit').val() == 'relation'
+        && $('#_detail_edit_table').val() == 'attachmentfile'
+        && !$('#_detail_file_type').val() ) {
+        $('#_detail_options_extensions_wrapper').show();
+    } else if ( type == 'relation' && $('#_detail_edit').val() == 'relation'
+        && $('#_detail_edit_table').val() == 'attachmentfile'
+        && !$('#_detail_file_type').val() ) {
+        $('#_detail_options_extensions_wrapper').show();
+    } else {
+        $('#_detail_edit_file').hide();
+        if ( $('#_detail_edit_file').prop('selected') ) {
+            $('#_detail_edit').val('');
+            $('._detail_file_wrapper').hide();
+        }
+        $('#_detail_options_extensions_wrapper').hide();
+    }
+}
+$('#_detail_list').change( function(){
+    if ( $(this).val() == 'reference') {
+        // $('#_detail_list_table_' + '<mt:var name="request.id">').hide();
+        $('#_detail_list_table_wrapper').show();
+        var colmns = $('#_detail_list_column').children();
+        set_column_names( $('#_detail_edit_table').val(), 'list');
+        set_column_names( $('#_detail_edit_table').val(), 'edit');
+    } else {
+        $('#_detail_list_table_' + '<mt:var name="request.id">').show();
+        $('#_detail_list_table_wrapper').hide();
+    }
+});
+$('#_detail_edit').change( function(){
+    toggle_detail_custom( $('#_detail_type').val() );
+    if ( $(this).val() == 'reference' ) {
+        // $('#_detail_edit_table_' + '<mt:var name="request.id">').hide();
+    } else {
+        $('#_detail_edit_table_' + '<mt:var name="request.id">').show();
+    }
+    if ( $(this).val() == 'relation' || $(this).val() == 'reference') {
+        $('#_detail_edit_table_wrapper').show();
+        if ( $(this).val() == 'relation') {
+            $('._detail_edit_type_wrapper').show();
+        } else {
+            $('._detail_edit_type_wrapper').hide();
+        }
+        var colmns = $('#_detail_edit_column').children();
+        set_column_names( $('#_detail_edit_table').val(), 'edit');
+        set_column_names( $('#_detail_edit_table').val(), 'list');
+    } else {
+        $('#_detail_edit_table_wrapper').hide();
+        $('._detail_edit_type_wrapper').hide();
+    }
+});
+$('#_detail_list_table').change( function(){
+    set_column_names( $(this).val(), 'list');
+    set_column_names( $(this).val(), 'edit');
+    $('#_detail_edit_table').val( $(this).val() );
+});
+$('#_detail_edit_table').change( function(){
+    document.getElementById("_detail_edit_type_dialog").innerHTML = '<mt:trans phrase="Dialog">';
+    set_column_names( $(this).val(), 'edit');
+    set_column_names( $(this).val(), 'list');
+    $('#_detail_list_table').val( $(this).val() );
+    if ( $(this).val() == 'attachmentfile' ) {
+        $('#_detail_edit_type').val('dialog');
+        document.getElementById("_detail_edit_type_dialog").innerHTML = '<mt:trans phrase="File Attachment">';
+        $('#_detail_edit_type_dialog').val('dialog');
+        $('#_detail_edit_type').attr("disabled", true);
+        $('._detail_file_wrapper').show();
+        if ( $('#_detail_file_type').val() == '' ) {
+            $('#_detail_options_extensions_wrapper').show();
+        } else {
+            $('#_detail_options_extensions_wrapper').hide();
+        }
+        var extra = $('#' + prefix + 'extra' + postfix + number ).val();
+        if ( extra ) {
+            var extras = extra.split(':');
+            $('#_detail_file_size').val(extras[0]);
+            $('#_detail_image_size').val(extras[1]);
+            $('input[name=_detail_image_option]').val([extras[2]]);
+            if ( extras[3] == 'image' || extras[3] == 'video' || extras[3] == 'audio' || extras[3] == 'pdf' ) {
+                $('#_detail_file_type').val(extras[3]);
+                $('#_detail_options_extensions').val('');
+            } else {
+                $('#_detail_file_type').prop('selectedIndex', 0);
+            }
+        } else {
+            $('#_detail_file_size').val('');
+            $('#_detail_image_size').val('');
+            //$('input[name=_detail_image_option]').val('');
+            $('#_detail_file_type').val('');
+        }
+    } else if ( $(this).val() == '__any__' ) {
+        $('#_detail_edit_type').val('dialog');
+    } else {
+        $('#_detail_edit_type').attr("disabled", false);
+        $('._detail_file_wrapper').hide();
+    }
+});
+$('#_save_detail_button').click( function(){
+    var name = $('#_detail_id').val();
+    var term = name.split('-');
+    var number = term[1];
+    var prefix = '_';
+    var postfix = '_';
+    if ( term[0] != '_detail') {
+        prefix = '_new_';
+    }
+    var items = ['name','label','type','order','options','disp_edit', 'hint', 'default', 'validation_type', 'maxlength'];
+    $.each( items, function( index, name ) {
+        $('#' + prefix + name + postfix + number ).val( $('#_detail_' + name ).val() );
+    });
+    if( $('#_detail_autoset').prop('checked') ) {
+        $('#' + prefix + 'autoset' + postfix + number).val(1);
+    } else {
+        $('#' + prefix + 'autoset' + postfix + number).val('');
+    }
+    items = ['not_null','index','unique','unchangeable'];
+    $.each( items, function( index, name ) {
+        $('#' + prefix + name + postfix + number).prop('checked', $('#_detail_' + name).prop('checked') );
+    });
+    if ( $('#_detail_trans' ).prop('checked') ) {
+        $('#' + prefix + 'trans' + postfix + number).val( 1 );
+    } else {
+        $('#' + prefix + 'trans' + postfix + number).val( 0 );
+    }
+    var list = $('#_detail_list').val();
+    if ( list == 'reference') {
+        var model = $('#_detail_list_table').val();
+        var column = $('#_detail_list_column').val();
+        if ( model == '__any__' ) {
+            column = '__primary__';
+        }
+        var list_value = list+ ':' + model + ':' + column;
+        if ( ( model != '__any__' ) && (! model || !column ) ) {
+            alert('<mt:trans phrase="Model and Column are required for the reference.">');
+            return false;
+        }
+        var list_options = $('#' + prefix + 'list' + postfix + number ).children();
+        for ( var i = 0; i < list_options.length; i++ ) {
+            if (list_options.eq(i).text()=='<mt:trans phrase="Custom">') {
+                list_options.eq(i).val( list_value );
+                list_options.eq(i).prop('selected', true );
+            }
+        }
+    } else {
+        $('#' + prefix + 'list' + postfix + number ).val( list );
+    }
+    var edit = $('#_detail_edit').val();
+    if ( edit == 'file' ||
+        ( edit == 'relation' && $('#_detail_type').val() == 'integer'
+        && $('#_detail_edit_table').val() == 'attachmentfile' ) ){
+        //$('#' + prefix + 'options' + postfix + number ).val( $('#_detail_file_type').val() );
+        var image_option;
+        if ( $('input[name=_detail_image_option]:checked').val() ) {
+            image_option = $('input[name=_detail_image_option]:checked').val();
+        }
+        if ( typeof image_option === "undefined") {
+            image_option = '';
+        }
+        var extra = $('#_detail_file_size').val() + ':' + $('#_detail_image_size').val() + ':' + image_option + ':' + $('#_detail_file_type').val();
+        $('#' + prefix + 'extra' + postfix + number ).val( extra );
+        if ( $('#_detail_file_type').val() ) {
+            $('#' + prefix + 'options' + postfix + number ).val('');
+        } else {
+            $('#' + prefix + 'options' + postfix + number ).val( $('#_detail_options_extensions').val() );
+        }
+    }
+    if ( edit == 'reference' || edit == 'relation') {
+        var model = $('#_detail_edit_table').val();
+        var column = $('#_detail_edit_column').val();
+        var type = $('#_detail_edit_type').val();
+        if ( model == '__any__' ) {
+            column = '__primary__';
+        }
+        var edit_value = edit + ':' + model + ':' + column;
+        if ( edit == 'reference' && (! model || !column ) ) {
+            alert('<mt:trans phrase="Model and Column are required for the reference.">');
+            return false;
+        }
+        if ( edit == 'relation' && (! model || !type ) ) {
+            alert('<mt:trans phrase="Model, Column and Type are required for the relation.">');
+            return false;
+        }
+        if ( edit == 'relation') {
+            edit_value = edit_value + ':' + type;
+        }
+        var edit_options = $('#' + prefix + 'edit' + postfix + number ).children();
+        for ( var i = 0; i < edit_options.length; i++ ) {
+            if ( edit_options.eq(i).text() == '<mt:trans phrase="Custom">') {
+                edit_options.eq(i).val( edit_value );
+                edit_options.eq(i).prop('selected', true );
+            }
+        }
+        if ( model == 'attachmentfile' ) {
+            var image_option;
+            if ( $('input[name=_detail_image_option]:checked').val() ) {
+                image_option = $('input[name=_detail_image_option]:checked').val();
+            }
+            if ( typeof image_option === "undefined") {
+                image_option = '';
+            }
+            var extra = $('#_detail_file_size').val() + ':' + $('#_detail_image_size').val() + ':' + image_option + ':' + $('#_detail_file_type').val();
+            if (! $('#_detail_file_type').val() ) {
+                extra = $('#_detail_file_size').val() + ':' + $('#_detail_image_size').val() + ':' + image_option + ':' + $('#_detail_options_extensions').val();
+            }
+            $('#' + prefix + 'extra' + postfix + number ).val( extra );
+        }
+    } else {
+        $('#' + prefix + 'edit' + postfix + number ).val( edit );
+    }
+    var type = $('#_detail_type').val();
+    if ( type == 'relation' ) {
+        var model_e = $('#_detail_edit_table').val();
+        var model_l = $('#_detail_list_table').val();
+        var detail_e = $('#_detail_edit').val();
+        var detail_l = $('#_detail_list').val();
+        if ( detail_e != 'relation' && detail_l != 'relation' ) {
+            alert('<mt:trans phrase="Model, Column and Type are required for the relation.">');
+            return false;
+        }
+        var model;
+        if ( detail_e == 'relation' ) {
+            model = model_e;
+        } else {
+            model = detail_l;
+        }
+        if (! model ) {
+            alert('<mt:trans phrase="Model, Column and Type are required for the relation.">');
+            return false;
+        }
+        $('#' + prefix + 'options' + postfix + number ).val( model );
+    }
+    if ( type == 'decimal' ) {
+        $('#' + prefix + 'size' + postfix + number ).val( $('#_detail_options_decimal').val() );
+    }
+    if ( list == 'reference' && ( edit == 'reference' || edit == 'relation') ) {
+        if( $('#_detail_edit_table').val() != $('#_detail_list_table').val() ) {
+            alert('<mt:trans phrase="The Model names of the list type and edit type do not match.">');
+            return false;
+        }
+    }
+});
+$('select').focus( function(){
+    $(this).prop('original', $(this).val() );
+});
+$('select').change( function(){
+    if ( $(this).val()=='custom') {
+        alert('<mt:trans phrase="Click Detail button to continue settings.">');
+    }
+});
+$('.tr-delete').click( function(){
+    if( !confirm('<mt:trans phrase="Are you sure you want to remove this Column?">') ) {
+        return false;
+    }
+    $(this).parent().parent().remove();
+    reorder();
+});
+$('#_detail_file_type').change( function(){
+    if (! $(this).val() ) {
+        $('#_detail_options_extensions_wrapper').show();
+    } else {
+        $('#_detail_options_extensions_wrapper').hide();
+    }
+});
+$('.detail-btn').click( function(){
+    var name = $(this).prop('name');
+    $('#_detail_list_column option').remove();
+    $('#_detail_edit_column option').remove();
+    document.getElementById("_detail_edit_type_dialog").innerHTML = '<mt:trans phrase="Dialog">';
+    $('#_detail_id').val( name );
+    var term = name.split('-');
+    var number = term[1];
+    var prefix = '_';
+    var postfix = '_';
+    if ( term[0]!= '_detail') {
+        prefix = '_new_';
+    }
+    var items = ['name','label','type','order','options','disp_edit','hint', 'default', 'validation_type', 'maxlength'];
+    $('#_detail_maxlength').prop('type', 'text');
+    $.each( items, function( index, name ) {
+        $('#_detail_' + name ).val($('#' + prefix + name + postfix + number ).val() );
+    });
+    $('#_detail_options_decimal').val($('#' + prefix + 'size' + postfix + number ).val() );
+    var _col_type = $('#_detail_type' ).val();
+    if ( _col_type == 'integer' ) {
+        $('.relation__any').hide();
+    } else {
+        $('.relation__any').show();
+    }
+    var _col_name = $('#_detail_name' ).val();
+    toggleDefault( _col_name, _col_type );
+    if ( $('#' + prefix + 'autoset' + postfix + number ).val() == 1 ) {
+        $('#_detail_autoset').prop('checked', true );
+    } else {
+        $('#_detail_autoset').prop('checked', false );
+    }
+    items = ['not_null','index','unique','unchangeable'];
+    $.each( items, function( index, name ) {
+        $('#_detail_' + name ).prop('checked', $('#' + prefix + name + postfix + number).prop('checked') );
+    });
+    if ( $('#' + prefix + 'trans' + postfix + number).val() == 1 ) {
+        $('#_detail_trans' ).prop('checked', true );
+    } else {
+        $('#_detail_trans' ).prop('checked', false );
+    }
+    var prop_list = $('#' + prefix + 'list' + postfix + number ).val();
+    var prop_edit = $('#' + prefix + 'edit' + postfix + number ).val();
+    if ( prop_list.indexOf(':') == -1 ) {
+        $('#_detail_list').val( prop_list );
+        $('#_detail_list_table_wrapper').hide();
+    } else {
+        var list_props = prop_list.split(':');
+        if ( list_props[0] == 'reference'){
+            $('#_detail_list').val('reference');
+            var model = list_props[1];
+            var column = list_props[2];
+            $('#_detail_list_table').val( model );
+            $('#_detail_list_table_wrapper').show();
+            set_column_names( model, 'list', column );
+        }
+    }
+    var relModel;
+    if ( prop_edit.indexOf(':') == -1 ) {
+        $('#_detail_edit').val(prop_edit);
+        $('#_detail_edit_table_wrapper').hide();
+        $('._detail_edit_type_wrapper').hide();
+    } else {
+        var edit_props = prop_edit.split(':');
+        if ( edit_props[0] == 'relation' || edit_props[0] == 'reference') {
+            $('#_detail_edit').val( edit_props[0] );
+            var model = edit_props[1];
+            relModel = model;
+            var column = edit_props[2];
+            var type = edit_props[3];
+            $('#_detail_edit_table').val( model );
+            $('#_detail_edit_type').val( type );
+            if ( model == 'attachmentfile' ) {
+                $('#_detail_edit_type').val('dialog');
+                $('#_detail_edit_type').attr("disabled", true);
+            } else {
+                $('#_detail_edit_type').attr("disabled", false);
+            }
+            $('#_detail_edit_table_wrapper').show();
+            if ( edit_props[0] == 'relation') {
+                $('._detail_edit_type_wrapper').show();
+            } else {
+                $('._detail_edit_type_wrapper').hide();
+            }
+            set_column_names( model, 'edit', column );
+            if ( model == 'attachmentfile' ) {
+                document.getElementById("_detail_edit_type_dialog").innerHTML = '<mt:trans phrase="File Attachment">';
+                $('._detail_file_wrapper').show();
+                var extra = $('#' + prefix + 'extra' + postfix + number ).val();
+                if ( extra ) {
+                    var extras = extra.split(':');
+                    $('#_detail_file_size').val(extras[0]);
+                    $('#_detail_image_size').val(extras[1]);
+                    $('input[name=_detail_image_option]').val([extras[2]]);
+                    if ( extras[3] == 'image' || extras[3] == 'video' || extras[3] == 'audio' || extras[3] == 'pdf' ) {
+                        $('#_detail_file_type').val(extras[3]);
+                        $('#_detail_options_extensions').val('');
+                    } else {
+                        $('#_detail_file_type').prop('selectedIndex', 0);
+                        if ( _col_type == 'relation' ) {
+                            $('#_detail_options_extensions').val(extras[3]);
+                        }
+                    }
+                } else {
+                    $('#_detail_file_size').val('');
+                    $('#_detail_image_size').val('');
+                    $('input[name=_detail_image_option]:checked').prop('checked', false);
+                    //$('input[name=_detail_image_option]').val('');
+                    $('#_detail_file_type').val('');
+                }
+            } else {
+                $('._detail_file_wrapper').hide();
+            }
+        }
+    }
+    if( prop_edit == 'file' || ( prop_edit == 'relation:attachmentfile:name:dialog'
+        && $('#_detail_edit_table').val() == 'attachmentfile' ) ) {
+        // $('#_detail_file_type').val( $('#' + prefix + 'options' + postfix + number ).val() );
+        var extra = $('#' + prefix + 'extra' + postfix + number ).val();
+        if ( extra ) {
+            var extras = extra.split(':');
+            $('#_detail_file_size').val(extras[0]);
+            $('#_detail_image_size').val(extras[1]);
+            $('input[name=_detail_image_option]').val([extras[2]]);
+            if ( extras[3] == 'image' || extras[3] == 'video' || extras[3] == 'audio' || extras[3] == 'pdf' ) {
+                $('#_detail_file_type').val(extras[3]);
+                $('#_detail_options_extensions').val('');
+            } else {
+                $('#_detail_file_type').prop('selectedIndex', 0);
+            }
+        } else {
+            $('#_detail_file_size').val('');
+            $('#_detail_image_size').val('');
+            //$('input[name=_detail_image_option]').val('');
+            $('input[name=_detail_image_option]:checked').prop('checked', false);
+            $('#_detail_file_type').val('');
+        }
+        if (! $('#_detail_file_type').val() ) {
+            $('#_detail_options_extensions_wrapper').show();
+        } else {
+            $('#_detail_options_extensions_wrapper').hide();
+        }
+        if ( _col_type == 'relation' ) {
+            // $('#_detail_options_extensions').val('');
+        } else {
+            $('#_detail_options_extensions').val( $('#' + prefix + 'options' + postfix + number ).val() );
+        }
+    } else {
+        if ( relModel != 'attachmentfile' ) {
+            $('._detail_file_wrapper').hide();
+        }
+    }
+    if ( $('#_detail_type').val() == 'integer' ) {
+        $('._detail_edit_type_relation').hide();
+    } else {
+        $('._detail_edit_type_relation').show();
+    }
+    toggle_detail_custom( $('#' + prefix + 'type' + postfix + number ).val() );
+});
+$('#cols_tbl').sortable ( {
+    stop: function( evt, ui ) {
+        reorder();
+    }
+});
+function toggleDefault( _col_name, _col_type ) {
+    $('#_detail_maxlength').prop('type', 'text');
+    var excludeCols = ['status', 'user_id', 'previous_owner', 'parent_id',
+    'uuid', 'workspace_id', 'rev_type', 'rev_object_id', 'rev_changed', 'rev_note',
+    'rev_diff', 'created_by', 'modified_by'];
+    if ( excludeCols.indexOf(_col_name) == -1
+        && ( _col_type == 'string' || _col_type == 'tinystr' || _col_type == 'text'
+        || _col_type == 'boolean' || _col_type == 'integer' || _col_type == 'double'
+        || _col_type == 'decimal' ) ) {
+        $('#_detail_default-wrapper').show();
+        $('#_detail_default').removeAttr('step');
+        $('#_detail_default').removeAttr('max');
+        $('#_detail_default').removeAttr('min');
+        if ( _col_type == 'boolean' || _col_type == 'integer'
+           || _col_type == 'double' || _col_type == 'decimal' ) {
+            $('#_detail_default').attr('type', 'number');
+            $('#_detail_default').css('textAlign', 'center');
+            if ( _col_type == 'boolean' ) {
+                $('#_detail_default').attr('step', '1');
+                $('#_detail_default').attr('min', '0');
+                $('#_detail_default').attr('max', '1');
+            }
+        } else {
+            $('#_detail_default').attr('type', 'text');
+            $('#_detail_default').css('textAlign', 'left');
+        }
+    } else {
+        $('#_detail_default-wrapper').hide();
+    }
+    if ( _col_type == 'decimal' ) {
+        $('.detail_decimal').show();
+    } else {
+        $('.detail_decimal').hide();
+    }
+    $('#_detail_maxlength_range_hint').hide();
+    if ( _col_type == 'tinystr' || _col_type == 'string' || _col_type == 'text' ) {
+        $('._detail_validation_datetime').hide();
+        $('._detail_validation_integer').hide();
+        $('._detail_validation_text').show();
+        $('._detail_maxlength-wrapper').show();
+        $('#_maxlength_label').html( '<mt:trans phrase="Max Length">' );
+        $('#_detail_maxlength').prop('type', 'number');
+    } else if ( _col_type == 'datetime' ) {
+        $('._detail_validation_integer').hide();
+        $('._detail_validation_text').hide();
+        $('._detail_validation_datetime').show();
+    } else if ( _col_type == 'integer' ) {
+        $('._detail_validation_datetime').hide();
+        $('._detail_validation_text').hide();
+        $('._detail_validation_integer').show();
+        $('#_maxlength_label').html( '<mt:trans phrase="Range">' );
+        $('._detail_maxlength-wrapper').show();
+        $('#_detail_maxlength_range_hint').show();
+    } else {
+        $('._detail_validation_text').hide();
+        $('._detail_validation_datetime').hide();
+        $('._detail_validation_integer').hide();
+        $('._detail_maxlength-wrapper').hide();
+    }
+    $('#_detail_edit option').each(function(i){
+        if ( _col_type == 'relation' ) {
+            if ( $(this).val() && $(this).val() != 'relation' ) {
+                $(this).hide();
+            }
+        } else {
+            $(this).show();
+        }
+    });
+    $('#_detail_list option').each(function(i){
+        if ( _col_type == 'relation' ) {
+            if ( $(this).val() && $(this).val() != 'reference' ) {
+                $(this).hide();
+            }
+        } else {
+            $(this).show();
+        }
+    });
+}
+function reorder() {
+    var i = 0;
+    $('.order_col').each( function(){
+        i++;
+        if ( $(this).is(':visible') ) {
+            $(this).prop('value', i * 10 );
+        }
+    });
+}
+var addcounter = 0;
+var last_row = false;
+$('.add_col').click( function(){
+    editContentChanged = true;
+    tr = $('#col_tmpl');
+    newline = tr.clone( true ).appendTo('#cols_tbl');
+    newline.removeAttr('id');
+    newline.show();
+    inputs = newline.find('input');
+    addcounter++;
+    var focusobj = false;
+    inputs.each(function(){
+        name = $(this).prop('name');
+        if( name == '_new_column[]'){
+            $(this).prop('value', addcounter );
+        } else {
+            if( name == '_new_order_'){
+                $(this).addClass('order_col');
+            }
+            $(this).prop('name', name + addcounter );
+            $(this).prop('id', name + addcounter );
+            if(! focusobj ){
+                focusobj = $(this);
+            }
+            if ($(this).prop('type') == 'checkbox') {
+                $(this).prop('checked', false );
+            } else {
+                $(this).val('');
+            }
+        }
+    });
+    selects = newline.find('select');
+    selects.each( function() {
+        name = $(this).prop('name');
+        $(this).prop('name', name + addcounter );
+        $(this).prop('id', name + addcounter );
+        $(this).children('option').each( function() {
+            if ( $(this).prop('id') ) {
+                $(this).prop('id', $(this).prop('id') + addcounter );
+            }
+        });
+    });
+    buttons = newline.find('button');
+    buttons.each( function(){
+        name = $(this).prop('name');
+        $(this).prop('name', name + addcounter );
+        $(this).prop('id', name + addcounter );
+    });
+    reorder();
+    focusobj.focus();
+});
+function set_column_names( model, type, column ) {
+    $('#_detail_' + type + '_column option').remove();
+    $.getJSON('<mt:var name="script_uri">?__mode=get_columns_json&_model=' + model, function( data ) {
+        $.each( data.labels, function( key, val ) {
+            var locale = data.locale.<mt:var name="user_language">;
+            var sele = false;
+            if ( key == column ) {
+                sele = true;
+            }
+            var label = val;
+            if ( locale && locale[val] ) {
+                label = locale[val];
+            }
+            option = $('<option>').val( key ).text( label ).prop('selected', sele );
+            $('#_detail_' + type + '_column').append( option );
+        });
+        if (! column ) {
+            $('#_detail_' + type + '_column').val( data.primary );
+        }
+    });
+}
+$('.col_types').each( function(){
+    set_prop_from_type( $(this) );
+});
+$('.col_types').change( function(){
+    set_prop_from_type( $(this) );
+    if ($(this).val() == 'relation' || $(this).val() == 'decimal') {
+        var name = $(this).prop('id');
+        var term = name.split('_');
+        var number;
+        if ( term[1]=='type') {
+            number = term[2];
+        } else {
+            number = term[3];
+        }
+        var prefix = '_';
+        var postfix = '_';
+        if ( term[1] != 'type') {
+            prefix = '_new_';
+        }
+        if ( $(this).val() == 'relation' ) {
+            var current_val = $('#' + prefix + 'options' + postfix + number).val();
+            options = prompt('<mt:trans phrase="Please specify the Model name or click \'Detail\' and select a Model.">', current_val );
+            if ( options ) {
+                $('#' + prefix + 'options' + postfix + number).val(options);
+            }
+        } else {
+            var current_val = $('#' + prefix + 'size' + postfix + number).val();
+            options = prompt('<mt:trans phrase="Please specify the ranges of values(Comma separated values).">', current_val );
+            if ( options ) {
+                $('#' + prefix + 'size' + postfix + number).val(options);
+            }
+        }
+    }
+    return true;
+});
+function set_prop_from_type( obj ) {
+    var name = obj.prop('id');
+    var term = name.split('_');
+    var number;
+    if( term[1]=='type') {
+        number = term[2];
+    }else{
+        number = term[3];
+    }
+    var prefix = '_';
+    var postfix = '_';
+    if( term[1] != 'type') {
+        prefix = '_new_';
+    }
+    var type = obj.val();
+    var list_prop = $('#' + prefix + 'list' + postfix + number ).val();
+    var edit_prop = $('#' + prefix + 'edit' + postfix + number ).val();
+    if ( type == 'datetime') {
+        $('#' + prefix + 'list_datetime' + postfix + number ).show();
+        $('#' + prefix + 'edit_datetime' + postfix + number ).show();
+    } else {
+        if ( list_prop == 'datetime') {
+            $('#' + prefix + 'list' + postfix + number ).val('');
+        }
+        if ( edit_prop == 'datetime') {
+            $('#' + prefix + 'edit' + postfix + number ).val('');
+        }
+        $('#' + prefix + 'list_datetime' + postfix + number ).hide();
+        $('#' + prefix + 'edit_datetime' + postfix + number ).hide();
+    }
+    if ( type == 'blob') {
+        $('#' + prefix + 'edit_file' + postfix + number ).show();
+    } else {
+        if ( edit_prop == 'file') {
+            $('#' + prefix + 'edit_file' + postfix + number ).val('');
+        }
+        $('#' + prefix + 'edit_file' + postfix + number ).hide();
+    }
+    if ( type == 'text') {
+      $('#' + prefix + 'edit_richtext' + postfix + number ).show();
+    } else {
+        if ( edit_prop == 'richtext') {
+            $('#' + prefix + 'edit_richtext' + postfix + number ).val('');
+        }
+        $('#' + prefix + 'edit_richtext' + postfix + number ).hide();
+    }
+}
+</script>

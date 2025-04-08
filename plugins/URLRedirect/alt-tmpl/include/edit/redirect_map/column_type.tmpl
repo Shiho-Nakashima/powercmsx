@@ -1,0 +1,63 @@
+  <mt:var name="_split_options" value="0">
+  <mt:var name="options" split="," setvar="_options_loop">
+  <mt:if name="options" match=".+=.+,.+=.+">
+    <mt:var name="_split_options" value="1">
+    <mt:var name="_spl_loop" value="">
+    <mt:loop name="_options_loop">
+      <mt:var name="__value__" split="=" setvar="key_and_var">
+      <mt:setvar name="_spl_loop" key="$key_and_var[0]" value="$key_and_var[1]">
+    </mt:loop>
+    <mt:var name="_spl_loop" setvar="_options_loop">
+  </mt:if>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape="1">
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+      <mt:unless name="request.id"><mt:unless name="forward_params"><mt:var name="default" escape setvar="__col_value__"></mt:unless></mt:unless>
+    <mt:loop name="_options_loop">
+      <mt:if name="__first__">
+      <mt:unless name="not_null">
+      <label class="custom-control custom-radio">
+        <input class="custom-control-input watch-changed" type="radio" 
+        <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+        <mt:unless name="__col_value__">checked<mt:else><mt:if name="readonly">disabled</mt:if></mt:unless> name="<mt:var name="__col_name__">" value="">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:trans phrase="Unspecified"></span>
+      </label>
+      </mt:unless>
+      </mt:if>
+      <mt:if name="options">
+      <label class="custom-control custom-radio">
+        <mt:setvar name="this_checked" value="0">
+        <input class="custom-control-input watch-changed" type="radio"
+         <mt:if name="readonly">onclick="return false;" onkeydown="return false;"</mt:if>
+         <mt:unless name="__col_value__"><mt:if name="not_null"><mt:if name="__counter__" eq="1">checked<mt:setvar name="this_checked" value="1"></mt:if></mt:if></mt:unless>
+         <mt:if name="_split_options"><mt:if name="__col_value__" eq="$__key__">checked<mt:setvar name="this_checked" value="1"></mt:if><mt:else><mt:if name="__col_value__" eq="$__value__">checked<mt:setvar name="this_checked" value="1"></mt:if></mt:if> name="<mt:var name="__col_name__">" value="<mt:if name="_split_options"><mt:var name="__key__" escape><mt:else><mt:var name="__value__" escape></mt:if>"
+         <mt:unless name="this_checked"><mt:if name="readonly">disabled</mt:if></mt:unless>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"><mt:if name="translate"><mt:trans phrase="$__value__" escape><mt:else><mt:var name="__value__" escape></mt:if></span>
+      </label>
+      </mt:if>
+    </mt:loop>
+    <mt:property name="urlredirect_delimiter" setvar="delimiter">
+    <p class="text-muted hint-block mt-0 mb-1<mt:if name="__col_value__" ne="Regular Expressions"> hidden</mt:if>" id="delimiter-hint">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="The regular expression delimiter is '%s'." params="$delimiter" component="URLRedirect">
+    </p>
+<script>
+$('[name=type]').click(function() {
+    var selectedType = $('input[name=type]:checked').val();
+    if ( selectedType == 'Regular Expressions' ) {
+        $('#delimiter-hint').show( 100 );
+    } else {
+        $('#delimiter-hint').hide( 100 );
+    }
+});
+</script>
+  </div>
+</div>

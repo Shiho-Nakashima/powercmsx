@@ -1,0 +1,31 @@
+{
+    "label"      : "Prototype",
+    "component"  : "Core",
+    "author"     : "Alfasado Inc.",
+    "author_link": "https://alfasado.net/",
+    "config_settings": {
+        "logging"   : true,
+        "set_names" : true,
+        "temp_dir" : "/tmp",
+        "work_dir" : "/tmp",
+        "cache_driver" : "File",
+        "paml_version" : 4,
+        "use_timezone" : true,
+        "basename_separator" : "-",
+        "dynamic_init_tags_later" : true,
+        "rebasename_clone" : true,
+        "publish_clone" : true,
+        "sort_func_compat" : false,
+        "tag_multibyte" : false,
+        "weak_date_context" : true,
+        "export_int2label" : true,
+        "publish_only_archive" : true,
+        "build_pre_parse": true,
+        "do_conditional" : false,
+        "loopfilter_compat" : false,
+        "date_tag_compat" : false,
+        "include_scope_compat": false,
+        "sethashvar_compat" : false,
+        "regex_replace_compat" : false
+    }
+}

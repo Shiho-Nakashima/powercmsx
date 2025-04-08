@@ -1,0 +1,11 @@
+{
+    "pdfthumbnail" : {
+        "description" : "Create a thumbnail of the pdf and output the URL. If you omit the size specification, an image of the size of the pdf will be created.",
+        "attributes" : {
+            "width" : "The width of the thumbnail to generate.",
+            "height" : "The height of the thumbnail to generate.",
+            "square" : "If set to 1 (one) then the thumbnail generated will be square.",
+            "scale" : "The percentage by which to reduce or increase the size of the current image."
+        }
+    }
+}

@@ -1,0 +1,297 @@
+<mt:setvar name="use_system_settings" value="0">
+<mt:if name="workspace_id">
+  <mt:if name="setting_axerunner_use_system_settings">
+    <mt:setvar name="use_system_settings" value="1">
+  </mt:if>
+  <div class="row form-group mb-1">
+    <div class="col-lg-10">
+      <input type="hidden" name="setting_axerunner_use_system_settings" value="0">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input individual-setting"
+          id="setting_axerunner_use_system_settings" name="setting_axerunner_use_system_settings" value="1"
+          <mt:if name="setting_axerunner_use_system_settings">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Use system settings" component="AxeRunner"></span>
+      </label>
+    </div>
+  </div>
+<script>
+$('#setting_axerunner_use_system_settings').on('change', function(){
+    if ($(this).prop('checked')) {
+        $('#individual-setting-container').hide();
+    } else {
+        $('#individual-setting-container').show();
+    }
+});
+</script>
+</mt:if>
+<mt:unless name="workspace_id">
+<h2><mt:trans phrase="Scheduled Execution Settings" component="AxeRunner"></h2>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_axerunner_sunday">
+      <mt:trans phrase="Day of Week" component="AxeRunner">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <mt:setvar name="prop_name" value="setting_axerunner_sunday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Sunday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_axerunner_monday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Monday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_axerunner_tuesday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Tuesday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_axerunner_wednesday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Wednesday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_axerunner_thursday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Thursday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_axerunner_friday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Friday"></span>
+    </label>
+    <mt:setvar name="prop_name" value="setting_axerunner_saturday">
+    <input type="hidden" name="<mt:var name="prop_name">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="prop_name">" class="custom-control-input watch-changed"
+     type="checkbox" name="<mt:var name="prop_name">" value="1" <mt:if name="$prop_name">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Saturday"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_axerunner_time">
+      <mt:trans phrase="Execution Time" component="AxeRunner">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline left-margin">
+    <input type="time" id="setting_axerunner_time" name="setting_axerunner_time" class="very-short form-control" value="<mt:var name="setting_axerunner_time" escape>">
+    <label class="custom-control custom-checkbox ml-3">
+    <input id="cleanup_session" class="custom-control-input watch-changed"
+     type="checkbox" name="cleanup_session" value="1">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Clear today's run session" component="AxeRunner"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_axerunner_task_only_newer">
+      <mt:trans phrase="Target Pages" component="AxeRunner">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <label class="custom-control custom-checkbox mt-2">
+    <input type="hidden" name="setting_axerunner_task_only_newer" value="0">
+    <input id="setting_axerunner_task_only_newer" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_axerunner_task_only_newer" value="1" <mt:if name="setting_axerunner_task_only_newer">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Target added pages only" component="AxeRunner"></span>
+    </label>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_axerunner_task_workspace_ids">
+      <mt:trans phrase="WorkSpace IDs" component="AxeRunner">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_axerunner_task_workspace_ids" name="setting_axerunner_task_workspace_ids" class="form-control" value="<mt:var name="setting_axerunner_task_workspace_ids" escape>">
+    <div class="text-muted hint-block">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:Trans phrase="Hint"></span>
+      <mt:trans phrase="Specify a comma-separated list of scope IDs(numbers) for which validation is to be performed. If omitted, all will be verified." component="AxeRunner">
+    </div>
+  </div>
+</div>
+<hr>
+</mt:unless>
+
+<div id="individual-setting-container" style="<mt:if name="use_system_settings"> display:none;</mt:if><mt:if name="workspace_id">border:1px solid gray;padding:1rem;border-radius: 10px;</mt:if>">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_axerunner_username">
+      <mt:trans phrase="HTTP Authentication" component="AxeRunner">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline form-inline-left-margin">
+    <label><mt:trans phrase="Username"> : &nbsp;<input type="text" value="<mt:var name="setting_axerunner_username" escape>" class="form-control watch-changed very-short" name="setting_axerunner_username" id="setting_axerunner_username"></label>
+    <label><mt:trans phrase="Password"> : &nbsp;<input type="password" value="<mt:var name="setting_axerunner_password" escape>" class="form-control watch-changed very-short" name="setting_axerunner_password" id="setting_axerunner_password"></label>
+    <input type="hidden" name="setting_axerunner_digest" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="setting_axerunner_digest" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_axerunner_digest" value="1" <mt:if name="setting_axerunner_digest">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Digest Access Authentication" component="AxeRunner"></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-6">
+    <label for="axerunner_user_id">
+      <mt:trans phrase="ID of the user to assign after autove rification" component="AxeRunner">
+    </label>
+    <br>
+    <input type="number" id="axerunner_user_id" name="setting_axerunner_user_id" class="form-control num short" value="<mt:var name="setting_axerunner_user_id" escape>">
+    <input type="hidden" name="setting_axerunner_send_email" value="0">
+    <label class="custom-control custom-checkbox mt-2">
+    <input id="setting_axerunner_send_email" class="custom-control-input watch-changed"
+     type="checkbox" name="setting_axerunner_send_email" value="1" <mt:if name="setting_axerunner_send_email">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:trans phrase="Send email after verification" component="AxeRunner"></span>
+    </label>
+  </div>
+</div>
+<mt:unless name="workspace_id">
+  <div class="row form-group">
+    <div class="col-6">
+      <label for="axerunner_member_id">
+        <mt:trans phrase="Member id for site crawl" component="AxeRunner">
+      </label>
+      <br>
+      <input type="number" id="axerunner_member_id" name="setting_axerunner_member_id" class="form-control num short" value="<mt:var name="setting_axerunner_member_id" escape>">
+      <div class="text-muted hint-block">
+        <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+        <span class="sr-only"><mt:Trans phrase="Hint"></span>
+        <mt:trans phrase="Used in both system scope and workspaces." component="AxeRunner">
+      </div>
+    </div>
+  </div>
+</mt:unless>
+<div class="row form-group">
+  <div class="col-6">
+    <label for="axerunner_wcag_version">
+      <mt:trans phrase="WCAG Target Version" component="AxeRunner">
+    </label>
+    <br>
+    <select class="form-control custom-select short" name="setting_axerunner_wcag_version" id="axerunner_wcag_version">
+      <option value="wcag2" <mt:if name="setting_axerunner_wcag_version" eq="wcag2">selected</mt:if>>WCAG 2.0</option>
+      <option value="wcag21" <mt:if name="setting_axerunner_wcag_version" eq="wcag21">selected</mt:if>>WCAG 2.1</option>
+      <option value="wcag22" <mt:if name="setting_axerunner_wcag_version" eq="wcag22">selected</mt:if>>WCAG 2.2</option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-6">
+    <label for="axerunner_wcag_level">
+      <mt:trans phrase="WCAG Target Level" component="AxeRunner">
+    </label>
+    <br>
+    <select class="form-control custom-select short" name="setting_axerunner_wcag_level" id="axerunner_wcag_level">
+      <option value="1" <mt:if name="setting_axerunner_wcag_level" eq="1">selected</mt:if>>A</option>
+      <option value="2" <mt:if name="setting_axerunner_wcag_level" eq="2">selected</mt:if>>AA</option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="setting_axerunner_exclude_sc">
+      <mt:trans phrase="Exclude Success Criteria" component="AxeRunner">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input type="text" id="setting_axerunner_exclude_sc" name="setting_axerunner_exclude_sc" class="form-control" value="<mt:var name="setting_axerunner_exclude_sc" escape>">
+    <div class="text-muted hint-block mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Specify success criteria to exclude, separated by commas." component="AxeRunner">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-6">
+    <label for="axerunner_violation_only">
+      <mt:trans phrase="Show only violation items" component="AxeRunner">
+    </label>
+    <br>
+    <select class="form-control custom-select short" name="setting_axerunner_violation_only" id="axerunner_violation_only">
+      <option value="1" <mt:if name="setting_axerunner_violation_only" eq="1">selected</mt:if>><mt:trans phrase="Yes" component="AxeRunner"></option>
+      <option value="0" <mt:if name="setting_axerunner_violation_only" eq="0">selected</mt:if>><mt:trans phrase="No" component="AxeRunner"></option>
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-12">
+    <label for="axerunner_exclude_urls">
+      <mt:trans phrase="Exclude URLs" component="AxeRunner">
+    </label>
+    <br>
+    <textarea class="form-control" rows="5" id="axerunner_exclude_urls" name="setting_axerunner_exclude_urls"><mt:var name="setting_axerunner_exclude_urls"></textarea>
+    <div class="text-muted hint-block mb-1">
+      <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Hint"></span>
+      <mt:trans phrase="Specify 1 URL per line. URL or Partial match or Regular Expression(Delimiter is '!')." component="AxeRunner">
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-6">
+    <label for="axerunner_report_locale">
+      <mt:trans phrase="Report locale" component="AxeRunner">
+    </label>
+    <br>
+    <select class="form-control custom-select short" name="setting_axerunner_report_locale" id="setting_axerunner_report_locale">
+      <option value="ja" <mt:if name="setting_axerunner_report_locale" eq="ja">selected</mt:if>>日本語</option>
+      <option value="en" <mt:if name="setting_axerunner_report_locale" eq="en">selected</mt:if>>English</option>
+      <option value="da" <mt:if name="setting_axerunner_report_locale" eq="da">selected</mt:if>>Danish</option>
+      <option value="de" <mt:if name="setting_axerunner_report_locale" eq="de">selected</mt:if>>German</option>
+      <option value="es" <mt:if name="setting_axerunner_report_locale" eq="es">selected</mt:if>>Spanish</option>
+      <option value="eu" <mt:if name="setting_axerunner_report_locale" eq="eu">selected</mt:if>>Basque</option>
+      <option value="fr" <mt:if name="setting_axerunner_report_locale" eq="fr">selected</mt:if>>French</option>
+      <option value="ko" <mt:if name="setting_axerunner_report_locale" eq="ko">selected</mt:if>>Korean</option>
+      <option value="nl" <mt:if name="setting_axerunner_report_locale" eq="nl">selected</mt:if>>Dutch</option>
+      <option value="pl" <mt:if name="setting_axerunner_report_locale" eq="pl">selected</mt:if>>Polish</option>
+      <option value="pt_BR" <mt:if name="setting_axerunner_report_locale" eq="pt_BR">selected</mt:if>>Portuguese</option>
+    </select>
+  </div>
+</div>
+</div>

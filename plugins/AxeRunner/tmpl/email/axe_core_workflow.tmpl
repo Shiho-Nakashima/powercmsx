@@ -1,0 +1,15 @@
+<mt:for merge_linefeeds="1">
+<mt:var name="subject">
+
+<mt:if name="workflow_message">
+<mt:trans phrase="(Message)">
+<mt:var name="workflow_message"></mt:if>
+
+<mt:trans phrase="(%s)" params="$object_label">
+<mt:var name="request.url"> (ID: <mt:var name="request.id">)
+
+<mt:trans phrase="(%s)" params="$edit_label">
+<mt:var name="edit_link">
+
+<mt:include file="mail_footer.tmpl">
+</mt:for>

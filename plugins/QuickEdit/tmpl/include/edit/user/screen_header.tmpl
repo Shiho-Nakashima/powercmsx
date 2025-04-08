@@ -1,0 +1,48 @@
+<mt:if name="request.from_cms">
+<div id="header-quickedit-message" style="" class="mb-4 alert alert-info" tabindex="0">
+<mt:trans phrase="Please launch quick editing from the Bookmarklet." component="QuickEdit">
+</div>
+<script>
+$('#header-quickedit-message').focus();
+</script>
+</mt:if>
+<style>
+#quick-edit-nav {
+  position:absolute;
+  top: -27px;
+  right: <mt:if name="user_language" eq="en">150<mt:else>140</mt:if>px;
+}
+#quick-edit-nav a {
+  display: inline-block;
+  width: 37px;
+  height: 27px;
+  color:<mt:var name="bartextcolor">;
+  background-color:<mt:var name="barcolor">;
+}
+@media ( max-width: 768px ) {
+  #quick-edit-nav {
+    top: -34px;
+    right: 60px;
+  }
+}
+@media ( max-width: 360px ) {
+  #quick-edit-nav {
+    position: relative;
+    top: -10px;
+    right: auto;
+    text-align: right;
+  }
+}
+</style>
+<div id="quick-edit-nav">
+<a id="quick-edit-link" href="javascript:window.document.location.href='<mt:var name="script_uri">?__mode=go_to_edit_screen&permalink='+encodeURIComponent(document.location.href);"
+ class="btn btn-sm" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Quick Edit" component="QuickEdit">">
+  <i class="fa fa-pencil" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Quick Edit" component="QuickEdit"></span>
+</a>
+<a id="quick-edit-link-view" href="javascript:window.document.location.href='<mt:var name="script_uri">?__mode=go_to_edit_screen&type=view&permalink='+encodeURIComponent(document.location.href);"
+ class="btn btn-sm" data-toggle="tooltip" data-placement="left" title="<mt:trans phrase="Quick Edit(View)" component="QuickEdit">">
+  <i class="fa fa-code" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Quick Edit(View)" component="QuickEdit"></span>
+</a>
+</div>

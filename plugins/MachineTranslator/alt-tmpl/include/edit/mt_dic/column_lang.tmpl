@@ -1,0 +1,98 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="language-selector"><mt:var name="label" escape="1"></label>
+  </div>
+  <mt:if name="dict_language">
+    <mt:setvar name="__col_value__" value="$dict_language">
+  </mt:if>
+  <div class="col-lg-10 form-inline">
+    <select id="language-selector" class="form-control custom-select min-short watch-changed" name="<mt:var name="__col_name__">">
+      <option value="all" <mt:if name="__col_value__" eq="all">selected</mt:if>><mt:trans phrase="All"></option>
+      <option value="ja" <mt:if name="__col_value__" eq="ja">selected</mt:if>><mt:trans phrase="Japanese" component="MachineTranslator"></option>
+      <mt:ifcomponent component="SimplifiedJapanese">
+      <mt:property name="tsutaeruweb_client_id" setvar="tsutaeruweb_client_id">
+      <mt:property name="tsutaeruweb_client_secret" setvar="tsutaeruweb_client_secret">
+      <mt:if name="tsutaeruweb_client_id"><mt:if name="tsutaeruweb_client_secret">
+      <option value="jp-yn" <mt:if name="__col_value__" eq="jp-yn">selected</mt:if>><mt:trans phrase="Japanese(Simplified)" component="MachineTranslator"></option>
+      </mt:if></mt:if>
+      <option value="jp-rb" <mt:if name="__col_value__" eq="jp-rb">selected</mt:if>><mt:trans phrase="Japanese(with phonetic)" component="MachineTranslator"></option>
+      </mt:ifcomponent>
+      <option value="en" <mt:if name="__col_value__" eq="en">selected</mt:if>><mt:trans phrase="English" component="MachineTranslator"></option>
+      <option value="zh-Hans" <mt:if name="__col_value__" eq="zh-Hans">selected</mt:if>><mt:trans phrase="Simplified Chinese" component="MachineTranslator"></option>
+      <option value="zh-Hant" <mt:if name="__col_value__" eq="zh-Hant">selected</mt:if>><mt:trans phrase="Traditional Chinese" component="MachineTranslator"></option>
+      <option value="ko" <mt:if name="__col_value__" eq="ko">selected</mt:if>><mt:trans phrase="Korean" component="MachineTranslator"></option>
+      <option value="vi" <mt:if name="__col_value__" eq="vi">selected</mt:if>><mt:trans phrase="Vietnamese" component="MachineTranslator"></option>
+      <option value="th" <mt:if name="__col_value__" eq="th">selected</mt:if>><mt:trans phrase="Thai" component="MachineTranslator"></option>
+      <option value="pt" <mt:if name="__col_value__" eq="pt">selected</mt:if>><mt:trans phrase="Portuguese (Brazil)" component="MachineTranslator"></option>
+      <option value="pt-PT" <mt:if name="__col_value__" eq="pt-PT">selected</mt:if>><mt:trans phrase="Portuguese (Portugal)" component="MachineTranslator"></option>
+      <option value="es" <mt:if name="__col_value__" eq="es">selected</mt:if>><mt:trans phrase="Spanish" component="MachineTranslator"></option>
+      <option value="fr" <mt:if name="__col_value__" eq="fr">selected</mt:if>><mt:trans phrase="French" component="MachineTranslator"></option>
+      <option value="fr-CA" <mt:if name="__col_value__" eq="fr-CA">selected</mt:if>><mt:trans phrase="French (Canada)" component="MachineTranslator"></option>
+      <option value="it" <mt:if name="__col_value__" eq="it">selected</mt:if>><mt:trans phrase="Italian" component="MachineTranslator"></option>
+      <option value="de" <mt:if name="__col_value__" eq="de">selected</mt:if>><mt:trans phrase="German" component="MachineTranslator"></option>
+      <option value="sv" <mt:if name="__col_value__" eq="sv">selected</mt:if>><mt:trans phrase="Swedish" component="MachineTranslator"></option>
+      <option value="ru" <mt:if name="__col_value__" eq="ru">selected</mt:if>><mt:trans phrase="Russian" component="MachineTranslator"></option>
+      <option value="nl" <mt:if name="__col_value__" eq="nl">selected</mt:if>><mt:trans phrase="Dutch" component="MachineTranslator"></option>
+      <option value="af" <mt:if name="__col_value__" eq="af">selected</mt:if>><mt:trans phrase="Afrikaans" component="MachineTranslator"></option>
+      <option value="ar" <mt:if name="__col_value__" eq="ar">selected</mt:if>><mt:trans phrase="Arabic" component="MachineTranslator"></option>
+      <option value="az" <mt:if name="__col_value__" eq="az">selected</mt:if>><mt:trans phrase="Azerbaijani (Latin)" component="MachineTranslator"></option>
+      <option value="bg" <mt:if name="__col_value__" eq="bg">selected</mt:if>><mt:trans phrase="Bulgarian" component="MachineTranslator"></option>
+      <option value="bn" <mt:if name="__col_value__" eq="bn">selected</mt:if>><mt:trans phrase="Bangla" component="MachineTranslator"></option>
+      <option value="bs" <mt:if name="__col_value__" eq="bs">selected</mt:if>><mt:trans phrase="Bosnian" component="MachineTranslator"></option>
+      <option value="ca" <mt:if name="__col_value__" eq="ca">selected</mt:if>><mt:trans phrase="Catalan" component="MachineTranslator"></option>
+      <option value="cs" <mt:if name="__col_value__" eq="cs">selected</mt:if>><mt:trans phrase="Czech language" component="MachineTranslator"></option>
+      <option value="cy" <mt:if name="__col_value__" eq="cy">selected</mt:if>><mt:trans phrase="Welsh" component="MachineTranslator"></option>
+      <option value="da" <mt:if name="__col_value__" eq="da">selected</mt:if>><mt:trans phrase="Danish" component="MachineTranslator"></option>
+      <option value="el" <mt:if name="__col_value__" eq="el">selected</mt:if>><mt:trans phrase="Greek language" component="MachineTranslator"></option>
+      <option value="et" <mt:if name="__col_value__" eq="et">selected</mt:if>><mt:trans phrase="Estonian" component="MachineTranslator"></option>
+      <option value="fa" <mt:if name="__col_value__" eq="fa">selected</mt:if>><mt:trans phrase="Persian" component="MachineTranslator"></option>
+      <option value="fi" <mt:if name="__col_value__" eq="fi">selected</mt:if>><mt:trans phrase="Finnish" component="MachineTranslator"></option>
+      <option value="fil" <mt:if name="__col_value__" eq="fil">selected</mt:if>><mt:trans phrase="Filipino" component="MachineTranslator"></option>
+      <option value="fj" <mt:if name="__col_value__" eq="fj">selected</mt:if>><mt:trans phrase="Fijian" component="MachineTranslator"></option>
+      <option value="ga" <mt:if name="__col_value__" eq="ga">selected</mt:if>><mt:trans phrase="Irish" component="MachineTranslator"></option>
+      <option value="gu" <mt:if name="__col_value__" eq="gu">selected</mt:if>><mt:trans phrase="Gujarati" component="MachineTranslator"></option>
+      <option value="he" <mt:if name="__col_value__" eq="he">selected</mt:if>><mt:trans phrase="Hebrew" component="MachineTranslator"></option>
+      <option value="hi" <mt:if name="__col_value__" eq="hi">selected</mt:if>><mt:trans phrase="Hindi" component="MachineTranslator"></option>
+      <option value="hr" <mt:if name="__col_value__" eq="hr">selected</mt:if>><mt:trans phrase="Croatian" component="MachineTranslator"></option>
+      <option value="ht" <mt:if name="__col_value__" eq="ht">selected</mt:if>><mt:trans phrase="Haitian" component="MachineTranslator"></option>
+      <option value="hu" <mt:if name="__col_value__" eq="hu">selected</mt:if>><mt:trans phrase="Hungarian" component="MachineTranslator"></option>
+      <option value="hy" <mt:if name="__col_value__" eq="hy">selected</mt:if>><mt:trans phrase="Armenian" component="MachineTranslator"></option>
+      <option value="id" <mt:if name="__col_value__" eq="id">selected</mt:if>><mt:trans phrase="Indonesian" component="MachineTranslator"></option>
+      <option value="is" <mt:if name="__col_value__" eq="is">selected</mt:if>><mt:trans phrase="Icelandic" component="MachineTranslator"></option>
+      <option value="kk" <mt:if name="__col_value__" eq="kk">selected</mt:if>><mt:trans phrase="Kazakh" component="MachineTranslator"></option>
+      <option value="kn" <mt:if name="__col_value__" eq="kn">selected</mt:if>><mt:trans phrase="Kannada" component="MachineTranslator"></option>
+      <option value="lt" <mt:if name="__col_value__" eq="lt">selected</mt:if>><mt:trans phrase="Lithuanian" component="MachineTranslator"></option>
+      <option value="lv" <mt:if name="__col_value__" eq="lv">selected</mt:if>><mt:trans phrase="Latvian" component="MachineTranslator"></option>
+      <option value="mg" <mt:if name="__col_value__" eq="mg">selected</mt:if>><mt:trans phrase="Malagasy" component="MachineTranslator"></option>
+      <option value="mi" <mt:if name="__col_value__" eq="mi">selected</mt:if>><mt:trans phrase="Maori" component="MachineTranslator"></option>
+      <option value="ml" <mt:if name="__col_value__" eq="ml">selected</mt:if>><mt:trans phrase="Malayalam" component="MachineTranslator"></option>
+      <option value="mr" <mt:if name="__col_value__" eq="mr">selected</mt:if>><mt:trans phrase="Marathi" component="MachineTranslator"></option>
+      <option value="ms" <mt:if name="__col_value__" eq="ms">selected</mt:if>><mt:trans phrase="Malay" component="MachineTranslator"></option>
+      <option value="mt" <mt:if name="__col_value__" eq="mt">selected</mt:if>><mt:trans phrase="Maltese" component="MachineTranslator"></option>
+      <option value="mww" <mt:if name="__col_value__" eq="mww">selected</mt:if>><mt:trans phrase="Mon" component="MachineTranslator"></option>
+      <option value="nb" <mt:if name="__col_value__" eq="nb">selected</mt:if>><mt:trans phrase="Norwegian" component="MachineTranslator"></option>
+      <option value="ne" <mt:if name="__col_value__" eq="ne">selected</mt:if>><mt:trans phrase="Nepali" component="MachineTranslator"></option>
+      <option value="or" <mt:if name="__col_value__" eq="or">selected</mt:if>><mt:trans phrase="Odia" component="MachineTranslator"></option>
+      <option value="otq" <mt:if name="__col_value__" eq="otq">selected</mt:if>><mt:trans phrase="Otomi, Queretaro" component="MachineTranslator"></option>
+      <option value="pa" <mt:if name="__col_value__" eq="pa">selected</mt:if>><mt:trans phrase="Punjabi" component="MachineTranslator"></option>
+      <option value="pl" <mt:if name="__col_value__" eq="pl">selected</mt:if>><mt:trans phrase="Polish" component="MachineTranslator"></option>
+      <option value="ro" <mt:if name="__col_value__" eq="ro">selected</mt:if>><mt:trans phrase="Romanian" component="MachineTranslator"></option>
+      <option value="sk" <mt:if name="__col_value__" eq="sk">selected</mt:if>><mt:trans phrase="Slovak" component="MachineTranslator"></option>
+      <option value="sl" <mt:if name="__col_value__" eq="sl">selected</mt:if>><mt:trans phrase="Slovenian" component="MachineTranslator"></option>
+      <option value="sm" <mt:if name="__col_value__" eq="sm">selected</mt:if>><mt:trans phrase="Samoan" component="MachineTranslator"></option>
+      <option value="sq" <mt:if name="__col_value__" eq="sq">selected</mt:if>><mt:trans phrase="Albanian" component="MachineTranslator"></option>
+      <option value="sr-Cyrl" <mt:if name="__col_value__" eq="sr-Cyrl">selected</mt:if>><mt:trans phrase="Serbian (Cyrillic)" component="MachineTranslator"></option>
+      <option value="sr-Latn" <mt:if name="__col_value__" eq="sr-Latn">selected</mt:if>><mt:trans phrase="Serbian (Latin)" component="MachineTranslator"></option>
+      <option value="sw" <mt:if name="__col_value__" eq="sw">selected</mt:if>><mt:trans phrase="Swahili" component="MachineTranslator"></option>
+      <option value="ta" <mt:if name="__col_value__" eq="ta">selected</mt:if>><mt:trans phrase="Tamil" component="MachineTranslator"></option>
+      <option value="te" <mt:if name="__col_value__" eq="te">selected</mt:if>><mt:trans phrase="Telugu" component="MachineTranslator"></option>
+      <option value="to" <mt:if name="__col_value__" eq="to">selected</mt:if>><mt:trans phrase="Tongan" component="MachineTranslator"></option>
+      <option value="tr" <mt:if name="__col_value__" eq="tr">selected</mt:if>><mt:trans phrase="Turkish language" component="MachineTranslator"></option>
+      <option value="ty" <mt:if name="__col_value__" eq="ty">selected</mt:if>><mt:trans phrase="Tahitian" component="MachineTranslator"></option>
+      <option value="uk" <mt:if name="__col_value__" eq="uk">selected</mt:if>><mt:trans phrase="Ukrainian" component="MachineTranslator"></option>
+      <option value="ur" <mt:if name="__col_value__" eq="ur">selected</mt:if>><mt:trans phrase="Urdu" component="MachineTranslator"></option>
+      <option value="yua" <mt:if name="__col_value__" eq="yua">selected</mt:if>><mt:trans phrase="Yucatec Maya" component="MachineTranslator"></option>
+      <option value="yue" <mt:if name="__col_value__" eq="yue">selected</mt:if>><mt:trans phrase="Cantonese (Traditional)" component="MachineTranslator"></option>
+    </select>
+  </div>
+</div>

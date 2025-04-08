@@ -1,0 +1,89 @@
+<mt:if name="video_theme" eq="pcmsx">
+<script type="module">
+    import deepExtend from '<mt:var name="theme_static" escape />common/js/modules/deepExtend.js';
+    import initPCMSXControls from '<mt:var name="theme_static" escape />common/js/modules/initPCMSXControls.js';
+    import utilities from '<mt:var name="theme_static" escape />common/js/modules/utilities.js';
+
+    const isMuted = window.sessionStorage.getItem('pcmsx_player_muted');
+    const defaults = {
+        language: 'ja',
+        muted: Boolean(isMuted),
+        controls: true,
+        controlBar: {
+            pictureInPictureToggle: false,
+            skipButtons: {
+                forward: 10,
+                backward: 10,
+            },
+            volumePanel: {
+                inline: false,
+                vertical: true,
+            },
+        },
+        playbackRates: [0.5, 1, 1.5, 2],
+        html5: {
+            vhs: {
+                enableLowInitialPlaylist: false,
+                overrideNative: true,
+            },
+            nativeAudioTracks: false,
+            nativeVideoTracks: false,
+            nativeTextTracks: false,
+        },
+        preferFullWindow: true,
+        textTrackSettings: false,
+        pcmsx: {
+            breakPoint: 768,
+            miniPlayer: true,
+            expandedChapterList: <mt:if name="chapters_json">true<mt:else>false</mt:if>,
+        },
+    };
+    const settings = deepExtend({}, defaults, <mt:var name="video_options" default="{}" />);
+    settings.pcmsx.language = settings.language;
+
+    const player = videojs('<mt:var name="video_id">', settings);
+    player.mobileUi({
+        fullscreen: {
+            enterOnRotate: false,
+        },
+    });
+    player.qualityLevels(); // NOTE: Desktop Safariのために必要
+    initPCMSXControls(player, settings.pcmsx);
+    utilities(player);
+</script>
+<mt:else>
+<script type="module">
+    import deepExtend from '<mt:var name="theme_static" escape />common/js/modules/deepExtend.js';
+    const defaults = {
+        controls: true,
+        autoplay: false,
+        preload: 'auto',
+        fluid: true,
+        LoadingSpinner: true,
+        controlBar: {
+            volumePanel: {
+                inline: false,
+                vertical: true
+            },
+            pictureInPictureToggle: false
+        },
+        html5: {
+            nativeTextTracks: false,
+            preloadTextTracks: true
+        }<mt:if name="language" eq="ja">,
+        languages: {
+            ja: {
+                'Play': '再生',
+                'Pause': '一時停止',
+                'Current Time': '現在の時間',
+                'Fullscreen': 'フルスクリーン',
+                'Mute': 'ミュート',
+                'Unmute': 'ミュート解除',
+                'Japanese': '日本語',
+            }
+        }</mt:if>
+    };
+    const settings = deepExtend({}, defaults, <mt:var name="video_options" default="{}" />);
+    const player = videojs('<mt:var name="video_id">', settings);
+</script>
+</mt:if>

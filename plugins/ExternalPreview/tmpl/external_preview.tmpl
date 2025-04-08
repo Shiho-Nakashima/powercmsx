@@ -1,0 +1,85 @@
+<mt:unless name="require_password">
+<mt:setvarblock name="html_head" append="1">
+<style>
+h1 {display:none !important; }
+</style>
+</mt:setvarblock>
+<mt:include file="include/dialog_header.tmpl">
+<div style="position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 3;
+            text-align: center;
+            top: 40% !important;
+            left: 0 !important;">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<form action="<mt:var name="form_action">" method="POST" name="external_preview_form">
+<input name="uuid" type="hidden" value="<mt:var name="uuid">">
+<input name="revision_id" type="hidden" value="<mt:var name="request.revision_id" escape>">
+<input name="_external_preview" type="hidden" value="1">
+</form>
+<script>
+    document.external_preview_form.submit();
+</script>
+<mt:else>
+<mt:setvarblock name="html_head" append="1">
+<style>
+body { background-color: #efefef; }
+h1 { display: none; }
+.card-img-top { max-width: 15rem; }
+.card { margin:auto; width:60%; max-width: 640px; margin-top: 5rem; border-color: #ccc; border-radius: 10px; }
+.card-image-wrapper { border-radius: 10px 10px 0 0; }
+@media ( max-width: 991px ) {
+  .card-img-top { width: 37% !important; }
+  .card { width:70% !important; }
+}
+@media ( max-width: 769px ) {
+  .card-img-top { width: 40% !important; }
+  .card { width:88% !important; }
+}
+@media ( max-width: 576px ) {
+  .card { width:95% !important; }
+  .card-inner { padding: 1.5rem !important; }
+}
+@media ( max-height: 650px ) {
+  .card { margin-top: 1.5rem }
+}
+@media ( max-height: 500px ) {
+  .card { margin-top: -0.5rem }
+}
+</style>
+</mt:setvarblock>
+<mt:include file="include/dialog_header.tmpl">
+<div class="card">
+<div class="card-image-wrapper"><img class="card-img-top img-fluid" src="<mt:var name="app_path">assets/brand/PowerCMSX.svg" alt="PowerCMS X"></div>
+<div class="col-md-12 form-group pt-5 pl-5 pr-5 card-inner">
+<div class="ml-2 mb-4">
+  <div id="header-alert-message" class="alert alert-success" tabindex="0">
+    <mt:trans phrase="You are trying to preview the pre-published %s." params="$preview_model" component="ExternalPreview"><br>
+    <mt:trans phrase="To preview, enter your password and click the 'Preview' button." component="ExternalPreview">
+  </div>
+  <script>
+  $('#header-alert-message').focus();
+  </script>
+</div>
+<form action="<mt:var name="form_action">" method="POST">
+<div class="ml-2 mb-5">
+<input name="uuid" type="hidden" value="<mt:var name="uuid">">
+<input name="revision_id" type="hidden" value="<mt:var name="request.revision_id" escape>">
+<input name="_external_preview" type="hidden" value="1">
+<label for="setting_externalpreview_password">
+  <mt:trans phrase="Password">
+</label>
+<input name="password" type="password" value="" class="form-control">
+</div>
+<div class="ml-1">
+<button type="submit" class="btn btn-primary"><mt:trans phrase="Preview"></button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<mt:include file="include/dialog_footer.tmpl">
+</mt:unless>

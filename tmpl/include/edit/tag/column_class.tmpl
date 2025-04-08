@@ -1,0 +1,27 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-3">
+  <mt:if name="workspace_id">
+    <mt:setvar name="_display_type" value="display_space">
+  <mt:else>
+    <mt:setvar name="_display_type" value="display_systtem">
+  </mt:if>
+  <mt:var name="request.from_obj" setvar="from_obj">
+  <mt:tables taggable="1" type="$_display_type">
+    <mt:if name="__first__"><select id="<mt:var name="__col_name__">" name="<mt:var name="__col_name__">" class="form-control custom-select"></mt:if>
+    <mt:if name="__col_value__" eq="$name">
+      <option value="<mt:var name="name">" selected><mt:var name="label" translate></option>
+    <mt:elseif name="name" eq="$from_obj">
+      <option value="<mt:var name="name">" selected><mt:var name="label" translate></option>    
+    <mt:elseif name="__col_value__" eq="">
+      <option value="<mt:var name="name">" <mt:if name="request.tag_obj" eq="$name">selected</mt:if>><mt:var name="label" translate></option>
+    </mt:if>
+    <mt:if name="__last__"></select></mt:if>
+  </mt:tables>
+  </div>
+</div>

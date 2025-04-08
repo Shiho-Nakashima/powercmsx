@@ -1,0 +1,20 @@
+<mt:block regex_replace="'/^%s+$/um',''" remove_blank="1"><?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title><mt:websitename remove_html="1" encode_xml="1"></title>
+    <link><mt:websiteurl encode_xml="1"></link>
+    <description><mt:websitedescription remove_html="1" encode_xml="1"></description>
+    <mt:entries lastn="20">
+    <item>
+      <title><mt:entrytitle remove_html="1" encode_xml="1"></title>
+      <link><mt:entrypermalink encode_xml="1"></link>
+      <description><mt:entrybody encode_xml="1"></description>
+      <pubDate><mt:entrydate format_name="rfc822"></pubDate>
+      <mt:entrycategories>
+        <category><mt:categorylabel encode_xml="1"></category>
+      </mt:entrycategories>
+  </item>
+  </mt:entries>
+  </channel>
+</rss>
+</mt:block>

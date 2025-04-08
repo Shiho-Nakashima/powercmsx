@@ -1,0 +1,48 @@
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:trans phrase="Button">
+    </label>
+  </div>
+  <div class="col-lg-10 form-inline row-more form-inline-left-margin">
+    <input type="hidden" name="<mt:var name="__col_name__">" value="0">
+    <label class="custom-control custom-checkbox">
+    <input id="<mt:var name="__col_name__">" class="custom-control-input watch-changed"
+    <mt:if name="readonly">onclick="return false;"</mt:if>
+     type="checkbox" name="<mt:var name="__col_name__">" value="1" <mt:if name="value">checked</mt:if>>
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description"> 
+        <mt:var name="label" escape></span>
+    </label>
+  </div>
+</div>
+<div class="row form-group" id="icon-wrapper">
+  <div class="col-lg-2">
+    <label for="icon">
+      <mt:trans phrase="Icon">
+    </label>
+  </div>
+  <div class="col-lg-10">
+    <input id="icon" type="text" class="form-control watch-changed" name="icon" value="<mt:var name="object_icon" escape>">
+   <p class="text-muted hint-block mb-0">
+    <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+    <span class="sr-only"><mt:trans phrase="Hint"></span>
+    <mt:trans phrase="Enter the URL of the icon image. This field is not required. Template tags are available." component="TinyMCE">
+    </p>
+  </div>
+</div>
+<script>
+<mt:unless name="value">
+  $('#icon-wrapper').hide();
+</mt:unless>
+$('#<mt:var name="__col_name__">').change(function(){
+    if ( $(this).prop('checked') ) {
+        $('#icon-wrapper').show(100);
+        $('#icon').focus();
+        $('#snippet-hint').html('<mt:trans phrase="Enter the JavaScript code to run when the button is clicked. Template tags are available." component="TinyMCE">');
+    } else {
+        $('#icon-wrapper').hide(100);
+        $('#snippet-hint').html("<mt:trans phrase="Enter the HTML to be registered in the WYSIWYG HTML editor's template. Template tags are available." component="TinyMCE">");
+    }
+});
+</script>

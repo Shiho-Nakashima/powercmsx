@@ -1,0 +1,73 @@
+<mt:ignore note="Require new version of PAML">
+<mt:if name="object_count" op="%" value="$pagination_limit" ge="1">
+  <mt:setvar name="is_divisible" value="0">
+<mt:else>
+  <mt:setvar name="is_divisible" value="1">
+</mt:if>
+</mt:ignore>
+<mt:if name="object_count" op="/" value="$pagination_limit" like=".">
+  <mt:setvar name="is_divisible" value="0">
+<mt:else>
+  <mt:setvar name="is_divisible" value="1">
+</mt:if>
+<mt:var name="object_count" setvar="count_for_pager">
+<mt:if name="is_divisible">
+  <mt:var name="object_count" decrement setvar="count_for_pager">
+</mt:if>
+<mt:if name="object_count" gt="$pagination_limit">
+  <mt:for from="0" to="$count_for_pager" step="$pagination_limit">
+    <mt:if name="__first__"><ul class="pagination justify-content-center">
+      <mt:if name="request.offset">
+      <li class="page-item">
+        <a class="page-link" href="<mt:var name="current_archive_url">?_filter=<mt:var name="filter_model">&amp;limit=<mt:var name="pagination_limit">" aria-label="<mt:trans phrase="First">">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only"><mt:trans phrase="First"></span>
+        </a>
+      </li>
+      <mt:if name="prev_offset" gt="0">
+      <li class="page-item">
+        <a class="page-link" href="<mt:var name="current_archive_url">?_filter=<mt:var name="filter_model">&amp;limit=<mt:var name="pagination_limit"><mt:if name="prev_offset">&amp;offset=<mt:var name="prev_offset"></mt:if>" aria-label="<mt:trans phrase="Previous">">
+          <span aria-hidden="true">&lsaquo;</span>
+          <span class="sr-only"><mt:trans phrase="Previous"></span>
+        </a>
+      </li>
+      </mt:if>
+      </mt:if>
+    </mt:if>
+    <li class="page-item">
+    <mt:if name="__counter__" eq="$current_page">
+      <strong class="page-link"><mt:var name="__counter__"></strong>
+    <mt:else>
+      <a class="page-link" href="<mt:var name="current_archive_url">?_filter=<mt:var name="filter_model">&amp;<mt:if name="__value__">offset=<mt:var name="__value__">&amp;</mt:if>limit=<mt:var name="pagination_limit">"><mt:var name="__counter__"></a>
+    </mt:if>
+    </li>
+    <mt:if name="__last__">
+      <mt:if name="current_page" eq="$offset_last">
+        <mt:unless name="is_divisible">
+          <mt:setvar name="has_next" value="1">
+        </mt:unless>
+      <mt:elseif name="current_page" le="$offset_last">
+          <mt:setvar name="has_next" value="1">
+      <mt:elseif name="current_page" eq="1">
+          <mt:setvar name="has_next" value="1">
+      </mt:if>
+      <mt:if name="has_next">
+      <mt:if name="next_offset" ne="$__value__">
+      <li class="page-item">
+        <a class="page-link" href="<mt:var name="current_archive_url">?_filter=<mt:var name="filter_model">&amp;limit=<mt:var name="pagination_limit">&amp;offset=<mt:if name="next_offset"><mt:var name="next_offset"><mt:else><mt:var name="pagination_limit"></mt:if>" aria-label="<mt:trans phrase="Next">">
+          <span aria-hidden="true">&rsaquo;</span>
+          <span class="sr-only"><mt:trans phrase="Next"></span>
+        </a>
+      </li>
+      </mt:if>
+      <li class="page-item">
+        <a class="page-link" href="<mt:var name="current_archive_url">?_filter=<mt:var name="filter_model">&amp;limit=<mt:var name="pagination_limit">&amp;offset=<mt:var name="__value__">" aria-label="<mt:trans phrase="Last">">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only"><mt:trans phrase="Last"></span>
+        </a>
+      </li>
+      </mt:if>
+      </ul>
+    </mt:if>
+  </mt:for>
+</mt:if>

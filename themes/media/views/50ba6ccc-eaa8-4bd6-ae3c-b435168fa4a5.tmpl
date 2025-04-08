@@ -1,0 +1,41 @@
+<mt:if name="call_from_async_parts">
+  <mt:setvar name="async_parts_enabled" value="0">
+</mt:if>
+
+<mt:if name="ranking_enabled">
+  <mt:unless name="async_parts_enabled">
+    <mt:cacheblock cache_key="__widget_ranking__" workspace_id="$website_id">
+      <mt:rankedobjects models="entry" limit="10" include_workspaces="this" period="$ranking_period">
+        <mt:if name="__first__">
+          <mt:trans language="$language" phrase="Ranking" setvar="widget_name">
+          <section class="ranking-section">
+            <h2 class="section-heading mb-4"><mt:var name="widget_name" escape="single"></h2>
+            <div class="counter-container">
+              <ol>
+        </mt:if>
+                <li><a href="<mt:var name="object_url">" class="text-primary"><mt:trans language="$language" phrase="$object_label" escape="single"></a></li>
+        <mt:if name="__last__">
+              </ol>
+              <div class="text-right mt-0 mb-0"><a href="<mt:var name="website_url">ranking.html" class="text-primary show-list"><mt:trans language="$language" phrase="View all %s" params="$widget_name" escape="single"></a></div>
+            </div>
+          </section>
+        </mt:if>
+      </mt:rankedobjects>
+    </mt:cacheblock>
+  <mt:else>
+    <div id="__widget_ranking__" hidden></div>
+    <mt:setvarblock name="additional_script" append="1">
+      <script>
+        $(function () {
+          const $needle = $( '#__widget_ranking__' );
+          const url = '<mt:var name="website_url_relative">parts/widgets/ranking.html';
+          $.get( { url: url, data: { <mt:if name="language" ne="$website_language">_language: "<mt:var name="language" escape="js">"</mt:if> }, dataType: "html" } ).done(function ( html ) {
+            $( html ).insertAfter( $needle );
+          }).always( function () {
+            $needle.remove();
+          });
+        } );
+      </script>
+    </mt:setvarblock>
+  </mt:unless>
+</mt:if>

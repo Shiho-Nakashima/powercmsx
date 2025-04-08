@@ -1,0 +1,301 @@
+<mt:trans phrase="Proofread" component="BannedWords" setvar="page_title">
+<mt:setvarblock name="html_head" append="1">
+<link rel="stylesheet" type="text/css" href="<mt:var name="prototype_path">assets/css/diff/diff2html.min.css">
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff.min.js"></script>
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff2html.min.js"></script>
+<script type="text/javascript" src="<mt:var name="prototype_path">assets/js/diff/diff2html-ui.min.js"></script>
+<mt:var name="workspace_id" setvar="bannedwords_workspace_id">
+<mt:pluginsetting component="BannedWords" name="bannedwords_inheritance" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_use_system">
+<mt:if name="bannedwords_use_system">
+  <mt:setvar name="bannedwords_workspace_id" value="0">
+</mt:if>
+<mt:pluginsetting component="BannedWords" name="bannedwords_convert_diff" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_convert_diff">
+<style>
+h1{display: none}
+tr{color:#555;}
+#close-btn{position:absolute; top: 3px; right:3px;font-size:135%}
+.d2h-file-header{display: none}
+ins{color:#000; font-weight:bold; font-family: sans-selif !important}
+del{color:#000; font-weight:bold; font-family: sans-selif !important}
+<mt:if name="bannedwords_convert_diff">
+.d2h-code-linenumber {display:none !important;}
+.d2h-code-line {margin-left:0px !important;}
+</mt:if>
+<mt:if name="request.cmd">
+span {
+  white-space: nowrap;
+}
+sup { font-size: 33%;
+  vertical-align: top;
+  position: relative;
+  top: 10px;
+  white-space: nowrap;
+  padding: 3px;
+  margin-right: 0.3rem;
+  margin-left: 2px;
+ }
+.L1 sup { background-color : #FFF489 }
+.L2 sup { background-color : #FFF400 }
+.L3 sup { background-color : #DBEDAF }
+.L4 sup { background-color : #72E699 }
+.L5 sup { background-color : #C4E2FF }
+.L6 sup { background-color : #B0C7FF }
+.L7 sup { background-color : #FFBBEB }
+.L8 { color: #BB0030; font-weight:bold; font-size: 120% }
+.L8 sup { color: white; background-color : #BB0030; font-weight:bold }
+.PN sup { border: 1px solid gray;  background-color: white }
+#diff_area {
+  font-family: 'Noto Sans JP';
+  padding: 0.5rem 1.2rem !important;
+  line-height: 2.3rem;
+}
+</mt:if>
+#result_area{font-size: 0.85rem;}
+.cb{width:1rem;}
+#result_area label{ margin-bottom: 0 }
+.cb-header th{text-align:center}
+.input-cb{transform: scale(1.2);}
+</style>
+</mt:setvarblock>
+<mt:include file="include/dialog_header.tmpl">
+<button id="close-btn" type="button" class="close btn-sm" aria-label="<mt:trans phrase="Close">">
+<span aria-hidden="true">&times;</span>
+</button>
+<div id="__loader-bg">
+  <img src="<mt:var name="prototype_path">assets/img/loading.gif" alt="" width="45" height="45">
+</div>
+<div id="alert-success" class="alert alert-success hidden" tabindex="0">
+  <mt:trans phrase="No proofing suggestions found." component="BannedWords">
+</div>
+<div id="diff_area" class="hidden" style="border-radius: 5px;padding:10px;background-color:#eee;border:1px solid gray;width:100%"></div>
+<div class="text-muted hint-block hidden" id="kanji-check_hint">
+  <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+  <span class="sr-only"><mt:trans phrase="Hint"></span>
+  <mt:trans phrase="To evaluate including 'Proper Nouns', Press the Ctrl(Command) key and click the button." component="BannedWords">
+</div>
+
+<form id="correction-form">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token">">
+<input type="hidden" name="text" id="suggestions-text">
+<input type="hidden" class="form-control" name="replaced" id="suggestions-replaced">
+<table id="result_area" class="hidden table table-sm table-striped mt-3">
+</table>
+</form>
+<button type="button" id="suggestions-apply" class="<mt:unless name="editor_select">mt-4 </mt:unless>mb-4 ml-0 btn btn-secondary hidden"><mt:trans phrase="Apply Suggestions" component="BannedWords"></button>
+<button type="button" id="alt-dialog-close-btn" class="mb-4 ml-1 btn btn-secondary hidden"><mt:trans phrase="Close"></button>
+<button type="button" id="dialog-close-btn" class="ml-0 btn btn-secondary hidden"><mt:trans phrase="Close"></button>
+<mt:if name="debug_mode">
+<div style="height:50px;"></div>
+</mt:if>
+
+<mt:var name="workspace_id" setvar="bannedwords_workspace_id">
+<mt:pluginsetting component="BannedWords" name="bannedwords_inheritance" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_use_system">
+<mt:if name="bannedwords_use_system">
+  <mt:setvar name="bannedwords_workspace_id" value="0">
+</mt:if>
+<mt:pluginsetting component="BannedWords" name="bannedwords_diff_selected" workspace_id="$bannedwords_workspace_id" setvar="bannedwords_diff_selected">
+<script>
+<mt:if name="request._type" eq="textarea">
+  <mt:if name="bannedwords_diff_selected">
+    var target = window.parent.document.getElementById('<mt:var name="request.column" escape>');
+    var val = target.value;
+    var target_start = <mt:var name="request.start" escape>;
+    var target_end = <mt:var name="request.end" escape>;
+    let html = val.slice(target_start, target_end);
+  <mt:else>
+    let html = window.parent.$('#<mt:var name="request.column" escape>').val();
+  </mt:if>
+<mt:else>
+    var editor = window.parent.tinymce.activeEditor;
+  <mt:if name="bannedwords_diff_selected">
+    let html = editor.selection.getContent();
+  <mt:else>
+    let html = editor.getContent();
+  </mt:if>
+    let innerHTML = editor.selection.getNode().innerHTML;
+    let outerHTML = editor.selection.getNode().outerHTML;
+    var selectEqual = ( html === innerHTML || html === outerHTML );
+</mt:if>
+    let url = '<mt:var name="script_uri">?__mode=bannedwords_editor_proofread&_model=<mt:var name="model"><mt:if name="workspace_id">&workspace_id=<mt:var name="workspace_id"></mt:if><mt:if name="request.cmd">&cmd=1</mt:if><mt:if name="request.shift">&shift=1</mt:if>';
+    let data = {
+        text: html,
+        _model: '<mt:var name="request._model" escape>',
+        workspace_id: '<mt:var name="workspace_id">',
+        magic_token : '<mt:var name="magic_token">'
+    };
+    if ( html.length > 1000 ) {
+        $('#__loader-bg').show();
+    }
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:JSON.stringify(data),
+        contentType: 'application/json',
+        dataType: 'json',
+        timeout: 10000,
+        success: function( responce ){
+            if ( responce.message ) {
+                alert( responce.message );
+                $('#__loader-bg').hide();
+            } else {
+                <mt:if name="request.cmd">
+                $('#__loader-bg').hide();
+                    $('h1').html( '<mt:trans phrase="Kanji level by grade" component="BannedWords">' );
+                    $('h1').show();
+                    $('#diff_area').html( responce.result );
+                    $('#diff_area').show();
+                    $('#dialog-close-btn').css( 'marginTop', '1rem' );
+                    $('#dialog-close-btn').show();
+                    if ( responce.has_proper_nouns ) {
+                        $('#kanji-check_hint').show();
+                    }
+                <mt:else>
+                if ( responce.text == responce.replaced ) {
+                    $('#close-btn').hide();
+                    $('#dialog-close-btn').show();
+                    $('h1').show();
+                    $('#alert-success').show();
+                    $('#__loader-bg').hide();
+                    $('#alert-success').focus();
+                    return;
+                }
+                $('#suggestions-text').val( responce.text_raw );
+                $('#suggestions-replaced').val( responce.replaced_raw );
+                <mt:if name="editor_select">
+                let replace_vars = responce.replace_vars;
+                let obj = JSON.parse( replace_vars );
+                for ( i = 0; i < obj.length; i++ ) {
+                    if (!i) {
+                        $('#result_area').append( '<tr class="cb-header"><th class="cb"><input onchange="all_selected()" class="cb-all input-cb" type="checkbox" checked name="cb-all" id="cb-all"></th><th><label for="cb-all" style="display:inline"><mt:trans phrase="Proofread" component="BannedWords"></label></th></tr>' );
+                        $('#result_area').show();
+                    }
+                    let replace_rule = obj[i].banned_words_replace_rule;
+                    let replace_replace = obj[i].banned_words_replace_replace;
+                    let pair = [ replace_rule, replace_replace ];
+                    let proofread_reason = '';
+                    let word_part = obj[i].banned_words_word_part;
+                    let kanji_char = obj[i].banned_words_invalid_kanji_char;
+                    let variante_char = obj[i].banned_words_variante_char;
+                    if ( word_part ) {
+                        proofread_reason = word_part;
+                    } else if ( kanji_char ) {
+                        proofread_reason = kanji_char;
+                    } else if ( variante_char ) {
+                        proofread_reason = '<mt:trans phrase="Variant Characters" component="BannedWords">';
+                    }
+                    pair = escape_html( JSON.stringify( pair ) );
+                    if ( proofread_reason ) {
+                        $('#result_area').append( '<tr><th class="cb"><input onchange="change_corrections()" class="corrections input-cb" type="checkbox" checked name="corrections[]" id="cb-' + i + '" value="' + pair + '"></th><td><label for="cb-' + i + '">' + replace_rule + ' =&gt; ' + replace_replace + ' ( ' + proofread_reason + ' )</label></td></tr>' );
+                    } else if ( kanji_char ) {
+                        alert( kanji_char );
+                    } else {
+                        $('#result_area').append( '<tr><th class="cb"><input onchange="change_corrections()" class="corrections input-cb" type="checkbox" checked name="corrections[]" id="cb-' + i + '" value="' + pair + '"></th><td><label for="cb-' + i + '">' + replace_rule + ' =&gt; ' + replace_replace + '</label></td></tr>' );
+                    }
+                }
+                </mt:if>
+                const unifiedDiff = JsDiff.createPatch( 'replaced', responce.text, responce.replaced );
+                const diff2htmlUi = new Diff2HtmlUI({diff: unifiedDiff});
+                diff2htmlUi.draw('#diff_area', { matching: 'words', diffStyle:'char', highlightLanguages: 'html'});
+                $('#diff_area').show( 100 );
+                $('#suggestions-apply').show();
+                $('#alt-dialog-close-btn').show();
+                $('#__loader-bg').hide();
+                </mt:if>
+            }
+        },
+        error: function(){
+            $('#__loader-bg').hide();
+            alert( '<mt:trans phrase="An error occurred while proofreading the content." component="BannedWords">' );
+        }
+    });
+    function all_selected () {
+        let attrChecked = $('#cb-all').prop('checked');
+        $('.corrections').each(function(){
+            $(this).prop('checked', attrChecked );
+        });
+    }
+    function change_corrections () {
+        let all_selected = true;
+        $('.corrections').each(function(){
+            if (! $(this).prop('checked' ) ) {
+                all_selected = false;
+            }
+        });
+        $('#cb-all').prop('checked', all_selected );
+    }
+    $('#close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+    $('#dialog-close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+    $('#alt-dialog-close-btn').click(function() {
+        window.parent.$('#modal').modal('hide');
+        window.location.href = '<mt:var name="script_uri">?__mode=loading';
+    });
+<mt:setvarblock name="edhitor_replace">
+            <mt:if name="request._type" eq="textarea">
+              <mt:if name="bannedwords_diff_selected">
+            let beforeNode = val.slice( 0, target_start );
+            let afterNode  = val.slice( target_end );
+            window.parent.$('#<mt:var name="request.column" escape>').val( beforeNode + replaced_val + afterNode );
+              <mt:else>
+            window.parent.$('#<mt:var name="request.column" escape>').val( replaced_val ) );
+              </mt:if>
+            <mt:else>
+            <mt:if name="bannedwords_diff_selected">
+            editor.insertContent( replaced_val );
+            if ( selectEqual ) {
+                editor.selection.select( editor.selection.getNode() );
+            }
+            <mt:else>
+            editor.setContent( replaced_val );
+            </mt:if>
+            </mt:if>
+            window.parent.$('#modal').modal('hide');
+            window.location.href = '<mt:var name="script_uri">?__mode=loading';
+</mt:setvarblock>
+    $('#suggestions-apply').click(function() {
+        let replaced_val = '';
+        <mt:unless name="editor_select">
+        replaced_val = $('#suggestions-replaced').val();
+        <mt:else>
+
+        let item_checked = false;
+        $('.corrections').each(function(){
+            if ( $(this).prop('checked') === true ) {
+                item_checked = true;
+            }
+        });
+        if (! item_checked ) {
+            alert('<mt:trans phrase="You did not select any modification target." component="BannedWords">');
+            return false;
+        }
+        if ( $('#cb-all').prop('checked') ) {
+            replaced_val = $('#suggestions-replaced').val();
+        }
+        </mt:unless>
+        if ( replaced_val ) {
+            <mt:var name="edhitor_replace">
+        } else {
+            let params = $('#correction-form').serialize();
+            let url = '<mt:var name="script_uri">?__mode=bannedwords_apply_proofread';
+            $.ajax({
+                type:  "post",
+                url:   url,
+                data:  params,
+                success: function(json) {
+                    replaced_val = json.text;
+                    <mt:var name="edhitor_replace">
+                },
+                error: function(){
+                    $('#__loader-bg').hide();
+                    alert( '<mt:trans phrase="An error occurred while proofreading the content." component="Typoless">' );
+                }
+            });
+        }
+    });
+</script>
+<mt:include file="include/dialog_footer.tmpl">

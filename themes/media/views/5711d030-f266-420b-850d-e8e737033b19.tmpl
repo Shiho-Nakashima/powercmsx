@@ -1,0 +1,20 @@
+<mt:includeblock module="(Media) Site Layout">
+  <mt:include module="(Media) Site Config">
+  <mt:if name="current_archive_type" eq="index">
+    <mt:trans phrase="Latest Entries" language="$language" setvar="archive_title">
+  <mt:else>
+    <mt:archivetitle language="$language" setvar="archive_title">
+  </mt:if>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <section class="new-section">
+        <h1 class="section-heading"><mt:var name="archive_title" escape="single"></h1>
+        <mt:include module="(Media) List of Entries" entries_image="1" entries_category_badge="1" entries_pagination="1">
+      </section>
+    </div>
+    <div class="col-lg-4">
+      <mt:include module="(Media) Side Bar">
+    </div>
+  </div>
+</mt:includeblock>

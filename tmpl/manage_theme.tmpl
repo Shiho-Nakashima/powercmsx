@@ -1,0 +1,261 @@
+<mt:include file="include/header.tmpl">
+<mt:if name="request.apply_theme">
+  <div id="theme-alert-message" class="alert alert-success" role="alert" tabindex="0">
+    <mt:trans phrase="The theme '%s' has been applied." params="$current_label">
+    <mt:if name="request.skipped">
+      <mt:var name="request.skipped" setvar="object_skipped">
+      ( <mt:trans phrase="%s object(s) has been skipped because it already existed." params="$object_skipped" escape> 
+      <mt:trans phrase="To see the details, go to the list of Logs."> )
+    </mt:if>
+  </div>
+    <script>
+    $('#theme-alert-message').focus();
+    </script>
+</mt:if>
+<mt:if name="current_theme">
+  <div class="alert alert-info" role="alert" tabindex="0">
+    <span id="current_theme"><mt:trans phrase="Current theme is '%s'." params="$current_label"></span>
+  </div>
+<mt:else>
+  <div class="alert alert-info" role="alert" tabindex="0">
+    <span id="current_theme"><mt:trans phrase="The theme not selected."></span>
+  </div>
+</mt:if>
+<mt:if name="request.pull">
+  <mt:var name="request.pull_theme_id" escape setvar="pull_theme_id">
+  <div class="alert alert-info" id="pull_theme_id" role="alert" tabindex="0">
+    <mt:trans phrase="Exported the theme '%s' from a branch. Please select and apply this theme." params="$pull_theme_id">
+  </div>
+    <script>
+    $('#pull_theme_id').focus();
+    </script>
+</mt:if>
+<div class="table-screen">
+<mt:setvarblock name="table_header">
+  <tr>
+  <th class="cb-col"></th>
+  <th><mt:trans class="short-col" phrase="Name"></th>
+  <th style="width:80px">Ver.</th>
+  <th><mt:trans phrase="Description"></th>
+</tr>
+</mt:setvarblock>
+
+<form action="<mt:var name="script_uri">" method="POST">
+<input type="hidden" name="__mode" value="manage_theme">
+<input type="hidden" name="magic_token" value="<mt:var name="magic_token" escape>">
+<input type="hidden" name="_type" value="apply_theme">
+<input type="hidden" name="workspace_id" value="<mt:var name="workspace_id">">
+<table class="table table-striped table-sm listing-table table-hover">
+<thead>
+  <mt:var name="table_header">
+</thead>
+<tbody id="list_body">
+<mt:loop name="theme_loop">
+<tr id="line_<mt:var name="theme_id" regex_replace="'/[^0-9a-zA-Z]/',''" escape>" <mt:if name="current_theme" eq="$theme_id">style="background-color:#ffefff"</mt:if>>
+  <th class="cb-col">
+    <label class="custom-control custom-radio">
+      <input class="custom-control-input selector" <mt:if name="current_theme" eq="$theme_id">checked</mt:if> type="radio" id="box_<mt:var name="theme_id" regex_replace="'/[^0-9a-zA-Z]/',''" escape>"
+        name="theme_id" value="<mt:var name="theme_id" escape>">
+      <span class="custom-control-indicator"></span>
+    </label>
+  </th>
+  <td><img style="vertical-align:top !important" src="<mt:var name="thumbnail">" width="48" height="48" alt="<mt:trans phrase="Thumbnail">">
+  &nbsp;
+  <mt:var name="label" escape>
+<mt:if name="author_link"><br><mt:trans phrase="Creator"> : <a target="_blank" href="<mt:var name="author_link" escape>"></mt:if><mt:var name="author" escape><mt:if name="author_link"></a></mt:if>
+  </td>
+  <td><span id="<mt:var name="theme_id" escape>_version"><mt:var name="version" escape></span>
+    <mt:if name="current_theme" eq="$theme_id"><mt:if name="repository"><mt:if name="can_write">
+    <button type="button" id="<mt:var name="theme_id" escape>_edit_version" class="branch-ctl">
+      <i data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Edit Version">" class="fa fa-pencil-square" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Edit"></span>
+    </button>
+    </mt:if></mt:if></mt:if>
+  </td>
+  <td><mt:var name="description" escape>
+  <mt:if name="repository">
+    <hr>
+    <mt:if name="upgrade_version">
+  <div class="alert alert-warning" role="alert" tabindex="0" style="margin-left:-10px">
+    <mt:trans phrase="There is a new version (ver. %s)." params="$upgrade_version" escape>
+  </div>
+    </mt:if>
+    <a href="<mt:var name="repository" escape>" target="_blank"><mt:var name="repository" escape></a>
+    <mt:loop name="branches">
+    <mt:if name="__first__">
+    /tree/
+    <select style="height:28px;width:90px;padding-left:5px;padding-right:5px;" class="form-control form-control-sm custom-select branch-ctl" id="<mt:var name="theme_id" escape>_branch" name="<mt:var name="theme_id" escape>_branch">
+    </mt:if>
+    <option <mt:if name="current_branch" eq="$__value__">selected</mt:if> value="<mt:var name="__value__" escape>"><mt:var name="__value__" escape></option>
+    <mt:if name="__last__">
+    </select>
+    </mt:if>
+    </mt:loop>
+    <mt:if name="theme_link">
+    <a class="btn btn-secondary btn-sm branch-ctl" href="<mt:var name="theme_link">" target="_blank" style="padding:4px 8px">
+      <i data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="View on GitHub">" class="fa fa-external-link" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="View on GitHub"></span>
+    </a>
+    </mt:if>
+    <button type="button" class="btn btn-secondary btn-sm branch-ctl" id="<mt:var name="theme_id" escape>_token">
+      <i data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Set personal access token for GitHub">" class="fa fa-lock" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Token"></span>
+    </button>
+    <button type="button" class="btn btn-info btn-sm branch-ctl" style="padding:5px 10px" id="<mt:var name="theme_id" escape>_pull">
+      <i data-toggle="tooltip" data-placement="right" title="<mt:trans phrase="Pull theme from GitHub">" class="fa fa-refresh" aria-hidden="true"></i>
+      <span class="sr-only"><mt:trans phrase="Pull">"</span>
+    </button>
+    <mt:if name="current_theme" eq="$theme_id"><mt:if name="repository"><mt:if name="can_write">
+      <!--Commit Update Files-->
+    </mt:if></mt:if></mt:if>
+  </mt:if>
+  </td>
+</tr>
+<script>
+$('#<mt:var name="theme_id" escape>_branch').change(function() {
+    var branch = $(this).val();
+    var str = '__mode=theme_setting&workspace_id=<mt:var name="workspace_id">&theme_id=<mt:var name="theme_id" escape>';
+        str += '&magic_token=<mt:var name="magic_token" escape>&_type=branch&branch=' + branch;
+    $.post('<mt:var name="script_uri">', str,
+    function ( data ) {
+        if( data.result == true ) {
+            disp_header_alert("<mt:trans phrase="Save theme's branch of the theme '%s'." params="$theme_id">");
+        } else {
+            disp_header_alert("<mt:trans phrase="Failed to save theme's branch of the theme '%s'." params="$theme_id">", 'danger');
+        }
+    },
+    "json"
+    );
+});
+$('#<mt:var name="theme_id" escape>_token').click(function() {
+    var token = prompt('<mt:trans phrase="Please enter personal access token for GitHub.">', '' );
+    if ( token == null ) {
+        return;
+    }
+    if (! token ) {
+        alert( '<mt:trans phrase="You did not any input.">' );
+        return;
+    }
+    var str = '__mode=theme_setting&workspace_id=<mt:var name="workspace_id">&theme_id=<mt:var name="theme_id" escape>';
+        str += '&magic_token=<mt:var name="magic_token" escape>&_type=token&token=' + token;
+    $.post('<mt:var name="script_uri">', str,
+    function ( data ) {
+        if( data.result == true ) {
+            disp_header_alert("<mt:trans phrase="Save personal access token for GitHub of the theme '%s'." params="$theme_id">");
+        } else {
+            disp_header_alert("<mt:trans phrase="Failed to save personal access token for GitHub of the theme '%s'." params="$theme_id">", 'danger');
+        }
+    },
+    "json"
+    );
+});
+$('#<mt:var name="theme_id" escape>_edit_version').click(function() {
+    var current = $('#<mt:var name="theme_id" escape>_version').html();
+    var version = prompt('<mt:trans phrase="Please enter new version number for this theme.">', current );
+    if ( version == null ) {
+        return;
+    }
+    if (! version ) {
+        alert( '<mt:trans phrase="You did not any input.">' );
+        return;
+    }
+    if (! version.match(/^[0-9\.]{1,}$/) ) {
+        alert( '<mt:trans phrase="Please enter the correct version number.">' );
+        return;
+    }
+    if ( version == current ) {
+        return;
+    }
+    var str = '__mode=theme_setting&workspace_id=<mt:var name="workspace_id">&theme_id=<mt:var name="theme_id" escape>';
+        str += '&magic_token=<mt:var name="magic_token" escape>&_type=version&version=' + version;
+    $.post('<mt:var name="script_uri">', str,
+    function ( data ) {
+        if( data.result == true ) {
+            disp_header_alert("<mt:trans phrase="The version of the theme '%s' has been updated." params="$theme_id">");
+            $('#<mt:var name="theme_id" escape>_version').html( version );
+        } else {
+            alert( data.message );
+            disp_header_alert("<mt:trans phrase="Failed to update version of the theme '%s'." params="$theme_id">", 'danger');
+        }
+    },
+    "json"
+    );
+});
+$('#<mt:var name="theme_id" escape>_pull').click(function() {
+    if(! confirm('<mt:trans phrase="Are you sure you want to pull this theme from remote branch?">') ) {
+        return false;
+    }
+    var str = '__mode=theme_setting&workspace_id=<mt:var name="workspace_id">&theme_id=<mt:var name="theme_id" escape>';
+        str += '&magic_token=<mt:var name="magic_token" escape>&_type=pull&pull=pull';
+    $.post('<mt:var name="script_uri">', str,
+    function ( data ) {
+        if( data.result == true ) {
+            var redirectTo = '<mt:var name="script_uri">?__mode=manage_theme&workspace_id=<mt:var name="workspace_id">&pull_theme_id=<mt:var name="theme_id" escape>&pull=1';
+            window.location.href = redirectTo;
+        } else {
+            disp_header_alert("<mt:trans phrase="Failed to export theme '%s' from a remote branch." params="$theme_id">", 'danger');
+        }
+    },
+    "json"
+    );
+});
+</script>
+</mt:loop>
+</tbody>
+<tfoot>
+  <mt:var name="table_header">
+</tfoot>
+</table>
+<div <mt:if name="user_stickey_buttons">class="form-group edit-action-bar pl-2" style="margin-left:-15px;margin-right:-15px"<mt:else>class="form-group"</mt:if>>
+  <button type="submit" class="apply-btn btn btn-primary"><mt:trans phrase="Apply"></button>
+</div>
+</form>
+</div>
+<script>
+var in_link = false;
+$('input').mouseover(function() {
+    in_link = true;
+});
+$('input').mouseout(function() {
+    in_link = false;
+});
+$('.branch-ctl').click(function(eo){
+    eo.stopPropagation();
+});
+$('#list_body tr').click(function() {
+    if ( in_link ) {
+        return true;
+    }    
+    line_id = $(this).prop('id');
+    line = line_id.replace( /line_/, '' );
+    checked = $('#box_'+line).prop('checked');
+    if ( checked ) {
+        $('#box_'+line).prop('checked', false);
+    } else {
+        $('#box_'+line).prop('checked', true);
+    }
+});
+$('.selector').click(function(){
+    return false;
+});
+$('.apply-btn').click(function() {
+    if (! $('input[name=theme_id]:checked').val() ) {
+        alert('<mt:trans phrase="The theme not selected.">');
+        return false;
+    }
+    if(! confirm('<mt:trans phrase="Are you sure you want to apply this theme?">') ) {
+        return false;
+    }
+});
+$(":radio").keypress(function(e) {
+    if ( e.keyCode == 13 ) {
+        if ( $(this).prop('checked') ) {
+            $(this).prop('checked', false);
+        } else {
+            $(this).prop('checked', true);
+        }
+    }
+    return false;
+});
+</script>
+<mt:include file="include/footer.tmpl">

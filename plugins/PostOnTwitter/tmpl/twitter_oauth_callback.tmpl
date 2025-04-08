@@ -1,0 +1,80 @@
+<mt:trans phrase="Link to a 𝕏 account" component="PostOnTwitter" setvar="page_title">
+
+<mt:setvarblock name="html_head" append="1">
+<style>
+  .show-only-on-this-page {
+    display: block !important;
+  }
+</style>
+</mt:setvarblock>
+
+<mt:include file="include/header.tmpl">
+
+<p class="mt-5 mb-5"><mt:trans phrase="Please close this window and continue the settings." component="PostOnTwitter"></p>
+
+<div class="modal fade" id="modal--response_display" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><mt:trans phrase="Link the 𝕏 account" component="PostOnTwitter"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <mt:var name="modal_message">
+        <div class="show-only-on-this-page" style="display: none;">
+          <mt:trans phrase="Please close this window and continue the settings." component="PostOnTwitter">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modalSelector = '#modal--response_display';
+  let parent = window.opener || null;
+  // Check CORS
+  if (parent) {
+    try {
+      if (window.location.host != parent.location.host) {
+        parent = null;
+      }
+    } catch (e) {
+      parent = null;
+    }
+  }
+  if (parent) {
+    <mt:if name="oauth_token"><mt:if name="oauth_token_secret">
+      // Set tokens in parent window
+      const $inputToken = parent.$('input#setting_<mt:if name="base">base_</mt:if>access_token');
+      $inputToken.val('<mt:var name="oauth_token" escape>').trigger('change');
+      const $inputSecret = parent.$('input#setting_<mt:if name="base">base_</mt:if>access_token_secret');
+      $inputSecret.val('<mt:var name="oauth_token_secret" escape>').trigger('change');
+      <mt:if name="account_name">
+        const $inputAccountName = parent.$('input#setting_<mt:if name="base">base_</mt:if>account_name');
+        $inputAccountName.val('<mt:var name="account_name" escape>').trigger('change');
+      </mt:if>
+    </mt:if></mt:if>
+
+    // Attach the modal html in parent window
+    const oldModal = parent.document.querySelector(modalSelector);
+    if (oldModal !== null) { oldModal.remove(); }
+    const html = document.querySelector(modalSelector).outerHTML;
+    parent.document.querySelector('body').insertAdjacentHTML('beforeend', html);
+    // Do modal
+    parent.$(modalSelector).modal();
+
+    // Close window
+    parent.focus();
+    window.close();
+  } else {
+    // Do modal
+    $(modalSelector).modal();
+  }
+</script>
+
+<mt:include file="include/footer.tmpl">

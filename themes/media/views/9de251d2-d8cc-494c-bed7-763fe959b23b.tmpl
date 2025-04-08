@@ -1,0 +1,66 @@
+<mt:includeblock module="(Media) Site Layout">
+  <mt:include module="(Media) Site Config">
+  <mt:entrytitle language="$language" setvar="archive_title">
+  <mt:if tag="entryexcerpt">
+    <mt:entryexcerpt setvar="page_description">
+  </mt:if>
+  <mt:if tag="entrykeywords">
+    <mt:entrykeywords setvar="page_keywords">
+  </mt:if>
+  <mt:setvar name="ogp_image" value="">
+  <mt:entryassets class="image" limit="1">
+    <mt:assetfileurl setvar="ogp_image">
+  </mt:entryassets>
+  <mt:unless name="ogp_image">
+    <mt:entrycategories cols="basename" limit="1">
+      <mt:categorybasename setvar="category_basename">
+    </mt:entrycategories>
+    <mt:setvarblock name="ogp_image"><mt:include module="(Media) OGP Image URL" ogp_image_key="$category_basename"></mt:setvarblock>
+  </mt:unless>
+  <mt:trans language="$language" phrase="Entries" setvar="translated_phrase__entries">
+  <div class="row">
+    <div class="col-lg-8">
+      <main class="content-section">
+        <div class="section-head">
+          <h1 class="section-title align-center mb-4 display-5"><mt:var name="archive_title" escape="single"></h1>
+          <p class="section-info align-right mb-4">
+            <time datetime="<mt:entrydate format_ts='Y-m-d'>"><mt:entrydate format_ts="$datetime_format"></time>
+            <mt:entrycategories cols="label">
+              <mt:if name="__first__"><span class="category"></mt:if>
+              <a href="<mt:categorypermalink>" class="badge badge-info ml-2"><mt:categorylabel language="$language" escape="single"></a>
+              <mt:if name="__last__"></span></mt:if>
+            </mt:entrycategories>
+          </p>
+        </div>
+        <div class="text content-block">
+          <mt:entrybody convert_breaks="auto">
+        </div>
+  <mt:if tag="entrymore">
+        <div class="text content-block">
+          <mt:entrymore>
+        </div>
+  </mt:if>
+  <mt:entrytags>
+    <mt:if name="__first__">
+        <div class="text content-block">
+          <p class="tags-block">
+            <mt:trans language="$language" phrase="Tags" escape="single"> :
+    </mt:if>
+            <a href="<mt:tagpermalink>" class="badge badge-success ml-2"><mt:tagname language="$language" escape="single"></a>
+    <mt:if name="__last__">
+          </p>
+        </div>
+    </mt:if>
+  </mt:entrytags>
+      </main>
+  <mt:include module="(Media) Comment Form">
+  <mt:entryid setvar="exclude_entry_id">
+  <mt:entrycategories cols="id,label" ignore_filter="1" limit="1">
+    <mt:include module="(Media) Latest Entries by Category" exclude_entry_id="$exclude_entry_id">
+  </mt:entrycategories>
+    </div>
+    <div class="col-lg-4">
+  <mt:include module="(Media) Side Bar">
+    </div>
+  </div>
+</mt:includeblock>

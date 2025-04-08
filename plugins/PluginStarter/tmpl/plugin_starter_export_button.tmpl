@@ -1,0 +1,16 @@
+<button type="button" id="__export_plugin" class="btn btn-danger btn-sm"><mt:trans phrase="Export"></button>
+<script>
+$('#__export_plugin').click(function(){
+    if(! confirm('<mt:trans phrase="Are you sure you want to export this Plugin?" component="PluginStarter">')){
+        return false;
+    }
+    $('#__mode').val('plugin_starter');
+    $('#edit-form-main').attr('target', '_blank');
+    $('#edit-form-main').submit();
+    $('#__mode').val('save');
+});
+</script>
+<style>
+  table{ border: 1px solid #444 }
+  thead{ background-color:#444;color:white }
+</style>

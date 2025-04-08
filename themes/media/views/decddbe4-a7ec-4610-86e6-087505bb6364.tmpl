@@ -1,0 +1,31 @@
+<mt:setvar name="page_category_id" value="0">
+<mt:if name="current_archive_model" eq="category">
+  <mt:var name="current_object_id" setvar="page_category_id">
+  <mt:setvarblock name="_cache_key">__widget_category_archives_<mt:var name="page_category_id">__</mt:setvarblock>
+<mt:else>
+  <mt:setvar name="page_category_id" value="0">
+  <mt:setvarblock name="_cache_key">__widget_category_archives__</mt:setvarblock>
+</mt:if>
+<mt:cacheblock cache_key="$_cache_key" workspace_id="$website_id">
+  <mt:setvar name="category_exists" value="0">
+  <mt:setvarblock name="list_of_categories">
+    <mt:categories ignore_archive_context="date_based" ignore_filter="1" cols="id,label">
+      <mt:if name="__first__">
+<section class="category-section">
+  <h2 class="section-heading mb-4"><mt:trans language="$language" phrase="Categories" escape="single"></h2>
+  <ul class="list-group">
+      </mt:if>
+      <mt:if tag="entriescount" ignore_archive_context="date_based">
+        <mt:setvar name="category_exists" value="1">
+      <li class="list-group-item<mt:if name="id" eq="$page_category_id"> list-active</mt:if>">
+        <a href="<mt:categorypermalink>" class="text-primary<mt:if name="id" eq="$page_category_id"> active</mt:if>"><mt:categorylabel language="$language" escape="single"></a>
+      </li>
+      </mt:if>
+      <mt:if name="__last__">
+  </ul>
+</section>
+      </mt:if>
+    </mt:categories>
+  </mt:setvarblock>
+  <mt:if name="category_exists"><mt:var name="list_of_categories"></mt:if>
+</mt:cacheblock>

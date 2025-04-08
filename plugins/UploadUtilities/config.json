@@ -1,0 +1,63 @@
+{
+    "label"       : "UploadUtilities",
+    "id"          : "uploadutilities",
+    "component"   : "UploadUtilities",
+    "version"     : "1.27",
+    "author"      : "Alfasado Inc.",
+    "author_link" : "https://alfasado.net/",
+    "description" : "Makes the asset upload function convenient.",
+    "cfg_template": "cfg_template.tmpl",
+    "cfg_system"  : 1,
+    "cfg_space"   : 1,
+    "settings" : {
+        "uploadutilities_use_system_settings" : false,
+        "uploadutilities_can_switches" : false,
+        "uploadutilities_settings" : "images : jpeg, jpg, png, gif, jpe\nvideos : mov, avi, qt, mp4, wmv, 3gp, asx, mpg, flv, mkv, ogm\naudios : mp3, mid, midi, wav, aif, aac, flac, aiff, aifc, au, snd, ogg,wma, m4a\nfiles : pdf, doc, docx, ppt, pptx, xls, xlsx",
+        "uploadutilities_can_status" : false,
+        "uploadutilities_can_overwrite" : false,
+        "uploadutilities_allow_multibyte" : false,
+        "uploadutilities_can_publish_date" : false,
+        "uploadutilities_can_unpublish_date" : false,
+        "uploadutilities_can_add_tags" : false,
+        "uploadutilities_can_tag_helper" : false,
+        "uploadutilities_can_extract_zip" : false,
+        "uploadutilities_sync_status" : "",
+        "uploadutilities_sync_status_published" : false,
+        "uploadutilities_not_sync_published" : false
+    },
+    "methods": {
+        "uploadutilities_extract_zip": {
+            "component"  : "UploadUtilities",
+            "permission" : "create_asset",
+            "method"     : "extract_zip"
+        }
+    },
+    "hooks": {
+        "uploadutilities_post_init": {
+            "post_init" : {
+                "component" : "UploadUtilities",
+                "priority"  : 1,
+                "method" : "post_init"
+            }
+        }
+    },
+    "callbacks": {
+        "uploadutilities_post_save_asset": {
+            "asset" : {
+                "post_save" : {
+                    "component" : "UploadUtilities",
+                    "priority"  : 10,
+                    "method" : "post_save_asset"
+                }
+            }
+        }
+    },
+    "tags": {
+        "block" : {
+            "assetmodels": {
+                "component": "UploadUtilities",
+                "method": "hdlr_assetmodels"
+            }
+        }
+    }
+}

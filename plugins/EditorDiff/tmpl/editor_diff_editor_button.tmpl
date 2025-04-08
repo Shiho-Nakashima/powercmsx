@@ -1,0 +1,63 @@
+<mt:unless name="request.edit_revision">
+<mt:ifobjecthasrevision>
+        ed.ui.registry.addIcon('pt-diff', '<img src="<mt:if name="editordiff_assets_base"><mt:var name="editordiff_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/EditorDiff/assets/img</mt:if>/editor_diff.webp" alt="<mt:trans phrase="Show Diff" component="EditorDiff">" style="height:18px;width:18px;margin-top:3px;">');
+        ed.ui.registry.addButton('pt-diff', {
+            icon: 'pt-diff',
+            tooltip: '<mt:trans phrase="Diff from the latest Revision" component="EditorDiff">',
+            onAction: function () {
+                tinymce.activeEditor = ed;
+                let editor = tinymce.activeEditor;
+                let url = '<mt:var name="script_uri">?__mode=editor_diff&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>&<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>&editor_id=' + editor.id;
+                let html = editor.getContent();
+                if (! html ) {
+                    alert( '<mt:trans phrase="No content in editor." component="EditorDiff">' );
+                    return;
+                }
+                $('#modal').modal().find('iframe').attr( 'src', url );
+            }
+        });
+</mt:ifobjecthasrevision>
+<mt:else>
+        ed.ui.registry.addIcon('pt-diff', '<img src="<mt:if name="editordiff_assets_base"><mt:var name="editordiff_assets_base">/img<mt:else><mt:var name="prototype_path">plugins/EditorDiff/assets/img</mt:if>/editor_diff.webp" alt="<mt:trans phrase="Show Diff" component="EditorDiff">" style="height:18px;width:18px;margin-top:3px;">');
+        ed.ui.registry.addMenuButton('pt-diff', {
+            icon: 'pt-diff',
+            tooltip: '<mt:trans phrase="Show Diff" component="EditorDiff">',
+            fetch: (callback) => {
+              const itemse = [
+<mt:ifobjecthasrevision>
+                {
+                  type: 'menuitem',
+                  text: '<mt:trans phrase="Diff from the latest Revision" component="EditorDiff">',
+                  onAction: function () {
+                    tinymce.activeEditor = ed;
+                    let editor = tinymce.activeEditor;
+                    let url = '<mt:var name="script_uri">?__mode=editor_diff&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>&<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>&editor_id=' + editor.id;
+                    let html = editor.getContent();
+                    if (! html ) {
+                        alert( '<mt:trans phrase="No content in editor." component="EditorDiff">' );
+                        return;
+                    }
+                    $('#modal').modal().find('iframe').attr( 'src', url );
+                  }
+                },
+</mt:ifobjecthasrevision>
+                {
+                  type: 'menuitem',
+                  text: '<mt:trans phrase="Diff from the Master" component="EditorDiff">',
+                  onAction: function () {
+                    tinymce.activeEditor = ed;
+                    let editor = tinymce.activeEditor;
+                    let url = '<mt:var name="script_uri">?__mode=editor_diff&_from_master=1&_model=<mt:var name="request._model" escape>&id=<mt:var name="request.id" escape>&<mt:if name="request.workspace_id">&workspace_id=<mt:var name="request.workspace_id" escape></mt:if>&editor_id=' + editor.id;
+                    let html = editor.getContent();
+                    if (! html ) {
+                        alert( '<mt:trans phrase="No content in editor." component="EditorDiff">' );
+                        return;
+                    }
+                    $('#modal').modal().find('iframe').attr( 'src', url );
+                  }
+                }
+              ];
+              callback(itemse);
+            }
+        });
+</mt:unless>

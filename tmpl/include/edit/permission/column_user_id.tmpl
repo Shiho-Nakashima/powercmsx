@@ -1,0 +1,78 @@
+<mt:var name="edit" split=":" setvar="edit_props">
+<mt:var name="edit_props[1]" setvar="rel_model">
+<mt:var name="edit_props[2]" setvar="rel_col">
+<mt:var name="edit_props[3]" setvar="rel_type">
+<div class="row form-group">
+  <div class="col-lg-2">
+    <label for="<mt:var name="__col_name__">">
+      <mt:var name="label" escape>
+      <mt:if name="not_null"><mt:var name="field_required"></mt:if>
+    </label>
+  </div>
+  <div class="col-lg-10">
+  <mt:setvar name="has_thumbnail" value="1">
+  <mt:setvar name="thumbnail" value="">
+  <mt:getobjectname id="$__col_value__" type="$edit" wants="id" escape setvar="__col_value__">
+  <mt:assetthumbnail id="$__col_value__" type="default" square="1" model="$rel_model" data_uri="1" setvar="thumbnail">
+  <mt:unless name="thumbnail">
+    <mt:if name="has_thumbnail">
+    <mt:setvarblock name="thumbnail"><mt:var name="script_uri">?__mode=get_thumbnail&amp;square=1&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__col_value__" escape></mt:setvarblock>
+    </mt:if>
+  </mt:unless>
+  <ul class="relation-list">
+  <li class="<mt:var name="__col_name__">-child badge badge-default badge-relation">
+  <mt:if name="thumbnail">
+  <div id="<mt:var name="__col_name__">-img" class="<mt:unless name="__col_value__">hidden </mt:unless>assets-child-thumb" data-model="<mt:var name="rel_model" escape>" data-id="<mt:var name="__col_value__" escape>" style="background-image:url('<mt:var name="thumbnail">')"></div>
+  </mt:if>
+  <span id="<mt:var name="__col_name__">-label">
+  <mt:if name="__col_value__">
+    <mt:getobjectname id="$__col_value__" type="$edit" escape>
+  <mt:else>
+    <mt:trans phrase="(None selected)">&nbsp;
+  </mt:if>
+  </span>
+  <mt:if name="__col_value__">
+    <mt:objectvar model="$rel_model" id="$__col_value__" name="permalink" setvar="_external_link">
+    <mt:if name="_external_link">
+      <a target="_blank" href="<mt:var name="_external_link">" class="btn btn-secondary btn-sm asset-download-btn attachment-download-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View">">
+        <i class="fa fa-external-link-square"></i>
+      </a>
+    </mt:if>
+    <mt:ifusercan action="edit" model="$rel_model" id="$__col_value__" workspace_id="$workspace_id">
+      <button type="button" id="_<mt:var name="__col_name__">-edit-defeult" class="_<mt:var name="__col_name__">-edit btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+          data-toggle="modal" data-target="#modal"
+          data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=<mt:var name="__col_value__"><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </mt:ifusercan>
+  <mt:else>
+    <a target="_blank" href="" class="hidden btn btn-secondary btn-sm asset-download-btn attachment-download-btn-<mt:var name="__col_name__">" aria-label="<mt:trans phrase="View">">
+      <i class="fa fa-external-link-square"></i>
+    </a>
+    <button type="button" id="_<mt:var name="__col_name__">-edit-defeult" class="_<mt:var name="__col_name__">-edit hidden btn btn-secondary btn-sm relation-editor" aria-label="<mt:trans phrase="Edit">"
+        data-toggle="modal" data-target="#modal"
+        data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape>&amp;id=0<mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+      <i class="fa fa-pencil"></i>
+    </button>
+  </mt:if>
+  <mt:unless name="readonly">
+  <button style="display:inline" id="<mt:var name="__col_name__">-close" type="button" class="btn btn-secondary btn-sm close-sm detach-relation <mt:unless name="__col_value__"> hidden</mt:unless>" aria-label="<mt:trans phrase="Detach">" data-name="<mt:var name="__col_name__">">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  </mt:unless>
+  <input id="<mt:var name="__col_name__">" type="hidden" name="<mt:var name="__col_name__">" value="<mt:var name="__col_value__" escape>">
+  </li>
+  </ul>
+  <mt:unless name="readonly">
+  <button type="button" class="btn btn-primary btn-sm dialog-chooser" data-toggle="modal" data-target="#modal"
+    data-href="<mt:var name="script_uri">?__mode=view&amp;_type=list&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;single_select=1&amp;target=<mt:var name="__col_name__">&amp;get_col=<mt:var name="rel_col" escape>&amp;ref_model=<mt:var name="model">"><mt:trans phrase="Select..."></button>
+  <mt:ifusercan model="$rel_model" action="create" workspace_id="$workspace_id">
+    <button type="button" id="_<mt:var name="__col_name__">-edit-defeult" class="_<mt:var name="__col_name__">-edit btn btn-info btn-sm ml-0" aria-label="<mt:trans phrase="Edit">"
+        data-toggle="modal" data-target="#modal"
+        data-href="<mt:var name="script_uri">?__mode=view&amp;_type=edit&amp;_model=<mt:var name="rel_model" escape><mt:ifworkspacemodel model="$rel_model"><mt:if name="workspace_id">&amp;workspace_id=<mt:var name="workspace_id"></mt:if></mt:ifworkspacemodel>&amp;dialog_view=1&amp;target=<mt:var name="__col_name__">&amp;from_obj=<mt:var name="_model">&amp;get_col=<mt:var name="rel_col" escape>&amp;select_add=1&amp;single_select=1&amp;direct_edit=1&amp;ref_model=<mt:var name="model">">
+      <i class="fa fa-plus-circle"></i>
+    </button>
+  </mt:ifusercan>
+  </mt:unless>
+  </div>
+</div>

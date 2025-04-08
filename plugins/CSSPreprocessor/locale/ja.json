@@ -1,0 +1,13 @@
+{
+    "Compiling preprocessor code to CSS.": "CSS PreprocessorのコードをCSSにコンパイルします。",
+    "Specify 'Ruby' in the environment variable 'csspreprocessor_sass_cmd'." : "環境変数'csspreprocessor_sass_cmd'に'Ruby'を指定してください。",
+    "Sass is not installed in '%s'." : "Sassが'%s'にインストールされていません。",
+    "Automatically Compile" : "自動コンパイル",
+    "Automatically compiles when the extension of the file specified in the 'Link to File' matches one of 'sass', 'scss', 'styl', 'less' and the extension of the output file is 'css'."
+      : "ビューの「ファイルへのリンク」に指定した拡張子が'sass', 'scss', 'styl', 'less'のいずれかと一致して、出力されるファイルの拡張子が「css」の時に自動的にコンパイルを行います。",
+    "The execution engine of Sass is '%s'." : "Sassの実行エンジンは'%s'です。",
+    "Minify CSS" : "CSSをコード圧縮する",
+    "One of 'Sass',' SCSS',' Less',' Stylus'.": "'Sass',' SCSS',' Less',' Stylus'のいずれか",
+    "Minifying CSS code." : "CSSをコード圧縮する",
+    "Alias for 'compress'." : "'compress'のエイリアス"
+}
